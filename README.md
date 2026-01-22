@@ -203,6 +203,9 @@ RoS           = (Vermeidete Verluste − Gesamtkosten) / Gesamtkosten
 - **Spielzeit & Verständlichkeit:** In einem Durchlauf sollte die Dokumentation **auf eine Seite + 2 Tabellen** passen.
 
 ---
+## Ziel des Spiels
+
+Das Planspiel richtet sich an Studierende und vermittelt die Wichtigkeit von Sicherheitsmaßnahmen – nicht über tiefes Technik‑Know‑how, sondern über risikoorientiertes Denken und unternehmerische Abwägungen. Im Fokus steht, wie man Security im Kontext von Budget, Geschäftszielen und Stakeholder‑Erwartungen sinnvoll priorisiert. Die Teilnehmenden erleben den Berateralltag realistisch und nachvollziehbar: von der Auftragsklärung über die Begründung von Maßnahmen bis zur Kommunikation bei Störungen. Ziel ist es, Entscheidungen nachvollziehbar zu treffen, Trade‑offs transparent zu machen und den Business‑Nutzen von Security (z. B. Vermeidung von Ausfällen, Schutz von IP, Compliance‑Fähigkeit) sichtbar zu machen – ohne dass tiefes technisches Detailwissen erforderlich ist.
 
 ## Lizenz & Beiträge
 
