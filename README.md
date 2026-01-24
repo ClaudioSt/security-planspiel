@@ -203,6 +203,19 @@ RoS           = (Vermeidete Verluste − Gesamtkosten) / Gesamtkosten
 - **Spielzeit & Verständlichkeit:** In einem Durchlauf sollte die Dokumentation **auf eine Seite + 2 Tabellen** passen.
 
 ---
+
+## Simulation (alle Outcomes)
+
+Für eine vollständige, deterministische Enumeration aller möglichen Outcomes gibt es eine kleine Simulation. Die Regeln folgen den Parametern aus der `simulation_config.json`, inklusive Abhängigkeiten, Events, CIA‑Gewichtung und Angriffsauswertung.  
+
+**Beispiel:**
+```
+python3 simulate_outcomes.py --config simulation_config.json --budget-tier medium --output simulation_results.json
+```
+
+Die Ausgabe enthält alle zulässigen Maßnahmen‑Kombinationen (inkl. Level 0–3), die End‑KZ, Schäden, CIA‑Mali sowie die Kostenübersicht.
+
+---
 ## Ziel des Spiels
 
 Das Planspiel richtet sich an Studierende und vermittelt die Wichtigkeit von Sicherheitsmaßnahmen – nicht über tiefes Technik‑Know‑how, sondern über risikoorientiertes Denken und unternehmerische Abwägungen. Im Fokus steht, wie man Security im Kontext von Budget, Geschäftszielen und Stakeholder‑Erwartungen sinnvoll priorisiert. Die Teilnehmenden erleben den Berateralltag realistisch und nachvollziehbar: von der Auftragsklärung über die Begründung von Maßnahmen bis zur Kommunikation bei Störungen. Ziel ist es, Entscheidungen nachvollziehbar zu treffen, Trade‑offs transparent zu machen und den Business‑Nutzen von Security (z. B. Vermeidung von Ausfällen, Schutz von IP, Compliance‑Fähigkeit) sichtbar zu machen – ohne dass tiefes technisches Detailwissen erforderlich ist.

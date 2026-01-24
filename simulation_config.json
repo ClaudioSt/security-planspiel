@@ -1,0 +1,437 @@
+{
+  "default_budget_tier": "medium",
+  "budget_tiers": {
+    "low": {
+      "range": [200, 280],
+      "kz_start": 70,
+      "e_targets": {
+        "1": 30,
+        "2": 40,
+        "3": 50
+      }
+    },
+    "medium": {
+      "range": [281, 380],
+      "kz_start": 60,
+      "e_targets": {
+        "1": 40,
+        "2": 50,
+        "3": 60
+      }
+    },
+    "high": {
+      "range": [381, 500],
+      "kz_start": 50,
+      "e_targets": {
+        "1": 50,
+        "2": 60,
+        "3": 70
+      }
+    }
+  },
+  "waves": [
+    {
+      "id": 1,
+      "name": "Ransomware",
+      "attack_id": "ransomware",
+      "weights": {
+        "c": 0.4,
+        "i": 0.4,
+        "a": 0.2
+      },
+      "kz_bonus": 3,
+      "kz_malus": -5
+    },
+    {
+      "id": 2,
+      "name": "OT-Stoerung",
+      "attack_id": "ot",
+      "weights": {
+        "c": 0.2,
+        "i": 0.2,
+        "a": 0.6
+      },
+      "kz_bonus": 5,
+      "kz_malus": -8
+    },
+    {
+      "id": 3,
+      "name": "Exfiltration",
+      "attack_id": "exfil",
+      "weights": {
+        "c": 0.5,
+        "i": 0.3,
+        "a": 0.2
+      },
+      "kz_bonus": 8,
+      "kz_malus": -10
+    }
+  ],
+  "attacks": {
+    "ransomware": {
+      "base_severity": 8,
+      "s_unit": 12,
+      "kz_unit": 5,
+      "cia_impact": {
+        "c": -2,
+        "i": -2,
+        "a": -1
+      },
+      "mitigation_cap": 10,
+      "allow_recovery": true
+    },
+    "ot": {
+      "base_severity": 10,
+      "s_unit": 20,
+      "kz_unit": 8,
+      "cia_impact": {
+        "c": -1,
+        "i": -2,
+        "a": -3
+      },
+      "mitigation_cap": 12,
+      "allow_recovery": true
+    },
+    "exfil": {
+      "base_severity": 7,
+      "s_unit": 15,
+      "kz_unit": 6,
+      "cia_impact": {
+        "c": -3,
+        "i": -1,
+        "a": 0
+      },
+      "mitigation_cap": 10,
+      "allow_recovery": false
+    }
+  },
+  "measures": {
+    "M1": {
+      "name": "IAM/PAM",
+      "levels": {
+        "0": {
+          "cia": {"c": 0, "i": 0, "a": 0},
+          "init": 0,
+          "opex": 0,
+          "mitigation": {"ransomware": 0, "ot": 0, "exfil": 0}
+        },
+        "1": {
+          "cia": {"c": 2, "i": 1, "a": 0},
+          "init": 30,
+          "opex": 4,
+          "mitigation": {"ransomware": -1, "ot": 0, "exfil": -1}
+        },
+        "2": {
+          "cia": {"c": 4, "i": 3, "a": 0},
+          "init": 60,
+          "opex": 10,
+          "mitigation": {"ransomware": -2, "ot": 0, "exfil": -2}
+        },
+        "3": {
+          "cia": {"c": 6, "i": 5, "a": 1},
+          "init": 100,
+          "opex": 20,
+          "mitigation": {"ransomware": -3, "ot": 0, "exfil": -4}
+        }
+      },
+      "dependencies": [
+        {"level": 3, "requires": [{"measure": "M2", "min_level": 2}]}
+      ]
+    },
+    "M2": {
+      "name": "Logging & SIEM/MDR",
+      "levels": {
+        "0": {
+          "cia": {"c": 0, "i": 0, "a": 0},
+          "init": 0,
+          "opex": 0,
+          "mitigation": {"ransomware": 0, "ot": 0, "exfil": 0}
+        },
+        "1": {
+          "cia": {"c": 1, "i": 3, "a": 0},
+          "init": 20,
+          "opex": 2,
+          "mitigation": {"ransomware": -1, "ot": 0, "exfil": -1}
+        },
+        "2": {
+          "cia": {"c": 2, "i": 5, "a": 1},
+          "init": 50,
+          "opex": 8,
+          "mitigation": {"ransomware": -2, "ot": -1, "exfil": -2}
+        },
+        "3": {
+          "cia": {"c": 3, "i": 7, "a": 2},
+          "init": 80,
+          "opex": 24,
+          "mitigation": {"ransomware": -3, "ot": -2, "exfil": -4}
+        }
+      },
+      "dependencies": []
+    },
+    "M3": {
+      "name": "EDR/XDR",
+      "levels": {
+        "0": {
+          "cia": {"c": 0, "i": 0, "a": 0},
+          "init": 0,
+          "opex": 0,
+          "mitigation": {"ransomware": 0, "ot": 0, "exfil": 0}
+        },
+        "1": {
+          "cia": {"c": 3, "i": 2, "a": 1},
+          "init": 24,
+          "opex": 4,
+          "mitigation": {"ransomware": -2, "ot": 0, "exfil": -1}
+        },
+        "2": {
+          "cia": {"c": 5, "i": 4, "a": 2},
+          "init": 56,
+          "opex": 10,
+          "mitigation": {"ransomware": -3, "ot": 0, "exfil": -2}
+        },
+        "3": {
+          "cia": {"c": 7, "i": 6, "a": 3},
+          "init": 90,
+          "opex": 18,
+          "mitigation": {"ransomware": -5, "ot": 0, "exfil": -3}
+        }
+      },
+      "dependencies": [
+        {"level": 3, "requires": [{"measure": "M2", "min_level": 2}]}
+      ]
+    },
+    "M4": {
+      "name": "Backup & Disaster Recovery",
+      "levels": {
+        "0": {
+          "cia": {"c": 0, "i": 0, "a": 0},
+          "init": 0,
+          "opex": 0,
+          "mitigation": {"ransomware": 0, "ot": 0, "exfil": 0},
+          "recovery": 0
+        },
+        "1": {
+          "cia": {"c": 0, "i": 4, "a": 3},
+          "init": 16,
+          "opex": 6,
+          "mitigation": {"ransomware": -1, "ot": 0, "exfil": 0},
+          "recovery": 0.1
+        },
+        "2": {
+          "cia": {"c": 1, "i": 6, "a": 5},
+          "init": 40,
+          "opex": 12,
+          "mitigation": {"ransomware": -2, "ot": -1, "exfil": 0},
+          "recovery": 0.3
+        },
+        "3": {
+          "cia": {"c": 1, "i": 8, "a": 7},
+          "init": 80,
+          "opex": 20,
+          "mitigation": {"ransomware": -5, "ot": -2, "exfil": 0},
+          "recovery": 0.5
+        }
+      },
+      "dependencies": []
+    },
+    "M5": {
+      "name": "OT/IT-Netz-Segmentierung",
+      "levels": {
+        "0": {
+          "cia": {"c": 0, "i": 0, "a": 0},
+          "init": 0,
+          "opex": 0,
+          "mitigation": {"ransomware": 0, "ot": 0, "exfil": 0}
+        },
+        "1": {
+          "cia": {"c": 2, "i": 1, "a": 4},
+          "init": 40,
+          "opex": 2,
+          "mitigation": {"ransomware": 0, "ot": -1, "exfil": 0}
+        },
+        "2": {
+          "cia": {"c": 3, "i": 2, "a": 6},
+          "init": 70,
+          "opex": 6,
+          "mitigation": {"ransomware": -1, "ot": -5, "exfil": 0}
+        },
+        "3": {
+          "cia": {"c": 4, "i": 3, "a": 8},
+          "init": 110,
+          "opex": 12,
+          "mitigation": {"ransomware": -2, "ot": -7, "exfil": 0}
+        }
+      },
+      "dependencies": []
+    },
+    "M6": {
+      "name": "Security Awareness & Training",
+      "levels": {
+        "0": {
+          "cia": {"c": 0, "i": 0, "a": 0},
+          "init": 0,
+          "opex": 0,
+          "mitigation": {"ransomware": 0, "ot": 0, "exfil": 0}
+        },
+        "1": {
+          "cia": {"c": 2, "i": 1, "a": 1},
+          "init": 10,
+          "opex": 2,
+          "mitigation": {"ransomware": -1, "ot": 0, "exfil": 0}
+        },
+        "2": {
+          "cia": {"c": 3, "i": 2, "a": 2},
+          "init": 24,
+          "opex": 6,
+          "mitigation": {"ransomware": -4, "ot": 0, "exfil": 0}
+        },
+        "3": {
+          "cia": {"c": 5, "i": 3, "a": 3},
+          "init": 40,
+          "opex": 10,
+          "mitigation": {"ransomware": -6, "ot": 0, "exfil": 0}
+        }
+      },
+      "dependencies": []
+    },
+    "M7": {
+      "name": "Vulnerability & Patch Management",
+      "levels": {
+        "0": {
+          "cia": {"c": 0, "i": 0, "a": 0},
+          "init": 0,
+          "opex": 0,
+          "mitigation": {"ransomware": 0, "ot": 0, "exfil": 0}
+        },
+        "1": {
+          "cia": {"c": 2, "i": 3, "a": 2},
+          "init": 20,
+          "opex": 4,
+          "mitigation": {"ransomware": -1, "ot": -1, "exfil": 0}
+        },
+        "2": {
+          "cia": {"c": 4, "i": 5, "a": 3},
+          "init": 44,
+          "opex": 8,
+          "mitigation": {"ransomware": -2, "ot": -3, "exfil": -1}
+        },
+        "3": {
+          "cia": {"c": 6, "i": 7, "a": 4},
+          "init": 76,
+          "opex": 14,
+          "mitigation": {"ransomware": -3, "ot": -4, "exfil": -2}
+        }
+      },
+      "dependencies": [
+        {"level": 3, "requires": [{"measure": "M2", "min_level": 1}]}
+      ]
+    },
+    "M8": {
+      "name": "Supplier Security & Supply Chain",
+      "levels": {
+        "0": {
+          "cia": {"c": 0, "i": 0, "a": 0},
+          "init": 0,
+          "opex": 0,
+          "mitigation": {"ransomware": 0, "ot": 0, "exfil": 0}
+        },
+        "1": {
+          "cia": {"c": 1, "i": 2, "a": 2},
+          "init": 16,
+          "opex": 4,
+          "mitigation": {"ransomware": 0, "ot": 0, "exfil": 0}
+        },
+        "2": {
+          "cia": {"c": 2, "i": 4, "a": 4},
+          "init": 36,
+          "opex": 8,
+          "mitigation": {"ransomware": 0, "ot": -1, "exfil": -1}
+        },
+        "3": {
+          "cia": {"c": 3, "i": 6, "a": 6},
+          "init": 70,
+          "opex": 16,
+          "mitigation": {"ransomware": 0, "ot": -2, "exfil": -3}
+        }
+      },
+      "dependencies": []
+    },
+    "M9": {
+      "name": "Cloud Security (CSPM)",
+      "levels": {
+        "0": {
+          "cia": {"c": 0, "i": 0, "a": 0},
+          "init": 0,
+          "opex": 0,
+          "mitigation": {"ransomware": 0, "ot": 0, "exfil": 0}
+        },
+        "1": {
+          "cia": {"c": 2, "i": 2, "a": 1},
+          "init": 18,
+          "opex": 3,
+          "mitigation": {"ransomware": 0, "ot": 0, "exfil": 0}
+        },
+        "2": {
+          "cia": {"c": 3, "i": 3, "a": 2},
+          "init": 40,
+          "opex": 7,
+          "mitigation": {"ransomware": 0, "ot": 0, "exfil": 0}
+        },
+        "3": {
+          "cia": {"c": 4, "i": 4, "a": 3},
+          "init": 70,
+          "opex": 14,
+          "mitigation": {"ransomware": 0, "ot": 0, "exfil": -1}
+        }
+      },
+      "dependencies": []
+    },
+    "M10": {
+      "name": "Mobile Device Management (MDM)",
+      "levels": {
+        "0": {
+          "cia": {"c": 0, "i": 0, "a": 0},
+          "init": 0,
+          "opex": 0,
+          "mitigation": {"ransomware": 0, "ot": 0, "exfil": 0}
+        },
+        "1": {
+          "cia": {"c": 1, "i": 1, "a": 0},
+          "init": 12,
+          "opex": 2,
+          "mitigation": {"ransomware": 0, "ot": 0, "exfil": 0}
+        },
+        "2": {
+          "cia": {"c": 2, "i": 2, "a": 1},
+          "init": 28,
+          "opex": 5,
+          "mitigation": {"ransomware": -1, "ot": 0, "exfil": 0}
+        },
+        "3": {
+          "cia": {"c": 3, "i": 3, "a": 2},
+          "init": 50,
+          "opex": 10,
+          "mitigation": {"ransomware": -1, "ot": 0, "exfil": 0}
+        }
+      },
+      "dependencies": []
+    }
+  },
+  "events": {
+    "oem_audit": {
+      "trigger_wave": 2,
+      "kz_bonus": 5,
+      "kz_malus": -3
+    },
+    "staff_turnover": {
+      "trigger_wave": 2,
+      "kz_delta": -2,
+      "opex_delta": 5
+    },
+    "gdpr_bonus": {
+      "trigger_wave": 3,
+      "kz_delta": 3,
+      "budget_delta": 10
+    }
+  }
+}
