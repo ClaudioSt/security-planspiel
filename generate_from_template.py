@@ -199,6 +199,92 @@ def set_shape_text(shape, new_text):
     return True
 
 
+def set_cia_text(shape, c_val, i_val, a_val):
+    """
+    Setze CIA-Text mit gemischter Formatierung:
+    C (fett) +X (normal)  |  I (fett) +Y (normal)  |  A (fett) +Z (normal)
+    """
+    if not shape.has_text_frame:
+        return False
+
+    para = shape.text_frame.paragraphs[0]
+
+    # Lösche alle existierenden Runs
+    for run in list(para.runs):
+        para._p.remove(run._r)
+
+    # Erstelle neue Runs mit korrekter Formatierung
+    # C (fett)
+    run = para.add_run()
+    run.text = "C "
+    run.font.bold = True
+
+    # +X | (normal)
+    run = para.add_run()
+    run.text = f"+{c_val}  |  "
+    run.font.bold = False
+
+    # I (fett)
+    run = para.add_run()
+    run.text = "I "
+    run.font.bold = True
+
+    # +Y | (normal)
+    run = para.add_run()
+    run.text = f"+{i_val}  |  "
+    run.font.bold = False
+
+    # A (fett)
+    run = para.add_run()
+    run.text = "A "
+    run.font.bold = True
+
+    # +Z (normal)
+    run = para.add_run()
+    run.text = f"+{a_val}"
+    run.font.bold = False
+
+    return True
+
+
+def set_cost_text(shape, init_val, opex_val):
+    """
+    Setze Kosten-Text mit gemischter Formatierung:
+    Init: (fett) Xk€ (normal)  |  OPEX: (fett) Yk€/Welle (normal)
+    """
+    if not shape.has_text_frame:
+        return False
+
+    para = shape.text_frame.paragraphs[0]
+
+    # Lösche alle existierenden Runs
+    for run in list(para.runs):
+        para._p.remove(run._r)
+
+    # Erstelle neue Runs mit korrekter Formatierung
+    # Init: (fett)
+    run = para.add_run()
+    run.text = "Init: "
+    run.font.bold = True
+
+    # Xk€ | (normal)
+    run = para.add_run()
+    run.text = f"{init_val}k€  |  "
+    run.font.bold = False
+
+    # OPEX: (fett)
+    run = para.add_run()
+    run.text = "OPEX: "
+    run.font.bold = True
+
+    # Yk€/Welle (normal)
+    run = para.add_run()
+    run.text = f"{opex_val}k€/Welle"
+    run.font.bold = False
+
+    return True
+
+
 def get_dependency_text(measure_data, level):
     """Hole Abhängigkeits-Text für ein bestimmtes Level"""
     dependencies = measure_data.get("dependencies", [])
@@ -296,13 +382,13 @@ def update_massnahmen_template(config, template_path, output_path):
                 elif text.startswith("Level"):
                     set_shape_text(shape, level_label)
 
-                # CIA-Beitrag Wert
+                # CIA-Beitrag Wert (mit gemischter Formatierung: C/I/A fett, Werte normal)
                 elif "C +" in text and "|" in text:
-                    set_shape_text(shape, cia_text)
+                    set_cia_text(shape, cia.get('c', 0), cia.get('i', 0), cia.get('a', 0))
 
-                # Kosten Wert
+                # Kosten Wert (mit gemischter Formatierung: Init:/OPEX: fett, Werte normal)
                 elif "Init:" in text and "OPEX:" in text:
-                    set_shape_text(shape, cost_text)
+                    set_cost_text(shape, init, opex)
 
                 # Abhängigkeiten Wert
                 elif text.strip() == "-" or (text.startswith("M") and "min." in text):
