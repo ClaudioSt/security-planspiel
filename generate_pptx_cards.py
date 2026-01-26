@@ -35,126 +35,201 @@ COLORS = {
     "a_color": RGBColor(40, 167, 69),     # Grün für Availability
 }
 
-# Maßnahmen-Metadaten (Fokus und Beschreibung)
+# Maßnahmen-Metadaten (Fokus, Beschreibung und Level-Erklärungen für Nicht-Techniker)
 MEASURE_META = {
     "M1": {
         "focus": "Zugriffskontrolle, privilegierte Accounts",
+        "description": "Wer darf was im Unternehmen? Diese Maßnahme stellt sicher, dass nur berechtigte Personen Zugang zu sensiblen Systemen haben - wie ein digitaler Türsteher.",
         "levels_desc": {
             1: "Zentrale AD, MFA für Admins, Passwortrichtlinie",
             2: "PAM (Privileged Access Management), Rollenkonzept",
             3: "JIT-Access, Session-Recording, Access-Reviews"
+        },
+        "levels_simple": {
+            1: "Grundschutz: Zentrale Benutzerverwaltung, Admins brauchen zwei Faktoren zum Einloggen.",
+            2: "Besser: Spezielle Verwaltung für Admin-Konten, klare Rollen wer was darf.",
+            3: "Premium: Zugriff nur bei Bedarf, alle Admin-Aktionen werden aufgezeichnet."
         }
     },
     "M2": {
         "focus": "Sichtbarkeit schaffen, Angriffe erkennen",
+        "description": "Wie ein Überwachungssystem für die IT: Alle wichtigen Ereignisse werden protokolliert und ausgewertet, um verdächtige Aktivitäten frühzeitig zu erkennen.",
         "levels_desc": {
             1: "Windows Event Logs zentral sammeln, 30 Tage",
             2: "SIEM mit Use Cases (Failed Logins, Priv. Escalation)",
             3: "MDR (Managed Detection & Response) mit 24/7-SOC"
+        },
+        "levels_simple": {
+            1: "Grundschutz: Protokolle werden gesammelt und 30 Tage aufbewahrt.",
+            2: "Besser: Automatische Alarme bei verdächtigen Mustern (z.B. viele fehlgeschlagene Logins).",
+            3: "Premium: Externe Sicherheitsexperten überwachen rund um die Uhr."
         }
     },
     "M3": {
         "focus": "Schadsoftware auf Clients/Servern erkennen",
+        "description": "Der Virenschutz für alle Computer im Unternehmen. Erkennt und stoppt Schadsoftware, bevor sie Schaden anrichten kann.",
         "levels_desc": {
             1: "Aktueller Virenscanner, automatische Updates",
             2: "EDR mit Behavioral Analysis, Auto-Isolation",
             3: "XDR (Korrelation Endpoints, Netzwerk, Cloud)"
+        },
+        "levels_simple": {
+            1: "Grundschutz: Klassischer Virenscanner, der bekannte Schadsoftware erkennt.",
+            2: "Besser: Erkennt auch unbekannte Bedrohungen anhand von verdächtigem Verhalten, isoliert befallene Rechner automatisch.",
+            3: "Premium: Vernetzt alle Sicherheitssysteme - erkennt komplexe Angriffe über mehrere Systeme hinweg."
         }
     },
     "M4": {
         "focus": "Daten wiederherstellen, Betrieb aufrechterhalten",
+        "description": "Die Lebensversicherung für Unternehmensdaten. Regelmäßige Sicherungskopien ermöglichen es, nach einem Angriff oder Ausfall schnell wieder arbeitsfähig zu sein.",
         "levels_desc": {
             1: "Tägliche Backups Office-IT, 14 Tage, kein Test",
             2: "3-2-1-Regel, monatliche Restore-Tests",
             3: "Immutable Backups (Air-Gap), DR-Plan, RTO <4h"
+        },
+        "levels_simple": {
+            1: "Grundschutz: Tägliche Datensicherung, aber ohne regelmäßige Tests ob die Wiederherstellung funktioniert.",
+            2: "Besser: Backups an mehreren Orten, monatlich wird geprüft ob Wiederherstellung klappt.",
+            3: "Premium: Backups sind unveränderbar und vom Netzwerk getrennt - selbst Hacker können sie nicht löschen. Schnelle Wiederherstellung garantiert."
         }
     },
     "M5": {
         "focus": "Produktionsnetz vom Office-Netz trennen",
+        "description": "Baut digitale Brandmauern zwischen Büro und Produktion. Ein Angriff im Büro soll nicht die Fertigungsanlagen lahmlegen können.",
         "levels_desc": {
             1: "Logische VLANs, keine Firewall-Regeln",
             2: "Firewall zwischen OT/IT, Whitelist-Prinzip",
             3: "IDS/IPS in OT, Micro-Segmentierung (Zonen/Linie)"
+        },
+        "levels_simple": {
+            1: "Grundschutz: Netzwerke sind logisch getrennt, aber ohne strenge Zugangskontrollen.",
+            2: "Besser: Echte Firewall zwischen Büro und Produktion - nur explizit erlaubter Datenverkehr kommt durch.",
+            3: "Premium: Jede Produktionslinie ist einzeln abgesichert, verdächtiger Datenverkehr wird automatisch blockiert."
         }
     },
     "M6": {
         "focus": "Mitarbeitende sensibilisieren, Phishing abwehren",
+        "description": "Macht Mitarbeiter zur ersten Verteidigungslinie. Geschulte Mitarbeiter erkennen Betrugsversuche und gefährliche E-Mails, bevor Schaden entsteht.",
         "levels_desc": {
             1: "Jährliche Pflicht-Schulung (E-Learning, 30 Min)",
             2: "Quartalsweise Schulungen + Phishing-Simulationen",
             3: "Rollenspez. Training, Incident-Meldeprozess etabliert"
+        },
+        "levels_simple": {
+            1: "Grundschutz: Einmal im Jahr eine kurze Online-Schulung zum Thema IT-Sicherheit.",
+            2: "Besser: Regelmäßige Schulungen plus Test-Phishing-Mails, um die Wachsamkeit zu prüfen.",
+            3: "Premium: Spezielle Trainings je nach Rolle, klarer Prozess zum Melden von Verdachtsfällen."
         }
     },
     "M7": {
         "focus": "Schwachstellen schließen, Angriffsfläche reduzieren",
+        "description": "Hält alle Systeme auf dem neuesten Stand. Sicherheitslücken werden durch Updates geschlossen, bevor Angreifer sie ausnutzen können.",
         "levels_desc": {
             1: "Automatische Windows-Updates, sporadisch OT-Patches",
             2: "Monatliche Patch-Zyklen, Vulnerability-Scans (quartal)",
             3: "Risk-based Patching (CVSS), wöchentliche Scans, Tool"
+        },
+        "levels_simple": {
+            1: "Grundschutz: Windows-Updates laufen automatisch, Produktionssysteme werden unregelmäßig aktualisiert.",
+            2: "Besser: Strukturierter monatlicher Update-Prozess, regelmäßige Suche nach Schwachstellen.",
+            3: "Premium: Kritische Lücken werden priorisiert geschlossen, wöchentliche automatische Schwachstellen-Scans."
         }
     },
     "M8": {
         "focus": "Lieferanten-Risiken managen, Abhängigkeiten absichern",
+        "description": "Schützt vor Risiken durch Geschäftspartner. Denn auch über einen gehackten Lieferanten können Angreifer ins Unternehmen gelangen.",
         "levels_desc": {
             1: "Vertragliche Security-Klauseln, Ad-hoc-Checks",
             2: "Supplier-Assessments (jährlich), SLA-Monitoring",
             3: "Continuous Monitoring, Dual-Sourcing, Escrow-Verträge"
+        },
+        "levels_simple": {
+            1: "Grundschutz: Sicherheitsanforderungen stehen im Vertrag, gelegentliche Überprüfungen.",
+            2: "Besser: Jährliche Sicherheitsbewertung aller wichtigen Lieferanten, Überwachung der Leistungsversprechen.",
+            3: "Premium: Kontinuierliche Überwachung, Backup-Lieferanten für kritische Teile, Schutz bei Lieferanten-Insolvenz."
         }
     },
     "M9": {
         "focus": "Cloud-Konfigurationen überwachen & absichern",
+        "description": "Sichert Daten und Dienste in der Cloud ab. Prüft automatisch, ob Cloud-Systeme sicher konfiguriert sind.",
         "levels_desc": {
             1: "Basis-Monitoring Cloud-Backup (Veeam)",
             2: "CSPM-Tool (z.B. Prisma Cloud), Compliance-Checks",
             3: "Multi-Cloud-Security, IaC-Scanning, CNAPP"
+        },
+        "levels_simple": {
+            1: "Grundschutz: Einfache Überwachung der Cloud-Backups.",
+            2: "Besser: Automatische Prüfung ob Cloud-Einstellungen den Sicherheitsrichtlinien entsprechen.",
+            3: "Premium: Umfassende Sicherheit über mehrere Cloud-Anbieter, automatische Prüfung aller Cloud-Konfigurationen."
         }
     },
     "M10": {
         "focus": "Smartphones/Tablets absichern",
+        "description": "Schützt mobile Geräte der Mitarbeiter. Verhindert Datenverlust bei Diebstahl und kontrolliert welche Apps genutzt werden dürfen.",
         "levels_desc": {
             1: "PIN-Pflicht, Remote-Wipe bei Verlust",
             2: "MDM-Plattform (Intune/Jamf), App-Whitelisting",
             3: "UEM (Unified Endpoint Mgmt.), MTD (Mobile Threat Def.)"
+        },
+        "levels_simple": {
+            1: "Grundschutz: PIN-Schutz Pflicht, bei Verlust kann das Gerät aus der Ferne gelöscht werden.",
+            2: "Besser: Zentrale Verwaltung aller Mobilgeräte, nur zugelassene Apps können installiert werden.",
+            3: "Premium: Einheitliche Verwaltung aller Endgeräte, aktiver Schutz vor mobilen Bedrohungen."
         }
     }
 }
 
-# Event-Metadaten mit deutschen Beschreibungen
+# Event-Metadaten mit deutschen Beschreibungen (High-Level für Nicht-Techniker)
 EVENT_META = {
     "oem_audit": {
         "name": "OEM-Audit",
         "icon": "📋",
+        "description": "Der große Automobilkunde prüft die Sicherheitsstandards. Wer gut vorbereitet ist, gewinnt Vertrauen - wer schlecht abschneidet, riskiert Aufträge.",
         "condition": "Nach Welle 1: E-Wert ≥ Zielwert?",
+        "condition_simple": "Wurde der Sicherheits-Zielwert nach Welle 1 erreicht?",
         "effect_positive": "KZ +5",
-        "effect_negative": "KZ -3"
+        "effect_negative": "KZ -3",
+        "effect_explanation": "Bestanden: Kundenvertrauen steigt deutlich. Nicht bestanden: Vertrauen sinkt, Folgeaufträge gefährdet."
     },
     "staff_turnover": {
         "name": "Personalwechsel",
         "icon": "👥",
+        "description": "Ohne regelmäßige Schulungen und Sensibilisierung werden IT-Sicherheitsaufgaben zur Belastung. Überlastete Mitarbeiter verlassen das Unternehmen.",
         "condition": "M6 (Security Awareness) < Level 2?",
+        "condition_simple": "Wurden die Mitarbeiter nicht ausreichend geschult (Awareness unter Level 2)?",
         "effect_positive": None,
-        "effect_negative": "KZ -2, OPEX +5k€"
+        "effect_negative": "KZ -2, OPEX +5k€",
+        "effect_explanation": "Fluktuation kostet Geld (Einarbeitung) und Know-how geht verloren."
     },
     "gdpr_bonus": {
         "name": "DSGVO-Bonus",
         "icon": "🏆",
+        "description": "Gute Zugriffskontrolle und Logging sind die Basis für Datenschutz-Compliance. Wer hier investiert hat, wird belohnt.",
         "condition": "M1 ≥ L2 UND M2 ≥ L2?",
+        "condition_simple": "Sind Zugriffskontrolle (M1) UND Logging (M2) mindestens auf Level 2?",
         "effect_positive": "KZ +3, Budget +10k€",
-        "effect_negative": None
+        "effect_negative": None,
+        "effect_explanation": "Compliance-Nachweis erleichtert Kundengewinnung und spart Bußgelder."
     },
     "investor_confidence": {
         "name": "Investoren-Vertrauen",
         "icon": "💰",
+        "description": "Wer viel in Sicherheit investiert, zeigt Weitsicht. Das überzeugt Investoren und Geldgeber.",
         "condition": "Budget-Tier = HIGH",
+        "condition_simple": "Wurde das höchste Budget-Level gewählt?",
         "effect_positive": "KZ +8",
-        "effect_negative": None
+        "effect_negative": None,
+        "effect_explanation": "Hohe Sicherheitsinvestitionen signalisieren professionelles Risikomanagement."
     },
     "compliance_gap": {
         "name": "Compliance-Lücke",
         "icon": "⚠️",
+        "description": "Zu wenig Budget bedeutet Kompromisse bei der Sicherheit. Das fällt spätestens bei Audits und Kundenanfragen negativ auf.",
         "condition": "Budget-Tier = LOW",
+        "condition_simple": "Wurde das niedrigste Budget-Level gewählt?",
         "effect_positive": None,
-        "effect_negative": "KZ -3"
+        "effect_negative": "KZ -3",
+        "effect_explanation": "Sichtbare Sicherheitslücken schaden dem Ruf bei Kunden und Partnern."
     }
 }
 
@@ -219,9 +294,9 @@ def add_measure_slide(prs, measure_id, measure_data, meta):
     slide_layout = prs.slide_layouts[6]  # Blank layout
     slide = prs.slides.add_slide(slide_layout)
 
-    # Header-Bereich (blau)
+    # Header-Bereich (blau) - etwas höher für Beschreibung
     header = slide.shapes.add_shape(
-        MSO_SHAPE.RECTANGLE, 0, 0, prs.slide_width, Inches(1.4)
+        MSO_SHAPE.RECTANGLE, 0, 0, prs.slide_width, Inches(1.9)
     )
     header.fill.solid()
     header.fill.fore_color.rgb = COLORS["primary"]
@@ -229,23 +304,34 @@ def add_measure_slide(prs, measure_id, measure_data, meta):
 
     # Titel
     title_box = slide.shapes.add_textbox(
-        Inches(0.3), Inches(0.2), Inches(9.4), Inches(0.6)
+        Inches(0.3), Inches(0.15), Inches(9.4), Inches(0.5)
     )
     tf = title_box.text_frame
     p = tf.paragraphs[0]
     p.text = f"{measure_id}: {measure_data['name']}"
-    p.font.size = Pt(32)
+    p.font.size = Pt(28)
     p.font.bold = True
     p.font.color.rgb = COLORS["white"]
 
-    # Fokus-Zeile
+    # High-Level Beschreibung (für Nicht-Techniker)
+    desc_box = slide.shapes.add_textbox(
+        Inches(0.3), Inches(0.65), Inches(9.4), Inches(0.7)
+    )
+    tf = desc_box.text_frame
+    tf.word_wrap = True
+    p = tf.paragraphs[0]
+    p.text = meta.get("description", meta.get("focus", ""))
+    p.font.size = Pt(14)
+    p.font.color.rgb = COLORS["light"]
+
+    # Fokus-Zeile (technischer Fokus)
     focus_box = slide.shapes.add_textbox(
-        Inches(0.3), Inches(0.85), Inches(9.4), Inches(0.4)
+        Inches(0.3), Inches(1.4), Inches(9.4), Inches(0.4)
     )
     tf = focus_box.text_frame
     p = tf.paragraphs[0]
-    p.text = f"Fokus: {meta['focus']}"
-    p.font.size = Pt(16)
+    p.text = f"Technischer Fokus: {meta['focus']}"
+    p.font.size = Pt(11)
     p.font.italic = True
     p.font.color.rgb = COLORS["light"]
 
@@ -264,7 +350,7 @@ def add_measure_slide(prs, measure_id, measure_data, meta):
 
         # Level-Box
         level_box = slide.shapes.add_shape(
-            MSO_SHAPE.ROUNDED_RECTANGLE, x_pos, Inches(1.6), col_width, Inches(5.5)
+            MSO_SHAPE.ROUNDED_RECTANGLE, x_pos, Inches(2.1), col_width, Inches(5.2)
         )
         level_box.fill.solid()
         level_box.fill.fore_color.rgb = COLORS["white"]
@@ -273,48 +359,50 @@ def add_measure_slide(prs, measure_id, measure_data, meta):
 
         # Level-Header
         header_shape = slide.shapes.add_shape(
-            MSO_SHAPE.RECTANGLE, x_pos, Inches(1.6), col_width, Inches(0.5)
+            MSO_SHAPE.RECTANGLE, x_pos, Inches(2.1), col_width, Inches(0.45)
         )
         header_shape.fill.solid()
         header_shape.fill.fore_color.rgb = level_colors[i]
         header_shape.line.fill.background()
 
-        level_title = slide.shapes.add_textbox(x_pos, Inches(1.65), col_width, Inches(0.4))
+        level_title = slide.shapes.add_textbox(x_pos, Inches(2.13), col_width, Inches(0.4))
         tf = level_title.text_frame
         p = tf.paragraphs[0]
         p.text = f"LEVEL {level} ({level_names[i]})"
-        p.font.size = Pt(14)
+        p.font.size = Pt(13)
         p.font.bold = True
         p.font.color.rgb = COLORS["white"]
         p.alignment = PP_ALIGN.CENTER
 
-        # Beschreibung
-        desc_box = slide.shapes.add_textbox(
-            x_pos + Inches(0.1), Inches(2.15), col_width - Inches(0.2), Inches(0.8)
-        )
-        tf = desc_box.text_frame
-        tf.word_wrap = True
-        p = tf.paragraphs[0]
-        p.text = meta["levels_desc"].get(level, "")
-        p.font.size = Pt(11)
-        p.font.color.rgb = COLORS["dark"]
+        # Einfache Beschreibung (für Nicht-Techniker)
+        simple_desc = meta.get("levels_simple", {}).get(level, "")
+        if simple_desc:
+            simple_box = slide.shapes.add_textbox(
+                x_pos + Inches(0.08), Inches(2.6), col_width - Inches(0.16), Inches(0.75)
+            )
+            tf = simple_box.text_frame
+            tf.word_wrap = True
+            p = tf.paragraphs[0]
+            p.text = simple_desc
+            p.font.size = Pt(10)
+            p.font.color.rgb = COLORS["dark"]
 
         # CIA-Beitrag
         cia = level_data.get("cia", {"c": 0, "i": 0, "a": 0})
         cia_box = slide.shapes.add_textbox(
-            x_pos + Inches(0.1), Inches(2.95), col_width - Inches(0.2), Inches(0.6)
+            x_pos + Inches(0.08), Inches(3.4), col_width - Inches(0.16), Inches(0.55)
         )
         tf = cia_box.text_frame
         tf.word_wrap = True
         p = tf.paragraphs[0]
         p.text = "CIA-Beitrag:"
-        p.font.size = Pt(11)
+        p.font.size = Pt(10)
         p.font.bold = True
         p.font.color.rgb = COLORS["dark"]
 
         p = tf.add_paragraph()
         p.text = f"C +{cia.get('c', 0)}  |  I +{cia.get('i', 0)}  |  A +{cia.get('a', 0)}"
-        p.font.size = Pt(12)
+        p.font.size = Pt(11)
         p.font.bold = True
         p.font.color.rgb = COLORS["secondary"]
 
@@ -322,31 +410,31 @@ def add_measure_slide(prs, measure_id, measure_data, meta):
         init = level_data.get("init", 0)
         opex = level_data.get("opex", 0)
         cost_box = slide.shapes.add_textbox(
-            x_pos + Inches(0.1), Inches(3.55), col_width - Inches(0.2), Inches(0.6)
+            x_pos + Inches(0.08), Inches(3.95), col_width - Inches(0.16), Inches(0.55)
         )
         tf = cost_box.text_frame
         tf.word_wrap = True
         p = tf.paragraphs[0]
         p.text = "Kosten:"
-        p.font.size = Pt(11)
+        p.font.size = Pt(10)
         p.font.bold = True
         p.font.color.rgb = COLORS["dark"]
 
         p = tf.add_paragraph()
         p.text = f"Init: {init}k€  |  OPEX: {opex}k€/Welle"
-        p.font.size = Pt(11)
+        p.font.size = Pt(10)
         p.font.color.rgb = COLORS["dark"]
 
         # Mitigation (OHNE Bonus - nur Basiswerte!)
         mitigation = level_data.get("mitigation", {})
         mit_box = slide.shapes.add_textbox(
-            x_pos + Inches(0.1), Inches(4.15), col_width - Inches(0.2), Inches(1.4)
+            x_pos + Inches(0.08), Inches(4.5), col_width - Inches(0.16), Inches(1.3)
         )
         tf = mit_box.text_frame
         tf.word_wrap = True
         p = tf.paragraphs[0]
         p.text = "Mitigation:"
-        p.font.size = Pt(11)
+        p.font.size = Pt(10)
         p.font.bold = True
         p.font.color.rgb = COLORS["dark"]
 
@@ -357,13 +445,13 @@ def add_measure_slide(prs, measure_id, measure_data, meta):
                 has_mitigation = True
                 p = tf.add_paragraph()
                 p.text = f"• {attack_name}: {mit_value}"
-                p.font.size = Pt(11)
+                p.font.size = Pt(10)
                 p.font.color.rgb = COLORS["success"] if mit_value < 0 else COLORS["dark"]
 
         if not has_mitigation:
             p = tf.add_paragraph()
             p.text = "• Keine direkte Wirkung"
-            p.font.size = Pt(11)
+            p.font.size = Pt(10)
             p.font.color.rgb = COLORS["dark"]
             p.font.italic = True
 
@@ -372,14 +460,14 @@ def add_measure_slide(prs, measure_id, measure_data, meta):
         if recovery > 0:
             p = tf.add_paragraph()
             p.text = f"• Recovery: {int(recovery * 100)}%"
-            p.font.size = Pt(11)
+            p.font.size = Pt(10)
             p.font.bold = True
             p.font.color.rgb = COLORS["accent"]
 
         # Abhängigkeiten
         if measure_data.get("dependencies"):
             dep_box = slide.shapes.add_textbox(
-                x_pos + Inches(0.1), Inches(5.5), col_width - Inches(0.2), Inches(0.5)
+                x_pos + Inches(0.08), Inches(5.8), col_width - Inches(0.16), Inches(0.45)
             )
             tf = dep_box.text_frame
             tf.word_wrap = True
@@ -389,7 +477,7 @@ def add_measure_slide(prs, measure_id, measure_data, meta):
                     for req in dep.get("requires", []):
                         p = tf.paragraphs[0]
                         p.text = f"Benötigt: {req['measure']} min. L{req['min_level']}"
-                        p.font.size = Pt(10)
+                        p.font.size = Pt(9)
                         p.font.italic = True
                         p.font.color.rgb = COLORS["danger"]
 
@@ -403,7 +491,7 @@ def add_event_slide(prs, event_id, event_data, meta):
 
     # Header-Bereich (orange)
     header = slide.shapes.add_shape(
-        MSO_SHAPE.RECTANGLE, 0, 0, prs.slide_width, Inches(1.8)
+        MSO_SHAPE.RECTANGLE, 0, 0, prs.slide_width, Inches(1.5)
     )
     header.fill.solid()
     header.fill.fore_color.rgb = COLORS["accent"]
@@ -411,42 +499,42 @@ def add_event_slide(prs, event_id, event_data, meta):
 
     # Event-Titel
     title_box = slide.shapes.add_textbox(
-        Inches(0.5), Inches(0.3), Inches(9), Inches(0.8)
+        Inches(0.5), Inches(0.2), Inches(9), Inches(0.6)
     )
     tf = title_box.text_frame
     p = tf.paragraphs[0]
     p.text = f"{meta['icon']} {meta['name']}"
-    p.font.size = Pt(40)
+    p.font.size = Pt(36)
     p.font.bold = True
     p.font.color.rgb = COLORS["white"]
     p.alignment = PP_ALIGN.CENTER
 
     # Trigger-Welle
     trigger_box = slide.shapes.add_textbox(
-        Inches(0.5), Inches(1.15), Inches(9), Inches(0.5)
+        Inches(0.5), Inches(0.85), Inches(9), Inches(0.5)
     )
     tf = trigger_box.text_frame
     p = tf.paragraphs[0]
     p.text = f"Trigger: Nach Welle {event_data.get('trigger_wave', '?')}"
-    p.font.size = Pt(20)
+    p.font.size = Pt(18)
     p.font.color.rgb = COLORS["white"]
     p.alignment = PP_ALIGN.CENTER
 
-    # Beschreibung
+    # High-Level Beschreibung (für Nicht-Techniker)
     desc_box = slide.shapes.add_textbox(
-        Inches(0.5), Inches(2.2), Inches(9), Inches(1)
+        Inches(0.5), Inches(1.7), Inches(9), Inches(0.9)
     )
     tf = desc_box.text_frame
     tf.word_wrap = True
     p = tf.paragraphs[0]
-    p.text = event_data.get("description", "")
-    p.font.size = Pt(22)
+    p.text = meta.get("description", event_data.get("description", ""))
+    p.font.size = Pt(18)
     p.font.color.rgb = COLORS["dark"]
     p.alignment = PP_ALIGN.CENTER
 
-    # Bedingung
+    # Bedingung (Box)
     cond_shape = slide.shapes.add_shape(
-        MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.5), Inches(3.4), Inches(9), Inches(1.2)
+        MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.5), Inches(2.75), Inches(9), Inches(1.3)
     )
     cond_shape.fill.solid()
     cond_shape.fill.fore_color.rgb = COLORS["light"]
@@ -454,83 +542,97 @@ def add_event_slide(prs, event_id, event_data, meta):
     cond_shape.line.width = Pt(2)
 
     cond_box = slide.shapes.add_textbox(
-        Inches(0.7), Inches(3.5), Inches(8.6), Inches(1)
+        Inches(0.7), Inches(2.85), Inches(8.6), Inches(1.1)
     )
     tf = cond_box.text_frame
     tf.word_wrap = True
     p = tf.paragraphs[0]
     p.text = "Bedingung:"
-    p.font.size = Pt(16)
+    p.font.size = Pt(14)
     p.font.bold = True
     p.font.color.rgb = COLORS["dark"]
 
+    # Einfache Bedingung für Nicht-Techniker
     p = tf.add_paragraph()
-    p.text = meta["condition"]
-    p.font.size = Pt(18)
+    p.text = meta.get("condition_simple", meta["condition"])
+    p.font.size = Pt(16)
     p.font.color.rgb = COLORS["primary"]
 
     # Effekte
-    y_pos = Inches(4.9)
+    y_pos = Inches(4.2)
 
     # Positiver Effekt
     if meta["effect_positive"]:
+        x_offset = Inches(0.5) if meta["effect_negative"] else Inches(2.5)
+        width = Inches(4.3) if meta["effect_negative"] else Inches(5)
+
         pos_shape = slide.shapes.add_shape(
-            MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.5), y_pos, Inches(4.3), Inches(1.2)
+            MSO_SHAPE.ROUNDED_RECTANGLE, x_offset, y_pos, width, Inches(1.4)
         )
         pos_shape.fill.solid()
         pos_shape.fill.fore_color.rgb = COLORS["success"]
         pos_shape.line.fill.background()
 
         pos_box = slide.shapes.add_textbox(
-            Inches(0.7), y_pos + Inches(0.15), Inches(3.9), Inches(0.9)
+            x_offset + Inches(0.15), y_pos + Inches(0.1), width - Inches(0.3), Inches(1.2)
         )
         tf = pos_box.text_frame
         tf.word_wrap = True
         p = tf.paragraphs[0]
         p.text = "Bei Erfüllung:"
-        p.font.size = Pt(14)
+        p.font.size = Pt(13)
         p.font.bold = True
         p.font.color.rgb = COLORS["white"]
 
         p = tf.add_paragraph()
         p.text = meta["effect_positive"]
-        p.font.size = Pt(20)
+        p.font.size = Pt(18)
         p.font.bold = True
         p.font.color.rgb = COLORS["white"]
 
     # Negativer Effekt
     if meta["effect_negative"]:
+        x_offset = Inches(5.2) if meta["effect_positive"] else Inches(2.5)
+        width = Inches(4.3) if meta["effect_positive"] else Inches(5)
+
         neg_shape = slide.shapes.add_shape(
-            MSO_SHAPE.ROUNDED_RECTANGLE, Inches(5.2), y_pos, Inches(4.3), Inches(1.2)
+            MSO_SHAPE.ROUNDED_RECTANGLE, x_offset, y_pos, width, Inches(1.4)
         )
         neg_shape.fill.solid()
         neg_shape.fill.fore_color.rgb = COLORS["danger"]
         neg_shape.line.fill.background()
 
         neg_box = slide.shapes.add_textbox(
-            Inches(5.4), y_pos + Inches(0.15), Inches(3.9), Inches(0.9)
+            x_offset + Inches(0.15), y_pos + Inches(0.1), width - Inches(0.3), Inches(1.2)
         )
         tf = neg_box.text_frame
         tf.word_wrap = True
         p = tf.paragraphs[0]
         p.text = "Bei Nicht-Erfüllung:"
-        p.font.size = Pt(14)
+        p.font.size = Pt(13)
         p.font.bold = True
         p.font.color.rgb = COLORS["white"]
 
         p = tf.add_paragraph()
         p.text = meta["effect_negative"]
-        p.font.size = Pt(20)
+        p.font.size = Pt(18)
         p.font.bold = True
         p.font.color.rgb = COLORS["white"]
 
-    # Wenn nur ein Effekt vorhanden
-    if meta["effect_positive"] and not meta["effect_negative"]:
-        # Nur positiver Effekt - zentrieren
-        pass  # Layout ist schon okay
-    elif meta["effect_negative"] and not meta["effect_positive"]:
-        # Nur negativer Effekt - zentrieren
-        pass  # Layout ist schon okay
+    # Erklärung der Auswirkung (für Nicht-Techniker)
+    explanation = meta.get("effect_explanation", "")
+    if explanation:
+        expl_box = slide.shapes.add_textbox(
+            Inches(0.5), Inches(5.8), Inches(9), Inches(0.8)
+        )
+        tf = expl_box.text_frame
+        tf.word_wrap = True
+        p = tf.paragraphs[0]
+        p.text = f"Hintergrund: {explanation}"
+        p.font.size = Pt(14)
+        p.font.italic = True
+        p.font.color.rgb = COLORS["dark"]
+        p.alignment = PP_ALIGN.CENTER
 
     return slide
 
