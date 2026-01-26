@@ -215,6 +215,26 @@ python3 simulate_outcomes.py --config simulation_config.json --budget-tier mediu
 
 Die Ausgabe enthält alle zulässigen Maßnahmen‑Kombinationen (inkl. Level 0–3), die End‑KZ, Schäden, CIA‑Mali sowie die Kostenübersicht.
 
+**Budget-Filter (realistische Outcomes, Budget voll nutzen):**
+```
+python3 simulate_outcomes.py --config simulation_config.json --budget-tier medium --budget-utilization 0.9 --output simulation_results.json
+```
+
+Optional lassen sich harte Budget-Grenzen setzen:
+```
+python3 simulate_outcomes.py --config simulation_config.json --budget-min 300 --budget-max 380 --output simulation_results.json
+```
+
+**Auswertung der Simulationsergebnisse:**
+```
+python3 analyze_simulation_results.py --input simulation_results.json --config simulation_config.json --top 5
+```
+
+Final-Index gewichtet KZ und RoS (Standard: 1.0/1.0):
+```
+python3 analyze_simulation_results.py --input simulation_results.json --config simulation_config.json --weight-kz 1.0 --weight-ros 0.5
+```
+
 ---
 ## Ziel des Spiels
 

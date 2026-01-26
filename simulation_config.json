@@ -1,31 +1,32 @@
 {
   "default_budget_tier": "medium",
+  "base_cia": {"c": 10, "i": 10, "a": 10},
   "budget_tiers": {
     "low": {
-      "range": [200, 280],
+      "range": [200, 250],
       "kz_start": 70,
       "e_targets": {
-        "1": 30,
-        "2": 40,
-        "3": 50
+        "1": 18,
+        "2": 20,
+        "3": 22
       }
     },
     "medium": {
-      "range": [281, 380],
+      "range": [300, 350],
       "kz_start": 60,
       "e_targets": {
-        "1": 40,
-        "2": 50,
-        "3": 60
+        "1": 18,
+        "2": 20,
+        "3": 22
       }
     },
     "high": {
-      "range": [381, 500],
+      "range": [400, 450],
       "kz_start": 50,
       "e_targets": {
-        "1": 50,
-        "2": 60,
-        "3": 70
+        "1": 18,
+        "2": 20,
+        "3": 22
       }
     }
   },
@@ -70,8 +71,8 @@
   "attacks": {
     "ransomware": {
       "base_severity": 8,
-      "s_unit": 12,
-      "kz_unit": 5,
+      "s_unit": 20,
+      "kz_unit": 3,
       "cia_impact": {
         "c": -2,
         "i": -2,
@@ -82,8 +83,8 @@
     },
     "ot": {
       "base_severity": 10,
-      "s_unit": 20,
-      "kz_unit": 8,
+      "s_unit": 32,
+      "kz_unit": 3,
       "cia_impact": {
         "c": -1,
         "i": -2,
@@ -94,8 +95,8 @@
     },
     "exfil": {
       "base_severity": 7,
-      "s_unit": 15,
-      "kz_unit": 6,
+      "s_unit": 20,
+      "kz_unit": 3,
       "cia_impact": {
         "c": -3,
         "i": -1,
@@ -421,17 +422,32 @@
     "oem_audit": {
       "trigger_wave": 2,
       "kz_bonus": 5,
-      "kz_malus": -3
+      "kz_malus": -3,
+      "description": "OEM-Audit prüft Sicherheitsstandards"
     },
     "staff_turnover": {
       "trigger_wave": 2,
       "kz_delta": -2,
-      "opex_delta": 5
+      "opex_delta": 5,
+      "description": "Personalwechsel erfordert Einarbeitung"
     },
     "gdpr_bonus": {
       "trigger_wave": 3,
       "kz_delta": 3,
-      "budget_delta": 10
+      "budget_delta": 10,
+      "description": "DSGVO-Konformität wird belohnt"
+    },
+    "investor_confidence": {
+      "trigger_wave": 3,
+      "applies_to_tiers": ["high"],
+      "kz_delta": 8,
+      "description": "Hohe Sicherheitsinvestitionen stärken Investorenvertrauen und Marktposition"
+    },
+    "compliance_gap": {
+      "trigger_wave": 2,
+      "applies_to_tiers": ["low"],
+      "kz_delta": -3,
+      "description": "Begrenztes Budget führt zu Compliance-Lücken bei Audit"
     }
   }
 }

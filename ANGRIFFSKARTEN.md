@@ -30,8 +30,8 @@
 ║  ANGRIFFS-PARAMETER:                                      ║
 ║  ─────────────────────────────────────────────────────────║
 ║  baseSeverity:        8                                   ║
-║  sUnit (Schaden/G):   12k€                                ║
-║  kzUnit (KZ-Verlust/G): 5                                 ║
+║  sUnit (Schaden/G):   20k€                                ║
+║  kzUnit (KZ-Verlust/G): 3                                 ║
 ║  CIA-Impact/Stufe:    C-2, I-2, A-1                       ║
 ║  Mitigation-Cap:      10 (max. Reduktion)                 ║
 ║                                                           ║
@@ -64,10 +64,10 @@
 ║  G = max(0, 8 - 10) = max(0, -2) = 0  ← PERFEKT ABGEWEHRT!║
 ║                                                           ║
 ║  Schritt 3: Schaden                                       ║
-║  Damage = 0 × 12 = 0k€  🎉                                ║
+║  Damage = 0 × 20 = 0k€                                    ║
 ║                                                           ║
 ║  Schritt 4: KZ-Delta                                      ║
-║  ΔKZ = -(0 × 5) = 0  (keine KZ-Einbuße!)                  ║
+║  ΔKZ = -(0 × 3) = 0  (keine KZ-Einbuße!)                  ║
 ║                                                           ║
 ║  Schritt 5: CIA-Mali                                      ║
 ║  Keine (da G=0)                                           ║
@@ -80,12 +80,12 @@
 ║  Team hat: Nur M1 (IAM) L1 → Mitigation -1                ║
 ║                                                           ║
 ║  G = max(0, 8 - 1) = 7                                    ║
-║  Damage = 7 × 12 = 84k€  💸                               ║
-║  ΔKZ = -(7 × 5) = -35  (KZ sinkt drastisch!)              ║
+║  Damage = 7 × 20 = 140k€                                  ║
+║  ΔKZ = -(7 × 3) = -21  (KZ sinkt!)                        ║
 ║  CIA-Mali: C-14, I-14, A-7                                ║
 ║                                                           ║
-║  ⚠️ ABER: M4 (Backup) L2 → Recovery 30%                   ║
-║  Damage_final = 84 × 0.7 = 58,8k€  (etwas besser)         ║
+║  ABER: M4 (Backup) L2 -> Recovery 30%                     ║
+║  Damage_final = 140 × 0.7 = 98k€  (etwas besser)          ║
 ║                                                           ║
 ║  ─────────────────────────────────────────────────────────║
 ║  LERNZIEL WELLE 1:                                        ║
@@ -93,7 +93,7 @@
 ║  • Awareness ist Gold wert (M6)!                          ║
 ║  • EDR kann Ransomware früh stoppen (M3)!                 ║
 ║  • Backups retten im Notfall (M4)!                        ║
-║  • Ohne Vorbereitung: Schaden >80k€!                      ║
+║  • Ohne Vorbereitung: Schaden >140k€!                     ║
 ║                                                           ║
 ╚═══════════════════════════════════════════════════════════╝
 ```
@@ -130,8 +130,8 @@
 ║  ANGRIFFS-PARAMETER:                                      ║
 ║  ─────────────────────────────────────────────────────────║
 ║  baseSeverity:        10  (sehr hoch!)                    ║
-║  sUnit (Schaden/G):   20k€  (Produktion = teuer!)         ║
-║  kzUnit (KZ-Verlust/G): 8   (OEM sauer!)                  ║
+║  sUnit (Schaden/G):   32k€  (Produktion = teuer!)         ║
+║  kzUnit (KZ-Verlust/G): 3                                 ║
 ║  CIA-Impact/Stufe:    C-1, I-2, A-3                       ║
 ║  Mitigation-Cap:      12                                  ║
 ║                                                           ║
@@ -162,29 +162,29 @@
 ║  G = max(0, 10 - 11) = max(0, -1) = 0  ← PERFEKT!         ║
 ║                                                           ║
 ║  Schritt 3: Schaden                                       ║
-║  Damage = 0 × 20 = 0k€  🎉                                ║
+║  Damage = 0 × 32 = 0k€                                    ║
 ║                                                           ║
-║  ✅ Produktion läuft weiter!                              ║
+║  Produktion läuft weiter!                              ║
 ║                                                           ║
 ║  ─────────────────────────────────────────────────────────║
 ║  WENN SCHLECHT VORBEREITET (Worst Case):                  ║
 ║  ─────────────────────────────────────────────────────────║
 ║  Team hat: Nur M7 (Patching) L1 → Mitigation -1           ║
 ║                                                           ║
-║  G = max(0, 10 - 1) = 9  💥                               ║
-║  Damage = 9 × 20 = 180k€  💸💸 (Katastrophe!)             ║
-║  ΔKZ = -(9 × 8) = -72  (KZ kollabiert!)                   ║
+║  G = max(0, 10 - 1) = 9                                   ║
+║  Damage = 9 × 32 = 288k€  (Katastrophe!)                  ║
+║  ΔKZ = -(9 × 3) = -27  (KZ sinkt stark!)                  ║
 ║  CIA-Mali: C-9, I-18, A-27  (Availability stark getroffen)║
 ║                                                           ║
-║  ⚠️ Recovery durch M4 (Backup) L2 möglich:                ║
-║  Damage_final = 180 × 0.7 = 126k€  (immer noch schlimm!)  ║
+║  Recovery durch M4 (Backup) L2 moeglich:                  ║
+║  Damage_final = 288 × 0.7 = 202k€  (immer noch schlimm!)  ║
 ║                                                           ║
 ║  ─────────────────────────────────────────────────────────║
 ║  LERNZIEL WELLE 2:                                        ║
 ║  ─────────────────────────────────────────────────────────║
 ║  • OT-Segmentierung ist KRITISCH (M5)!                    ║
 ║  • OT-Patching reduziert Angriffsfläche (M7)!             ║
-║  • Ohne OT-Schutz: Schaden >180k€ + OEM-Ärger!            ║
+║  • Ohne OT-Schutz: Schaden >280k€ + OEM-Aerger!           ║
 ║  • 24/5-Betrieb + JIT = hohe Ausfallkosten                ║
 ║                                                           ║
 ║  📌 Event: OEM-Audit wird nach dieser Welle ausgelöst!    ║
@@ -228,8 +228,8 @@
 ║  ANGRIFFS-PARAMETER:                                      ║
 ║  ─────────────────────────────────────────────────────────║
 ║  baseSeverity:        7                                   ║
-║  sUnit (Schaden/G):   15k€  (mittelfristig!)              ║
-║  kzUnit (KZ-Verlust/G): 6                                 ║
+║  sUnit (Schaden/G):   20k€  (mittelfristig!)              ║
+║  kzUnit (KZ-Verlust/G): 3                                 ║
 ║  CIA-Impact/Stufe:    C-3, I-1, A-0  (Confidentiality!)   ║
 ║  Mitigation-Cap:      10                                  ║
 ║                                                           ║
@@ -260,18 +260,18 @@
 ║  G = max(0, 7 - 9) = max(0, -2) = 0  ← PERFEKT!           ║
 ║                                                           ║
 ║  Schritt 3: Schaden                                       ║
-║  Damage = 0 × 15 = 0k€  🎉                                ║
+║  Damage = 0 × 20 = 0k€                                    ║
 ║                                                           ║
-║  ✅ Angriff erkannt und gestoppt!                         ║
+║  Angriff erkannt und gestoppt!                         ║
 ║                                                           ║
 ║  ─────────────────────────────────────────────────────────║
 ║  WENN SCHLECHT VORBEREITET (Worst Case):                  ║
 ║  ─────────────────────────────────────────────────────────║
 ║  Team hat: Nur M1 (IAM) L1 → Mitigation -1                ║
 ║                                                           ║
-║  G = max(0, 7 - 1) = 6  🕵️                                ║
-║  Damage = 6 × 15 = 90k€  💸 (Wettbewerbsnachteil!)        ║
-║  ΔKZ = -(6 × 6) = -36  (OEM verliert Vertrauen!)          ║
+║  G = max(0, 7 - 1) = 6                                    ║
+║  Damage = 6 × 20 = 120k€  (Wettbewerbsnachteil!)          ║
+║  ΔKZ = -(6 × 3) = -18  (OEM verliert Vertrauen!)          ║
 ║  CIA-Mali: C-18, I-6, A-0  (Confidentiality massiv!)      ║
 ║                                                           ║
 ║  ⚠️ Keine Recovery möglich (Daten sind raus!)             ║
@@ -295,9 +295,9 @@
 
 | Welle | Angriff | Schwerpunkt | baseSev | sUnit | kzUnit | Top-Abwehr |
 |-------|---------|-------------|---------|-------|--------|------------|
-| 1 | Ransomware | C+I | 8 | 12 | 5 | M6 (Awareness) L3, M3 (EDR) L3 |
-| 2 | OT-Störung | A | 10 | 20 | 8 | M5 (OT-Seg) L3, M7 (Patching) L2 |
-| 3 | Exfiltration | C | 7 | 15 | 6 | M1 (IAM) L3, M2 (SIEM) L3 |
+| 1 | Ransomware | C+I | 8 | 20 | 3 | M6 (Awareness) L3, M3 (EDR) L3 |
+| 2 | OT-Störung | A | 10 | 32 | 3 | M5 (OT-Seg) L3, M7 (Patching) L2 |
+| 3 | Exfiltration | C | 7 | 20 | 3 | M1 (IAM) L3, M2 (SIEM) L3 |
 
 ---
 
@@ -312,7 +312,7 @@
 
 ### Welle 2: "Das OT-Desaster"
 **Ziel:** Teams erkennen OT-Spezifika, Segmentierung-Wert, Produktionskritikalität.
-**Spannung:** Hoch (baseSev=10, sUnit=20 → große Schäden möglich!)
+**Spannung:** Hoch (baseSev=10, sUnit=32 -> grosse Schaeden moeglich!)
 **Lerneffekt:** Wer M5 vernachlässigt hat, zahlt jetzt drauf.
 
 **Event danach:** OEM-Audit (KZ-Effekt je nach E-Wert Welle 1)

@@ -10,27 +10,37 @@
 | Parameter | Wert | Beschreibung |
 |-----------|------|--------------|
 | **Budget-Einheit** | 1.000€ | 1 Budgetpunkt = 1.000€ |
-| **Min. Budget** | 200 | 200.000€ |
-| **Max. Budget** | 500 | 500.000€ |
-| **Empfohlene Ranges** | 200-280 (niedrig), 281-380 (mittel), 381-500 (hoch) | |
+| **Budget-Schritte** | 50k | Feste Schritte zwischen Tiers |
+| **Empfohlene Ranges** | 200-250 (low), 300-350 (medium), 400-450 (high) | |
 
-### Budget-Trade-offs
+### Budget-Trade-offs (BALANCIERT)
 
-| Budgetbereich | KZ-Start | E-Ziel Welle 1 | E-Ziel Welle 2 | E-Ziel Welle 3 | Trade-off |
-|---------------|----------|----------------|----------------|----------------|-----------|
-| 200-280 | 70 | 30 | 40 | 50 | Kunde erwartet weniger |
-| 281-380 | 60 | 40 | 50 | 60 | Standard-Erwartungen |
-| 381-500 | 50 | 50 | 60 | 70 | Hohe Erwartungen |
+| Tier | Budget (k€) | KZ-Start | E-Ziel W1 | E-Ziel W2 | E-Ziel W3 | Balancing-Event |
+|------|-------------|----------|-----------|-----------|-----------|-----------------|
+| **Low** | 200-250 | 70 | 18 | 20 | 22 | -3 KZ (Compliance-Gap) |
+| **Medium** | 300-350 | 60 | 18 | 20 | 22 | - |
+| **High** | 400-450 | 50 | 18 | 20 | 22 | +8 KZ (Investor Confidence) |
+
+**Balancierte Final-Index-Werte (mit weight_ros=0.25):**
+| Tier | Max KZ (mit Events) | Max RoS | Erwarteter Max FI |
+|------|---------------------|---------|-------------------|
+| Low | 67 | ~95% | ~91 |
+| Medium | 76 | ~72% | ~94 |
+| High | 80 | ~54% | ~94 |
+
+**Spread: < 5 Punkte** (Ziel erreicht!)
 
 ---
 
 ## 2. WELLEN-PARAMETER
 
-| Welle | Angriff | wC | wI | wA | E-Ziel (niedrig/mittel/hoch) | KZ-Bonus (erreicht) | KZ-Malus (verfehlt) |
-|-------|---------|----|----|----|-----------------------------|---------------------|---------------------|
-| 1 | Ransomware | 0.4 | 0.4 | 0.2 | 30/40/50 | +3 | -5 |
-| 2 | OT-Störung | 0.2 | 0.2 | 0.6 | 40/50/60 | +5 | -8 |
-| 3 | Exfiltration | 0.5 | 0.3 | 0.2 | 50/60/70 | +8 | -10 |
+| Welle | Angriff | wC | wI | wA | E-Ziel (alle Tiers) | KZ-Bonus (erreicht) | KZ-Malus (verfehlt) |
+|-------|---------|----|----|----|--------------------|---------------------|---------------------|
+| 1 | Ransomware | 0.4 | 0.4 | 0.2 | **18** | +3 | -5 |
+| 2 | OT-Störung | 0.2 | 0.2 | 0.6 | **20** | +5 | -8 |
+| 3 | Exfiltration | 0.5 | 0.3 | 0.2 | **22** | +8 | -10 |
+
+*E-Ziele sind jetzt einheitlich - Balancing erfolgt über KZ-Start und Events*
 
 ---
 
@@ -160,13 +170,18 @@
 
 ## 4. ANGRIFFS-PARAMETER
 
+### Basis-Verluste (für RoS-Berechnung)
+```
+Base Losses = 8×20 + 10×32 + 7×20 = 160 + 320 + 140 = 620k€
+```
+
 ### Welle 1: Ransomware (Office-IT)
 
 | Parameter | Wert | Beschreibung |
 |-----------|------|--------------|
 | **baseSeverity** | 8 | Ausgangsschwere |
-| **sUnit** | 12 | Schaden pro Schwerestufe G (in 1.000€) |
-| **kzUnit** | 5 | KZ-Verlust pro Schwerestufe G |
+| **sUnit** | **20** | Schaden pro Schwerestufe G (in 1.000€) |
+| **kzUnit** | **3** | KZ-Verlust pro Schwerestufe G |
 | **CIA-Impact/Stufe** | C-2, I-2, A-1 | Pro Stufe G |
 | **Mitigation-Cap** | 10 | Max. Mitigation (verhindert "Over-Mitigation") |
 
@@ -185,8 +200,8 @@
 | Parameter | Wert | Beschreibung |
 |-----------|------|--------------|
 | **baseSeverity** | 10 | Ausgangsschwere (hoch!) |
-| **sUnit** | 20 | Schaden pro G (Produktion teuer!) |
-| **kzUnit** | 8 | KZ-Verlust pro G |
+| **sUnit** | **32** | Schaden pro G (Produktion teuer!) |
+| **kzUnit** | **3** | KZ-Verlust pro G |
 | **CIA-Impact/Stufe** | C-1, I-2, A-3 | Pro Stufe G |
 | **Mitigation-Cap** | 12 | Max. Mitigation |
 
@@ -204,8 +219,8 @@
 | Parameter | Wert | Beschreibung |
 |-----------|------|--------------|
 | **baseSeverity** | 7 | Ausgangsschwere |
-| **sUnit** | 15 | Schaden pro G (Wettbewerbsnachteil) |
-| **kzUnit** | 6 | KZ-Verlust pro G |
+| **sUnit** | **20** | Schaden pro G (Wettbewerbsnachteil) |
+| **kzUnit** | **3** | KZ-Verlust pro G |
 | **CIA-Impact/Stufe** | C-3, I-1, A-0 | Pro Stufe G |
 | **Mitigation-Cap** | 10 | Max. Mitigation |
 
@@ -220,19 +235,19 @@
 
 ## 5. EVENT-PARAMETER
 
-### Event 1: OEM-Audit angekündigt
+### Allgemeine Events (alle Tiers)
+
+#### Event 1: OEM-Audit angekündigt
 
 | Parameter | Wert |
 |-----------|------|
 | **Trigger** | Automatisch in Welle 2 |
-| **Bedingung (Bonus)** | E-Wert Welle 1 ≥ E-Ziel |
+| **Bedingung (Bonus)** | E-Wert Welle 1 >= E-Ziel |
 | **Effekt (Bonus)** | KZ +5 |
 | **Bedingung (Malus)** | E-Wert Welle 1 < E-Ziel |
 | **Effekt (Malus)** | KZ -3 |
 
----
-
-### Event 2: Mitarbeiter-Fluktuation
+#### Event 2: Mitarbeiter-Fluktuation
 
 | Parameter | Wert |
 |-----------|------|
@@ -240,15 +255,43 @@
 | **Effekt** | OPEX +5, KZ -2 |
 | **Narrative** | IT-Admins verlassen Firma (Überlastung) |
 
----
-
-### Event 3: DSGVO-Zertifizierung (Bonus)
+#### Event 3: DSGVO-Zertifizierung (Bonus)
 
 | Parameter | Wert |
 |-----------|------|
-| **Trigger** | M1 ≥ L2 UND M2 ≥ L2 am Ende Welle 2 |
+| **Trigger** | M1 >= L2 UND M2 >= L2 am Ende Welle 2 |
 | **Effekt** | KZ +3, Budget +10 (Förderung) |
 | **Narrative** | Compliance-Vorteil nutzen |
+
+---
+
+### BALANCING-EVENTS (Tier-spezifisch)
+
+Diese Events gleichen die unterschiedlichen Final-Index-Werte zwischen den Budget-Tiers aus.
+
+#### Event 4: Compliance-Gap (nur LOW-Tier)
+
+| Parameter | Wert |
+|-----------|------|
+| **Trigger** | Nach Welle 2 (automatisch) |
+| **Gilt für** | Nur Budget-Tier LOW (200-250k) |
+| **Effekt** | KZ **-3** |
+| **Narrative** | Begrenztes Budget führt zu Compliance-Lücken bei OEM-Audit |
+
+#### Event 5: Investor Confidence (nur HIGH-Tier)
+
+| Parameter | Wert |
+|-----------|------|
+| **Trigger** | Nach Welle 3 (automatisch) |
+| **Gilt für** | Nur Budget-Tier HIGH (400-450k) |
+| **Effekt** | KZ **+8** |
+| **Narrative** | Hohe Sicherheitsinvestitionen stärken Investorenvertrauen und Marktposition |
+
+**Balancing-Effekt:**
+- Low: Max KZ 70 - 3 = 67 -> FI ~91
+- Medium: Max KZ 76 -> FI ~94
+- High: Max KZ 72 + 8 = 80 -> FI ~94
+- **Spread: ~3 Punkte** (statt 39 ohne Events!)
 
 ---
 
@@ -298,10 +341,24 @@ E = Team_C × wC + Team_I × wI + Team_A × wA
 ```
 Gesamtkosten = Σ(Init) + Σ(OPEX × Anzahl Wellen) + Σ(Event-Strafen)
 Verluste = Σ(Damage über alle Wellen)
-Basisverluste = Σ(baseSeverity × sUnit) über alle Wellen
+Basisverluste = Σ(baseSeverity × sUnit) = 620k€
 Vermeidete Verluste = Basisverluste - Verluste
 RoS = (Vermeidete Verluste - Gesamtkosten) / Gesamtkosten × 100%
 ```
+
+### Final-Index (Gesamtbewertung)
+```
+Final-Index = KZ_final × weight_kz + RoS × weight_ros
+
+Empfohlene Gewichte für Balancing:
+  weight_kz = 1.0
+  weight_ros = 0.25  (wichtig für Tier-Balance!)
+
+Beispiel: KZ=72, RoS=54%
+  FI = 72 × 1.0 + 54 × 0.25 = 72 + 13.5 = 85.5
+```
+
+**Hinweis:** Mit weight_ros = 0.25 wird der RoS-Vorteil niedriger Budgets ausgeglichen, sodass alle Tiers vergleichbare Final-Index-Werte erreichen können.
 
 ---
 

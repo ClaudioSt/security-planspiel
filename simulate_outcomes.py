@@ -55,6 +55,7 @@ class BudgetTier:
 
 def load_config(path: Path):
     raw = json.loads(path.read_text())
+    base_cia = raw.get("base_cia", {"c": 0, "i": 0, "a": 0})
     budget_tiers = {}
     for name, info in raw["budget_tiers"].items():
         budget_tiers[name] = BudgetTier(
@@ -105,7 +106,7 @@ def load_config(path: Path):
             dependencies=info.get("dependencies", []),
         )
     events = raw["events"]
-    return raw["default_budget_tier"], budget_tiers, attacks, waves, measures, events
+    return raw["default_budget_tier"], budget_tiers, attacks, waves, measures, events, base_cia
 
 
 def dependencies_satisfied(selection: Dict[str, int], measures: Dict[str, Measure]) -> bool:
@@ -119,8 +120,8 @@ def dependencies_satisfied(selection: Dict[str, int], measures: Dict[str, Measur
     return True
 
 
-def compute_cia(selection: Dict[str, int], measures: Dict[str, Measure]) -> Dict[str, int]:
-    totals = {"c": 0, "i": 0, "a": 0}
+def compute_cia(selection: Dict[str, int], measures: Dict[str, Measure], base_cia: Dict[str, int]) -> Dict[str, int]:
+    totals = {"c": base_cia.get("c", 0), "i": base_cia.get("i", 0), "a": base_cia.get("a", 0)}
     for measure_id, level in selection.items():
         level_data = measures[measure_id].levels[level]
         for key in totals:
@@ -199,7 +200,7 @@ def apply_events(
     return kz + kz_delta, budget + budget_delta, opex_delta
 
 
-def simulate_selection(selection: Dict[str, int], budget_tier: BudgetTier, waves: List[Wave], attacks: Dict[str, Attack], measures: Dict[str, Measure], events: Dict) -> Dict:
+def simulate_selection(selection: Dict[str, int], budget_tier: BudgetTier, waves: List[Wave], attacks: Dict[str, Attack], measures: Dict[str, Measure], events: Dict, base_cia: Dict[str, int]) -> Dict:
     kz = budget_tier.kz_start
     budget = 0
     total_damage = 0.0
@@ -214,7 +215,7 @@ def simulate_selection(selection: Dict[str, int], budget_tier: BudgetTier, waves
             kz, budget, opex_delta = apply_events(wave.wave_id, kz, selection, events, e_reached_prev, budget)
             event_opex_penalty += opex_delta
             event_budget_delta = budget
-        cia = compute_cia(selection, measures)
+        cia = compute_cia(selection, measures, base_cia)
         e_value = cia["c"] * wave.weights["c"] + cia["i"] * wave.weights["i"] + cia["a"] * wave.weights["a"]
         e_target = budget_tier.e_targets[wave.wave_id]
         e_reached = e_value >= e_target
@@ -260,18 +261,32 @@ def iter_selections(measure_ids: Iterable[str], level_options: Iterable[int]) ->
         yield {measure: level for measure, level in zip(measure_ids, levels)}
 
 
-def run_simulation(config_path: Path, budget_tier_name: str, output_path: Path) -> Dict:
-    default_budget_tier, budget_tiers, attacks, waves, measures, events = load_config(config_path)
+def run_simulation(
+    config_path: Path,
+    budget_tier_name: str,
+    output_path: Path,
+    budget_min: int,
+    budget_max: int,
+    budget_utilization: float,
+) -> Dict:
+    default_budget_tier, budget_tiers, attacks, waves, measures, events, base_cia = load_config(config_path)
     budget_tier = budget_tiers[budget_tier_name or default_budget_tier]
     measure_ids = list(measures.keys())
     level_options = [0, 1, 2, 3]
     results = []
+    min_cost = budget_min or budget_tier.budget_range[0]
+    max_cost = budget_max or budget_tier.budget_range[1]
+    utilization_threshold = max_cost * budget_utilization if budget_utilization else None
     for selection in iter_selections(measure_ids, level_options):
         if not dependencies_satisfied(selection, measures):
             continue
         init, opex_per_wave, total_cost = compute_costs(selection, measures, len(waves))
-        outcome = simulate_selection(selection, budget_tier, waves, attacks, measures, events)
+        outcome = simulate_selection(selection, budget_tier, waves, attacks, measures, events, base_cia)
         total_cost += outcome["event_opex_penalty"]
+        if total_cost < min_cost or total_cost > max_cost:
+            continue
+        if utilization_threshold is not None and total_cost < utilization_threshold:
+            continue
         outcome["costs"] = {
             "init": init,
             "opex_per_wave": opex_per_wave,
@@ -285,6 +300,11 @@ def run_simulation(config_path: Path, budget_tier_name: str, output_path: Path) 
         "total_outcomes": len(results),
         "budget_tier": budget_tier.name,
         "budget_range": budget_tier.budget_range,
+        "budget_filter": {
+            "min": min_cost,
+            "max": max_cost,
+            "utilization_min": utilization_threshold,
+        },
         "measures": measure_ids,
     }
     output = {
@@ -300,12 +320,27 @@ def parse_args():
     parser.add_argument("--config", default="simulation_config.json", help="Path to simulation config JSON.")
     parser.add_argument("--budget-tier", default=None, help="Budget tier name (low|medium|high).")
     parser.add_argument("--output", default="simulation_results.json", help="Output JSON file path.")
+    parser.add_argument("--budget-min", type=int, default=None, help="Minimum total cost filter (points).")
+    parser.add_argument("--budget-max", type=int, default=None, help="Maximum total cost filter (points).")
+    parser.add_argument(
+        "--budget-utilization",
+        type=float,
+        default=0.0,
+        help="Minimum utilization of budget max (e.g. 0.9 for 90%%).",
+    )
     return parser.parse_args()
 
 
 def main():
     args = parse_args()
-    summary = run_simulation(Path(args.config), args.budget_tier, Path(args.output))
+    summary = run_simulation(
+        Path(args.config),
+        args.budget_tier,
+        Path(args.output),
+        args.budget_min,
+        args.budget_max,
+        args.budget_utilization,
+    )
     print(json.dumps(summary, indent=2))
 
 

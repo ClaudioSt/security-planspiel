@@ -343,7 +343,7 @@ Gesamtkosten = Init-Summe + (OPEX × 3) + Event-Strafen
 
 Verluste = Σ(Damage_final über alle Wellen)
 
-Basisverluste = Σ(baseSeverity × sUnit) = 8×12 + 10×20 + 7×15 = 401k
+Basisverluste = Σ(baseSeverity × sUnit) = 8×20 + 10×32 + 7×20 = 620k
 
 Vermiedene_Verluste = Basisverluste - Verluste
 
