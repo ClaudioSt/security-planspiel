@@ -114,47 +114,82 @@ MEASURE_META = {
     }
 }
 
-# Event-Metadaten
+# Event-Metadaten (neue Struktur: 3 Events pro Welle)
 EVENT_META = {
+    # Welle 1 Events
+    "phishing_campaign": {
+        "name": "Phishing-Kampagne entdeckt",
+        "trigger_wave": 1,
+        "description": "Eine gezielte Phishing-Kampagne gegen Ihre Mitarbeiter wurde entdeckt.",
+        "condition": "Ist M6 (Awareness) >= Level 2?",
+        "effect_positive": "KZ +2 (Mitarbeiter melden verdächtige E-Mails)",
+        "effect_negative": "KZ -3 (Mitarbeiter klicken auf schädliche Links)"
+    },
+    "insurance_review": {
+        "name": "Cyber-Versicherung Prüfung",
+        "trigger_wave": 1,
+        "description": "Ihre Cyber-Versicherung prüft Ihre Sicherheitsmaßnahmen für die Prämienkalkulation.",
+        "condition": "Ist E-Wert >= 16?",
+        "effect_positive": "Budget +10k€ (Niedrigere Prämie)",
+        "effect_negative": "Budget -15k€ (Höhere Prämie)"
+    },
+    "new_vulnerability": {
+        "name": "Kritische Schwachstelle veröffentlicht",
+        "trigger_wave": 1,
+        "description": "Eine kritische Zero-Day-Schwachstelle wird öffentlich bekannt.",
+        "condition": "Ist M7 (Vulnerability Mgmt) >= Level 1?",
+        "effect_positive": "KZ ±0 (Patch-Prozess greift)",
+        "effect_negative": "KZ -2 (Verzögerung beim Patchen)"
+    },
+    # Welle 2 Events
     "oem_audit": {
-        "name": "OEM-Audit",
+        "name": "OEM-Sicherheitsaudit",
         "trigger_wave": 2,
-        "description": "Der große Automobilkunde prüft die Sicherheitsstandards. Wer gut vorbereitet ist, gewinnt Vertrauen - wer schlecht abschneidet, riskiert Aufträge.",
-        "condition": "Ist euer E-Wert >= Zielwert?",
-        "effect_positive": "KZ +5",
-        "effect_negative": "KZ -3"
+        "description": "Ein wichtiger Automobilkunde führt ein Sicherheitsaudit durch.",
+        "condition": "Ist E-Wert >= 18?",
+        "effect_positive": "KZ +5 (Audit bestanden)",
+        "effect_negative": "KZ -5 (Audit-Mängel)"
     },
-    "staff_turnover": {
-        "name": "Personalwechsel",
+    "production_pressure": {
+        "name": "Produktionsdruck",
         "trigger_wave": 2,
-        "description": "Ohne regelmäßige Schulungen und Sensibilisierung werden IT-Sicherheitsaufgaben zur Belastung. Überlastete Mitarbeiter verlassen das Unternehmen.",
-        "condition": "Ist M6 (Security Awareness) < Level 2?",
-        "effect_positive": "-",
-        "effect_negative": "KZ -2, OPEX +5k€"
+        "description": "Lieferengpässe erfordern Überstunden und schnelle Lösungen.",
+        "condition": "Ist M5 (Segmentierung) >= Level 1?",
+        "effect_positive": "KZ ±0 (Flexible Produktion möglich)",
+        "effect_negative": "OPEX +8k€ (Notfall-Maßnahmen)"
     },
-    "gdpr_bonus": {
-        "name": "DSGVO-Bonus",
+    "key_employee_leaves": {
+        "name": "Security-Experte kündigt",
+        "trigger_wave": 2,
+        "description": "Ein wichtiger IT-Security-Mitarbeiter verlässt das Unternehmen.",
+        "condition": "Ist M2 (SIEM) >= Level 2?",
+        "effect_positive": "KZ ±0 (Dokumentierte Prozesse)",
+        "effect_negative": "KZ -3, OPEX +5k€ (Externe Berater nötig)"
+    },
+    # Welle 3 Events
+    "regulatory_audit": {
+        "name": "NIS2/KRITIS-Prüfung",
         "trigger_wave": 3,
-        "description": "Gute Zugriffskontrolle und Logging sind die Basis für Datenschutz-Compliance. Wer hier investiert hat, wird belohnt.",
-        "condition": "Sind M1 >= L2 UND M2 >= L2?",
-        "effect_positive": "KZ +3, Budget +10k€",
-        "effect_negative": "-"
+        "description": "Die Behörde prüft Ihre Compliance mit NIS2-Anforderungen.",
+        "condition": "Mind. 4 Maßnahmen >= Level 2?",
+        "effect_positive": "KZ +5 (Compliance nachgewiesen)",
+        "effect_negative": "KZ -8, Budget -20k€ (Bußgeld)"
     },
-    "investor_confidence": {
-        "name": "Investoren-Vertrauen",
+    "partner_breach": {
+        "name": "Lieferanten-Datenpanne",
         "trigger_wave": 3,
-        "description": "Wer viel in Sicherheit investiert, zeigt Weitsicht. Das überzeugt Investoren und Geldgeber.",
-        "condition": "Budget-Tier = HIGH?",
-        "effect_positive": "KZ +8",
-        "effect_negative": "-"
+        "description": "Ein wichtiger Lieferant meldet einen Sicherheitsvorfall.",
+        "condition": "Ist M8 (Supply Chain) >= Level 2?",
+        "effect_positive": "KZ +2 (Meldepflicht begrenzt Schaden)",
+        "effect_negative": "KZ -4 (Unklare Auswirkungen)"
     },
-    "compliance_gap": {
-        "name": "Compliance-Lücke",
-        "trigger_wave": 2,
-        "description": "Zu wenig Budget bedeutet Kompromisse bei der Sicherheit. Das fällt spätestens bei Audits und Kundenanfragen negativ auf.",
-        "condition": "Budget-Tier = LOW?",
-        "effect_positive": "-",
-        "effect_negative": "KZ -3"
+    "board_presentation": {
+        "name": "Vorstandspräsentation",
+        "trigger_wave": 3,
+        "description": "Der Vorstand fordert einen Bericht zum Sicherheitsstatus.",
+        "condition": "Ist E-Wert >= 20?",
+        "effect_positive": "KZ +3 (Überzeugende Präsentation)",
+        "effect_negative": "KZ -2 (Kritische Nachfragen)"
     }
 }
 
@@ -468,8 +503,15 @@ def update_events_template(config, template_path, output_path):
 
     prs = Presentation(template_path)
 
-    # Event-Reihenfolge
-    event_order = ["oem_audit", "staff_turnover", "gdpr_bonus", "investor_confidence", "compliance_gap"]
+    # Event-Reihenfolge (3 Events pro Welle)
+    event_order = [
+        # Welle 1
+        "phishing_campaign", "insurance_review", "new_vulnerability",
+        # Welle 2
+        "oem_audit", "production_pressure", "key_employee_leaves",
+        # Welle 3
+        "regulatory_audit", "partner_breach", "board_presentation"
+    ]
 
     # Erste Folie als Vorlage
     template_slide = prs.slides[0]

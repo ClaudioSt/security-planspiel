@@ -1,4 +1,16 @@
-# CIA & Mitigation - Schnellreferenz
+# CIA & Mitigation - Schnellreferenz v2.0
+
+## Budget-Optionen
+
+| Tier | Budget | KZ-Start | Severity | E-Ziele (W1/W2/W3) |
+|------|:------:|:--------:|:--------:|:------------------:|
+| Low | 200k€ | 65 | ×0.7 | 15/17/19 |
+| Medium | 300k€ | 60 | ×1.0 | 18/20/22 |
+| High | 400k€ | 55 | ×1.3 | 21/23/25 |
+
+**Hinweis:** Größere Unternehmen (High) sind attraktivere Angriffsziele, haben aber mehr Ressourcen zur Absicherung.
+
+---
 
 ## Gesamt-CIA berechnen
 
@@ -10,128 +22,202 @@
 
 ---
 
-## E-Wert-Formeln pro Welle
+## Neue vereinfachte Schadensberechnung
 
-| Welle | Angriff | Formel | Ziel |
-|:-----:|---------|--------|:----:|
-| **1** | Ransomware | E = C×0,4 + I×0,4 + A×0,2 | ≥18 |
-| **2** | OT-Störung | E = C×0,2 + I×0,2 + A×0,6 | ≥20 |
-| **3** | Exfiltration | E = C×0,5 + I×0,3 + A×0,2 | ≥22 |
-
-**Erreicht → KZ-Bonus** | **Verfehlt → KZ-Malus**
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  1. E-Wert berechnen:      E = C×Gew_C + I×Gew_I + A×Gew_A         │
+│  2. Basis-Reduktion:       (E-Wert - Schwellenwert) ÷ 2            │
+│  3. Bonus-Reduktion:       Summe der aktiven Bonus-Maßnahmen       │
+│  4. Gesamt-Reduktion:      min(Basis + Bonus, Cap)                 │
+│  5. Severity:              Basis-Severity - Gesamt-Reduktion       │
+│  6. Schaden:               Severity × Schadenseinheit              │
+└─────────────────────────────────────────────────────────────────────┘
+```
 
 ---
 
-## Schadensberechnung
+## E-Wert-Formeln pro Welle
 
-```
-┌────────────────────────────────────────────────────────────────┐
-│  1. Mitigation summieren (alle Werte sind negativ)             │
-│  2. Reduktion = Betrag der Summe (z.B. -8 → 8)                 │
-│  3. Effektiv = min(Reduktion, Cap)                             │
-│  4. Severity = max(0, Basis-Severity - Effektiv)               │
-│  5. Schaden = Severity × Schadenseinheit                       │
-└────────────────────────────────────────────────────────────────┘
-```
+| Welle | Angriff | Formel | Schwelle | E-Ziel | Cap |
+|:-----:|---------|--------|:--------:|:------:|:---:|
+| **1** | Ransomware | E = C×0,4 + I×0,4 + A×0,2 | 18 | ≥18 | 8 |
+| **2** | OT-Störung | E = C×0,2 + I×0,2 + A×0,6 | 20 | ≥20 | 10 |
+| **3** | Exfiltration | E = C×0,5 + I×0,3 + A×0,2 | 22 | ≥22 | 7 |
 
 ---
 
 ## Angriffs-Parameter
 
-| Angriff | Basis-Severity | Cap | Schadenseinheit | KZ pro Severity |
-|---------|:--------------:|:---:|:---------------:|:---------------:|
-| Ransomware | 8 | 10 | 20k€ | -3 |
-| OT-Störung | 10 | 12 | 32k€ | -3 |
-| Exfiltration | 7 | 10 | 20k€ | -3 |
+| Angriff | Basis-Severity | Cap | Schadenseinheit | KZ/Severity |
+|---------|:--------------:|:---:|:---------------:|:-----------:|
+| Ransomware | 8 | 8 | 20k€ | -3 |
+| OT-Störung | 10 | 10 | 32k€ | -3 |
+| Exfiltration | 7 | 7 | 20k€ | -3 |
 
 ---
 
-## Top-Mitigation pro Angriff
+## Bonus-Maßnahmen (ab Level 2)
 
-### Ransomware (Fokus: C & I)
-| Rang | Maßnahme | L3 Mitigation |
-|:----:|----------|:-------------:|
-| 1 | M6 Awareness | **-6** |
-| 2 | M3 EDR/XDR | **-5** |
-| 2 | M4 Backup | **-5** |
-| 4 | M1 IAM/PAM | -3 |
-| 4 | M2 SIEM | -3 |
-| 4 | M7 Vulnerability | -3 |
+### Ransomware
+| Maßnahme | Bonus | Begründung |
+|----------|:-----:|------------|
+| M3 EDR/XDR | +2 | Erkennt Ransomware früh |
+| M4 Backup & DR | +2 | Schnelle Wiederherstellung |
+| M6 Awareness | +1 | Mitarbeiter erkennen Phishing |
+| **Max. Bonus** | **+5** | |
 
-### OT-Störung (Fokus: A)
-| Rang | Maßnahme | L3 Mitigation |
-|:----:|----------|:-------------:|
-| 1 | M5 OT/IT-Seg. | **-7** |
-| 2 | M7 Vulnerability | **-4** |
-| 3 | M2 SIEM | -2 |
-| 3 | M4 Backup | -2 |
-| 3 | M8 Supply Chain | -2 |
+### OT-Störung
+| Maßnahme | Bonus | Begründung |
+|----------|:-----:|------------|
+| M5 OT/IT-Seg. | +3 | Isoliert Produktion |
+| M7 Vulnerability | +2 | Schließt OT-Schwachstellen |
+| **Max. Bonus** | **+5** | |
 
-### Exfiltration (Fokus: C)
-| Rang | Maßnahme | L3 Mitigation |
-|:----:|----------|:-------------:|
-| 1 | M1 IAM/PAM | **-4** |
-| 1 | M2 SIEM | **-4** |
-| 3 | M3 EDR/XDR | -3 |
-| 3 | M8 Supply Chain | -3 |
-| 5 | M7 Vulnerability | -2 |
+### Exfiltration
+| Maßnahme | Bonus | Begründung |
+|----------|:-----:|------------|
+| M1 IAM/PAM | +2 | Verhindert unbefugten Zugriff |
+| M2 SIEM/MDR | +2 | Erkennt Datenabfluss |
+| M8 Supply Chain | +1 | Schützt Schnittstellen |
+| **Max. Bonus** | **+5** | |
 
 ---
 
-## CIA-Werte Übersicht (Level 3)
+## CIA-Werte Übersicht (Level 2 und 3)
 
-| Maßnahme | C | I | A | Stärke |
-|----------|:-:|:-:|:-:|--------|
-| M1 IAM/PAM | **+6** | +5 | +1 | Zugriff |
-| M2 SIEM | +3 | **+7** | +2 | Sichtbarkeit |
-| M3 EDR/XDR | **+7** | +6 | +3 | Malware |
-| M4 Backup | +1 | **+8** | **+7** | Recovery |
-| M5 OT/IT-Seg. | +4 | +3 | **+8** | Netzwerk |
-| M6 Awareness | +5 | +3 | +3 | Mensch |
-| M7 Vulnerability | +6 | **+7** | +4 | Patches |
-| M8 Supply Chain | +3 | +6 | +6 | Extern |
-| M9 Cloud | +4 | +4 | +3 | Cloud |
-| M10 MDM | +3 | +3 | +2 | Mobile |
+| Maßnahme | L2 (C/I/A) | L3 (C/I/A) | Stärke |
+|----------|:----------:|:----------:|--------|
+| M1 IAM/PAM | 4/3/0 | 6/5/1 | Zugriff (C) |
+| M2 SIEM | 2/5/1 | 3/7/2 | Sichtbarkeit (I) |
+| M3 EDR/XDR | 5/4/2 | 7/6/3 | Malware (C) |
+| M4 Backup | 1/6/5 | 1/8/7 | Recovery (I+A) |
+| M5 OT/IT-Seg. | 3/2/6 | 4/3/8 | Netzwerk (A) |
+| M6 Awareness | 3/2/2 | 5/3/3 | Mensch (C) |
+| M7 Vulnerability | 4/5/3 | 6/7/4 | Patches (I) |
+| M8 Supply Chain | 2/4/4 | 3/6/6 | Extern (I+A) |
+| M9 Cloud | 3/3/2 | 4/4/3 | Cloud (C+I) |
+| M10 MDM | 2/2/1 | 3/3/2 | Mobile (C+I) |
 
 ---
 
 ## Rechenbeispiel
 
-**Maßnahmen:** M3 L3, M4 L3, M6 L2
+**Maßnahmen:** M3 L2, M4 L2, M5 L2, M7 L2
 
 **CIA:**
 ```
 Basis:     C=10  I=10  A=10
-M3 L3:     C+7   I+6   A+3
-M4 L3:     C+1   I+8   A+7
-M6 L2:     C+3   I+2   A+2
+M3 L2:     C+5   I+4   A+2
+M4 L2:     C+1   I+6   A+5
+M5 L2:     C+3   I+2   A+6
+M7 L2:     C+4   I+5   A+3
 ────────────────────────────
-Gesamt:    C=21  I=26  A=22
+Gesamt:    C=23  I=27  A=26
 ```
 
-**E-Wert Ransomware:**
+### Welle 1: Ransomware
+
+**E-Wert:**
 ```
-E = 21×0,4 + 26×0,4 + 22×0,2
-E = 8,4 + 10,4 + 4,4 = 23,2
-Ziel 18 → ERREICHT ✓
+E = 23×0,4 + 27×0,4 + 26×0,2
+E = 9,2 + 10,8 + 5,2 = 25,2
+E-Ziel 18 → ERREICHT ✓ (+3 KZ)
 ```
 
-**Mitigation Ransomware:**
+**Schadensreduktion:**
 ```
-M3 L3: -5
-M4 L3: -5
-M6 L2: -4
-Summe: -14
+E-Überschuss: 25,2 - 18 = 7,2
+Basis-Reduktion: 7,2 ÷ 2 = 3 (abgerundet)
+
+Bonus-Maßnahmen:
+  M3 L2 ≥ L2? Ja → +2
+  M4 L2 ≥ L2? Ja → +2
+  M6 nicht vorhanden → +0
+Bonus-Summe: +4
+
+Gesamt: 3 + 4 = 7
+Cap: 8 → Effektiv: 7
 ```
 
 **Schaden:**
 ```
-Reduktion: 14
-Cap: 10 → Effektiv: 10
-Severity: 8 - 10 = 0 (min. 0)
-Schaden: 0 × 20k€ = 0€ ✓
+Severity: 8 - 7 = 1
+Schaden: 1 × 20k€ = 20k€
+KZ-Delta: 1 × (-3) = -3
+```
+
+### Welle 2: OT-Störung
+
+**E-Wert:**
+```
+E = 23×0,2 + 27×0,2 + 26×0,6
+E = 4,6 + 5,4 + 15,6 = 25,6
+E-Ziel 20 → ERREICHT ✓ (+5 KZ)
+```
+
+**Schadensreduktion:**
+```
+E-Überschuss: 25,6 - 20 = 5,6
+Basis-Reduktion: 5,6 ÷ 2 = 2 (abgerundet)
+
+Bonus-Maßnahmen:
+  M5 L2 ≥ L2? Ja → +3
+  M7 L2 ≥ L2? Ja → +2
+Bonus-Summe: +5
+
+Gesamt: 2 + 5 = 7
+Cap: 10 → Effektiv: 7
+```
+
+**Schaden:**
+```
+Severity: 10 - 7 = 3
+Schaden: 3 × 32k€ = 96k€
+KZ-Delta: 3 × (-3) = -9
 ```
 
 ---
 
-*Security-Planspiel - Schnellreferenz v1.0*
+## Events pro Welle (Übersicht)
+
+### Welle 1
+| Event | Bedingung | Positiv | Negativ |
+|-------|-----------|---------|---------|
+| Phishing-Kampagne | M6 ≥ L2 | KZ +2 | KZ -3 |
+| Cyber-Versicherung | E-Wert ≥ 16 | Budget +10k€ | Budget -15k€ |
+| Zero-Day-Schwachstelle | M7 ≥ L1 | KZ ±0 | KZ -2 |
+
+### Welle 2
+| Event | Bedingung | Positiv | Negativ |
+|-------|-----------|---------|---------|
+| OEM-Audit | E-Wert ≥ 18 | KZ +5 | KZ -5 |
+| Produktionsdruck | M5 ≥ L1 | KZ ±0 | OPEX +8k€ |
+| Security-Experte kündigt | M2 ≥ L2 | KZ ±0 | KZ -3, OPEX +5k€ |
+
+### Welle 3
+| Event | Bedingung | Positiv | Negativ |
+|-------|-----------|---------|---------|
+| NIS2-Prüfung | 4+ Maßnahmen ≥ L2 | KZ +5 | KZ -8, Budget -20k€ |
+| Lieferanten-Datenpanne | M8 ≥ L2 | KZ +2 | KZ -4 |
+| Vorstandspräsentation | E-Wert ≥ 20 | KZ +3 | KZ -2 |
+
+---
+
+## KZ-Übersicht
+
+| Ereignis | KZ-Effekt |
+|----------|:---------:|
+| **E-Ziel erreicht** | |
+| Welle 1 | +3 |
+| Welle 2 | +5 |
+| Welle 3 | +8 |
+| **E-Ziel verfehlt** | |
+| Welle 1 | -5 |
+| Welle 2 | -8 |
+| Welle 3 | -10 |
+| **Angriffs-Schaden** | -3 pro Severity |
+
+---
+
+*Security-Planspiel - Schnellreferenz v2.0*
