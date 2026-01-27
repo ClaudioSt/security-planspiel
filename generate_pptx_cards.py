@@ -179,58 +179,17 @@ MEASURE_META = {
     }
 }
 
-# Event-Metadaten mit deutschen Beschreibungen (High-Level für Nicht-Techniker)
-EVENT_META = {
-    "oem_audit": {
-        "name": "OEM-Audit",
-        "icon": "📋",
-        "description": "Der große Automobilkunde prüft die Sicherheitsstandards. Wer gut vorbereitet ist, gewinnt Vertrauen - wer schlecht abschneidet, riskiert Aufträge.",
-        "condition": "Nach Welle 1: E-Wert ≥ Zielwert?",
-        "condition_simple": "Wurde der Sicherheits-Zielwert nach Welle 1 erreicht?",
-        "effect_positive": "KZ +5",
-        "effect_negative": "KZ -3",
-        "effect_explanation": "Bestanden: Kundenvertrauen steigt deutlich. Nicht bestanden: Vertrauen sinkt, Folgeaufträge gefährdet."
-    },
-    "staff_turnover": {
-        "name": "Personalwechsel",
-        "icon": "👥",
-        "description": "Ohne regelmäßige Schulungen und Sensibilisierung werden IT-Sicherheitsaufgaben zur Belastung. Überlastete Mitarbeiter verlassen das Unternehmen.",
-        "condition": "M6 (Security Awareness) < Level 2?",
-        "condition_simple": "Wurden die Mitarbeiter nicht ausreichend geschult (Awareness unter Level 2)?",
-        "effect_positive": None,
-        "effect_negative": "KZ -2, OPEX +5k€",
-        "effect_explanation": "Fluktuation kostet Geld (Einarbeitung) und Know-how geht verloren."
-    },
-    "gdpr_bonus": {
-        "name": "DSGVO-Bonus",
-        "icon": "🏆",
-        "description": "Gute Zugriffskontrolle und Logging sind die Basis für Datenschutz-Compliance. Wer hier investiert hat, wird belohnt.",
-        "condition": "M1 ≥ L2 UND M2 ≥ L2?",
-        "condition_simple": "Sind Zugriffskontrolle (M1) UND Logging (M2) mindestens auf Level 2?",
-        "effect_positive": "KZ +3, Budget +10k€",
-        "effect_negative": None,
-        "effect_explanation": "Compliance-Nachweis erleichtert Kundengewinnung und spart Bußgelder."
-    },
-    "investor_confidence": {
-        "name": "Investoren-Vertrauen",
-        "icon": "💰",
-        "description": "Wer viel in Sicherheit investiert, zeigt Weitsicht. Das überzeugt Investoren und Geldgeber.",
-        "condition": "Budget-Tier = HIGH",
-        "condition_simple": "Wurde das höchste Budget-Level gewählt?",
-        "effect_positive": "KZ +8",
-        "effect_negative": None,
-        "effect_explanation": "Hohe Sicherheitsinvestitionen signalisieren professionelles Risikomanagement."
-    },
-    "compliance_gap": {
-        "name": "Compliance-Lücke",
-        "icon": "⚠️",
-        "description": "Zu wenig Budget bedeutet Kompromisse bei der Sicherheit. Das fällt spätestens bei Audits und Kundenanfragen negativ auf.",
-        "condition": "Budget-Tier = LOW",
-        "condition_simple": "Wurde das niedrigste Budget-Level gewählt?",
-        "effect_positive": None,
-        "effect_negative": "KZ -3",
-        "effect_explanation": "Sichtbare Sicherheitslücken schaden dem Ruf bei Kunden und Partnern."
-    }
+# Event-Icons nach Kategorie
+EVENT_ICONS = {
+    "phishing_campaign": "🎣",
+    "insurance_review": "📋",
+    "new_vulnerability": "🔓",
+    "oem_audit": "🏭",
+    "production_pressure": "⚙️",
+    "key_employee_leaves": "👤",
+    "regulatory_audit": "⚖️",
+    "partner_breach": "🔗",
+    "board_presentation": "📊"
 }
 
 # Angriffsnamen für Mitigation-Anzeige
@@ -484,10 +443,42 @@ def add_measure_slide(prs, measure_id, measure_data, meta):
     return slide
 
 
-def add_event_slide(prs, event_id, event_data, meta):
+def format_condition(condition):
+    """Formatiere Bedingung als lesbaren Text"""
+    if "measure" in condition:
+        measure = condition["measure"]
+        min_level = condition.get("min_level", 1)
+        return f"{measure} mindestens Level {min_level}"
+    elif "e_value_min" in condition:
+        return f"E-Wert mindestens {condition['e_value_min']}"
+    elif "measures_at_level_2" in condition:
+        count = condition["measures_at_level_2"]
+        return f"Mindestens {count} Maßnahmen auf Level 2"
+    return str(condition)
+
+
+def format_effect(effect):
+    """Formatiere Effekt als lesbaren Text"""
+    parts = []
+    if "kz_delta" in effect and effect["kz_delta"] != 0:
+        delta = effect["kz_delta"]
+        parts.append(f"KZ {'+' if delta > 0 else ''}{delta}")
+    if "budget_delta" in effect:
+        delta = effect["budget_delta"]
+        parts.append(f"Budget {'+' if delta > 0 else ''}{delta}k€")
+    if "opex_delta" in effect:
+        delta = effect["opex_delta"]
+        parts.append(f"OPEX +{delta}k€")
+    return ", ".join(parts) if parts else "Keine Auswirkung"
+
+
+def add_event_slide(prs, event_data, wave_num):
     """Füge Event-Folie hinzu"""
     slide_layout = prs.slide_layouts[6]  # Blank layout
     slide = prs.slides.add_slide(slide_layout)
+
+    event_id = event_data.get("id", "unknown")
+    icon = EVENT_ICONS.get(event_id, "📌")
 
     # Header-Bereich (orange)
     header = slide.shapes.add_shape(
@@ -503,7 +494,7 @@ def add_event_slide(prs, event_id, event_data, meta):
     )
     tf = title_box.text_frame
     p = tf.paragraphs[0]
-    p.text = f"{meta['icon']} {meta['name']}"
+    p.text = f"{icon} {event_data.get('name', event_id)}"
     p.font.size = Pt(36)
     p.font.bold = True
     p.font.color.rgb = COLORS["white"]
@@ -515,26 +506,26 @@ def add_event_slide(prs, event_id, event_data, meta):
     )
     tf = trigger_box.text_frame
     p = tf.paragraphs[0]
-    p.text = f"Trigger: Nach Welle {event_data.get('trigger_wave', '?')}"
+    p.text = f"Welle {wave_num}"
     p.font.size = Pt(18)
     p.font.color.rgb = COLORS["white"]
     p.alignment = PP_ALIGN.CENTER
 
-    # High-Level Beschreibung (für Nicht-Techniker)
+    # Beschreibung
     desc_box = slide.shapes.add_textbox(
         Inches(0.5), Inches(1.7), Inches(9), Inches(0.9)
     )
     tf = desc_box.text_frame
     tf.word_wrap = True
     p = tf.paragraphs[0]
-    p.text = meta.get("description", event_data.get("description", ""))
+    p.text = event_data.get("description", "")
     p.font.size = Pt(18)
     p.font.color.rgb = COLORS["dark"]
     p.alignment = PP_ALIGN.CENTER
 
     # Bedingung (Box)
     cond_shape = slide.shapes.add_shape(
-        MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.5), Inches(2.75), Inches(9), Inches(1.3)
+        MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.5), Inches(2.75), Inches(9), Inches(1.0)
     )
     cond_shape.fill.solid()
     cond_shape.fill.fore_color.rgb = COLORS["light"]
@@ -542,7 +533,7 @@ def add_event_slide(prs, event_id, event_data, meta):
     cond_shape.line.width = Pt(2)
 
     cond_box = slide.shapes.add_textbox(
-        Inches(0.7), Inches(2.85), Inches(8.6), Inches(1.1)
+        Inches(0.7), Inches(2.85), Inches(8.6), Inches(0.8)
     )
     tf = cond_box.text_frame
     tf.word_wrap = True
@@ -552,87 +543,76 @@ def add_event_slide(prs, event_id, event_data, meta):
     p.font.bold = True
     p.font.color.rgb = COLORS["dark"]
 
-    # Einfache Bedingung für Nicht-Techniker
     p = tf.add_paragraph()
-    p.text = meta.get("condition_simple", meta["condition"])
+    condition = event_data.get("condition", {})
+    p.text = format_condition(condition)
     p.font.size = Pt(16)
     p.font.color.rgb = COLORS["primary"]
 
     # Effekte
-    y_pos = Inches(4.2)
+    y_pos = Inches(4.0)
+    effect_met = event_data.get("effect_if_met", {})
+    effect_not_met = event_data.get("effect_if_not_met", {})
 
-    # Positiver Effekt
-    if meta["effect_positive"]:
-        x_offset = Inches(0.5) if meta["effect_negative"] else Inches(2.5)
-        width = Inches(4.3) if meta["effect_negative"] else Inches(5)
+    # Positiver Effekt (erfüllt)
+    pos_shape = slide.shapes.add_shape(
+        MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.5), y_pos, Inches(4.3), Inches(1.6)
+    )
+    pos_shape.fill.solid()
+    pos_shape.fill.fore_color.rgb = COLORS["success"]
+    pos_shape.line.fill.background()
 
-        pos_shape = slide.shapes.add_shape(
-            MSO_SHAPE.ROUNDED_RECTANGLE, x_offset, y_pos, width, Inches(1.4)
-        )
-        pos_shape.fill.solid()
-        pos_shape.fill.fore_color.rgb = COLORS["success"]
-        pos_shape.line.fill.background()
+    pos_box = slide.shapes.add_textbox(
+        Inches(0.65), y_pos + Inches(0.1), Inches(4.0), Inches(1.4)
+    )
+    tf = pos_box.text_frame
+    tf.word_wrap = True
+    p = tf.paragraphs[0]
+    p.text = "Erfüllt:"
+    p.font.size = Pt(13)
+    p.font.bold = True
+    p.font.color.rgb = COLORS["white"]
 
-        pos_box = slide.shapes.add_textbox(
-            x_offset + Inches(0.15), y_pos + Inches(0.1), width - Inches(0.3), Inches(1.2)
-        )
-        tf = pos_box.text_frame
-        tf.word_wrap = True
-        p = tf.paragraphs[0]
-        p.text = "Bei Erfüllung:"
-        p.font.size = Pt(13)
-        p.font.bold = True
-        p.font.color.rgb = COLORS["white"]
+    p = tf.add_paragraph()
+    p.text = format_effect(effect_met)
+    p.font.size = Pt(18)
+    p.font.bold = True
+    p.font.color.rgb = COLORS["white"]
 
-        p = tf.add_paragraph()
-        p.text = meta["effect_positive"]
-        p.font.size = Pt(18)
-        p.font.bold = True
-        p.font.color.rgb = COLORS["white"]
+    p = tf.add_paragraph()
+    p.text = effect_met.get("description", "")
+    p.font.size = Pt(11)
+    p.font.color.rgb = COLORS["white"]
 
-    # Negativer Effekt
-    if meta["effect_negative"]:
-        x_offset = Inches(5.2) if meta["effect_positive"] else Inches(2.5)
-        width = Inches(4.3) if meta["effect_positive"] else Inches(5)
+    # Negativer Effekt (nicht erfüllt)
+    neg_shape = slide.shapes.add_shape(
+        MSO_SHAPE.ROUNDED_RECTANGLE, Inches(5.2), y_pos, Inches(4.3), Inches(1.6)
+    )
+    neg_shape.fill.solid()
+    neg_shape.fill.fore_color.rgb = COLORS["danger"]
+    neg_shape.line.fill.background()
 
-        neg_shape = slide.shapes.add_shape(
-            MSO_SHAPE.ROUNDED_RECTANGLE, x_offset, y_pos, width, Inches(1.4)
-        )
-        neg_shape.fill.solid()
-        neg_shape.fill.fore_color.rgb = COLORS["danger"]
-        neg_shape.line.fill.background()
+    neg_box = slide.shapes.add_textbox(
+        Inches(5.35), y_pos + Inches(0.1), Inches(4.0), Inches(1.4)
+    )
+    tf = neg_box.text_frame
+    tf.word_wrap = True
+    p = tf.paragraphs[0]
+    p.text = "Nicht erfüllt:"
+    p.font.size = Pt(13)
+    p.font.bold = True
+    p.font.color.rgb = COLORS["white"]
 
-        neg_box = slide.shapes.add_textbox(
-            x_offset + Inches(0.15), y_pos + Inches(0.1), width - Inches(0.3), Inches(1.2)
-        )
-        tf = neg_box.text_frame
-        tf.word_wrap = True
-        p = tf.paragraphs[0]
-        p.text = "Bei Nicht-Erfüllung:"
-        p.font.size = Pt(13)
-        p.font.bold = True
-        p.font.color.rgb = COLORS["white"]
+    p = tf.add_paragraph()
+    p.text = format_effect(effect_not_met)
+    p.font.size = Pt(18)
+    p.font.bold = True
+    p.font.color.rgb = COLORS["white"]
 
-        p = tf.add_paragraph()
-        p.text = meta["effect_negative"]
-        p.font.size = Pt(18)
-        p.font.bold = True
-        p.font.color.rgb = COLORS["white"]
-
-    # Erklärung der Auswirkung (für Nicht-Techniker)
-    explanation = meta.get("effect_explanation", "")
-    if explanation:
-        expl_box = slide.shapes.add_textbox(
-            Inches(0.5), Inches(5.8), Inches(9), Inches(0.8)
-        )
-        tf = expl_box.text_frame
-        tf.word_wrap = True
-        p = tf.paragraphs[0]
-        p.text = f"Hintergrund: {explanation}"
-        p.font.size = Pt(14)
-        p.font.italic = True
-        p.font.color.rgb = COLORS["dark"]
-        p.alignment = PP_ALIGN.CENTER
+    p = tf.add_paragraph()
+    p.text = effect_not_met.get("description", "")
+    p.font.size = Pt(11)
+    p.font.color.rgb = COLORS["white"]
 
     return slide
 
@@ -678,21 +658,15 @@ def generate_events_pptx(config, output_path):
         "Security-Planspiel MechTech\nDynamische Spielereignisse"
     )
 
-    # Event-Folien
+    # Event-Folien nach Wellen
     events = config.get("events", {})
-    event_order = ["oem_audit", "staff_turnover", "gdpr_bonus", "investor_confidence", "compliance_gap"]
 
-    for event_id in event_order:
-        if event_id in events:
-            event_data = events[event_id]
-            meta = EVENT_META.get(event_id, {
-                "name": event_id,
-                "icon": "📌",
-                "condition": "",
-                "effect_positive": None,
-                "effect_negative": None
-            })
-            add_event_slide(prs, event_id, event_data, meta)
+    for wave_num in [1, 2, 3]:
+        wave_key = f"wave_{wave_num}"
+        wave_events = events.get(wave_key, [])
+
+        for event_data in wave_events:
+            add_event_slide(prs, event_data, wave_num)
 
     # Speichern
     prs.save(output_path)
