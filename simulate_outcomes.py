@@ -59,6 +59,8 @@ class Measure:
 class BudgetTier:
     name: str
     budget: int
+    kz_start: int
+    severity_multiplier: float
     e_targets: Dict[int, int]
 
 
@@ -75,13 +77,14 @@ class Event:
 def load_config(path: Path):
     raw = json.loads(path.read_text())
     base_cia = raw.get("base_cia", {"c": 0, "i": 0, "a": 0})
-    kz_start = raw.get("kz_start", 60)
 
     budget_tiers = {}
     for name, info in raw["budget_tiers"].items():
         budget_tiers[name] = BudgetTier(
             name=name,
             budget=info["budget"],
+            kz_start=info.get("kz_start", 60),
+            severity_multiplier=info.get("severity_multiplier", 1.0),
             e_targets={int(k): v for k, v in info["e_targets"].items()},
         )
 
@@ -157,7 +160,7 @@ def load_config(path: Path):
                 for ev in wave_events
             ]
 
-    return raw["default_budget_tier"], budget_tiers, attacks, waves, measures, events, base_cia, kz_start
+    return raw["default_budget_tier"], budget_tiers, attacks, waves, measures, events, base_cia
 
 
 def dependencies_satisfied(selection: Dict[str, int], measures: Dict[str, Measure]) -> bool:
@@ -237,6 +240,7 @@ def apply_attack(
     attack: Attack,
     wave: Wave,
     cia: Dict[str, int],
+    severity_multiplier: float = 1.0,
 ) -> Dict:
     """Apply an attack using the new E-Value based mitigation system."""
     e_value = compute_e_value(cia, wave.weights)
@@ -246,7 +250,11 @@ def apply_attack(
 
     total_reduction = base_reduction + bonus_reduction
     capped_reduction = min(attack.mitigation_cap, total_reduction)
-    severity = max(0, attack.base_severity - capped_reduction)
+
+    # Apply severity multiplier (larger companies are bigger targets)
+    effective_base_severity = int(attack.base_severity * severity_multiplier)
+    severity = max(0, effective_base_severity - capped_reduction)
+
     damage = severity * attack.s_unit
     kz_delta = -severity * attack.kz_unit
     cia_delta = {key: severity * impact for key, impact in attack.cia_impact.items()}
@@ -263,6 +271,7 @@ def apply_attack(
         "bonus_descriptions": bonus_descriptions,
         "total_reduction": total_reduction,
         "capped_reduction": capped_reduction,
+        "effective_base_severity": effective_base_severity,
         "severity": severity,
         "damage": damage,
         "kz_delta": kz_delta,
@@ -365,7 +374,10 @@ def simulate_selection(
         attack = attacks[wave.attack_id]
 
         # Apply attack with new E-Value based mitigation
-        attack_result = apply_attack(selection, measures, attack, wave, cia)
+        attack_result = apply_attack(
+            selection, measures, attack, wave, cia,
+            severity_multiplier=budget_tier.severity_multiplier
+        )
         e_value = attack_result["e_value"]
 
         # Check E-Target
@@ -441,8 +453,9 @@ def run_simulation(
     budget_max: Optional[int],
     budget_utilization: float,
 ) -> Dict:
-    default_budget_tier, budget_tiers, attacks, waves, measures, events, base_cia, kz_start = load_config(config_path)
+    default_budget_tier, budget_tiers, attacks, waves, measures, events, base_cia = load_config(config_path)
     budget_tier = budget_tiers[budget_tier_name or default_budget_tier]
+    kz_start = budget_tier.kz_start
     measure_ids = list(measures.keys())
     level_options = [0, 1, 2, 3]
     results = []

@@ -2,13 +2,13 @@
 
 ## Budget-Optionen
 
-| Tier | Budget |
-|------|:------:|
-| Low | 200k€ |
-| Medium | 300k€ |
-| High | 400k€ |
+| Tier | Budget | KZ-Start | Severity | E-Ziele (W1/W2/W3) |
+|------|:------:|:--------:|:--------:|:------------------:|
+| Low | 200k€ | 65 | ×0.7 | 15/17/19 |
+| Medium | 300k€ | 60 | ×1.0 | 18/20/22 |
+| High | 400k€ | 55 | ×1.3 | 21/23/25 |
 
-**Start-KZ für alle Teams: 60**
+**Hinweis:** Größere Unternehmen (High) sind attraktivere Angriffsziele, haben aber mehr Ressourcen zur Absicherung.
 
 ---
 

@@ -1,18 +1,21 @@
 {
   "default_budget_tier": "medium",
   "base_cia": {"c": 10, "i": 10, "a": 10},
-  "kz_start": 60,
   "budget_tiers": {
     "low": {
       "budget": 200,
+      "kz_start": 65,
+      "severity_multiplier": 0.7,
       "e_targets": {
-        "1": 18,
-        "2": 20,
-        "3": 22
+        "1": 15,
+        "2": 17,
+        "3": 19
       }
     },
     "medium": {
       "budget": 300,
+      "kz_start": 60,
+      "severity_multiplier": 1.0,
       "e_targets": {
         "1": 18,
         "2": 20,
@@ -21,10 +24,12 @@
     },
     "high": {
       "budget": 400,
+      "kz_start": 55,
+      "severity_multiplier": 1.3,
       "e_targets": {
-        "1": 18,
-        "2": 20,
-        "3": 22
+        "1": 21,
+        "2": 23,
+        "3": 25
       }
     }
   },

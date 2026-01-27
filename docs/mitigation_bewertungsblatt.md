@@ -1,6 +1,12 @@
 # Mitigation-Bewertungsblatt
 
-**Team: ________________**  |  **Budget: ☐ 200k€  ☐ 300k€  ☐ 400k€**
+**Team: ________________**  |  **Budget-Tier: ☐ Low (200k€)  ☐ Medium (300k€)  ☐ High (400k€)**
+
+| Tier | KZ-Start | Severity-Mult. | E-Ziele (W1/W2/W3) |
+|------|:--------:|:--------------:|:------------------:|
+| Low | 65 | ×0.7 | 15/17/19 |
+| Medium | 60 | ×1.0 | 18/20/22 |
+| High | 55 | ×1.3 | 21/23/25 |
 
 ---
 
