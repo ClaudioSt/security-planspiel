@@ -10,50 +10,60 @@ Greife zu diesen Backup-Werten, wenn du **waehrend des Spiels** merkst:
 
 | Problem | Symptom | Loesung |
 |---------|---------|---------|
-| **Zu leicht** | Alle Teams G=0 in Welle 1 | sUnit erhoehen |
+| **Zu leicht** | Alle Teams Severity=0 in Welle 1 | sUnit erhoehen |
 | **Zu schwer** | KZ faellt unter 20 nach W2 | kzUnit reduzieren |
 | **Frustration** | Teams erreichen nie E-Ziele | E-Ziele senken |
 | **Langeweile** | Kein Unterschied zwischen Teams | Events aktivieren |
-| **Unbalance** | Ein Tier klar im Vorteil | Tier-Event anpassen |
 
 ---
 
-## PARAMETER-ALTERNATIVEN
-
-### Standard-Werte (aktuell)
+## PARAMETER-STANDARD (aktuell getestet)
 
 | Parameter | Welle 1 | Welle 2 | Welle 3 |
 |-----------|---------|---------|---------|
 | baseSeverity | 8 | 10 | 7 |
 | sUnit | 20 | 32 | 20 |
-| kzUnit | 3 | 3 | 3 |
-| Cap | 10 | 12 | 10 |
-| E-Ziel | 18 | 20 | 22 |
+| kzUnit | 2 | 2 | 2 |
+| Cap | 8 | 10 | 7 |
+| E-Ziel | 15 | 17 | 19 |
+| e_divisor | 1 | 1 | 1 |
 
-### Option A: LEICHTER (falls Teams ueberfordert)
+### Budget-Tiers (gleiches Unternehmen)
+
+| Tier | Budget | KZ-Start | Severity-Mult | E-Ziele |
+|------|--------|----------|---------------|---------|
+| Low | 300k | 60 | 1.0 | 15/17/19 |
+| Medium | 400k | 60 | 1.0 | 15/17/19 |
+| High | 500k | 60 | 1.0 | 15/17/19 |
+
+---
+
+## OPTION A: LEICHTER (falls Teams ueberfordert)
 
 | Parameter | Welle 1 | Welle 2 | Welle 3 |
 |-----------|---------|---------|---------|
 | baseSeverity | 8 | 10 | 7 |
 | sUnit | 16 | 26 | 16 |
-| kzUnit | **2** | **2** | **2** |
-| Cap | 10 | 12 | 10 |
-| E-Ziel | **16** | **18** | **20** |
+| kzUnit | **1** | **1** | **1** |
+| Cap | 8 | 10 | 7 |
+| E-Ziel | **13** | **15** | **17** |
 
 **Effekt:**
 - Weniger KZ-Verlust pro Severity
 - Niedrigere E-Ziele = leichter Bonus zu erreichen
-- Base Losses sinken auf ~504k
+- Base Losses sinken auf ~500k
 
-### Option B: SCHWERER (falls zu einfach)
+---
+
+## OPTION B: SCHWERER (falls zu einfach)
 
 | Parameter | Welle 1 | Welle 2 | Welle 3 |
 |-----------|---------|---------|---------|
 | baseSeverity | 8 | 10 | 7 |
 | sUnit | **24** | **38** | **24** |
-| kzUnit | **4** | **4** | **4** |
-| Cap | 10 | 12 | 10 |
-| E-Ziel | 18 | 20 | 22 |
+| kzUnit | **3** | **3** | **3** |
+| Cap | 8 | 10 | 7 |
+| E-Ziel | **17** | **19** | **21** |
 
 **Effekt:**
 - Hoeherer KZ-Verlust pro Severity
@@ -71,7 +81,7 @@ Greife zu diesen Backup-Werten, wenn du **waehrend des Spiels** merkst:
 **Fix:**
 - Recovery-Bonus: "MechTech hat gute Cyber-Versicherung entdeckt"
 - +10 KZ einmalig
-- ODER: kzUnit fuer W2/W3 auf 2 reduzieren
+- ODER: kzUnit fuer W2/W3 auf 1 reduzieren
 
 ### Nach Welle 2: Alle Teams am Boden?
 
@@ -80,44 +90,32 @@ Greife zu diesen Backup-Werten, wenn du **waehrend des Spiels** merkst:
 **Fix:**
 - "OEM gibt Aufschub fuer Zertifizierung"
 - Alle Teams +5 KZ
-- E-Ziel W3 auf 20 senken
-
-### Nach Welle 2: Ein Tier dominiert?
-
-**Problem:** LOW-Team hat viel hoehere KZ als HIGH
-
-**Fix:**
-- Investor Confidence auch nach W2 anwenden (+5 statt +8)
-- ODER: Compliance-Gap auf -5 erhoehen
-
-**Problem:** HIGH-Team hat viel hoehere KZ als LOW
-
-**Fix:**
-- Compliance-Gap streichen
-- ODER: zusaetzlicher "Startup-Agilitaets-Bonus" fuer LOW: +5 KZ
+- E-Ziel W3 auf 17 senken
 
 ---
 
-## EVENT-VARIANTEN
+## EVENT-UEBERSICHT (aktuell)
 
-### Standard-Events
+### Welle 1 Events
+| Event | Bedingung | Positiv | Negativ |
+|-------|-----------|---------|---------|
+| Phishing-Kampagne | M6 >= L2 | KZ +2 | KZ -3 |
+| Versicherung | E >= 16 | Budget +10 | Budget -15 |
+| Schwachstelle | M7 >= L1 | KZ 0 | KZ -2 |
 
-| Event | Trigger | Effekt |
-|-------|---------|--------|
-| Fluktuation | M6 < L2 | OPEX +5, KZ -2 |
-| OEM-Audit | Nach W2 | E1>=18: +5 / <18: -3 |
-| DSGVO-Bonus | M1>=L2, M2>=L2 | KZ +3, Budget +10 |
-| Compliance-Gap | LOW nach W2 | KZ -3 |
-| Investor Confidence | HIGH nach W3 | KZ +8 |
+### Welle 2 Events
+| Event | Bedingung | Positiv | Negativ |
+|-------|-----------|---------|---------|
+| OEM-Audit | E >= 18 | KZ +5 | KZ -5 |
+| Produktionsdruck | M5 >= L1 | KZ 0 | OPEX +8 |
+| Security-Experte | M2 >= L2 | KZ 0 | KZ -3, OPEX +5 |
 
-### Alternative Events (bei Bedarf aktivieren)
-
-| Event | Trigger | Effekt | Wann nutzen |
-|-------|---------|--------|-------------|
-| **Supply Chain Bonus** | M8 >= L2 | KZ +4 | Falls W3 zu hart |
-| **Patch-Luecke** | M7 < L2 nach W2 | KZ -4 | Falls W2 zu leicht |
-| **Recovery-Held** | M4 = L3 | Schaden W3 -20% extra | Belohnung fuer Backup-Fokus |
-| **OT-Desaster** | M5 < L2 nach W2 | KZ -6 | Falls OT ignoriert wird |
+### Welle 3 Events
+| Event | Bedingung | Positiv | Negativ |
+|-------|-----------|---------|---------|
+| NIS2-Pruefung | 4+ Mass. L2 | KZ +5 | KZ -5, Budget -15 |
+| Lieferanten-Panne | M8 >= L2 | KZ +3 | KZ -3 |
+| Vorstandspraes. | E >= 20 | KZ +3 | KZ -2 |
 
 ---
 
@@ -126,68 +124,30 @@ Greife zu diesen Backup-Werten, wenn du **waehrend des Spiels** merkst:
 ### Base Losses (zur Kontrolle)
 
 ```
-Standard:  8×20 + 10×32 + 7×20 = 160 + 320 + 140 = 620k
-Option A:  8×16 + 10×26 + 7×16 = 128 + 260 + 112 = 500k
-Option B:  8×24 + 10×38 + 7×24 = 192 + 380 + 168 = 740k
+Standard:  8x20 + 10x32 + 7x20 = 160 + 320 + 140 = 620k
+Option A:  8x16 + 10x26 + 7x16 = 128 + 260 + 112 = 500k
+Option B:  8x24 + 10x38 + 7x24 = 192 + 380 + 168 = 740k
 ```
 
-### KZ-Verlust bei G=X
+### KZ-Verlust bei Severity=X
 
-| G | kzUnit=2 | kzUnit=3 | kzUnit=4 |
-|---|----------|----------|----------|
-| 1 | -2 | -3 | -4 |
-| 2 | -4 | -6 | -8 |
-| 3 | -6 | -9 | -12 |
-| 4 | -8 | -12 | -16 |
-| 5 | -10 | -15 | -20 |
-
-### Schaden bei G=X
-
-| G | sUnit=16 | sUnit=20 | sUnit=24 |
-|---|----------|----------|----------|
-| 1 | 16k | 20k | 24k |
-| 2 | 32k | 40k | 48k |
-| 3 | 48k | 60k | 72k |
-| 4 | 64k | 80k | 96k |
-| 5 | 80k | 100k | 120k |
+| Sev | kzUnit=1 | kzUnit=2 | kzUnit=3 |
+|-----|----------|----------|----------|
+| 1 | -1 | -2 | -3 |
+| 2 | -2 | -4 | -6 |
+| 3 | -3 | -6 | -9 |
+| 4 | -4 | -8 | -12 |
+| 5 | -5 | -10 | -15 |
 
 ---
 
-## ENTSCHEIDUNGSBAUM
+## BALANCE-REFERENZ (27 Strategien getestet)
 
-```
-Nach Welle 1:
-│
-├── KZ aller Teams > 50?
-│   └── Weiter mit Standard
-│
-├── Ein Team KZ < 40?
-│   └── Option: +10 KZ Recovery-Bonus
-│
-└── Alle Teams KZ < 40?
-    └── kzUnit auf 2 fuer Rest
-
-
-Nach Welle 2:
-│
-├── Spread zwischen Teams < 15?
-│   └── Weiter mit Standard
-│
-├── LOW-Team fuehrt deutlich?
-│   └── Investor Confidence vorziehen
-│
-└── HIGH-Team fuehrt deutlich?
-    └── Compliance-Gap streichen
-
-
-Nach Welle 3:
-│
-├── RoS negativ fuer alle?
-│   └── Fuer Debrief: "Base Losses waren 620k"
-│
-└── Final-Index Spread > 20?
-    └── Fuer naechstes Spiel: Events anpassen
-```
+| Tier | Best Score | Worst Score | Positive (KZ>=50) |
+|------|------------|-------------|-------------------|
+| Low | 71.4 | 29.3 | 64% (7/11) |
+| Medium | 80.6 | 29.3 | 78% (14/18) |
+| High | 79.5 | 29.3 | 83% (20/24) |
 
 ---
 
@@ -205,4 +165,3 @@ Waehrend Playtest hier notieren, welche Anpassungen gemacht wurden:
 ---
 
 *Dieses Blatt griffbereit halten, aber nur bei echten Problemen nutzen!*
-

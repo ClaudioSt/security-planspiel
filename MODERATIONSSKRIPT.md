@@ -55,13 +55,15 @@
 
 > "Jetzt wird's ernst: Ihr muesst euch fuer ein Budget-Tier entscheiden.
 >
-> **LOW (200-250k):** Wenig Geld, aber ihr startet mit hoher Kundenzufriedenheit (70).
+> **WICHTIG:** Alle Teams beraten das GLEICHE Unternehmen - nur das Budget unterscheidet sich!
 >
-> **MEDIUM (300-350k):** Ausgewogen, KZ-Start bei 60.
+> **LOW (300k):** Weniger Optionen, aber hoher ROS moeglich.
 >
-> **HIGH (400-450k):** Viel Geld, aber der Kunde ist anfangs skeptisch - nur 50 KZ.
+> **MEDIUM (400k):** Mehr Strategien verfuegbar.
 >
-> Das ist ein Trade-off! Mehr Budget heisst nicht automatisch besser.
+> **HIGH (500k):** Maximale Flexibilitaet, aber auch hoehere Erwartungen.
+>
+> Alle starten mit KZ 60. E-Ziele und Angriffe sind fuer alle identisch!
 >
 > Bitte entscheidet euch jetzt. Schreibt euer Budget und KZ-Start auf das Team-Uebersichtsblatt."
 

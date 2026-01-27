@@ -51,14 +51,16 @@ Ihr seid ein **externes Beraterteam** und beratet den Automobilzulieferer **Mech
 
 ## BUDGET-ENTSCHEIDUNG
 
-| Budget (k€) | KZ-Start | E-Ziele (W1/W2/W3) | Trade-off |
-|-------------|----------|---------------------|-----------|
-| **200-250** (Low) | 70 | 18 / 20 / 22 | Wenig Geld, hoher KZ-Start |
-| **300-350** (Medium) | 60 | 18 / 20 / 22 | Standard |
-| **400-450** (High) | 50 | 18 / 20 / 22 | Viel Geld, niedriger KZ-Start |
+**WICHTIG:** Alle Teams repräsentieren das GLEICHE Unternehmen - nur das Budget unterscheidet sich!
 
-**Trade-off:** Höheres Budget = mehr Maßnahmen möglich, ABER niedrigerer KZ-Start!
-E-Ziele sind für alle Tiers gleich. Budget-Schritte: 50k€.
+| Budget (k Euro) | KZ-Start | E-Ziele (W1/W2/W3) | Strategien möglich |
+|-----------------|----------|---------------------|-------------------|
+| **300** (Low) | 60 | 15 / 17 / 19 | 11 |
+| **400** (Medium) | 60 | 15 / 17 / 19 | 18 |
+| **500** (High) | 60 | 15 / 17 / 19 | 24 |
+
+**Trade-off:** Höheres Budget = mehr Strategien möglich, aber auch höhere Erwartungen!
+E-Ziele und Angriffs-Severity sind für alle Tiers identisch.
 
 ---
 

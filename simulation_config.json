@@ -3,9 +3,9 @@
   "base_cia": {"c": 10, "i": 10, "a": 10},
   "budget_tiers": {
     "low": {
-      "budget": 200,
-      "kz_start": 65,
-      "severity_multiplier": 0.7,
+      "budget": 300,
+      "kz_start": 60,
+      "severity_multiplier": 1.0,
       "e_targets": {
         "1": 15,
         "2": 17,
@@ -13,23 +13,23 @@
       }
     },
     "medium": {
-      "budget": 300,
+      "budget": 400,
       "kz_start": 60,
       "severity_multiplier": 1.0,
       "e_targets": {
-        "1": 18,
-        "2": 20,
-        "3": 22
+        "1": 15,
+        "2": 17,
+        "3": 19
       }
     },
     "high": {
-      "budget": 400,
-      "kz_start": 55,
-      "severity_multiplier": 1.3,
+      "budget": 500,
+      "kz_start": 60,
+      "severity_multiplier": 1.0,
       "e_targets": {
-        "1": 21,
-        "2": 23,
-        "3": 25
+        "1": 15,
+        "2": 17,
+        "3": 19
       }
     }
   },
@@ -43,10 +43,10 @@
         "i": 0.4,
         "a": 0.2
       },
-      "e_threshold": 18,
-      "e_divisor": 2,
-      "kz_bonus": 3,
-      "kz_malus": -5,
+      "e_threshold": 15,
+      "e_divisor": 1,
+      "kz_bonus": 5,
+      "kz_malus": -3,
       "bonus_measures": [
         {"measure": "M3", "min_level": 2, "bonus": 2, "description": "EDR/XDR erkennt Ransomware früh"},
         {"measure": "M4", "min_level": 2, "bonus": 2, "description": "Backup ermöglicht schnelle Wiederherstellung"},
@@ -62,10 +62,10 @@
         "i": 0.2,
         "a": 0.6
       },
-      "e_threshold": 20,
-      "e_divisor": 2,
-      "kz_bonus": 5,
-      "kz_malus": -8,
+      "e_threshold": 17,
+      "e_divisor": 1,
+      "kz_bonus": 7,
+      "kz_malus": -5,
       "bonus_measures": [
         {"measure": "M5", "min_level": 2, "bonus": 3, "description": "OT/IT-Segmentierung isoliert Produktion"},
         {"measure": "M7", "min_level": 2, "bonus": 2, "description": "Patch Management schließt OT-Schwachstellen"}
@@ -80,10 +80,10 @@
         "i": 0.3,
         "a": 0.2
       },
-      "e_threshold": 22,
-      "e_divisor": 2,
-      "kz_bonus": 8,
-      "kz_malus": -10,
+      "e_threshold": 19,
+      "e_divisor": 1,
+      "kz_bonus": 10,
+      "kz_malus": -7,
       "bonus_measures": [
         {"measure": "M1", "min_level": 2, "bonus": 2, "description": "IAM/PAM verhindert unbefugten Zugriff"},
         {"measure": "M2", "min_level": 2, "bonus": 2, "description": "SIEM erkennt Datenabfluss"},
@@ -95,7 +95,7 @@
     "ransomware": {
       "base_severity": 8,
       "s_unit": 20,
-      "kz_unit": 3,
+      "kz_unit": 2,
       "cia_impact": {"c": -2, "i": -2, "a": -1},
       "mitigation_cap": 8,
       "allow_recovery": true
@@ -103,7 +103,7 @@
     "ot": {
       "base_severity": 10,
       "s_unit": 32,
-      "kz_unit": 3,
+      "kz_unit": 2,
       "cia_impact": {"c": -1, "i": -2, "a": -3},
       "mitigation_cap": 10,
       "allow_recovery": true
@@ -111,7 +111,7 @@
     "exfil": {
       "base_severity": 7,
       "s_unit": 20,
-      "kz_unit": 3,
+      "kz_unit": 2,
       "cia_impact": {"c": -3, "i": -1, "a": 0},
       "mitigation_cap": 7,
       "allow_recovery": false
@@ -285,15 +285,15 @@
         "description": "Die Behörde prüft Ihre Compliance mit NIS2-Anforderungen.",
         "condition": {"measures_at_level_2": 4},
         "effect_if_met": {"kz_delta": 5, "description": "Compliance nachgewiesen - positive Bewertung"},
-        "effect_if_not_met": {"kz_delta": -8, "budget_delta": -20, "description": "Bußgeld und Nachbesserungspflicht"}
+        "effect_if_not_met": {"kz_delta": -5, "budget_delta": -15, "description": "Bußgeld und Nachbesserungspflicht"}
       },
       {
         "id": "partner_breach",
         "name": "Lieferanten-Datenpanne",
         "description": "Ein wichtiger Lieferant meldet einen Sicherheitsvorfall.",
         "condition": {"measure": "M8", "min_level": 2},
-        "effect_if_met": {"kz_delta": 2, "description": "Vertraglich gesicherte Meldepflicht begrenzt Schaden"},
-        "effect_if_not_met": {"kz_delta": -4, "description": "Unklare Auswirkungen verunsichern Management"}
+        "effect_if_met": {"kz_delta": 3, "description": "Vertraglich gesicherte Meldepflicht begrenzt Schaden"},
+        "effect_if_not_met": {"kz_delta": -3, "description": "Unklare Auswirkungen verunsichern Management"}
       },
       {
         "id": "board_presentation",
