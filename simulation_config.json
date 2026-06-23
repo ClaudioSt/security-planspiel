@@ -92,7 +92,8 @@
     "ransomware": {
       "base_severity": 8,
       "s_unit": 20,
-      "kz_unit": 2,
+      "kz_at_full_damage": -6,
+      "kz_at_full_mitigation": 10,
       "cia_impact": {"c": -2, "i": -2, "a": -1},
       "mitigation_cap": 8,
       "allow_recovery": true
@@ -100,7 +101,8 @@
     "ot": {
       "base_severity": 10,
       "s_unit": 32,
-      "kz_unit": 2,
+      "kz_at_full_damage": -5,
+      "kz_at_full_mitigation": 7,
       "cia_impact": {"c": -1, "i": -2, "a": -3},
       "mitigation_cap": 10,
       "allow_recovery": true
@@ -108,7 +110,8 @@
     "exfil": {
       "base_severity": 7,
       "s_unit": 20,
-      "kz_unit": 2,
+      "kz_at_full_damage": -7,
+      "kz_at_full_mitigation": 10,
       "cia_impact": {"c": -3, "i": -1, "a": 0},
       "mitigation_cap": 7,
       "allow_recovery": false

@@ -12,7 +12,8 @@ class Attack:
     attack_id: str
     base_severity: int
     s_unit: int
-    kz_unit: int
+    kz_at_full_damage: float
+    kz_at_full_mitigation: float
     cia_impact: Dict[str, int]
     mitigation_cap: int
     allow_recovery: bool
@@ -91,7 +92,8 @@ def load_config(path: Path):
             attack_id=attack_id,
             base_severity=info["base_severity"],
             s_unit=info["s_unit"],
-            kz_unit=info["kz_unit"],
+            kz_at_full_damage=info["kz_at_full_damage"],
+            kz_at_full_mitigation=info["kz_at_full_mitigation"],
             cia_impact=info["cia_impact"],
             mitigation_cap=info["mitigation_cap"],
             allow_recovery=info["allow_recovery"],
@@ -261,7 +263,18 @@ def apply_attack(
     severity = max(0.0, effective_base_severity - reduktion_ueber_schwelle)
 
     damage = severity * attack.s_unit
-    kz_delta = -severity * attack.kz_unit
+
+    # KZ-Delta linear zwischen den auf dem Arbeitsblatt festgelegten Endpunkten
+    # interpoliert (Fall 1: redu=0 -> kz_at_full_damage, Fall 2: redu=cap ->
+    # kz_at_full_mitigation), statt der im Word-Dokument widersprüchlichen
+    # Fall-3-Subformel (deren Steigung bei Welle 2/3 nicht zu den eigenen
+    # Fall-1/Fall-2-Werten passt).
+    mitigation_fraction = (
+        reduktion_ueber_schwelle / attack.mitigation_cap if attack.mitigation_cap else 0.0
+    )
+    kz_delta = attack.kz_at_full_damage + mitigation_fraction * (
+        attack.kz_at_full_mitigation - attack.kz_at_full_damage
+    )
     cia_delta = {key: severity * impact for key, impact in attack.cia_impact.items()}
 
     recovery_factor = 0.0
