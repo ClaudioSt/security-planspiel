@@ -169,7 +169,12 @@ def load_config(path: Path):
         for ev in raw.get("final_events", [])
     ]
 
-    return raw["default_budget_tier"], budget_tiers, attacks, waves, measures, events, base_cia, final_events
+    expectation_malus = {
+        k: v for k, v in raw.get("budget_tier_expectation_malus", {}).items()
+        if k != "description"
+    }
+
+    return raw["default_budget_tier"], budget_tiers, attacks, waves, measures, events, base_cia, final_events, expectation_malus
 
 
 def dependencies_satisfied(selection: Dict[str, int], measures: Dict[str, Measure]) -> bool:
@@ -318,6 +323,7 @@ def evaluate_event(
     event: Event,
     selection: Dict[str, int],
     remaining_budget: Optional[float] = None,
+    total_budget: Optional[float] = None,
 ) -> Tuple[int, int, int, str]:
     """
     Evaluate a single event exactly as specified on Events_Security-Game.pptx.
@@ -370,6 +376,10 @@ def evaluate_event(
         return kz_delta, 0, 0, "Bedingung erfüllt" if all_met else "Bedingung nicht erfüllt"
 
     if event.type == "final_budget_tier":
+        if p.get("relative") and total_budget:
+            value = 100 * remaining_budget / total_budget
+            kz_delta = _tier_lookup(value, p["tiers"])
+            return kz_delta, 0, 0, f"Restbudget {value:.0f}% von {total_budget:.0f}k€"
         kz_delta = _tier_lookup(remaining_budget, p["tiers"])
         return kz_delta, 0, 0, f"Restbudget {remaining_budget:.0f}k€"
 
@@ -515,7 +525,7 @@ def run_simulation(
     budget_max: Optional[int],
     budget_utilization: float,
 ) -> Dict:
-    default_budget_tier, budget_tiers, attacks, waves, measures, events, base_cia, final_events = load_config(config_path)
+    default_budget_tier, budget_tiers, attacks, waves, measures, events, base_cia, final_events, expectation_malus = load_config(config_path)
     budget_tier = budget_tiers[budget_tier_name or default_budget_tier]
     kz_start = budget_tier.kz_start
     measure_ids = list(measures.keys())
@@ -545,12 +555,21 @@ def run_simulation(
         final_event_results = []
         for event in final_events:
             ev_kz, _, _, description = evaluate_event(
-                event, selection, remaining_budget=remaining_budget
+                event, selection, remaining_budget=remaining_budget, total_budget=adjusted_budget
             )
             outcome["kz_final"] = max(0, min(100, outcome["kz_final"] + ev_kz))
             final_event_results.append({
                 "id": event.id, "name": event.name,
                 "effect_description": description, "kz_delta": ev_kz,
+            })
+
+        malus = expectation_malus.get(budget_tier.name, 0)
+        if malus:
+            outcome["kz_final"] = max(0, min(100, outcome["kz_final"] + malus))
+            final_event_results.append({
+                "id": "budget_tier_expectation_malus", "name": "Erwartungshaltung",
+                "effect_description": f"Hoeheres Budget-Tier ({budget_tier.name}) -> hoehere Erwartung",
+                "kz_delta": malus,
             })
         outcome["final_events"] = final_event_results
 

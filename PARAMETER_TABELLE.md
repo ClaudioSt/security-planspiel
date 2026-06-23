@@ -38,9 +38,9 @@
 
 | Welle | Angriff | wC | wI | wA | e_threshold | baseSev | sUnit | mitigation_cap | kz_at_full_damage | kz_at_full_mitigation | KZ-Bonus | KZ-Malus |
 |-------|---------|----|----|----|--------------------|---------|-------|-----------------|---------------------|--------------------------|----------|----------|
-| 1 | Ransomware | 0.4 | 0.4 | 0.2 | **15** | 8 | 20 | 8 | -6 | 10 | +5 | -3 |
-| 2 | OT-Stoerung | 0.2 | 0.2 | 0.6 | **17** | 10 | 32 | 10 | -5 | 7 | +7 | -5 |
-| 3 | Exfiltration | 0.5 | 0.3 | 0.2 | **19** | 7 | 20 | 7 | -7 | 10 | +10 | -7 |
+| 1 | Ransomware | 0.4 | 0.4 | 0.2 | **15** | 8 | 20 | 8 | -6 | 5 | +5 | -3 |
+| 2 | OT-Stoerung | 0.2 | 0.2 | 0.6 | **17** | 10 | 32 | 10 | -5 | 3.5 | +7 | -5 |
+| 3 | Exfiltration | 0.5 | 0.3 | 0.2 | **19** | 7 | 20 | 7 | -7 | 5 | +10 | -7 |
 
 *Hinweis: `e_threshold` in dieser Tabelle ist der Angriffs-Schwellwert (fix für alle Budget-Tiers), nicht zu verwechseln mit dem tier-abhängigen E-Ziel der KZ-Bonus/Malus-Prüfung (siehe Tabelle in Abschnitt 1).*
 

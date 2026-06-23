@@ -93,7 +93,7 @@
       "base_severity": 8,
       "s_unit": 20,
       "kz_at_full_damage": -6,
-      "kz_at_full_mitigation": 10,
+      "kz_at_full_mitigation": 5,
       "cia_impact": {"c": -2, "i": -2, "a": -1},
       "mitigation_cap": 8,
       "allow_recovery": true
@@ -102,7 +102,7 @@
       "base_severity": 10,
       "s_unit": 32,
       "kz_at_full_damage": -5,
-      "kz_at_full_mitigation": 7,
+      "kz_at_full_mitigation": 3.5,
       "cia_impact": {"c": -1, "i": -2, "a": -3},
       "mitigation_cap": 10,
       "allow_recovery": true
@@ -111,7 +111,7 @@
       "base_severity": 7,
       "s_unit": 20,
       "kz_at_full_damage": -7,
-      "kz_at_full_mitigation": 10,
+      "kz_at_full_mitigation": 5,
       "cia_impact": {"c": -3, "i": -1, "a": 0},
       "mitigation_cap": 7,
       "allow_recovery": false
@@ -294,9 +294,16 @@
     {
       "id": "budget_review",
       "name": "Budget Review",
-      "description": "Nach Abschluss wird das Restbudget geprueft: <0 EUR -> KZ -15, 0-25.000 -> KZ 0, 25.001-50.000 -> KZ +5, 50.001-75.000 -> KZ +10, >=75.001 -> KZ +15.",
+      "description": "Nach Abschluss wird das Restbudget relativ zum verfuegbaren Budget geprueft: <0% -> KZ -15, 0-25% -> KZ 0, 25-50% -> KZ +5, 50-75% -> KZ +10, >=75% -> KZ +15. Relativ statt absolut, damit Teams mit hoeherem Budget-Tier nicht automatisch staerker profitieren.",
       "type": "final_budget_tier",
+      "relative": true,
       "tiers": [[-100000, -15], [0, 0], [25, 5], [50, 10], [75, 15]]
     }
-  ]
+  ],
+  "budget_tier_expectation_malus": {
+    "low": 0,
+    "medium": -10,
+    "high": -20,
+    "description": "Bei hoeherem Budget-Tier wird auch ein besseres Ergebnis erwartet (gleiches Unternehmen, mehr Mittel). Der Malus gleicht den Vorteil eines hoeheren Budgets bei der finalen KZ aus."
+  }
 }

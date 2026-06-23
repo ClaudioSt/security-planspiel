@@ -24,7 +24,7 @@ Greife zu diesen Backup-Werten, wenn du **waehrend des Spiels** merkst:
 | baseSeverity | 8 | 10 | 7 |
 | sUnit | 20 | 32 | 20 |
 | kz_at_full_damage | -6 | -5 | -7 |
-| kz_at_full_mitigation | 10 | 7 | 10 |
+| kz_at_full_mitigation | 5 | 3.5 | 5 |
 | mitigation_cap | 8 | 10 | 7 |
 | e_threshold (Angriffsformel, fix) | 15 | 17 | 19 |
 
@@ -38,6 +38,13 @@ Greife zu diesen Backup-Werten, wenn du **waehrend des Spiels** merkst:
 
 *Die E-Ziele (KZ-Bonus/Malus-Check) skalieren mit dem Budget-Tier (Medium = Low+2, High = Low+4 je Welle). Der `e_threshold` der Angriffsformel oben bleibt unabhaengig davon fix fuer alle Tiers.*
 
+### Final Events (gleiches Unternehmen, Erwartung steigt mit Budget)
+
+| Event | Mechanik |
+|-------|----------|
+| Budget Review | Restbudget wird **relativ zum jeweiligen Tier-Budget** geprueft (in %, nicht in absoluten Euro): <0% -> KZ -15, 0-25% -> KZ 0, 25-50% -> KZ +5, 50-75% -> KZ +10, >=75% -> KZ +15. So profitiert ein hoeheres Budget-Tier nicht automatisch staerker davon, einfach mehr Geld uebrig zu haben. |
+| Erwartungshaltung (Malus) | Gleiches Unternehmen, aber bei mehr Budget wird auch mehr erwartet: Low 0, Medium -10, High -20 KZ am Schluss. Gleicht aus, dass ein hoeheres Budget sonst tendenziell zu einer haeufigeren KZ=100-Sättigung fuehrt. |
+
 ---
 
 ## OPTION A: LEICHTER (falls Teams ueberfordert)
@@ -47,7 +54,7 @@ Greife zu diesen Backup-Werten, wenn du **waehrend des Spiels** merkst:
 | baseSeverity | 8 | 10 | 7 |
 | sUnit | 16 | 26 | 16 |
 | kz_at_full_damage | **-3** | **-3** | **-4** |
-| kz_at_full_mitigation | 10 | 7 | 10 |
+| kz_at_full_mitigation | 5 | 3.5 | 5 |
 | mitigation_cap | 8 | 10 | 7 |
 | E-Ziel | **13** | **15** | **17** |
 
@@ -65,7 +72,7 @@ Greife zu diesen Backup-Werten, wenn du **waehrend des Spiels** merkst:
 | baseSeverity | 8 | 10 | 7 |
 | sUnit | **24** | **38** | **24** |
 | kz_at_full_damage | **-9** | **-8** | **-10** |
-| kz_at_full_mitigation | 10 | 7 | 10 |
+| kz_at_full_mitigation | 5 | 3.5 | 5 |
 | mitigation_cap | 8 | 10 | 7 |
 | E-Ziel | **17** | **19** | **21** |
 
@@ -133,7 +140,7 @@ Option A:  8x16 + 10x26 + 7x16 = 128 + 260 + 112 = 500k
 Option B:  8x24 + 10x38 + 7x24 = 192 + 380 + 168 = 740k
 ```
 
-### KZ-Delta bei mitigation_fraction=X (Welle 1, kz_at_full_damage=-6, kz_at_full_mitigation=10)
+### KZ-Delta bei mitigation_fraction=X (Welle 1, kz_at_full_damage=-6, kz_at_full_mitigation=5)
 
 ```
 kz_delta = kz_at_full_damage + mitigation_fraction * (kz_at_full_mitigation - kz_at_full_damage)
@@ -142,10 +149,10 @@ kz_delta = kz_at_full_damage + mitigation_fraction * (kz_at_full_mitigation - kz
 | mitigation_fraction | kz_delta |
 |----------------------|----------|
 | 0.0 (Fall 1: keine Reduktion) | -6 |
-| 0.25 | -2 |
-| 0.5 | 2 |
-| 0.75 | 6 |
-| 1.0 (Fall 2: volle Mitigation) | 10 |
+| 0.25 | -3.25 |
+| 0.5 | -0.5 |
+| 0.75 | 2.25 |
+| 1.0 (Fall 2: volle Mitigation) | 5 |
 
 ---
 
