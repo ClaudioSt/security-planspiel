@@ -28,7 +28,7 @@ There is no application framework, no package structure (`src/`, `__init__.py`),
 
 **Variables:**
 - snake_case for locals (`kz_start`, `total_damage`, `e_value`, `cia_mali`).
-- Domain abbreviations used consistently and without redefinition across files: `kz` (Kundenzufriedenheit), `cia` (Confidentiality/Integrity/Availability dict with keys `c`/`i`/`a`), `e_value`/`e_threshold`/`e_divisor` (Effektivitätswert), `opex`/`init` (cost categories), `ros` (Return on Security). These map 1:1 to terms defined in `simulation_config.json` and `README.md` — do not introduce new abbreviations without adding them to the README glossary.
+- Domain abbreviations used consistently and without redefinition across files: `kz` (Kundenzufriedenheit), `cia` (Confidentiality/Integrity/Availability dict with keys `c`/`i`/`a`), `e_value`/`e_threshold` (Effektivitätswert and its fixed per-wave threshold), `mitigation_cap` (width of the linear interpolation zone above `e_threshold`), `kz_at_full_damage`/`kz_at_full_mitigation` (KZ endpoints used to interpolate `kz_delta`), `opex`/`init` (cost categories), `ros` (Return on Security). These map 1:1 to terms defined in `simulation_config.json` and `README.md` — do not introduce new abbreviations without adding them to the README glossary.
 - Constants/lookup tables are SCREAMING_SNAKE_CASE module-level dicts: `COLORS`, `MEASURE_META` (`generate_pptx_cards.py:23-36`, `generate_from_template.py:23+`), `HEADER_FONT`, `INPUT_FILL`, `THIN_BORDER` (`generate_attack_calculator.py:16-29`).
 
 **Types (dataclasses):**

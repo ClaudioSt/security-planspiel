@@ -20,8 +20,10 @@
 | Tier | Budget (k Euro) | KZ-Start | E-Ziel W1 | E-Ziel W2 | E-Ziel W3 | Sev-Mult |
 |------|-----------------|----------|-----------|-----------|-----------|----------|
 | **Low** | 300 | 60 | 15 | 17 | 19 | 1.0 |
-| **Medium** | 400 | 60 | 15 | 17 | 19 | 1.0 |
-| **High** | 500 | 60 | 15 | 17 | 19 | 1.0 |
+| **Medium** | 400 | 60 | 17 | 19 | 21 | 1.0 |
+| **High** | 500 | 60 | 19 | 21 | 23 | 1.0 |
+
+**Hinweis:** Die E-Ziele (KZ-Bonus/Malus-Check, siehe FORMULARE.md) skalieren mit dem Budget-Tier: Medium = Low + 2, High = Low + 4 (pro Welle). Dies hält die Erreichungswahrscheinlichkeit über alle Tiers annähernd konstant (~99% W1, ~94-95% W2, ~89-91% W3). Der `e_threshold` der Angriffsformel (Welle 2 unten) ist davon unabhängig und bleibt für alle Tiers fix bei 15/17/19, da er auf dem gedruckten Papier-Arbeitsblatt steht.
 
 **Simulierte Ergebnisse (27 Strategien getestet):**
 | Tier | Strategien moeglich | Best Score | Worst Score | Positive (KZ>=50) |
@@ -34,11 +36,13 @@
 
 ## 2. WELLEN-PARAMETER
 
-| Welle | Angriff | wC | wI | wA | E-Ziel | baseSev | kzUnit | sUnit | Cap | KZ-Bonus | KZ-Malus |
-|-------|---------|----|----|----|--------------------|---------|--------|-------|-----|----------|----------|
-| 1 | Ransomware | 0.4 | 0.4 | 0.2 | **15** | 8 | 2 | 20 | 8 | +5 | -3 |
-| 2 | OT-Stoerung | 0.2 | 0.2 | 0.6 | **17** | 10 | 2 | 32 | 10 | +7 | -5 |
-| 3 | Exfiltration | 0.5 | 0.3 | 0.2 | **19** | 7 | 2 | 20 | 7 | +10 | -7 |
+| Welle | Angriff | wC | wI | wA | e_threshold | baseSev | sUnit | mitigation_cap | kz_at_full_damage | kz_at_full_mitigation | KZ-Bonus | KZ-Malus |
+|-------|---------|----|----|----|--------------------|---------|-------|-----------------|---------------------|--------------------------|----------|----------|
+| 1 | Ransomware | 0.4 | 0.4 | 0.2 | **15** | 8 | 20 | 8 | -6 | 10 | +5 | -3 |
+| 2 | OT-Stoerung | 0.2 | 0.2 | 0.6 | **17** | 10 | 32 | 10 | -5 | 7 | +7 | -5 |
+| 3 | Exfiltration | 0.5 | 0.3 | 0.2 | **19** | 7 | 20 | 7 | -7 | 10 | +10 | -7 |
+
+*Hinweis: `e_threshold` in dieser Tabelle ist der Angriffs-Schwellwert (fix für alle Budget-Tiers), nicht zu verwechseln mit dem tier-abhängigen E-Ziel der KZ-Bonus/Malus-Prüfung (siehe Tabelle in Abschnitt 1).*
 
 **Basis-Verluste:** 8x20 + 10x32 + 7x20 = 160 + 320 + 140 = **620k Euro**
 
@@ -215,10 +219,10 @@
 ### Mitigation-Berechnung (E-Value basiert)
 ```
 1. E = Team_C x wC + Team_I x wI + Team_A x wA
-2. severity_reduction = (E - e_threshold) / e_divisor  [e_divisor=1]
-3. bonus_reduction = Summe der Bonus-Measures (wenn Level >= 2)
-4. final_severity = max(0, baseSeverity - severity_reduction - bonus_reduction)
-5. final_severity = min(final_severity, mitigation_cap)
+2. gesamtreduktion = E + bonus_reduction  [bonus_reduction = Summe der Bonus-Measures bei Level >= 2]
+3. reduktion_ueber_schwelle = clamp(0, mitigation_cap, gesamtreduktion - e_threshold)
+4. effective_base_severity = baseSeverity x severity_multiplier
+5. final_severity = max(0, effective_base_severity - reduktion_ueber_schwelle)
 ```
 
 ### Schaden-Berechnung
@@ -229,8 +233,9 @@ Damage_final = Damage x (1 - Recovery%)  [falls allow_recovery=true]
 
 ### KZ-Delta
 ```
-Delta_KZ = -(final_severity x kzUnit)
-E >= E-Ziel? -> +KZ_Bonus, sonst +KZ_Malus
+mitigation_fraction = reduktion_ueber_schwelle / mitigation_cap
+Delta_KZ = kz_at_full_damage + mitigation_fraction x (kz_at_full_mitigation - kz_at_full_damage)
+E >= E-Ziel? -> +KZ_Bonus, sonst +KZ_Malus   [E-Ziel = tier-abhaengiges Ziel aus Abschnitt 1, separat von e_threshold]
 KZ_neu = clamp(KZ_alt + Delta_KZ + Bonus/Malus, 0, 100)
 ```
 

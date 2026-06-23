@@ -9,18 +9,20 @@
 | Tier | Budget | KZ-Start | E-Ziele | Sev-Mult |
 |------|--------|----------|---------|----------|
 | **LOW** | 300k | 60 | 15/17/19 | 1.0 |
-| **MED** | 400k | 60 | 15/17/19 | 1.0 |
-| **HIGH** | 500k | 60 | 15/17/19 | 1.0 |
+| **MED** | 400k | 60 | 17/19/21 | 1.0 |
+| **HIGH** | 500k | 60 | 19/21/23 | 1.0 |
+
+*E-Ziele skalieren mit Budget-Tier (Medium = Low+2, High = Low+4 je Welle). Der `e_threshold` der Angriffsformel unten bleibt dagegen fix für alle Tiers bei 15/17/19.*
 
 ---
 
 ## WELLEN-PARAMETER
 
-| Welle | Angriff | baseSev | sUnit | kzUnit | Cap | wC/wI/wA | E-Ziel | Bonus/Malus |
-|-------|---------|---------|-------|--------|-----|----------|--------|-------------|
-| **1** | Ransomware | 8 | 20 | 2 | 8 | 0.4/0.4/0.2 | 15 | +5 / -3 |
-| **2** | OT-Stoerung | 10 | 32 | 2 | 10 | 0.2/0.2/0.6 | 17 | +7 / -5 |
-| **3** | Exfiltration | 7 | 20 | 2 | 7 | 0.5/0.3/0.2 | 19 | +10 / -7 |
+| Welle | Angriff | baseSev | sUnit | kz_full_dmg | kz_full_mit | mitigation_cap | wC/wI/wA | e_threshold | Bonus/Malus |
+|-------|---------|---------|-------|-------------|--------------|-----------------|----------|--------------|-------------|
+| **1** | Ransomware | 8 | 20 | -6 | 10 | 8 | 0.4/0.4/0.2 | 15 | +5 / -3 |
+| **2** | OT-Stoerung | 10 | 32 | -5 | 7 | 10 | 0.2/0.2/0.6 | 17 | +7 / -5 |
+| **3** | Exfiltration | 7 | 20 | -7 | 10 | 7 | 0.5/0.3/0.2 | 19 | +10 / -7 |
 
 **Base Losses: 620k** (160 + 320 + 140)
 
@@ -30,13 +32,14 @@
 
 ```
 1. E = Team_C x wC + Team_I x wI + Team_A x wA
-2. severity_reduction = (E - e_threshold) / e_divisor  [e_divisor=1]
-3. bonus_reduction = Summe der Bonus-Measures (wenn >= L2)
-4. final_severity = max(0, baseSeverity - severity_reduction - bonus_reduction)
+2. gesamtreduktion = E + bonus_reduction  [bonus_reduction = Summe der Bonus-Measures, wenn >= L2]
+3. reduktion_ueber_schwelle = clamp(0, mitigation_cap, gesamtreduktion - e_threshold)
+4. final_severity = max(0, baseSeverity x severity_multiplier - reduktion_ueber_schwelle)
 5. Damage = final_severity x sUnit
 6. Damage_final = Damage x (1 - Recovery%)  [M4: L1=10%, L2=30%, L3=50%]
-7. Delta_KZ = -(final_severity x kzUnit)
-8. E >= E-Ziel? -> KZ-Bonus, sonst KZ-Malus
+7. mitigation_fraction = reduktion_ueber_schwelle / mitigation_cap
+8. Delta_KZ = kz_full_dmg + mitigation_fraction x (kz_full_mit - kz_full_dmg)
+9. E >= E-Ziel? -> KZ-Bonus, sonst KZ-Malus  [E-Ziel = tier-abhaengig, siehe oben]
 ```
 
 ---

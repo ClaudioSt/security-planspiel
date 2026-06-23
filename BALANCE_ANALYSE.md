@@ -4,7 +4,8 @@
 
 **WICHTIG:** Alle Budget-Tiers repräsentieren das GLEICHE Unternehmen!
 - Gleiche Angriffe, gleiche Severity
-- Gleiche E-Targets (15/17/19)
+- Gleicher e_threshold je Welle (15/17/19, fix für alle Tiers)
+- E-Targets (KZ-Bonus/Malus-Check) skalieren mit Budget: Low 15/17/19, Medium 17/19/21, High 19/21/23
 - Gleicher KZ-Start (60)
 - **Nur das Budget unterscheidet sich**
 
@@ -20,7 +21,12 @@ Die Teams konkurrieren unter verschiedenen Budget-Restriktionen, aber gegen iden
 |-----------|------------|
 | **KZ-Start** | 60 |
 | **Severity-Mult** | 1.0 |
-| **E-Targets** | 15/17/19 |
+
+| Tier | E-Targets (Welle 1/2/3) |
+|------|--------------------------|
+| Low | 15/17/19 |
+| Medium | 17/19/21 |
+| High | 19/21/23 |
 
 | Tier | Budget |
 |------|--------|
@@ -30,11 +36,11 @@ Die Teams konkurrieren unter verschiedenen Budget-Restriktionen, aber gegen iden
 
 ### Angriffs-Parameter
 
-| Angriff | Base Severity | kz_unit | s_unit | e_threshold | e_divisor |
-|---------|---------------|---------|--------|-------------|-----------|
-| Ransomware | 8 | 2 | 20 | 15 | 1 |
-| OT-Störung | 10 | 2 | 32 | 17 | 1 |
-| Exfiltration | 7 | 2 | 20 | 19 | 1 |
+| Angriff | Base Severity | kz_at_full_damage | kz_at_full_mitigation | s_unit | e_threshold | mitigation_cap |
+|---------|---------------|--------------------|------------------------|--------|-------------|-----------------|
+| Ransomware | 8 | -6 | 10 | 20 | 15 | 8 |
+| OT-Störung | 10 | -5 | 7 | 32 | 17 | 10 |
+| Exfiltration | 7 | -7 | 10 | 20 | 19 | 7 |
 
 ### Wellen-Parameter
 
@@ -192,19 +198,33 @@ Die Teams konkurrieren unter verschiedenen Budget-Restriktionen, aber gegen iden
 
 ### Formel
 ```
-severity_reduction = (E_value - e_threshold) / e_divisor
-final_severity = max(0, base_severity - severity_reduction - bonus_reduction)
+e_value = c*wC + i*wI + a*wA
+gesamtreduktion = e_value + bonus_reduction
+reduktion_ueber_schwelle = clamp(0, mitigation_cap, gesamtreduktion - e_threshold)
+effective_base_severity = base_severity * severity_multiplier
+severity = max(0, effective_base_severity - reduktion_ueber_schwelle)
+damage = severity * s_unit
+
+mitigation_fraction = reduktion_ueber_schwelle / mitigation_cap
+kz_delta = kz_at_full_damage + mitigation_fraction * (kz_at_full_mitigation - kz_at_full_damage)
 ```
 
 ### Beispiel: "OT Fokus Low" - Welle 2 (OT-Störung)
 ```
 CIA: C=21, I=25, A=23
-E_value = 0.2*21 + 0.2*25 + 0.6*23 = 4.2 + 5.0 + 13.8 = 23.0
-e_threshold = 17, e_divisor = 1
-severity_reduction = (23.0 - 17) / 1 = 6.0
+e_value = 0.2*21 + 0.2*25 + 0.6*23 = 4.2 + 5.0 + 13.8 = 23.0
 bonus_reduction = 3 (M5 L2 + M7 L1)
-final_severity = max(0, 10 - 6 - 3) = 1
-KZ-Verlust = 1 * 2 = 2, Schaden = 1 * 29k = 29k
+gesamtreduktion = 23.0 + 3 = 26.0
+
+e_threshold = 17, mitigation_cap = 10
+reduktion_ueber_schwelle = clamp(0, 10, 26.0 - 17) = clamp(0, 10, 9.0) = 9.0
+
+base_severity = 10, severity_multiplier = 1.0 → effective_base_severity = 10
+severity = max(0, 10 - 9.0) = 1.0
+Schaden = 1.0 * 32k = 32k
+
+mitigation_fraction = 9.0 / 10 = 0.9
+kz_delta = -5 + 0.9 * (7 - (-5)) = -5 + 0.9*12 = 5.8
 ```
 
 ---

@@ -5,8 +5,10 @@
 | Tier | Budget | KZ-Start | Severity | E-Ziele (W1/W2/W3) |
 |------|:------:|:--------:|:--------:|:------------------:|
 | Low | 300k | 60 | x1.0 | 15/17/19 |
-| Medium | 400k | 60 | x1.0 | 15/17/19 |
-| High | 500k | 60 | x1.0 | 15/17/19 |
+| Medium | 400k | 60 | x1.0 | 17/19/21 |
+| High | 500k | 60 | x1.0 | 19/21/23 |
+
+*E-Ziele (KZ-Bonus/Malus-Check) skalieren mit dem Budget-Tier; der Schwellenwert der Schadensreduktion unten bleibt fuer alle Tiers fix bei 15/17/19.*
 
 **Hinweis:** Alle Teams beraten das GLEICHE Unternehmen - nur das Budget unterscheidet sich!
 
@@ -23,18 +25,21 @@ GESAMT-CIA = BASIS (10/10/10) + SUMME ALLER MASSNAHMEN
 ## E-Value basierte Schadensberechnung
 
 ```
-1. E-Wert berechnen:      E = C x Gew_C + I x Gew_I + A x Gew_A
-2. Basis-Reduktion:       (E-Wert - Schwellenwert) / e_divisor  [e_divisor=1]
-3. Bonus-Reduktion:       Summe der aktiven Bonus-Massnahmen (L2+)
-4. Gesamt-Severity:       max(0, Basis-Severity - Reduktionen)
-5. Schaden:               Severity x Schadenseinheit
+1. E-Wert berechnen:         E = C x Gew_C + I x Gew_I + A x Gew_A
+2. Bonus-Reduktion:          Summe der aktiven Bonus-Massnahmen (L2+)
+3. Gesamt-Reduktion:         E-Wert + Bonus-Reduktion
+4. Reduktion ueber Schwelle: clamp(0, mitigation_cap, Gesamt-Reduktion - Schwellenwert)
+5. Severity:                 max(0, Basis-Severity x Severity-Mult. - Reduktion ueber Schwelle)
+6. Schaden:                  Severity x Schadenseinheit
+7. Mitigation-Anteil:        Reduktion ueber Schwelle / mitigation_cap
+8. KZ-Delta (Angriff):       kz_bei_voller_Wirkung + Mitigation-Anteil x (kz_bei_voller_Abwehr - kz_bei_voller_Wirkung)
 ```
 
 ---
 
 ## E-Wert-Formeln pro Welle
 
-| Welle | Angriff | Formel | Schwelle | Cap | Bonus/Malus |
+| Welle | Angriff | Formel | Schwelle (e_threshold) | mitigation_cap | Bonus/Malus |
 |:-----:|---------|--------|:--------:|:---:|:-----------:|
 | **1** | Ransomware | E = C x 0.4 + I x 0.4 + A x 0.2 | 15 | 8 | +5 / -3 |
 | **2** | OT-Stoerung | E = C x 0.2 + I x 0.2 + A x 0.6 | 17 | 10 | +7 / -5 |
@@ -44,11 +49,11 @@ GESAMT-CIA = BASIS (10/10/10) + SUMME ALLER MASSNAHMEN
 
 ## Angriffs-Parameter
 
-| Angriff | Basis-Severity | Cap | Schadenseinheit | KZ/Severity |
-|---------|:--------------:|:---:|:---------------:|:-----------:|
-| Ransomware | 8 | 8 | 20k | -2 |
-| OT-Stoerung | 10 | 10 | 32k | -2 |
-| Exfiltration | 7 | 7 | 20k | -2 |
+| Angriff | Basis-Severity | mitigation_cap | Schadenseinheit | kz_bei_voller_Wirkung | kz_bei_voller_Abwehr |
+|---------|:--------------:|:---------------:|:---------------:|:----------------------:|:----------------------:|
+| Ransomware | 8 | 8 | 20k | -6 | +10 |
+| OT-Stoerung | 10 | 10 | 32k | -5 | +7 |
+| Exfiltration | 7 | 7 | 20k | -7 | +10 |
 
 ---
 

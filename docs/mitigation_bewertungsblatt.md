@@ -5,8 +5,10 @@
 | Tier | KZ-Start | Severity-Mult. | E-Ziele (W1/W2/W3) |
 |------|:--------:|:--------------:|:------------------:|
 | Low | 60 | x1.0 | 15/17/19 |
-| Medium | 60 | x1.0 | 15/17/19 |
-| High | 60 | x1.0 | 15/17/19 |
+| Medium | 60 | x1.0 | 17/19/21 |
+| High | 60 | x1.0 | 19/21/23 |
+
+*Hinweis: Die E-Ziele oben (KZ-Bonus/Malus-Check) skalieren mit dem Budget-Tier. Der `Schwellenwert` der Schadensreduktion (Teil 2 unten) ist davon getrennt und bleibt fuer alle Tiers fix bei 15/17/19.*
 
 **WICHTIG:** Alle Teams beraten das GLEICHE Unternehmen - nur das Budget unterscheidet sich!
 
@@ -42,12 +44,14 @@ Tragen Sie das **gewaehlte Level (0-3)** ein und uebertragen Sie die entsprechen
 ### Das E-Value basierte System
 
 ```
-1. E-Wert berechnen:     E = C x Gew_C + I x Gew_I + A x Gew_A
-2. Basis-Reduktion:      (E-Wert - Schwellenwert) / 1  (e_divisor=1)
-3. Bonus-Reduktion:      +X fuer bestimmte Massnahmen >= Level 2
-4. Gesamt-Reduktion:     Basis + Bonus
-5. Severity:             max(0, Basis-Severity - Gesamt-Reduktion)
-6. Schaden:              Severity x Schadenseinheit
+1. E-Wert berechnen:        E = C x Gew_C + I x Gew_I + A x Gew_A
+2. Bonus-Reduktion:         +X fuer bestimmte Massnahmen >= Level 2
+3. Gesamt-Reduktion:        E-Wert + Bonus-Reduktion
+4. Reduktion ueber Schwelle: clamp(0, mitigation_cap, Gesamt-Reduktion - Schwellenwert)
+5. Severity:                max(0, Basis-Severity x Severity-Mult. - Reduktion ueber Schwelle)
+6. Schaden:                 Severity x Schadenseinheit
+7. Mitigation-Anteil:       Reduktion ueber Schwelle / mitigation_cap
+8. KZ-Delta (Angriff):      kz_bei_voller_Wirkung + Mitigation-Anteil x (kz_bei_voller_Abwehr - kz_bei_voller_Wirkung)
 ```
 
 ---
@@ -65,16 +69,6 @@ Tragen Sie das **gewaehlte Level (0-3)** ein und uebertragen Sie die entsprechen
 
 **E-Ziel pruefen:** E-Wert >= 15? -> [ ] Ja (+5 KZ) [ ] Nein (-3 KZ)
 
-**Schadensreduktion berechnen:**
-
-| Schritt | Berechnung | Wert |
-|---------|------------|:----:|
-| E-Wert | (aus Tabelle oben) | ___ |
-| - Schwellenwert | - 15 | |
-| = Ueberschuss | | ___ |
-| / 1 (e_divisor) | | |
-| **= Basis-Reduktion** | (abgerundet) | **___** |
-
 **Bonus-Massnahmen pruefen:**
 
 | Massnahme | Bedingung | Bonus | Erfuellt? |
@@ -84,22 +78,37 @@ Tragen Sie das **gewaehlte Level (0-3)** ein und uebertragen Sie die entsprechen
 | M6 Awareness | >= Level 2 | +1 | [ ] Ja -> +1 |
 | **Bonus-Summe** | | | **___** |
 
+**Schadensreduktion berechnen:**
+
+| Schritt | Berechnung | Wert |
+|---------|------------|:----:|
+| E-Wert | (aus Tabelle oben) | ___ |
+| + Bonus-Reduktion | | + ___ |
+| = Gesamt-Reduktion | | ___ |
+| - Schwellenwert | - 15 | |
+| = Ueberschuss | | ___ |
+| **= Reduktion ueber Schwelle** | clamp(0, 8, Ueberschuss) | **___** |
+
 **Schaden berechnen:**
 
 ```
-Basis-Reduktion:        ___
-+ Bonus-Reduktion:    + ___
-= Gesamt-Reduktion:     ___
+Basis-Severity:                 8
+- Reduktion ueber Schwelle:   -___
+= Finale Severity:              ___ (min. 0)
 
-Basis-Severity:         8
-- Gesamt-Reduktion:   -___
-= Finale Severity:      ___ (min. 0)
+x Schadenseinheit:            x 20k
+= SCHADEN:                      ___k
+```
 
-x Schadenseinheit:    x 20k
-= SCHADEN:              ___k
+**KZ-Delta (Angriff) berechnen:**
 
-x KZ-Einheit:         x (-2)
-= KZ-Delta Angriff:     ___
+```
+Mitigation-Anteil:  Reduktion ueber Schwelle / 8  =  ___
+
+kz_bei_voller_Wirkung (Anteil=0):   -6
+kz_bei_voller_Abwehr (Anteil=1):   +10
+
+KZ-Delta Angriff = -6 + Mitigation-Anteil x (10 - (-6)) = -6 + Mitigation-Anteil x 16 = ___
 ```
 
 ---
@@ -117,16 +126,6 @@ x KZ-Einheit:         x (-2)
 
 **E-Ziel pruefen:** E-Wert >= 17? -> [ ] Ja (+7 KZ) [ ] Nein (-5 KZ)
 
-**Schadensreduktion berechnen:**
-
-| Schritt | Berechnung | Wert |
-|---------|------------|:----:|
-| E-Wert | | ___ |
-| - Schwellenwert | - 17 | |
-| = Ueberschuss | | ___ |
-| / 1 (e_divisor) | | |
-| **= Basis-Reduktion** | | **___** |
-
 **Bonus-Massnahmen pruefen:**
 
 | Massnahme | Bedingung | Bonus | Erfuellt? |
@@ -135,22 +134,37 @@ x KZ-Einheit:         x (-2)
 | M7 Vulnerability Mgmt | >= Level 2 | +2 | [ ] Ja -> +2 |
 | **Bonus-Summe** | | | **___** |
 
+**Schadensreduktion berechnen:**
+
+| Schritt | Berechnung | Wert |
+|---------|------------|:----:|
+| E-Wert | | ___ |
+| + Bonus-Reduktion | | + ___ |
+| = Gesamt-Reduktion | | ___ |
+| - Schwellenwert | - 17 | |
+| = Ueberschuss | | ___ |
+| **= Reduktion ueber Schwelle** | clamp(0, 10, Ueberschuss) | **___** |
+
 **Schaden berechnen:**
 
 ```
-Basis-Reduktion:        ___
-+ Bonus-Reduktion:    + ___
-= Gesamt-Reduktion:     ___
+Basis-Severity:                 10
+- Reduktion ueber Schwelle:   -___
+= Finale Severity:              ___ (min. 0)
 
-Basis-Severity:         10
-- Gesamt-Reduktion:   -___
-= Finale Severity:      ___ (min. 0)
+x Schadenseinheit:            x 32k
+= SCHADEN:                      ___k
+```
 
-x Schadenseinheit:    x 32k
-= SCHADEN:              ___k
+**KZ-Delta (Angriff) berechnen:**
 
-x KZ-Einheit:         x (-2)
-= KZ-Delta Angriff:     ___
+```
+Mitigation-Anteil:  Reduktion ueber Schwelle / 10  =  ___
+
+kz_bei_voller_Wirkung (Anteil=0):   -5
+kz_bei_voller_Abwehr (Anteil=1):    +7
+
+KZ-Delta Angriff = -5 + Mitigation-Anteil x (7 - (-5)) = -5 + Mitigation-Anteil x 12 = ___
 ```
 
 ---
@@ -168,16 +182,6 @@ x KZ-Einheit:         x (-2)
 
 **E-Ziel pruefen:** E-Wert >= 19? -> [ ] Ja (+10 KZ) [ ] Nein (-7 KZ)
 
-**Schadensreduktion berechnen:**
-
-| Schritt | Berechnung | Wert |
-|---------|------------|:----:|
-| E-Wert | | ___ |
-| - Schwellenwert | - 19 | |
-| = Ueberschuss | | ___ |
-| / 1 (e_divisor) | | |
-| **= Basis-Reduktion** | | **___** |
-
 **Bonus-Massnahmen pruefen:**
 
 | Massnahme | Bedingung | Bonus | Erfuellt? |
@@ -187,33 +191,50 @@ x KZ-Einheit:         x (-2)
 | M8 Supply Chain | >= Level 2 | +1 | [ ] Ja -> +1 |
 | **Bonus-Summe** | | | **___** |
 
+**Schadensreduktion berechnen:**
+
+| Schritt | Berechnung | Wert |
+|---------|------------|:----:|
+| E-Wert | | ___ |
+| + Bonus-Reduktion | | + ___ |
+| = Gesamt-Reduktion | | ___ |
+| - Schwellenwert | - 19 | |
+| = Ueberschuss | | ___ |
+| **= Reduktion ueber Schwelle** | clamp(0, 7, Ueberschuss) | **___** |
+
 **Schaden berechnen:**
 
 ```
-Basis-Reduktion:        ___
-+ Bonus-Reduktion:    + ___
-= Gesamt-Reduktion:     ___
+Basis-Severity:                 7
+- Reduktion ueber Schwelle:   -___
+= Finale Severity:              ___ (min. 0)
 
-Basis-Severity:         7
-- Gesamt-Reduktion:   -___
-= Finale Severity:      ___ (min. 0)
+x Schadenseinheit:            x 20k
+= SCHADEN:                      ___k
+```
 
-x Schadenseinheit:    x 20k
-= SCHADEN:              ___k
+**KZ-Delta (Angriff) berechnen:**
 
-x KZ-Einheit:         x (-2)
-= KZ-Delta Angriff:     ___
+```
+Mitigation-Anteil:  Reduktion ueber Schwelle / 7  =  ___
+
+kz_bei_voller_Wirkung (Anteil=0):   -7
+kz_bei_voller_Abwehr (Anteil=1):   +10
+
+KZ-Delta Angriff = -7 + Mitigation-Anteil x (10 - (-7)) = -7 + Mitigation-Anteil x 17 = ___
 ```
 
 ---
 
 ## Teil 3: Zusammenfassung
 
-| Welle | E-Wert | E-Ziel | Basis-Red. | Bonus-Red. | Severity | Schaden | KZ (E-Ziel) | KZ (Angriff) |
-|-------|:------:|:------:|:----------:|:----------:|:--------:|--------:|:-----------:|:------------:|
-| 1 Ransomware | ___ | >=15 | ___ | ___ | ___ | ___k | ___ | ___ |
-| 2 OT-Stoerung | ___ | >=17 | ___ | ___ | ___ | ___k | ___ | ___ |
-| 3 Exfiltration | ___ | >=19 | ___ | ___ | ___ | ___k | ___ | ___ |
+| Welle | E-Wert | E-Ziel | Bonus-Red. | Red. ueber Schwelle | Severity | Schaden | KZ (E-Ziel) | KZ (Angriff) |
+|-------|:------:|:------:|:----------:|:--------------------:|:--------:|--------:|:-----------:|:------------:|
+| 1 Ransomware | ___ | >=15* | ___ | ___ | ___ | ___k | ___ | ___ |
+| 2 OT-Stoerung | ___ | >=17* | ___ | ___ | ___ | ___k | ___ | ___ |
+| 3 Exfiltration | ___ | >=19* | ___ | ___ | ___ | ___k | ___ | ___ |
+
+*Beim Medium-Tier: 17/19/21; beim High-Tier: 19/21/23 (siehe E-Ziele-Tabelle oben). Der Schwellenwert der Schadensreduktion bleibt unabhaengig davon bei 15/17/19.
 
 **KZ-Verlauf:**
 
