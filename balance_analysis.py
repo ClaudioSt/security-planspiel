@@ -279,7 +279,7 @@ def calculate_combined_score(kz_final: int, ros: float, damage: float) -> float:
 
 def run_analysis():
     config_path = Path(__file__).parent / "simulation_config.json"
-    default_tier, budget_tiers, attacks, waves, measures, events, base_cia = load_config(config_path)
+    default_tier, budget_tiers, attacks, waves, measures, events, base_cia, final_events = load_config(config_path)
 
     # First: Calculate cost reference
     print("=" * 100)

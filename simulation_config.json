@@ -44,7 +44,6 @@
         "a": 0.2
       },
       "e_threshold": 15,
-      "e_divisor": 1,
       "kz_bonus": 5,
       "kz_malus": -3,
       "bonus_measures": [
@@ -63,7 +62,6 @@
         "a": 0.6
       },
       "e_threshold": 17,
-      "e_divisor": 1,
       "kz_bonus": 7,
       "kz_malus": -5,
       "bonus_measures": [
@@ -81,7 +79,6 @@
         "a": 0.2
       },
       "e_threshold": 19,
-      "e_divisor": 1,
       "kz_bonus": 10,
       "kz_malus": -7,
       "bonus_measures": [
@@ -225,84 +222,78 @@
       "dependencies": []
     }
   },
+  "_comment_events": "Quelle: final_documents/Events_Security-Game.pptx (9 Folien). 'Backup & Recovery' (Folie 1) ist nicht separat aufgefuehrt, da identisch mit der M4-Recovery-Mechanik auf Angriffsebene (attacks.*.allow_recovery + measures.M4.levels.*.recovery: 0.10/0.30/0.50 -> Endschaden x 0.90/0.70/0.50).",
   "events": {
     "wave_1": [
       {
-        "id": "phishing_campaign",
-        "name": "Phishing-Kampagne entdeckt",
-        "description": "Eine gezielte Phishing-Kampagne gegen Ihre Mitarbeiter wurde entdeckt.",
-        "condition": {"measure": "M6", "min_level": 2},
-        "effect_if_met": {"kz_delta": 2, "description": "Geschulte Mitarbeiter melden verdächtige E-Mails"},
-        "effect_if_not_met": {"kz_delta": -3, "description": "Mehrere Mitarbeiter klicken auf schädliche Links"}
+        "id": "kurswechsel",
+        "name": "Kurswechsel",
+        "description": "Die Geschaeftsfuehrung richtet die Sicherheitsstrategie neu aus: genau ein Massnahmenwechsel ist durchzufuehren, nur die Kostendifferenz der Init-Kosten wird verrechnet.",
+        "type": "noop"
       },
       {
-        "id": "insurance_review",
-        "name": "Cyber-Versicherung Prüfung",
-        "description": "Ihre Cyber-Versicherung prüft Ihre Sicherheitsmaßnahmen für die Prämienkalkulation.",
-        "condition": {"e_value_min": 16},
-        "effect_if_met": {"budget_delta": 10, "description": "Niedrigere Prämie spart Budget"},
-        "effect_if_not_met": {"budget_delta": -15, "description": "Höhere Prämie belastet Budget"}
-      },
-      {
-        "id": "new_vulnerability",
-        "name": "Kritische Schwachstelle veröffentlicht",
-        "description": "Eine kritische Zero-Day-Schwachstelle wird öffentlich bekannt.",
-        "condition": {"measure": "M7", "min_level": 1},
-        "effect_if_met": {"kz_delta": 0, "description": "Patch-Prozess greift, Schwachstelle wird geschlossen"},
-        "effect_if_not_met": {"kz_delta": -2, "description": "Verzögerung beim Patchen erzeugt Unsicherheit"}
+        "id": "operative_unterstuetzung",
+        "name": "Operative Unterstuetzung",
+        "description": "Ein zentraler Rahmenvertrag senkt die laufenden Betriebskosten: OPEX -2.000 EUR pro aktiver Massnahme in der kommenden Welle.",
+        "type": "opex_discount_per_active_measure",
+        "opex_per_measure": -2
       }
     ],
     "wave_2": [
       {
+        "id": "sparprogramm",
+        "name": "Sparprogramm",
+        "description": "Der CFO verkuendet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+        "type": "flat_budget",
+        "budget_delta": -20
+      },
+      {
         "id": "oem_audit",
-        "name": "OEM-Sicherheitsaudit",
-        "description": "Ein wichtiger Automobilkunde führt ein Sicherheitsaudit durch.",
-        "condition": {"e_value_min": 18},
-        "effect_if_met": {"kz_delta": 5, "description": "Audit bestanden - Kundenvertrauen gestärkt"},
-        "effect_if_not_met": {"kz_delta": -5, "description": "Audit-Mängel gefährden Kundenbeziehung"}
+        "name": "OEM-Audit",
+        "description": "Der Automobilkunde prueft die Grundkontrollen: M1 IAM/PAM, M2 Logging & SIEM/MDR, M4 Backup & Disaster Recovery, M5 OT/IT-Netz-Segmentierung, M7 Vulnerability & Patch Management, jeweils mindestens Level 1.",
+        "type": "checklist_tier",
+        "measures": ["M1", "M2", "M4", "M5", "M7"],
+        "min_level": 1,
+        "tiers": [[0, -15], [1, -5], [2, 0], [3, 0], [4, 5], [5, 15]]
       },
       {
-        "id": "production_pressure",
-        "name": "Produktionsdruck",
-        "description": "Lieferengpässe erfordern Überstunden und schnelle Lösungen.",
-        "condition": {"measure": "M5", "min_level": 1},
-        "effect_if_met": {"kz_delta": 0, "description": "Segmentierte Netze erlauben flexible Produktion"},
-        "effect_if_not_met": {"opex_delta": 8, "description": "Notfall-Maßnahmen zur Absicherung der Produktion"}
-      },
-      {
-        "id": "key_employee_leaves",
-        "name": "Security-Experte kündigt",
-        "description": "Ein wichtiger IT-Security-Mitarbeiter verlässt das Unternehmen.",
-        "condition": {"measure": "M2", "min_level": 2},
-        "effect_if_met": {"kz_delta": 0, "description": "Dokumentierte Prozesse ermöglichen Übergabe"},
-        "effect_if_not_met": {"kz_delta": -3, "opex_delta": 5, "description": "Wissensverlust erfordert teure Berater"}
+        "id": "kritische_schwachstelle",
+        "name": "Kritische Schwachstelle im System",
+        "description": "Eine aktiv ausgenutzte Schwachstelle wird gemeldet - die Reaktion haengt vom Niveau des Patch Managements (M7) ab.",
+        "type": "measure_level_tier",
+        "measure": "M7",
+        "tiers": {"0": -5, "1": 0, "2": 3, "3": 7}
       }
     ],
     "wave_3": [
       {
-        "id": "regulatory_audit",
-        "name": "NIS2/KRITIS-Prüfung",
-        "description": "Die Behörde prüft Ihre Compliance mit NIS2-Anforderungen.",
-        "condition": {"measures_at_level_2": 4},
-        "effect_if_met": {"kz_delta": 5, "description": "Compliance nachgewiesen - positive Bewertung"},
-        "effect_if_not_met": {"kz_delta": -5, "budget_delta": -15, "description": "Bußgeld und Nachbesserungspflicht"}
+        "id": "exzellenz_bonus",
+        "name": "Exzellenz-Bonus",
+        "description": "Fuer jede Massnahme auf hoechstem Niveau (Level 3) gibt es +5 KZ.",
+        "type": "level_bonus_per_measure",
+        "level": 3,
+        "kz_per_measure": 5
       },
       {
-        "id": "partner_breach",
-        "name": "Lieferanten-Datenpanne",
-        "description": "Ein wichtiger Lieferant meldet einen Sicherheitsvorfall.",
-        "condition": {"measure": "M8", "min_level": 2},
-        "effect_if_met": {"kz_delta": 3, "description": "Vertraglich gesicherte Meldepflicht begrenzt Schaden"},
-        "effect_if_not_met": {"kz_delta": -3, "description": "Unklare Auswirkungen verunsichern Management"}
-      },
-      {
-        "id": "board_presentation",
-        "name": "Vorstandspräsentation",
-        "description": "Der Vorstand fordert einen Bericht zum Sicherheitsstatus.",
-        "condition": {"e_value_min": 20},
-        "effect_if_met": {"kz_delta": 3, "description": "Überzeugende Präsentation stärkt Position"},
-        "effect_if_not_met": {"kz_delta": -2, "description": "Kritische Nachfragen zu Investitionsentscheidungen"}
+        "id": "nervige_authentifizierung",
+        "name": "Nervige Authentifizierung",
+        "description": "Verschaerfte Zugriffskontrollen (M1 >= Level 2) ohne begleitende Schulung (M6 = Level 0) erzeugen Frust: KZ -10.",
+        "type": "and_condition",
+        "clauses": [
+          {"measure": "M1", "min_level": 2},
+          {"measure": "M6", "level_eq": 0}
+        ],
+        "kz_delta": -10
       }
     ]
-  }
+  },
+  "final_events": [
+    {
+      "id": "budget_review",
+      "name": "Budget Review",
+      "description": "Nach Abschluss wird das Restbudget geprueft: <0 EUR -> KZ -15, 0-25.000 -> KZ 0, 25.001-50.000 -> KZ +5, 50.001-75.000 -> KZ +10, >=75.001 -> KZ +15.",
+      "type": "final_budget_tier",
+      "tiers": [[-100000, -15], [0, 0], [25, 5], [50, 10], [75, 15]]
+    }
+  ]
 }
