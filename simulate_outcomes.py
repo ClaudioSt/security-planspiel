@@ -12,7 +12,8 @@ class Attack:
     attack_id: str
     base_severity: int
     s_unit: int
-    kz_unit: int
+    kz_at_full_damage: float
+    kz_at_full_mitigation: float
     cia_impact: Dict[str, int]
     mitigation_cap: int
     allow_recovery: bool
@@ -33,7 +34,6 @@ class Wave:
     attack_id: str
     weights: Dict[str, float]
     e_threshold: int
-    e_divisor: int
     kz_bonus: int
     kz_malus: int
     bonus_measures: List[BonusMeasure]
@@ -69,9 +69,8 @@ class Event:
     id: str
     name: str
     description: str
-    condition: Dict
-    effect_if_met: Dict
-    effect_if_not_met: Dict
+    type: str
+    params: Dict
 
 
 def load_config(path: Path):
@@ -93,7 +92,8 @@ def load_config(path: Path):
             attack_id=attack_id,
             base_severity=info["base_severity"],
             s_unit=info["s_unit"],
-            kz_unit=info["kz_unit"],
+            kz_at_full_damage=info["kz_at_full_damage"],
+            kz_at_full_mitigation=info["kz_at_full_mitigation"],
             cia_impact=info["cia_impact"],
             mitigation_cap=info["mitigation_cap"],
             allow_recovery=info["allow_recovery"],
@@ -118,7 +118,6 @@ def load_config(path: Path):
             attack_id=wave["attack_id"],
             weights=wave["weights"],
             e_threshold=wave.get("e_threshold", 18),
-            e_divisor=wave.get("e_divisor", 2),
             kz_bonus=wave["kz_bonus"],
             kz_malus=wave["kz_malus"],
             bonus_measures=bonus_measures,
@@ -153,14 +152,24 @@ def load_config(path: Path):
                     id=ev["id"],
                     name=ev["name"],
                     description=ev["description"],
-                    condition=ev["condition"],
-                    effect_if_met=ev["effect_if_met"],
-                    effect_if_not_met=ev["effect_if_not_met"],
+                    type=ev["type"],
+                    params={k: v for k, v in ev.items() if k not in ("id", "name", "description", "type")},
                 )
                 for ev in wave_events
             ]
 
-    return raw["default_budget_tier"], budget_tiers, attacks, waves, measures, events, base_cia
+    final_events = [
+        Event(
+            id=ev["id"],
+            name=ev["name"],
+            description=ev["description"],
+            type=ev["type"],
+            params={k: v for k, v in ev.items() if k not in ("id", "name", "description", "type")},
+        )
+        for ev in raw.get("final_events", [])
+    ]
+
+    return raw["default_budget_tier"], budget_tiers, attacks, waves, measures, events, base_cia, final_events
 
 
 def dependencies_satisfied(selection: Dict[str, int], measures: Dict[str, Measure]) -> bool:
@@ -206,24 +215,11 @@ def compute_e_value(cia: Dict[str, int], weights: Dict[str, float]) -> float:
     return cia["c"] * weights["c"] + cia["i"] * weights["i"] + cia["a"] * weights["a"]
 
 
-def compute_mitigation_from_e_value(
-    e_value: float,
+def compute_bonus_reduction(
     wave: Wave,
     selection: Dict[str, int],
-) -> Tuple[int, int, List[str]]:
-    """
-    Compute mitigation based on E-Value and bonus measures.
-
-    Returns:
-        base_reduction: Reduction from E-Value exceeding threshold
-        bonus_reduction: Additional reduction from bonus measures
-        bonus_descriptions: List of active bonus descriptions
-    """
-    # Base reduction from E-Value
-    e_excess = max(0, e_value - wave.e_threshold)
-    base_reduction = int(e_excess / wave.e_divisor)
-
-    # Bonus reduction from specific measures
+) -> Tuple[int, List[str]]:
+    """Bonus reduction from specific measures (per Angriffs-Arbeitsblatt: 'Gesamtbonus')."""
     bonus_reduction = 0
     bonus_descriptions = []
     for bm in wave.bonus_measures:
@@ -231,7 +227,7 @@ def compute_mitigation_from_e_value(
             bonus_reduction += bm.bonus
             bonus_descriptions.append(bm.description)
 
-    return base_reduction, bonus_reduction, bonus_descriptions
+    return bonus_reduction, bonus_descriptions
 
 
 def apply_attack(
@@ -242,21 +238,43 @@ def apply_attack(
     cia: Dict[str, int],
     severity_multiplier: float = 1.0,
 ) -> Dict:
-    """Apply an attack using the new E-Value based mitigation system."""
+    """
+    Apply an attack exactly as specified on the printed Angriffs-Arbeitsblatt
+    (z.B. Angriff-1_Ransomware.docx):
+
+        Gesamtreduktion = E-Wert + Gesamtbonus
+        Fall 1: Gesamtreduktion <= e_threshold              -> volle Basisschadenswirkung
+        Fall 2: Gesamtreduktion >= e_threshold + mitigation_cap -> kein Schaden
+        Fall 3: dazwischen                                  -> lineare Interpolation
+
+    No flooring/division is applied to E-Wert or Gesamtreduktion - the formula
+    matches the paper worksheet number-for-number.
+    """
     e_value = compute_e_value(cia, wave.weights)
-    base_reduction, bonus_reduction, bonus_descriptions = compute_mitigation_from_e_value(
-        e_value, wave, selection
+    bonus_reduction, bonus_descriptions = compute_bonus_reduction(wave, selection)
+
+    gesamtreduktion = e_value + bonus_reduction
+    reduktion_ueber_schwelle = min(
+        attack.mitigation_cap, max(0, gesamtreduktion - wave.e_threshold)
     )
 
-    total_reduction = base_reduction + bonus_reduction
-    capped_reduction = min(attack.mitigation_cap, total_reduction)
-
     # Apply severity multiplier (larger companies are bigger targets)
-    effective_base_severity = int(attack.base_severity * severity_multiplier)
-    severity = max(0, effective_base_severity - capped_reduction)
+    effective_base_severity = attack.base_severity * severity_multiplier
+    severity = max(0.0, effective_base_severity - reduktion_ueber_schwelle)
 
     damage = severity * attack.s_unit
-    kz_delta = -severity * attack.kz_unit
+
+    # KZ-Delta linear zwischen den auf dem Arbeitsblatt festgelegten Endpunkten
+    # interpoliert (Fall 1: redu=0 -> kz_at_full_damage, Fall 2: redu=cap ->
+    # kz_at_full_mitigation), statt der im Word-Dokument widersprüchlichen
+    # Fall-3-Subformel (deren Steigung bei Welle 2/3 nicht zu den eigenen
+    # Fall-1/Fall-2-Werten passt).
+    mitigation_fraction = (
+        reduktion_ueber_schwelle / attack.mitigation_cap if attack.mitigation_cap else 0.0
+    )
+    kz_delta = attack.kz_at_full_damage + mitigation_fraction * (
+        attack.kz_at_full_mitigation - attack.kz_at_full_damage
+    )
     cia_delta = {key: severity * impact for key, impact in attack.cia_impact.items()}
 
     recovery_factor = 0.0
@@ -266,11 +284,10 @@ def apply_attack(
 
     return {
         "e_value": e_value,
-        "base_reduction": base_reduction,
         "bonus_reduction": bonus_reduction,
         "bonus_descriptions": bonus_descriptions,
-        "total_reduction": total_reduction,
-        "capped_reduction": capped_reduction,
+        "gesamtreduktion": gesamtreduktion,
+        "capped_reduction": reduktion_ueber_schwelle,
         "effective_base_severity": effective_base_severity,
         "severity": severity,
         "damage": damage,
@@ -285,36 +302,84 @@ def count_measures_at_level(selection: Dict[str, int], min_level: int) -> int:
     return sum(1 for level in selection.values() if level >= min_level)
 
 
-def check_event_condition(
+def _tier_lookup(value: float, tiers: List[List[float]]) -> float:
+    """
+    tiers: list of [min_inclusive, value], sorted ascending by min_inclusive.
+    Returns the value of the highest tier whose min_inclusive <= value.
+    """
+    result = tiers[0][1]
+    for min_inclusive, tier_value in tiers:
+        if value >= min_inclusive:
+            result = tier_value
+    return result
+
+
+def evaluate_event(
     event: Event,
     selection: Dict[str, int],
-    e_value: float,
-) -> bool:
-    """Check if an event condition is met."""
-    condition = event.condition
+    remaining_budget: Optional[float] = None,
+) -> Tuple[int, int, int, str]:
+    """
+    Evaluate a single event exactly as specified on Events_Security-Game.pptx.
 
-    if "measure" in condition:
-        measure_level = selection.get(condition["measure"], 0)
-        if measure_level < condition["min_level"]:
-            return False
+    Returns: (kz_delta, opex_delta, budget_delta, effect_description)
+    """
+    p = event.params
 
-    if "e_value_min" in condition:
-        if e_value < condition["e_value_min"]:
-            return False
+    if event.type == "noop":
+        # "Kurswechsel": freier Maßnahmenwechsel mit Kostendifferenz - eine
+        # Strategieentscheidung der Teams, die sich nicht in der statischen
+        # Maßnahmen-Enumeration abbilden laesst. Wird hier kostenneutral (0)
+        # angenommen.
+        return 0, 0, 0, "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)"
 
-    if "measures_at_level_2" in condition:
-        count = count_measures_at_level(selection, 2)
-        if count < condition["measures_at_level_2"]:
-            return False
+    if event.type == "flat_budget":
+        return 0, 0, p["budget_delta"], event.description
 
-    return True
+    if event.type == "opex_discount_per_active_measure":
+        active = count_measures_at_level(selection, 1)
+        opex_delta = p["opex_per_measure"] * active
+        return 0, opex_delta, 0, f"{active} aktive Maßnahmen x {p['opex_per_measure']}k€"
+
+    if event.type == "checklist_tier":
+        count = sum(
+            1 for m in p["measures"]
+            if selection.get(m, 0) >= p["min_level"]
+        )
+        kz_delta = _tier_lookup(count, p["tiers"])
+        return kz_delta, 0, 0, f"{count}/{len(p['measures'])} Maßnahmen erfüllt"
+
+    if event.type == "measure_level_tier":
+        level = selection.get(p["measure"], 0)
+        kz_delta = p["tiers"][str(level)]
+        return kz_delta, 0, 0, f"{p['measure']} auf Level {level}"
+
+    if event.type == "level_bonus_per_measure":
+        count = count_measures_at_level(selection, p["level"])
+        kz_delta = count * p["kz_per_measure"]
+        return kz_delta, 0, 0, f"{count} Maßnahmen auf Level {p['level']}"
+
+    if event.type == "and_condition":
+        all_met = all(
+            (selection.get(c["measure"], 0) >= c["min_level"])
+            if "min_level" in c
+            else (selection.get(c["measure"], 0) == c["level_eq"])
+            for c in p["clauses"]
+        )
+        kz_delta = p["kz_delta"] if all_met else 0
+        return kz_delta, 0, 0, "Bedingung erfüllt" if all_met else "Bedingung nicht erfüllt"
+
+    if event.type == "final_budget_tier":
+        kz_delta = _tier_lookup(remaining_budget, p["tiers"])
+        return kz_delta, 0, 0, f"Restbudget {remaining_budget:.0f}k€"
+
+    raise ValueError(f"Unknown event type: {event.type}")
 
 
 def apply_events(
     wave_id: int,
     selection: Dict[str, int],
     events: Dict[int, List[Event]],
-    e_value: float,
 ) -> Tuple[int, int, int, List[Dict]]:
     """
     Apply events for a wave.
@@ -332,21 +397,19 @@ def apply_events(
 
     wave_events = events.get(wave_id, [])
     for event in wave_events:
-        condition_met = check_event_condition(event, selection, e_value)
-        effect = event.effect_if_met if condition_met else event.effect_if_not_met
+        ev_kz, ev_opex, ev_budget, description = evaluate_event(event, selection)
 
-        kz_delta += effect.get("kz_delta", 0)
-        budget_delta += effect.get("budget_delta", 0)
-        opex_delta += effect.get("opex_delta", 0)
+        kz_delta += ev_kz
+        budget_delta += ev_budget
+        opex_delta += ev_opex
 
         event_results.append({
             "id": event.id,
             "name": event.name,
-            "condition_met": condition_met,
-            "effect_description": effect.get("description", ""),
-            "kz_delta": effect.get("kz_delta", 0),
-            "budget_delta": effect.get("budget_delta", 0),
-            "opex_delta": effect.get("opex_delta", 0),
+            "effect_description": description,
+            "kz_delta": ev_kz,
+            "budget_delta": ev_budget,
+            "opex_delta": ev_opex,
         })
 
     return kz_delta, budget_delta, opex_delta, event_results
@@ -390,7 +453,7 @@ def simulate_selection(
 
         # Apply events
         event_kz, event_budget, event_opex, event_results = apply_events(
-            wave.wave_id, selection, events, e_value
+            wave.wave_id, selection, events
         )
         kz += event_kz
         total_event_budget += event_budget
@@ -411,11 +474,10 @@ def simulate_selection(
             "e_value": round(e_value, 1),
             "e_target": e_target,
             "e_reached": e_reached,
-            "base_reduction": attack_result["base_reduction"],
             "bonus_reduction": attack_result["bonus_reduction"],
             "bonus_descriptions": attack_result["bonus_descriptions"],
-            "total_reduction": attack_result["total_reduction"],
-            "capped_reduction": attack_result["capped_reduction"],
+            "gesamtreduktion": round(attack_result["gesamtreduktion"], 1),
+            "capped_reduction": round(attack_result["capped_reduction"], 1),
             "severity": attack_result["severity"],
             "damage": attack_result["damage"],
             "kz_delta_attack": attack_result["kz_delta"],
@@ -453,7 +515,7 @@ def run_simulation(
     budget_max: Optional[int],
     budget_utilization: float,
 ) -> Dict:
-    default_budget_tier, budget_tiers, attacks, waves, measures, events, base_cia = load_config(config_path)
+    default_budget_tier, budget_tiers, attacks, waves, measures, events, base_cia, final_events = load_config(config_path)
     budget_tier = budget_tiers[budget_tier_name or default_budget_tier]
     kz_start = budget_tier.kz_start
     measure_ids = list(measures.keys())
@@ -478,6 +540,19 @@ def run_simulation(
             continue
         if utilization_threshold is not None and total_cost < utilization_threshold:
             continue
+
+        remaining_budget = adjusted_budget - total_cost
+        final_event_results = []
+        for event in final_events:
+            ev_kz, _, _, description = evaluate_event(
+                event, selection, remaining_budget=remaining_budget
+            )
+            outcome["kz_final"] = max(0, min(100, outcome["kz_final"] + ev_kz))
+            final_event_results.append({
+                "id": event.id, "name": event.name,
+                "effect_description": description, "kz_delta": ev_kz,
+            })
+        outcome["final_events"] = final_event_results
 
         outcome["costs"] = {
             "init": init,

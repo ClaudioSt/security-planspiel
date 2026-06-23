@@ -293,7 +293,7 @@ def create_attack_worksheet(wb, wave_data, attack_data):
     # E-value based reduction
     calc_row += 2
     ws.cell(row=calc_row, column=1, value="E-Wert Reduktion:").font = HEADER_FONT
-    ws.cell(row=calc_row, column=2, value=f"=MAX(0,(B{e_value_row}-{wave_data['e_threshold']})/{wave_data['e_divisor']})")
+    ws.cell(row=calc_row, column=2, value=f"=MAX(0,B{e_value_row}-{wave_data['e_threshold']})")
     e_reduction_row = calc_row
 
     # Total reduction (capped)
@@ -366,7 +366,10 @@ def create_attack_worksheet(wb, wave_data, attack_data):
     calc_row += 1
     ws.cell(row=calc_row, column=1, value="KZ-Verlust durch Angriff:").font = HEADER_FONT
     kz_loss_cell = ws.cell(row=calc_row, column=2)
-    kz_loss_cell.value = f'=-B{severity_row}*{attack_data["kz_unit"]}'
+    kz_loss_cell.value = (
+        f'={attack_data["kz_at_full_damage"]}+(B{capped_row}/{attack_data["mitigation_cap"]})'
+        f'*({attack_data["kz_at_full_mitigation"]}-({attack_data["kz_at_full_damage"]}))'
+    )
     kz_loss_cell.border = THIN_BORDER
     kz_loss_row = calc_row
 
