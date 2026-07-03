@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(pip install:*)",
-      "Bash(mkdir -p /home/user/security-planspiel/.claude/hooks)"
+      "Bash(mkdir -p /home/user/security-planspiel/.claude/hooks)",
+      "Bash(powershell -Command \"Add-Type -AssemblyName System.IO.Compression.FileSystem; $zip = [System.IO.Compression.ZipFile]::OpenRead\(''c:\\Users\\Claudio\\Documents\\Git\\security_game\\security-planspiel\\final_documents\\Budget.docx''\); $entry = $zip.Entries | Where-Object { $_FullName -eq ''word/document.xml'' }; $stream = $entry.Open\(\); $reader = New-Object System.IO.StreamReader\($stream\); $content = $reader.ReadToEnd\(\); $reader.Close\(\); $zip.Dispose\(\); [regex]::Replace\($content, ''<[^>]+>'', '' ''\) -replace ''\\s+'', '' ''\")",
+      "Bash(powershell -Command \"Add-Type -AssemblyName System.IO.Compression.FileSystem; $zip = [System.IO.Compression.ZipFile]::OpenRead\(''c:\\Users\\Claudio\\Documents\\Git\\security_game\\security-planspiel\\final_documents\\Angriff-1_Ransomware.docx''\); $entry = $zip.Entries | Where-Object { $_FullName -eq ''word/document.xml'' }; $stream = $entry.Open\(\); $reader = New-Object System.IO.StreamReader\($stream\); $content = $reader.ReadToEnd\(\); $reader.Close\(\); $zip.Dispose\(\); [regex]::Replace\($content, ''<[^>]+>'', '' ''\) -replace ''\\s+'', '' ''\")"
     ]
   }
 }
