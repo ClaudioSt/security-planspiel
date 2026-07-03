@@ -92,8 +92,6 @@
     "ransomware": {
       "description": "Ein Mitarbeiter hat auf eine gefälschte E-Mail geklickt - die Angreifer versuchen, Ransomware zu platzieren, die Daten verschlüsselt und ggf. exfiltriert, um anschließend Lösegeld zu erpressen.",
       "base_severity": 8,
-      "e_threshold": 15,
-      "e_max": 23,
       "s_unit": 20,
       "kz_at_full_damage": -6,
       "kz_at_full_mitigation": 10,
@@ -104,8 +102,6 @@
     "ot": {
       "description": "In eurer Produktionssteuerung wurde eine Schwachstelle ausgenutzt - die Angreifer zielen darauf, die Fertigung zu stören bzw. stillzulegen.",
       "base_severity": 10,
-      "e_threshold": 17,
-      "e_max": 27,
       "s_unit": 32,
       "kz_at_full_damage": -5,
       "kz_at_full_mitigation": 7,
@@ -116,8 +112,6 @@
     "exfil": {
       "description": "Über einen kompromittierten Lieferanten-Zugang wurden über Wochen hinweg vertrauliche Konstruktionsdaten abgegriffen. Das BSI informiert euch: Eure Daten werden im Darknet angeboten.",
       "base_severity": 7,
-      "e_threshold": 19,
-      "e_max": 26,
       "s_unit": 20,
       "kz_at_full_damage": -7,
       "kz_at_full_mitigation": 10,
