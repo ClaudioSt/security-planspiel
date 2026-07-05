@@ -4,7 +4,7 @@
   "budget_tiers": {
     "low": {
       "budget": 350,
-      "kz_start": 70,
+      "kz_start": 50,
       "severity_multiplier": 1.0,
       "e_targets": {
         "1": 15,
@@ -14,7 +14,7 @@
     },
     "medium": {
       "budget": 400,
-      "kz_start": 60,
+      "kz_start": 42,
       "severity_multiplier": 1.0,
       "e_targets": {
         "1": 15,
@@ -24,7 +24,7 @@
     },
     "high": {
       "budget": 450,
-      "kz_start": 50,
+      "kz_start": 34,
       "severity_multiplier": 1.0,
       "e_targets": {
         "1": 15,
