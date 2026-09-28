@@ -3,3 +3,7 @@ simulation_results*.json
 sim_low.json
 sim_med.json
 sim_high.json
+
+__pycache__/
+*.pyc
+~$*

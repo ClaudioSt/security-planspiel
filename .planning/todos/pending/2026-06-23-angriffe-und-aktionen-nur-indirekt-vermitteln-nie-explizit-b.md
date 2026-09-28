@@ -3,10 +3,13 @@ created: 2026-06-23T08:15:19.915Z
 title: Angriffe und Aktionen nur indirekt vermitteln, nie explizit benennen
 area: docs
 files:
-  - ANGRIFFSKARTEN.md
-  - MODERATIONSSKRIPT.md
-  - MODERATORENLEITFADEN.md
   - simulation_config.json
+  - final_documents/Angriff-1_Ransomware.docx
+  - final_documents/Angriff-2_OT-Störung.docx
+  - final_documents/Angriff-3_Datenexfiltration.docx
+  - final_documents/Events_Security-Game.pptx
+  - archive/historical_docs/ANGRIFFSKARTEN.md (historical, reference only)
+  - archive/historical_docs/MODERATIONSSKRIPT.md (historical, reference only)
 ---
 
 ## Problem
@@ -19,6 +22,8 @@ Angriffe (Welle 1-3) und die Events/Aktionen zwischen den Wellen werden Spielern
 - `simulation_config.json` (ca. Zeile 39, 58, 77): Angriffs-"name"-Felder sind technisch explizit ("Ransomware", "OT-Stoerung", "Exfiltration"). Events zwischen den Wellen (ca. Zeile 228-307, z.B. "Phishing-Kampagne entdeckt", "OEM-Sicherheitsaudit", "NIS2/KRITIS-Prüfung") sind ebenfalls direkt benannt.
 
 Spieler sollen aus den vorgelesenen/gedruckten Texten nie den exakten Angriffstyp oder die exakte Zwischen-Aktion erfahren — nur über Umschreibungen/Indizien darauf schließen können (z.B. "merkwürdige E-Mail mit Anhang" statt "Phishing/Emotet").
+
+**Clarification (2026-09-29):** Veil attacks only in material players see *before* the attack (discovery, company profile, newspaper article, measure cards, planning slides). When the wave actually hits, the attack is **revealed by name** (Angriff-*.docx worksheet, wave slide, narration). Mechanics (CIA weights, E-value, damage, event effects) stay fully transparent — workshop feedback asked for more clarity there.
 
 ## Solution
 
