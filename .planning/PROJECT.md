@@ -71,7 +71,8 @@ Facilitators and players can run the game by hand without ambiguity: every rule 
 - `simulate_outcomes.py:539` drops over-budget combinations — the sim never tested the loophole the printed rule allows.
 - Manual print-sync trap: `e_threshold`, `mitigation_cap`, bonus values are printed verbatim on `Angriff-{1,2,3}_*.docx` with no generator; measure cards pptx also hand-maintained.
 - Existing generators: `generate_pptx_cards.py`, `generate_from_template.py` (pptx), `generate_attack_calculator.py` (xlsx).
-- No tests, no dependency manifest (openpyxl, python-pptx installed ad hoc). Python 3.12, MiKTeX (pdflatex/lualatex/latexmk) available; jinja2 not installed.
+- No tests, no dependency manifest (openpyxl, python-pptx installed ad hoc). **Interpreter trap:** `python` on PATH is Inkscape's bundled 3.12 without packages; `python3`/`pip` is the Store Python 3.11 with jinja2, pytest, python-docx, python-pptx → use a project `.venv` + `requirements.txt`. MiKTeX 23.10 (pdflatex/lualatex/latexmk) available.
+- Sim ↔ print divergence already exists: per-wave KZ bonus/malus for meeting the E-target (`simulate_outcomes.py:448-449`) is not printed anywhere.
 - Pending todo: `.planning/todos/pending/2026-06-23-angriffe-und-aktionen-nur-indirekt-vermitteln-nie-explizit-b.md`.
 - Codebase map: `.planning/codebase/`.
 
