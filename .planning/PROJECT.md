@@ -10,6 +10,16 @@ This project refines the game after its live run at the MHP workshop (2026-09): 
 
 Facilitators and players can run the game by hand without ambiguity: every rule is unambiguous, every printed number matches `simulation_config.json`, and no strategy exploits a rule loophole.
 
+## Design Principles
+
+Every balance decision is checked against these (measurable via full enumeration, see BAL-06…09):
+
+1. **Every choice matters** — no dominated or mandatory measure/level; every decision point shifts the outcome.
+2. **Good strategy → good outcome, bad strategy → bad outcome** — reference strategies rank where they should.
+3. **Rewarding overall** — mediocre play still ends positive; comebacks stay possible after wave 1.
+4. **Controlled** — outcomes bounded, tiers comparable, fully deterministic *within* a session.
+5. **Variable between sessions (v4)** — randomness only in the scenario draw (same for all teams), never in outcomes, so strategies must adapt and veiling survives repeat play.
+
 ## Requirements
 
 ### Validated
@@ -36,7 +46,7 @@ Facilitators and players can run the game by hand without ambiguity: every rule 
 
 ### Out of Scope
 
-- Digital/online version of the game — the game is deliberately played live on paper
+- Digital/online version in this milestone — stays paper-based for now; a web app is planned as v3 (WEB-01), built on the same rules module
 - Randomness/dice — determinism is a core design principle
 - Non-linear formulas on worksheets — facilitators must be able to calculate by hand (hard design criterion)
 - Updating the 26 historical docs in `archive/historical_docs/` — superseded, kept for reference only
@@ -79,7 +89,7 @@ Facilitators and players can run the game by hand without ambiguity: every rule 
 ## Constraints
 
 - **Hand-calculability**: all worksheet formulas stay linear and computable by hand — facilitators calculate live on paper
-- **Determinism**: same inputs → same outputs, no randomness
+- **Determinism**: same inputs → same outputs within a session; no randomness in outcomes. Scenario draw between sessions is allowed (v4, SCEN) — v1 code must not hard-code "exactly one scenario"
 - **Single source of truth**: every number comes from `simulation_config.json`; order of change is config → README → print material
 - **Format**: 3 teams × 5, one afternoon (~3h), paper/whiteboard — unchanged
 - **Language**: game content/UI German; code, commits bodies, docs English (commit subject per user convention)
@@ -95,6 +105,17 @@ Facilitators and players can run the game by hand without ambiguity: every rule 
 | Attack names veiled only before the wave, revealed by name when it hits; mechanics always transparent | Players should infer threats from clues, but understand the mechanics fully | ✓ Decided 2026-09-29 |
 | Print material generated via LaTeX → PDF from `simulation_config.json` | Eliminates manual print-sync; precise print layout | ✓ Decided 2026-09-29 |
 | Generate docs before rebalancing | Every rebalance otherwise requires manual docx edits | ✓ Decided 2026-09-29 |
+| Overspend X calibrated on trim-back criterion | Every over-budget plan must lose to its own trimmed version; step rewards make marginal criterion infeasible | ✓ Decided 2026-09-29 |
+| Downgrade allowed: no init refund, OPEX drops next wave | Gives teams an adaptation lever; requires change model in sim | ✓ Decided 2026-09-29 |
+| RoS = own spend only; event effects out in both directions | Symmetric, matches Decisions & Disruptions ledgers | ✓ Decided 2026-09-29 |
+| Sparprogramm overrun → re-plan window before penalty | Teams shouldn't be punished for an external shock they can still react to | ✓ Decided 2026-09-29 |
+| Measure cards CIA only; wave weights hidden until reveal | Weights and attack links would reveal attacks | ✓ Decided 2026-09-29 |
+| E-target bonus/malus: check printed MHP material first | Sim applies it, print doesn't show it | — Pending (phase with RULE-08) |
+| Keep LaTeX (not Typst) | Known, mature tool | ✓ Decided 2026-09-29 |
+| Drop 0.85 utilization filter, rescale Final-Index in rebalance | Filter hides the real optimum; RoS·100 dominates | ✓ Decided 2026-09-29 |
+| Excel attack calculator retired | Generated worksheets + facilitator sheet replace it | ✓ Decided 2026-09-29 |
+| Design principles 1–5 as measurable balance criteria | "Every choice matters, good→good, rewarding, controlled" must be verifiable | ✓ Decided 2026-09-29 |
+| Replayability via scenario draw (v4), not outcome dice; web app v3 | Keeps fairness between teams and hand-calculability | ✓ Decided 2026-09-29 |
 | Historical root docs archived in `archive/historical_docs/` | Declutter; they are out of sync with config | ✓ Done (63ffac0) |
 
 ## Evolution

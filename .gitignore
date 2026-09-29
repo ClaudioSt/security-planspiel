@@ -7,3 +7,4 @@ sim_high.json
 __pycache__/
 *.pyc
 ~$*
+*.stackdump
