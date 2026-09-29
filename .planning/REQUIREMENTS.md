@@ -119,12 +119,58 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
+| FOUND-01 | Phase 1 | Pending |
+| FOUND-02 | Phase 1 | Pending |
+| FOUND-03 | Phase 1 | Pending |
+| FOUND-04 | Phase 1 | Pending |
+| FOUND-05 | Phase 1 | Pending |
+| FOUND-06 | Phase 1 | Pending |
+| FOUND-07 | Phase 1 | Pending |
+| RULE-01 | Phase 2 | Pending |
+| RULE-02 | Phase 2 | Pending |
+| RULE-03 | Phase 2 | Pending |
+| RULE-04 | Phase 2 | Pending |
+| RULE-05 | Phase 2 | Pending |
+| RULE-06 | Phase 2 | Pending |
+| RULE-07 | Phase 2 | Pending |
+| RULE-08 | Phase 2 | Pending |
+| VEIL-01 | Phase 3 | Pending |
+| VEIL-02 | Phase 5 | Pending |
+| VEIL-03 | Phase 3 | Pending |
+| VEIL-04 | Phase 5 | Pending |
+| PRINT-01 | Phase 4 | Pending |
+| PRINT-02 | Phase 3 | Pending |
+| PRINT-03 | Phase 4 | Pending |
+| PRINT-04 | Phase 4 | Pending |
+| PRINT-05 | Phase 5 | Pending |
+| PRINT-06 | Phase 5 | Pending |
+| PRINT-07 | Phase 5 | Pending |
+| PRINT-08 | Phase 5 | Pending |
+| PRINT-09 | Phase 5 | Pending |
+| PRINT-10 | Phase 5 | Pending |
+| PRINT-11 | Phase 4 | Pending |
+| FLOW-01 | Phase 5 | Pending |
+| FLOW-02 | Phase 7 | Pending |
+| FLOW-03 | Phase 7 | Pending |
+| FLOW-04 | Phase 7 | Pending |
+| FLOW-05 | Phase 7 | Pending |
+| BAL-01 | Phase 6 | Pending |
+| BAL-02 | Phase 6 | Pending |
+| BAL-03 | Phase 6 | Pending |
+| BAL-04 | Phase 6 | Pending |
+| BAL-05 | Phase 6 | Pending |
+| BAL-06 | Phase 6 | Pending |
+| BAL-07 | Phase 6 | Pending |
+| BAL-08 | Phase 6 | Pending |
+| BAL-09 | Phase 6 | Pending |
+| LEG-01 | Phase 7 | Pending |
+| LEG-02 | Phase 7 | Pending |
 
 **Coverage:**
 - v1 requirements: 46 total
-- Mapped to phases: 0
-- Unmapped: 46 ⚠️
+- Mapped to phases: 46
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-09-29*
-*Last updated: 2026-09-29 after initial definition*
+*Last updated: 2026-09-29 after roadmap creation (traceability filled)*
