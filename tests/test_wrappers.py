@@ -5,11 +5,12 @@ import sys
 
 import pytest
 
+from planspiel.simulate import run_simulation
 from tests.support import REPO_ROOT
 from tests.support.harness import LEGACY_RECORD_KEYS
 
 MINI = REPO_ROOT / "tests" / "fixtures" / "mini_config.json"
-WRAPPERS = ("simulate_outcomes.py",)
+WRAPPERS = ("simulate_outcomes.py", "analyze_simulation_results.py", "balance_analysis.py")
 
 
 def _run(args, cwd=REPO_ROOT):
@@ -104,3 +105,35 @@ def test_legacy_output_on_mini_config(tmp_path):
         assert record["costs"]["total"] <= record["costs"]["budget_available"]
     keys = [(-r["kz_final"], r["total_damage"]) for r in results]
     assert keys == sorted(keys)
+
+
+def test_analyze_handles_zero_cost_plan(tmp_path):
+    out = tmp_path / "out.json"
+    run_simulation(MINI, "low", out, None, None, 0.0)
+    data = json.loads(out.read_text(encoding="utf-8"))
+    assert any(r["costs"]["total"] == 0 for r in data["results"])
+
+    result = _run(
+        [
+            "analyze_simulation_results.py",
+            "--input",
+            str(out),
+            "--config",
+            str(MINI),
+            "--top",
+            "3",
+        ]
+    )
+    assert result.returncode == 0, result.stderr.decode("utf-8", errors="replace")
+    stdout = result.stdout.decode("utf-8")
+    assert "Final-Index" in stdout
+    assert "n/a" in stdout
+
+
+def test_balance_runs_with_canonical_semantics():
+    result = _run(["balance_analysis.py"])
+    assert result.returncode == 0, result.stderr.decode("utf-8", errors="replace")
+    stdout = result.stdout.decode("utf-8")
+    assert "Final-Index (vorläufig)" in stdout
+    assert "ÜBER BUDGET" in stdout
+    assert "Score=" not in stdout

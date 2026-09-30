@@ -18,7 +18,7 @@ def _fmt(value) -> str:
 
 
 def _strategy_cases(cfg):
-    from balance_analysis import define_strategies
+    from planspiel.balance import define_strategies
 
     for strategies in define_strategies().values():
         for strategy in strategies:
