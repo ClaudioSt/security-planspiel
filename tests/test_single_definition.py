@@ -23,6 +23,7 @@ FORMULA_FUNCTIONS = {
         "compute_e_value",
         "compute_bonus_reduction",
         "apply_attack",
+        "kz_slope",
         "count_measures_at_level",
         "_tier_lookup",
         "evaluate_event",

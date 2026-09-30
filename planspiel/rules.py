@@ -1,3 +1,4 @@
+from fractions import Fraction
 from typing import Dict, List, Optional, Tuple
 
 from planspiel.config import Attack, BudgetTier, Config, Event, Measure, Wave
@@ -59,6 +60,10 @@ def compute_bonus_reduction(
             bonus_descriptions.append(bm.description)
 
     return bonus_reduction, bonus_descriptions
+
+
+def kz_slope(kz_at_full_damage, kz_at_full_mitigation, mitigation_cap) -> Fraction:
+    return (Fraction(kz_at_full_mitigation) - Fraction(kz_at_full_damage)) / mitigation_cap
 
 
 def apply_attack(
