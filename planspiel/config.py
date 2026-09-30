@@ -1,4 +1,5 @@
 import json
+import warnings
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List
@@ -96,8 +97,25 @@ def _build_event(ev: Dict) -> Event:
     )
 
 
+def read_raw_config(path: Path) -> Dict:
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def check_config(raw: Dict, source: str) -> None:
+    from planspiel.validate import ConfigError, HandCalcWarning, validate
+
+    issues = validate(raw)
+    errors = [issue for issue in issues if issue.level == "error"]
+    if errors:
+        raise ConfigError(errors, source)
+    for issue in issues:
+        if issue.level == "warning":
+            warnings.warn(f"{issue.code} {issue.path}: {issue.message}", HandCalcWarning, stacklevel=3)
+
+
 def load_config(path: Path) -> Config:
-    raw = json.loads(path.read_text(encoding="utf-8"))
+    raw = read_raw_config(path)
+    check_config(raw, str(path))
     base_cia = raw.get("base_cia", {"c": 0, "i": 0, "a": 0})
 
     budget_tiers = {}
