@@ -3,31 +3,30 @@ import re
 import subprocess
 import sys
 
-from simulate_outcomes import load_config
+from planspiel.config import load_config
 from tests.support import CONFIG_PATH, REPO_ROOT
 
 MOJIBAKE_MARKERS = ("Ã", "Â", "â€")
 
 
 def _display_strings(config):
-    (_, _, _, waves, measures, events, _, final_events) = config
-    for wave in waves:
+    for wave in config.waves:
         yield wave.name
         for bonus in wave.bonus_measures:
             yield bonus.description
-    for measure in measures.values():
+    for measure in config.measures.values():
         yield measure.name
-    for wave_events in events.values():
+    for wave_events in config.events.values():
         for event in wave_events:
             yield event.name
             yield event.description
-    for event in final_events:
+    for event in config.final_events:
         yield event.name
         yield event.description
 
 
 def test_loader_decodes_config_as_utf8():
-    waves = load_config(CONFIG_PATH)[3]
+    waves = load_config(CONFIG_PATH).waves
     assert waves[0].bonus_measures[0].description == "EDR/XDR erkennt Ransomware früh"
 
 
