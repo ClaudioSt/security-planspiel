@@ -126,6 +126,7 @@ Ein **konfigurationsgetriebenes IT‑Security‑Planspiel** für einen Automotiv
 - **Gewichteter Erfüllungsgrad:**  
   `E = Team_C * wC + Team_I * wI + Team_A * wA`
 - **E‑Schwelle:** pro Welle konfigurierbar → **KZ‑Bonus/Malus** bei Erreichen/Verfehlen.
+- **Rundung (wie auf Papier):** Die KZ-Änderung je Welle (Angriff + E-Ziel + Events) wird genau einmal auf eine ganze Zahl gerundet, ab ,5 vom Betrag aufgerundet (+2,5 → +3, −2,5 → −3); danach wird die KZ auf 0–100 begrenzt. E-Wert, Gesamtreduktion, Reduktion über Schwelle und Schweregrad bleiben exakt; der Schaden bleibt exakt in ganzen Euro.
 - **Return on Security (RoS):**
 Gesamtkosten  = Sum(Init) + Sum(OPEX je Welle) + Sum(Straf-OPEX aus Events)
 Verluste      = Sum(Damage über alle Angriffe)

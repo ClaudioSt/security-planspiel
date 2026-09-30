@@ -1,6 +1,7 @@
 import json
 import warnings
 from dataclasses import dataclass, field
+from fractions import Fraction
 from pathlib import Path
 from typing import Dict, List
 
@@ -30,7 +31,7 @@ class Wave:
     wave_id: int
     name: str
     attack_id: str
-    weights: Dict[str, float]
+    weights: Dict[str, Fraction]
     e_threshold: int
     kz_bonus: int
     kz_malus: int
@@ -42,7 +43,7 @@ class MeasureLevel:
     cia: Dict[str, int]
     init: int
     opex: int
-    recovery: float = 0.0
+    recovery: Fraction = Fraction(0)
 
 
 @dataclass
@@ -58,7 +59,7 @@ class BudgetTier:
     name: str
     budget: int
     kz_start: int
-    severity_multiplier: float
+    severity_multiplier: Fraction
     e_targets: Dict[int, int]
 
 
@@ -81,6 +82,8 @@ class Config:
     events: Dict[int, List[Event]]
     base_cia: Dict[str, int]
     final_events: List[Event]
+    ws: int
+    rs: int
 
     @property
     def measure_ids(self) -> List[str]:
@@ -98,7 +101,7 @@ def _build_event(ev: Dict) -> Event:
 
 
 def read_raw_config(path: Path) -> Dict:
-    return json.loads(path.read_text(encoding="utf-8"))
+    return json.loads(path.read_text(encoding="utf-8"), parse_float=Fraction)
 
 
 def check_config(raw: Dict, source: str) -> None:
@@ -116,6 +119,9 @@ def check_config(raw: Dict, source: str) -> None:
 def load_config(path: Path) -> Config:
     raw = read_raw_config(path)
     check_config(raw, str(path))
+    from planspiel.validate import scale_factors
+
+    ws, rs = scale_factors(raw)
     base_cia = raw.get("base_cia", {"c": 0, "i": 0, "a": 0})
 
     budget_tiers = {}
@@ -124,7 +130,7 @@ def load_config(path: Path) -> Config:
             name=name,
             budget=info["budget"],
             kz_start=info.get("kz_start", 60),
-            severity_multiplier=info.get("severity_multiplier", 1.0),
+            severity_multiplier=info.get("severity_multiplier", Fraction(1)),
             e_targets={int(k): v for k, v in info["e_targets"].items()},
         )
 
@@ -171,7 +177,7 @@ def load_config(path: Path) -> Config:
                 cia=level_info["cia"],
                 init=level_info["init"],
                 opex=level_info["opex"],
-                recovery=level_info.get("recovery", 0.0),
+                recovery=level_info.get("recovery", 0),
             )
             for level_id, level_info in info["levels"].items()
         }
@@ -201,4 +207,6 @@ def load_config(path: Path) -> Config:
         events=events,
         base_cia=base_cia,
         final_events=final_events,
+        ws=ws,
+        rs=rs,
     )

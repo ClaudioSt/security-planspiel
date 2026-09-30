@@ -1,5 +1,6 @@
 import argparse
 import json
+from fractions import Fraction
 from pathlib import Path
 from typing import Dict, Optional
 
@@ -7,6 +8,16 @@ from planspiel import rules
 from planspiel.cli import configure_utf8_stdio
 from planspiel.config import load_config
 from planspiel.enumerate import LEVEL_OPTIONS, iter_selections
+
+
+def to_legacy_json(obj):
+    if isinstance(obj, Fraction):
+        return int(obj) if obj.denominator == 1 else float(obj)
+    if isinstance(obj, dict):
+        return {key: to_legacy_json(value) for key, value in obj.items()}
+    if isinstance(obj, list):
+        return [to_legacy_json(value) for value in obj]
+    return obj
 
 
 def run_simulation(
@@ -63,7 +74,7 @@ def run_simulation(
         "summary": summary,
         "results": results,
     }
-    output_path.write_text(json.dumps(output, indent=2), encoding="utf-8")
+    output_path.write_text(json.dumps(to_legacy_json(output), indent=2), encoding="utf-8")
     return summary
 
 

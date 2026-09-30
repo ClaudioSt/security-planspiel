@@ -12,7 +12,7 @@ from planspiel.config import load_config as _load_config
 
 from tests.support import CONFIG_PATH
 
-STAGE = "legacy-float"
+STAGE = "exact-rounded"
 
 LEGACY_RECORD_KEYS = (
     "selection",

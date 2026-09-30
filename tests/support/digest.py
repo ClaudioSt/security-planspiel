@@ -1,7 +1,8 @@
 """Full-enumeration digest over the canonical outputs of all dependency-valid combinations (D-08)."""
 import hashlib
-import math
+from fractions import Fraction
 
+from planspiel.rounding import exact_to_json
 from tests.support import harness
 
 
@@ -12,6 +13,8 @@ def canon(value) -> str:
         return "-"
     if isinstance(value, int):
         return str(value)
+    if isinstance(value, Fraction):
+        return str(exact_to_json(value))
     if isinstance(value, float):
         return repr(value)
     raise TypeError(f"cannot canonicalize {type(value).__name__}")
@@ -38,7 +41,7 @@ def compute_digest(cfg, tier_name: str, limit: int | None = None) -> dict:
     sha = hashlib.sha256()
     count = in_budget = over_budget = 0
     histogram = [0] * 101
-    sum_damage = 0.0
+    sum_damage = 0
 
     for code in harness.iter_codes(cfg):
         record = harness.evaluate(cfg, tier_name, harness.selection_of(cfg, code))
@@ -50,7 +53,7 @@ def compute_digest(cfg, tier_name: str, limit: int | None = None) -> dict:
             over_budget += 1
         else:
             in_budget += 1
-        histogram[math.floor(record["kz_final"])] += 1
+        histogram[record["kz_final"]] += 1
         sum_damage += record["total_damage"]
         if limit is not None and count >= limit:
             break

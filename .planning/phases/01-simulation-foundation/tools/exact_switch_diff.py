@@ -112,7 +112,7 @@ def tier_section(out_dir, tier):
     measure_ids = meta["measure_ids"]
     count = meta["count"]
 
-    changed, changed_integral = [], 0
+    changed, changed_integral, kz_noise = [], 0, 0
     down = up = 0
     max_shift = 0.0
     movers = []
@@ -122,11 +122,13 @@ def tier_section(out_dir, tier):
     for i in range(count):
         code = pre["code"][i]
         old_kz, new_kz = pre["kz_final"][i], post["kz_final"][i]
-        if old_kz != new_kz:
+        shift = new_kz - old_kz
+        if shift != 0 and abs(shift) <= NOISE_EPS:
+            kz_noise += 1
+        elif shift != 0:
             changed.append(code)
             if old_kz == int(old_kz):
                 changed_integral += 1
-            shift = new_kz - old_kz
             if shift <= -0.5 + NOISE_EPS:
                 down += 1
                 down_codes.append(code)
@@ -157,11 +159,12 @@ def tier_section(out_dir, tier):
         "",
         "| Metric | Measured | Research expectation |",
         "|---|---|---|",
-        f"| Final KZ changed | {len(changed)} | {expected} |",
-        f"| ... of which legacy KZ already integral | {changed_integral} | 0 (2 in high) |",
+        f"| Final KZ changed (abs delta > 1e-9) | {len(changed)} | {expected} |",
+        f"| Final KZ differs by float noise only (0 < abs delta <= 1e-9) | {kz_noise} | not counted |",
+        f"| ... of the changed, legacy KZ already integral | {changed_integral} | 0 (2 in high) |",
         f"| KZ shift >= 0.5 down | {down} | see research Q5 |",
         f"| KZ shift >= 0.5 up | {up} | see research Q5 |",
-        f"| Max absolute KZ shift | {max_shift} | 0.5 rounding step |",
+        f"| Max absolute KZ shift | {max_shift:.4f} | up to 3 x 0.5 (one rounding per wave accumulates) |",
         f"| E-target flips | {len(e_flips)} | 0 |",
         f"| Over-budget flips | {len(over_flips)} | 0 |",
         f"| Damage changes > 0.5 EUR | {len(damage_changes)} | 0 |",

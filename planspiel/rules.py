@@ -2,6 +2,7 @@ from fractions import Fraction
 from typing import Dict, List, Optional, Tuple
 
 from planspiel.config import Attack, BudgetTier, Config, Event, Measure, Wave
+from planspiel.rounding import round_half_away_frac
 
 
 def dependencies_satisfied(selection: Dict[str, int], measures: Dict[str, Measure]) -> bool:
@@ -35,16 +36,44 @@ def compute_costs(selection: Dict[str, int], measures: Dict[str, Measure], wave_
     return init, opex_per_wave, total
 
 
-def compute_recovery(selection: Dict[str, int], measures: Dict[str, Measure]) -> float:
-    recovery = 0.0
+def compute_recovery(selection: Dict[str, int], measures: Dict[str, Measure]) -> Fraction:
+    recovery = Fraction(0)
     for measure_id, level in selection.items():
         recovery = max(recovery, measures[measure_id].levels[level].recovery)
     return recovery
 
 
-def compute_e_value(cia: Dict[str, int], weights: Dict[str, float]) -> float:
-    """Compute the E-Value from CIA values and weights."""
-    return cia["c"] * weights["c"] + cia["i"] * weights["i"] + cia["a"] * weights["a"]
+def _to_int(value) -> int:
+    if value.denominator != 1:
+        raise ValueError(f"expected an integral value, got {value}")
+    return int(value)
+
+
+def e_value_scaled(cia: Dict[str, int], weights: Dict[str, Fraction], ws: int) -> int:
+    """E-Wert mal ws als ganze Zahl (ws = kgV der Gewichts-Nenner, integral by construction)."""
+    return _to_int(cia["c"] * weights["c"] * ws + cia["i"] * weights["i"] * ws + cia["a"] * weights["a"] * ws)
+
+
+def reduction_above_threshold_scaled(
+    e_scaled: int, bonus: int, e_threshold: int, mitigation_cap: int, ws: int
+) -> int:
+    return min(mitigation_cap * ws, max(0, e_scaled + bonus * ws - e_threshold * ws))
+
+
+def severity_scaled(base_severity: int, severity_multiplier: Fraction, reduction_scaled: int, ws: int) -> int:
+    return max(0, _to_int(base_severity * severity_multiplier * ws) - reduction_scaled)
+
+
+def damage_euros(severity_scaled: int, s_unit: int, recovery_scaled: int, ws: int, rs: int) -> int:
+    """Schaden in ganzen Euro; severity_scaled ist mal ws, recovery_scaled mal rs skaliert."""
+    quotient, remainder = divmod(severity_scaled * s_unit * 1000 * (rs - recovery_scaled), ws * rs)
+    if remainder:
+        raise ValueError("damage is not a whole number of euros")
+    return quotient
+
+
+def clamp_kz(value: int) -> int:
+    return max(0, min(100, value))
 
 
 def compute_bonus_reduction(
@@ -66,13 +95,29 @@ def kz_slope(kz_at_full_damage, kz_at_full_mitigation, mitigation_cap) -> Fracti
     return (Fraction(kz_at_full_mitigation) - Fraction(kz_at_full_damage)) / mitigation_cap
 
 
+def attack_kz_delta(kz_at_full_damage, slope: Fraction, reduction_scaled: int, ws: int) -> Fraction:
+    # KZ-Delta linear zwischen den auf dem Arbeitsblatt festgelegten Endpunkten
+    # interpoliert (Fall 1: redu=0 -> kz_at_full_damage, Fall 2: redu=cap ->
+    # kz_at_full_mitigation), statt der im Word-Dokument widersprüchlichen
+    # Fall-3-Subformel (deren Steigung bei Welle 2/3 nicht zu den eigenen
+    # Fall-1/Fall-2-Werten passt).
+    return kz_at_full_damage + slope * Fraction(reduction_scaled, ws)
+
+
+def wave_kz_change(e_target_delta, attack_kz_delta, event_kz) -> int:
+    """Einziger Rundungspunkt: KZ-Änderung der Welle (Angriff + E-Ziel + Events), ab ,5 vom Betrag aufrunden."""
+    return round_half_away_frac(Fraction(e_target_delta) + attack_kz_delta + Fraction(event_kz))
+
+
 def apply_attack(
     selection: Dict[str, int],
     measures: Dict[str, Measure],
     attack: Attack,
     wave: Wave,
     cia: Dict[str, int],
-    severity_multiplier: float = 1.0,
+    ws: int,
+    rs: int,
+    severity_multiplier: Fraction = Fraction(1),
 ) -> Dict:
     """
     Apply an attack exactly as specified on the printed Angriffs-Arbeitsblatt
@@ -84,39 +129,32 @@ def apply_attack(
         Fall 3: dazwischen                                  -> lineare Interpolation
 
     No flooring/division is applied to E-Wert or Gesamtreduktion - the formula
-    matches the paper worksheet number-for-number.
+    matches the paper worksheet number-for-number. All values are exact: integers
+    scaled by ws (weights) and rs (recovery); damage is whole euros.
     """
-    e_value = compute_e_value(cia, wave.weights)
+    e_scaled = e_value_scaled(cia, wave.weights, ws)
+    e_value = Fraction(e_scaled, ws)
     bonus_reduction, bonus_descriptions = compute_bonus_reduction(wave, selection)
 
     gesamtreduktion = e_value + bonus_reduction
-    reduktion_ueber_schwelle = min(
-        attack.mitigation_cap, max(0, gesamtreduktion - wave.e_threshold)
+    reduction_scaled = reduction_above_threshold_scaled(
+        e_scaled, bonus_reduction, wave.e_threshold, attack.mitigation_cap, ws
     )
+    reduktion_ueber_schwelle = Fraction(reduction_scaled, ws)
 
     # Apply severity multiplier (larger companies are bigger targets)
     effective_base_severity = attack.base_severity * severity_multiplier
-    severity = max(0.0, effective_base_severity - reduktion_ueber_schwelle)
+    severity_s = severity_scaled(attack.base_severity, severity_multiplier, reduction_scaled, ws)
+    severity = Fraction(severity_s, ws)
 
-    damage = severity * attack.s_unit
-
-    # KZ-Delta linear zwischen den auf dem Arbeitsblatt festgelegten Endpunkten
-    # interpoliert (Fall 1: redu=0 -> kz_at_full_damage, Fall 2: redu=cap ->
-    # kz_at_full_mitigation), statt der im Word-Dokument widersprüchlichen
-    # Fall-3-Subformel (deren Steigung bei Welle 2/3 nicht zu den eigenen
-    # Fall-1/Fall-2-Werten passt).
-    mitigation_fraction = (
-        reduktion_ueber_schwelle / attack.mitigation_cap if attack.mitigation_cap else 0.0
-    )
-    kz_delta = attack.kz_at_full_damage + mitigation_fraction * (
-        attack.kz_at_full_mitigation - attack.kz_at_full_damage
-    )
+    slope = kz_slope(attack.kz_at_full_damage, attack.kz_at_full_mitigation, attack.mitigation_cap)
+    kz_delta = attack_kz_delta(attack.kz_at_full_damage, slope, reduction_scaled, ws)
     cia_delta = {key: severity * impact for key, impact in attack.cia_impact.items()}
 
-    recovery_factor = 0.0
+    recovery_factor = Fraction(0)
     if attack.allow_recovery:
         recovery_factor = compute_recovery(selection, measures)
-        damage = damage * (1 - recovery_factor)
+    damage = Fraction(damage_euros(severity_s, attack.s_unit, _to_int(recovery_factor * rs), ws, rs), 1000)
 
     return {
         "e_value": e_value,
@@ -260,9 +298,11 @@ def simulate_selection(
     events: Dict[int, List[Event]],
     base_cia: Dict[str, int],
     kz_start: int,
+    ws: int,
+    rs: int,
 ) -> Dict:
     kz = kz_start
-    total_damage = 0.0
+    total_damage = 0
     total_event_opex = 0
     total_event_budget = 0
     cia_mali = {"c": 0, "i": 0, "a": 0}
@@ -274,7 +314,7 @@ def simulate_selection(
 
         # Apply attack with new E-Value based mitigation
         attack_result = apply_attack(
-            selection, measures, attack, wave, cia,
+            selection, measures, attack, wave, cia, ws, rs,
             severity_multiplier=budget_tier.severity_multiplier
         )
         e_value = attack_result["e_value"]
@@ -282,21 +322,17 @@ def simulate_selection(
         # Check E-Target
         e_target = budget_tier.e_targets[wave.wave_id]
         e_reached = e_value >= e_target
-        kz += wave.kz_bonus if e_reached else wave.kz_malus
-
-        # Apply attack damage to KZ
-        kz += attack_result["kz_delta"]
+        e_target_delta = wave.kz_bonus if e_reached else wave.kz_malus
 
         # Apply events
         event_kz, event_budget, event_opex, event_results = apply_events(
             wave.wave_id, selection, events
         )
-        kz += event_kz
         total_event_budget += event_budget
         total_event_opex += event_opex
 
-        # Clamp KZ
-        kz = max(0, min(100, kz))
+        # KZ-Änderung der Welle einmal runden, dann begrenzen
+        kz = clamp_kz(kz + wave_kz_change(e_target_delta, attack_result["kz_delta"], event_kz))
 
         total_damage += attack_result["damage"]
         for key in cia_mali:
@@ -307,17 +343,17 @@ def simulate_selection(
             "wave_name": wave.name,
             "attack": wave.attack_id,
             "cia": cia,
-            "e_value": round(e_value, 1),
+            "e_value": e_value,
             "e_target": e_target,
             "e_reached": e_reached,
             "bonus_reduction": attack_result["bonus_reduction"],
             "bonus_descriptions": attack_result["bonus_descriptions"],
-            "gesamtreduktion": round(attack_result["gesamtreduktion"], 1),
-            "capped_reduction": round(attack_result["capped_reduction"], 1),
+            "gesamtreduktion": attack_result["gesamtreduktion"],
+            "capped_reduction": attack_result["capped_reduction"],
             "severity": attack_result["severity"],
             "damage": attack_result["damage"],
             "kz_delta_attack": attack_result["kz_delta"],
-            "kz_delta_e_target": wave.kz_bonus if e_reached else wave.kz_malus,
+            "kz_delta_e_target": e_target_delta,
             "events": event_results,
             "kz_after": kz,
         })
@@ -333,22 +369,24 @@ def simulate_selection(
     }
 
 
-def base_losses(waves: List[Wave], attacks: Dict[str, Attack]) -> float:
-    total = 0.0
+def base_losses(waves: List[Wave], attacks: Dict[str, Attack]) -> int:
+    total = 0
     for wave in waves:
         attack = attacks[wave.attack_id]
         total += attack.base_severity * attack.s_unit
     return total
 
 
-def ros(base_losses: float, total_damage: float, total_cost: float) -> Optional[float]:
+def ros(base_losses: float, total_damage: float, total_cost: float) -> Optional[Fraction]:
     if total_cost == 0:
         return None
-    avoided_losses = base_losses - total_damage
+    avoided_losses = Fraction(base_losses) - total_damage
     return (avoided_losses - total_cost) / total_cost
 
 
-def final_index(kz_final: int, ros: Optional[float], weight_kz: float = 1.0, weight_ros: float = 1.0) -> float:
+def final_index(
+    kz_final: int, ros: Optional[Fraction], weight_kz: Fraction = Fraction(1), weight_ros: Fraction = Fraction(1)
+) -> Fraction:
     if ros is None:
         return kz_final
     return (weight_kz * kz_final) + (weight_ros * (ros * 100))
@@ -362,7 +400,8 @@ def evaluate_plan(cfg: Config, tier_name: str, selection: Dict[str, int]) -> Dic
     tier = cfg.budget_tiers[tier_name]
     init, opex_per_wave, total_cost = compute_costs(selection, cfg.measures, len(cfg.waves))
     outcome = simulate_selection(
-        selection, tier, cfg.waves, cfg.attacks, cfg.measures, cfg.events, cfg.base_cia, tier.kz_start
+        selection, tier, cfg.waves, cfg.attacks, cfg.measures, cfg.events, cfg.base_cia, tier.kz_start,
+        cfg.ws, cfg.rs,
     )
     total_cost += outcome["total_event_opex"]
     adjusted_budget = tier.budget + outcome["total_event_budget"]
@@ -372,7 +411,7 @@ def evaluate_plan(cfg: Config, tier_name: str, selection: Dict[str, int]) -> Dic
     final_event_results = []
     for event in cfg.final_events:
         ev_kz, _, _, description = evaluate_event(event, selection, remaining_budget=remaining_budget)
-        outcome["kz_final"] = max(0, min(100, outcome["kz_final"] + ev_kz))
+        outcome["kz_final"] = clamp_kz(outcome["kz_final"] + ev_kz)
         final_event_results.append({
             "id": event.id,
             "name": event.name,

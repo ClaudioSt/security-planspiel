@@ -299,7 +299,7 @@ def run_analysis(config_path: Path = DEFAULT_CONFIG_PATH):
 
     for tier_name, tier in cfg.budget_tiers.items():
         print(f"\n{'='*100}")
-        print(f"BUDGET-TIER: {tier_name.upper()} (Budget: {tier.budget}k, KZ-Start: {tier.kz_start}, Sev-Mult: {tier.severity_multiplier})")
+        print(f"BUDGET-TIER: {tier_name.upper()} (Budget: {tier.budget}k, KZ-Start: {tier.kz_start}, Sev-Mult: {tier.severity_multiplier:.1f})")
         print("=" * 100)
 
         tier_results = []
@@ -335,7 +335,7 @@ def run_analysis(config_path: Path = DEFAULT_CONFIG_PATH):
                 bonus = f"+{w['bonus_reduction']}B" if w["bonus_reduction"] > 0 else ""
                 events_kz = sum(e.get("kz_delta", 0) for e in w["events"])
                 print(f"  W{w['wave_id']}: E={w['e_value']:.1f}/{w['e_target']} {e_status}, "
-                      f"Sev={w['severity']}{bonus}, Dmg={w['damage']:.0f}k, Evt={events_kz:+d}, KZ={w['kz_after']}")
+                      f"Sev={w['severity']:.1f}{bonus}, Dmg={w['damage']:.0f}k, Evt={events_kz:+d}, KZ={w['kz_after']}")
 
             kz_status = "OK" if rec["kz_final"] >= POSITIVE_KZ_THRESHOLD else "KRIT"
             print(f"  >> KZ={rec['kz_final']} [{kz_status}]{_over_budget_flag(result)}, Dmg={rec['total_damage']:.0f}k, "

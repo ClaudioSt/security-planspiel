@@ -1,3 +1,5 @@
+from fractions import Fraction
+
 from planspiel.config import Config, load_config
 from planspiel.rules import base_losses, evaluate_plan, final_index, over_budget, ros
 from tests.support import CONFIG_PATH
@@ -13,6 +15,11 @@ def test_ros_is_none_when_cost_is_zero():
 
 def test_ros_formula():
     assert ros(620, 96.0, 250) == ((620 - 96.0) - 250) / 250
+
+
+def test_ros_is_exact_for_exact_inputs():
+    assert ros(620, Fraction(96), 250) == Fraction(137, 125)
+    assert ros(620, 96, 250) == Fraction(137, 125)
 
 
 def test_final_index_falls_back_to_kz_without_ros():

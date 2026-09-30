@@ -3,6 +3,7 @@ import json
 import pytest
 
 from planspiel import simulate
+from planspiel.simulate import to_legacy_json
 from tests.support import CONFIG_PATH, harness
 from tests.support.golden import normalize
 
@@ -33,4 +34,4 @@ def test_harness_matches_run_simulation_on_in_budget_window(tmp_path):
 
     assert [harness.code_of(cfg, r["selection"]) for r in results] == [code for code, _ in expected]
     for result, (code, record) in zip(results, expected):
-        assert result == normalize({k: record[k] for k in harness.LEGACY_RECORD_KEYS}), code
+        assert result == normalize(to_legacy_json({k: record[k] for k in harness.LEGACY_RECORD_KEYS})), code

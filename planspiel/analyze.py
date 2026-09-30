@@ -1,5 +1,6 @@
 import argparse
 import json
+from fractions import Fraction
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -9,11 +10,15 @@ from planspiel.config import load_config
 
 
 def load_results(path: Path) -> Dict:
-    return json.loads(path.read_text(encoding="utf-8"))
+    return json.loads(path.read_text(encoding="utf-8"), parse_float=Fraction)
 
 
 def format_currency(value: float) -> str:
     return f"{value:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+
+
+def format_kz(value) -> str:
+    return str(int(value)) if value.denominator == 1 else f"{value:.1f}"
 
 
 def format_percent(value: float) -> str:
@@ -52,7 +57,7 @@ def item_ros(item: Dict, base_losses: Optional[float]) -> Optional[float]:
     return rules.ros(base_losses, item["total_damage"], item["costs"]["total"])
 
 
-def print_ros_and_final_index(item: Dict, base_losses: Optional[float], weight_kz: float, weight_ros: float):
+def print_ros_and_final_index(item: Dict, base_losses: Optional[float], weight_kz: Fraction, weight_ros: Fraction):
     if base_losses is None:
         return
     ros = item_ros(item, base_losses)
@@ -64,7 +69,7 @@ def print_ros_and_final_index(item: Dict, base_losses: Optional[float], weight_k
     print(f"  Final-Index: {format_currency(final_index)}")
 
 
-def compute_summary(data: Dict, top_n: int, base_losses: Optional[float], weight_kz: float, weight_ros: float):
+def compute_summary(data: Dict, top_n: int, base_losses: Optional[float], weight_kz: Fraction, weight_ros: Fraction):
     results = data.get("results", [])
     if not results:
         print("Keine Ergebnisse gefunden.")
@@ -85,7 +90,7 @@ def compute_summary(data: Dict, top_n: int, base_losses: Optional[float], weight
 
     print_section("Gesamtübersicht")
     print(f"Outcomes: {len(results)}")
-    print(f"KZ: min {min(kz_values)}, max {max(kz_values)}")
+    print(f"KZ: min {format_kz(min(kz_values))}, max {format_kz(max(kz_values))}")
     print(f"Schaden: min {format_currency(min(damage_values))}, max {format_currency(max(damage_values))}")
     print(f"Kosten: min {format_currency(min(cost_values))}, max {format_currency(max(cost_values))}")
     if ros_values:
@@ -95,19 +100,19 @@ def compute_summary(data: Dict, top_n: int, base_losses: Optional[float], weight
 
     print_section("Top KZ")
     for item in summarize_top(results, "kz_final", top_n):
-        print(f"KZ {item['kz_final']} | Schaden {format_currency(item['total_damage'])} | Kosten {format_currency(item['costs']['total'])}")
+        print(f"KZ {format_kz(item['kz_final'])} | Schaden {format_currency(item['total_damage'])} | Kosten {format_currency(item['costs']['total'])}")
         print(f"  Auswahl: {selection_to_string(item['selection'])}")
         print_ros_and_final_index(item, base_losses, weight_kz, weight_ros)
 
     print_section("Geringster Schaden")
     for item in summarize_bottom(results, "total_damage", top_n):
-        print(f"Schaden {format_currency(item['total_damage'])} | KZ {item['kz_final']} | Kosten {format_currency(item['costs']['total'])}")
+        print(f"Schaden {format_currency(item['total_damage'])} | KZ {format_kz(item['kz_final'])} | Kosten {format_currency(item['costs']['total'])}")
         print(f"  Auswahl: {selection_to_string(item['selection'])}")
         print_ros_and_final_index(item, base_losses, weight_kz, weight_ros)
 
     print_section("Niedrigste Kosten")
     for item in summarize_bottom(results, "costs.total", top_n):
-        print(f"Kosten {format_currency(item['costs']['total'])} | KZ {item['kz_final']} | Schaden {format_currency(item['total_damage'])}")
+        print(f"Kosten {format_currency(item['costs']['total'])} | KZ {format_kz(item['kz_final'])} | Schaden {format_currency(item['total_damage'])}")
         print(f"  Auswahl: {selection_to_string(item['selection'])}")
         print_ros_and_final_index(item, base_losses, weight_kz, weight_ros)
 
@@ -119,7 +124,7 @@ def compute_summary(data: Dict, top_n: int, base_losses: Optional[float], weight
         ),
     )[:top_n]
     for item in best_ranked:
-        print(f"KZ {item['kz_final']} | Schaden {format_currency(item['total_damage'])} | Kosten {format_currency(item['costs']['total'])}")
+        print(f"KZ {format_kz(item['kz_final'])} | Schaden {format_currency(item['total_damage'])} | Kosten {format_currency(item['costs']['total'])}")
         print(f"  Auswahl: {selection_to_string(item['selection'])}")
         print_ros_and_final_index(item, base_losses, weight_kz, weight_ros)
 
@@ -131,7 +136,7 @@ def compute_summary(data: Dict, top_n: int, base_losses: Optional[float], weight
         ),
     )[:top_n]
     for item in worst_ranked:
-        print(f"KZ {item['kz_final']} | Schaden {format_currency(item['total_damage'])} | Kosten {format_currency(item['costs']['total'])}")
+        print(f"KZ {format_kz(item['kz_final'])} | Schaden {format_currency(item['total_damage'])} | Kosten {format_currency(item['costs']['total'])}")
         print(f"  Auswahl: {selection_to_string(item['selection'])}")
         print_ros_and_final_index(item, base_losses, weight_kz, weight_ros)
 
@@ -141,8 +146,8 @@ def parse_args(argv=None):
     parser.add_argument("--input", default="simulation_results.json", help="Pfad zur Ergebnisdatei.")
     parser.add_argument("--config", default=None, help="Optionaler Pfad zur simulation_config.json (für RoS).")
     parser.add_argument("--top", type=int, default=5, help="Anzahl Top/Bottom-Einträge.")
-    parser.add_argument("--weight-kz", type=float, default=1.0, help="Gewichtung für KZ im Final-Index.")
-    parser.add_argument("--weight-ros", type=float, default=1.0, help="Gewichtung für RoS im Final-Index.")
+    parser.add_argument("--weight-kz", type=Fraction, default=Fraction(1), help="Gewichtung für KZ im Final-Index.")
+    parser.add_argument("--weight-ros", type=Fraction, default=Fraction(1), help="Gewichtung für RoS im Final-Index.")
     return parser.parse_args(argv)
 
 

@@ -6,6 +6,8 @@ from pathlib import Path
 
 import pytest
 
+from planspiel.rounding import exact_to_json
+
 NOISE_TOLERANCE = Fraction(1, 10**9)
 MAX_SHOWN_LINES = 30
 MISSING = "<missing>"
@@ -15,8 +17,18 @@ _RATIO = re.compile(r"^-?\d+/\d+$")
 _INDEX = re.compile(r"\[\d+\]")
 
 
+def _exactify(value):
+    if isinstance(value, Fraction):
+        return exact_to_json(value)
+    if isinstance(value, dict):
+        return {key: _exactify(item) for key, item in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [_exactify(item) for item in value]
+    return value
+
+
 def normalize(value):
-    return json.loads(json.dumps(value))
+    return json.loads(json.dumps(_exactify(value)))
 
 
 def flatten(obj, prefix=""):
