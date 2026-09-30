@@ -36,12 +36,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. A full enumeration per tier, including over-budget combinations, finishes without exhausting memory and reports top-K, percentiles, best in-budget vs best over-budget, and the Pareto count. A complete dump is written only on explicit request.
   5. The config validator rejects a config with a broken reference (e.g. an unknown measure id). It warns on hand-calculability violations, flagging today's wave-3 KZ slope (17/7) and any broken printed invariant such as `base_severity != mitigation_cap`.
 
-**Plans**: 1/7 plans executed
+**Plans**: 2/7 plans executed
 
 Plans:
 
 - [x] 01-01-PLAN.md — FOUND-01: uv environment, lockfile, `planspiel` package skeleton (Wave 1)
-- [ ] 01-02-PLAN.md — FOUND-04: UTF-8 everywhere, real umlauts in config (Wave 2)
+- [x] 01-02-PLAN.md — FOUND-04: UTF-8 everywhere, real umlauts in config (Wave 2)
 - [ ] 01-03-PLAN.md — FOUND-02: golden characterization tests + full per-tier digests (Wave 3)
 - [ ] 01-04-PLAN.md — FOUND-03: every formula once in `planspiel/`, root scripts as thin wrappers (Wave 4)
 - [ ] 01-05-PLAN.md — FOUND-07: config validator (errors + hand-calculability warnings) (Wave 5)
@@ -147,7 +147,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 3 
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Simulation Foundation | 1/7 | In Progress|  |
+| 1. Simulation Foundation | 2/7 | In Progress|  |
 | 2. Rule Changes | 0/TBD | Not started | - |
 | 3. Content Source & Veiling | 0/TBD | Not started | - |
 | 4. Print Pipeline & Attack Worksheets | 0/TBD | Not started | - |
