@@ -24,7 +24,7 @@ Requirements: FOUND-01 … FOUND-07. Rule changes (overspend penalty, RoS ledger
 ## Implementation Decisions
 
 ### Paper rounding rule (FOUND-05)
-- **D-01:** Rounding happens at exactly one point: each wave's **KZ-Delta is rounded to a whole number**, and the waves are then summed. The E-value, Gesamtreduktion, reduction above threshold and severity stay exact. The E-value always has ≤1 decimal because CIA values are integers and weights have 1 decimal.
+- **D-01:** Rounding happens at exactly one point: each wave's **KZ-Delta is rounded to a whole number**, and the waves are then summed. ("KZ-Delta" here = the wave total, see D-23.) The E-value, Gesamtreduktion, reduction above threshold and severity stay exact. The E-value always has ≤1 decimal because CIA values are integers and weights have 1 decimal.
 - **D-02:** Rounding mode is **kaufmännisch, symmetric (half away from zero)**: +2,5 → +3, −2,5 → −3. Never use Python's `round()`, which rounds half to even. Use `Fraction`/`Decimal` with ROUND_HALF_UP semantics on the absolute value.
 - **D-03:** **Damage stays exact in whole euros**, with no rounding. Budget units are thousands, so s_unit × severity (0,1 steps) × (1 − recovery 0,1/0,3/0,5) always ends in whole euros. RoS stays exact.
 - **D-04:** The rounding helper is also the single place for the "per started 10.000 €" step logic that Phase 2 will need. Test it at the boundaries (exactly 10.000 €, 10.001 €, 0, negative).
@@ -52,6 +52,16 @@ Requirements: FOUND-01 … FOUND-07. Rule changes (overspend penalty, RoS ledger
 - **D-20:** Umlauts: fix **display strings only** (name/description/text fields, e.g. "OT-Störung", "Geschäftsführung", "Unterstützung"). **Ids and keys stay ASCII** (`operative_unterstuetzung`, `ot`, `M1` …). A test fails if a display field contains a transliteration from an allow-list of known words.
 - **D-21:** Validator: **broken references are hard errors on every config load**, so no script runs on a broken config. **Hand-calculability issues are warnings** in Phase 1: non-1-decimal KZ slope (flag wave 3 17/7), `base_severity != mitigation_cap`, `severity_multiplier != 1.0`, weights not summing to 1.0 or having >1 decimal, recovery >1 decimal. Warnings appear in pytest and via a standalone CLI (e.g. `uv run planspiel validate`), and Phase 6 promotes them to errors.
 - **D-22:** Repo hygiene is already done: `sim_*.json` and `__pycache__` are untracked and gitignored, so `.planning/codebase/CONCERNS.md` is stale there. No git cleanup in this phase. `angriff_berechnung.xlsx` stays tracked until Phase 7.
+
+### Plan-phase gap review (2026-09-30)
+- **D-23:** The rounded "KZ-Delta" of D-01 is the **wave total**: attack KZ-Delta + E-target bonus/malus + that wave's event KZ deltas, summed exactly, then rounded once per wave (half away from zero, D-02), then clamped (D-06). The final Budget Review is integer and applied after the waves. With today's config the only .5 tie is wave 3 at reduction-above-threshold 3.5 (attack KZ-Delta +1.5): e.g. −7 + 1.5 = −5.5 → −6. The golden set includes this tie with a negative and a positive wave total.
+- **D-24:** One canonical semantics for all scripts = today's enumeration path in `simulate_outcomes.py`: final KZ includes the Budget Review; over-budget per D-11; RoS per README = (Σ base losses − damage − total cost) / total cost, with base losses = Σ base_severity × s_unit over waves (620) and total cost incl. event OPEX as today; ranking by Final-Index. `balance_analysis.py` adopts all of this. Its `combined_score`, its own budget check (init + 3·OPEX vs budget) and its simulated-baseline RoS are removed. Its printed numbers change on purpose; they are not pinned by golden files.
+- **D-25:** Own cost (Pareto front D-14, tuple store D-17) = init + OPEX × waves, **excluding** event effects (RULE-06 "own spend"). The over-budget flag still follows D-11, and RoS keeps today's total cost incl. event OPEX until Phase 2.
+- **D-26:** Legacy `--output` keeps writing today's JSON unchanged: in-budget only, `--budget-utilization`/`--budget-min`/`--budget-max` filters, same structure and sort, so `analyze_simulation_results.py` still reads it. The full per-combination dump incl. over-budget combos is a **new explicit flag** (JSONL, with an in/over-budget field). A run without `--output` writes the new summary (D-15/D-16).
+- **D-27:** RoS is undefined (JSON `null`) when its cost denominator is 0 (today only the empty selection). Such entries are excluded from RoS top-K and percentiles; Final-Index falls back to KZ, as `compute_final_index` does today. (Today `analyze_simulation_results.py` divides by zero there.)
+- **D-28:** The characterization baseline must not depend on the machine's code page. The config is read as UTF-8 before the golden capture (this machine's ANSI code page is 1252; today's `read_text()` in `simulate_outcomes.py` and `analyze_simulation_results.py` turns "früh" into "frÃ¼h"). Recommended order: FOUND-04 before FOUND-02. The old generators already read UTF-8.
+- **D-29:** `generate_attack_calculator.py` re-encodes the wave formulas as Excel formulas (D-18's "no game formulas" does not hold for it). It still stays untouched (retired, archived in Phase 7 / LEG-01) and is a documented exception to FOUND-03's "exactly once" until then.
+- **D-30:** FOUND-06's "within memory limits" becomes concrete: research measures peak memory and runtime per tier (this machine has 48 GB RAM; the timestamps of the existing `sim_*.json` files suggest roughly 1 min per tier for today's float enumeration, unverified), and the plan states measured bounds as acceptance criteria.
 
 ### Claude's Discretion
 - Python version pin, dependency set and pins in `pyproject.toml`, and `planspiel/` module layout.
@@ -112,7 +122,7 @@ Requirements: FOUND-01 … FOUND-07. Rule changes (overspend penalty, RoS ledger
 <specifics>
 ## Specific Ideas
 
-- "Rounds like paper" means the exact rule is printable: "KZ-Delta je Welle auf ganze Zahl runden, ab ,5 vom Betrag aufrunden". Phase 4 prints this rule, so the helper name and doc should mirror it.
+- "Rounds like paper" means the exact rule is printable: "KZ-Änderung je Welle (Angriff + E-Ziel + Events) auf ganze Zahl runden, ab ,5 vom Betrag aufrunden" (D-23). Phase 4 prints this rule, so the helper name and doc should mirror it.
 - The golden diff summary should be domain-readable (selection key, field, old → new), not a raw JSON diff.
 
 </specifics>
