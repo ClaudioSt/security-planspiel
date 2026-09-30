@@ -8,7 +8,7 @@
 ### Foundation (FOUND)
 
 - [x] **FOUND-01**: Maintainer can set up the environment with one command (uv-managed venv, `pyproject.toml` + `uv.lock`); all scripts run via `uv run`, independent of the Inkscape `python` on PATH
-- [ ] **FOUND-02**: Characterization tests pin current simulation outputs (KZ, damage, costs, RoS per selection and tier) before any refactoring
+- [x] **FOUND-02**: Characterization tests pin current simulation outputs (KZ, damage, costs, RoS per selection and tier) before any refactoring
 - [ ] **FOUND-03**: Every game formula exists exactly once in a shared `planspiel/` package used by simulation, balance analysis and print generation; root scripts remain as thin wrappers so documented commands keep working
 - [x] **FOUND-04**: Config is read as UTF-8 everywhere, and all German display strings in config use real umlauts/ß instead of transliterations
 - [ ] **FOUND-05**: Calculations use exact (integer/fraction) arithmetic and one tested rounding/step helper that matches how facilitators round on paper
@@ -120,7 +120,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | FOUND-01 | Phase 1 | Complete |
-| FOUND-02 | Phase 1 | Pending |
+| FOUND-02 | Phase 1 | Complete |
 | FOUND-03 | Phase 1 | Pending |
 | FOUND-04 | Phase 1 | Complete |
 | FOUND-05 | Phase 1 | Pending |
