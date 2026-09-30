@@ -54,3 +54,22 @@ def evaluate(cfg: Config, tier_name: str, selection: dict) -> dict:
     if not rules.dependencies_satisfied(selection, cfg.measures):
         return {"valid": False}
     return {"valid": True, **rules.evaluate_plan(cfg, tier_name, selection)}
+
+
+def compact_from_plan(cfg: Config, rec: dict):
+    from planspiel.rules import CompactOutcome
+
+    damage = rec["total_damage"] * 1000
+    assert damage.denominator == 1
+    costs = rec["costs"]
+    return CompactOutcome(
+        kz_final=rec["kz_final"],
+        own_cost=costs["init"] + costs["opex_per_wave"] * len(cfg.waves),
+        total_cost=costs["total"],
+        damage_eur=int(damage),
+        event_opex=rec["total_event_opex"],
+        event_budget=rec["total_event_budget"],
+        over_budget=rec["over_budget"],
+        kz_after=tuple(wave["kz_after"] for wave in rec["waves"]),
+        e_reached=tuple(wave["e_reached"] for wave in rec["waves"]),
+    )

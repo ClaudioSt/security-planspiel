@@ -41,6 +41,9 @@ FORMULA_FUNCTIONS = {
         "base_losses",
         "ros",
         "final_index",
+        "budget_ledger",
+        "e_target_check",
+        "apply_final_events",
     )
 }
 FORMULA_FUNCTIONS.update(

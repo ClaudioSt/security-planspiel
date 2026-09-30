@@ -37,14 +37,15 @@ def canonical_line(code: str, record: dict) -> str:
     return "|".join(fields)
 
 
-def compute_digest(cfg, tier_name: str, limit: int | None = None) -> dict:
+def compute_digest(cfg, tier_name: str, limit: int | None = None, evaluate=None) -> dict:
+    evaluate = evaluate or harness.evaluate
     sha = hashlib.sha256()
     count = in_budget = over_budget = 0
     histogram = [0] * 101
     sum_damage = 0
 
     for code in harness.iter_codes(cfg):
-        record = harness.evaluate(cfg, tier_name, harness.selection_of(cfg, code))
+        record = evaluate(cfg, tier_name, harness.selection_of(cfg, code))
         if not record["valid"]:
             continue
         sha.update((canonical_line(code, record) + "\n").encode("utf-8"))
