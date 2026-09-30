@@ -1,11 +1,16 @@
 import copy
 import json
+import subprocess
+import sys
 from fractions import Fraction
 
 import pytest
 
+from planspiel.cli import main
+from planspiel.config import load_config
 from planspiel.rules import kz_slope
-from planspiel.validate import scale_factors, validate
+from planspiel.simulate import run_simulation
+from planspiel.validate import ConfigError, HandCalcWarning, scale_factors, validate
 from tests.support import CONFIG_PATH, REPO_ROOT
 
 MINI = REPO_ROOT / "tests" / "fixtures" / "mini_config.json"
@@ -172,3 +177,96 @@ def test_all_errors_are_collected():
     raw["waves"][1]["attack_id"] = "phishing"
     codes = sorted(issue.code for issue in _errors(validate(raw)))
     assert codes == ["ref.unknown_attack", "ref.unknown_measure"]
+
+
+def _write_config(tmp_path, mutate, name="broken.json"):
+    raw = copy.deepcopy(_raw())
+    mutate(raw)
+    path = tmp_path / name
+    path.write_text(json.dumps(raw, ensure_ascii=False), encoding="utf-8")
+    return path
+
+
+def _two_broken_references(raw):
+    raw["waves"][0]["bonus_measures"][0]["measure"] = "M99"
+    raw["waves"][1]["attack_id"] = "phishing"
+
+
+def test_load_config_rejects_broken_reference_with_code_and_path(tmp_path):
+    broken = _write_config(tmp_path, _set(["waves", 0, "bonus_measures", 0, "measure"], "M99"))
+    with pytest.raises(ConfigError) as excinfo:
+        load_config(broken)
+    assert "ref.unknown_measure" in str(excinfo.value)
+    assert "waves[0].bonus_measures[0].measure" in str(excinfo.value)
+
+
+def test_load_config_lists_every_error(tmp_path):
+    broken = _write_config(tmp_path, _two_broken_references)
+    with pytest.raises(ConfigError) as excinfo:
+        load_config(broken)
+    assert {issue.code for issue in excinfo.value.issues} == {"ref.unknown_measure", "ref.unknown_attack"}
+    assert "ref.unknown_measure" in str(excinfo.value)
+    assert "ref.unknown_attack" in str(excinfo.value)
+
+
+def test_load_config_warns_about_hand_calculability():
+    with pytest.warns(HandCalcWarning, match="hand_calc.kz_slope"):
+        load_config(CONFIG_PATH)
+
+
+def test_cli_validate_real_config_exits_zero_with_one_warning(capsys):
+    assert main(["validate", "--config", str(CONFIG_PATH)]) == 0
+    out = capsys.readouterr().out
+    assert "WARN hand_calc.kz_slope attacks.exfil" in out
+    assert "0 Fehler, 1 Warnung(en)" in out
+
+
+def test_cli_validate_strict_fails_on_warnings():
+    assert main(["validate", "--config", str(CONFIG_PATH), "--strict"]) == 1
+
+
+def test_cli_validate_broken_config_exits_one(tmp_path, capsys):
+    broken = _write_config(tmp_path, _set(["waves", 0, "bonus_measures", 0, "measure"], "M99"))
+    assert main(["validate", "--config", str(broken)]) == 1
+    assert "ERROR ref.unknown_measure" in capsys.readouterr().out
+
+
+def test_cli_validate_reports_invalid_json(tmp_path, capsys):
+    broken = tmp_path / "broken.json"
+    broken.write_text("{not json", encoding="utf-8")
+    assert main(["validate", "--config", str(broken)]) == 1
+    assert "ERROR schema.json" in capsys.readouterr().out
+
+
+def _run(args):
+    return subprocess.run(
+        [sys.executable, *args],
+        cwd=REPO_ROOT,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+
+
+def test_module_entry_point_validates_default_config():
+    result = _run(["-m", "planspiel", "validate"])
+    assert result.returncode == 0, result.stderr.decode("utf-8", errors="replace")
+    assert "17/7" in result.stdout.decode("utf-8")
+
+
+def test_simulate_script_refuses_broken_config(tmp_path):
+    broken = _write_config(tmp_path, _set(["waves", 0, "bonus_measures", 0, "measure"], "M99"))
+    out = tmp_path / "out.json"
+    result = _run(["simulate_outcomes.py", "--config", str(broken), "--output", str(out)])
+    assert result.returncode != 0
+    assert "ref.unknown_measure" in result.stderr.decode("utf-8", errors="replace")
+    assert not out.exists()
+
+
+def test_analyze_script_refuses_broken_config(tmp_path):
+    broken = _write_config(tmp_path, _set(["waves", 0, "bonus_measures", 0, "measure"], "M99"))
+    legacy = tmp_path / "legacy.json"
+    run_simulation(MINI, "low", legacy, None, None, 0.0)
+    result = _run(["analyze_simulation_results.py", "--input", str(legacy), "--config", str(broken)])
+    assert result.returncode != 0
+    assert "ref.unknown_measure" in result.stderr.decode("utf-8", errors="replace")
