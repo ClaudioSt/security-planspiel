@@ -8,3 +8,6 @@ __pycache__/
 *.pyc
 ~$*
 *.stackdump
+
+.venv/
+.pytest_cache/
