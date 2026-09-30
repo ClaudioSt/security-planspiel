@@ -6,13 +6,13 @@ from typing import Dict, List, Optional
 
 
 def load_results(path: Path) -> Dict:
-    return json.loads(path.read_text())
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def load_base_losses(config_path: Optional[Path]) -> Optional[float]:
     if config_path is None:
         return None
-    raw = json.loads(config_path.read_text())
+    raw = json.loads(config_path.read_text(encoding="utf-8"))
     attacks = raw.get("attacks", {})
     waves = raw.get("waves", [])
     base_losses = 0.0

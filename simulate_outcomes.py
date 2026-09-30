@@ -74,7 +74,7 @@ class Event:
 
 
 def load_config(path: Path):
-    raw = json.loads(path.read_text())
+    raw = json.loads(path.read_text(encoding="utf-8"))
     base_cia = raw.get("base_cia", {"c": 0, "i": 0, "a": 0})
 
     budget_tiers = {}
@@ -583,7 +583,7 @@ def run_simulation(
         "summary": summary,
         "results": results,
     }
-    output_path.write_text(json.dumps(output, indent=2))
+    output_path.write_text(json.dumps(output, indent=2), encoding="utf-8")
     return summary
 
 
