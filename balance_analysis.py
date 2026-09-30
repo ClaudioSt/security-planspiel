@@ -12,8 +12,9 @@ from typing import Dict, List, Tuple
 import sys
 
 sys.path.insert(0, str(Path(__file__).parent))
-from simulate_outcomes import (
-    load_config, compute_cia, compute_costs, simulate_selection,
+from planspiel.config import load_config
+from planspiel.rules import (
+    compute_cia, compute_costs, simulate_selection,
     dependencies_satisfied
 )
 
@@ -279,7 +280,10 @@ def calculate_combined_score(kz_final: int, ros: float, damage: float) -> float:
 
 def run_analysis():
     config_path = Path(__file__).parent / "simulation_config.json"
-    default_tier, budget_tiers, attacks, waves, measures, events, base_cia, final_events = load_config(config_path)
+    cfg = load_config(config_path)
+    budget_tiers, attacks, waves, measures, events, base_cia = (
+        cfg.budget_tiers, cfg.attacks, cfg.waves, cfg.measures, cfg.events, cfg.base_cia
+    )
 
     # First: Calculate cost reference
     print("=" * 100)
