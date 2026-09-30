@@ -12,6 +12,7 @@ from tests.support import REPO_ROOT
 
 RULES = "planspiel/rules.py"
 CONFIG = "planspiel/config.py"
+ROUNDING = "planspiel/rounding.py"
 
 FORMULA_FUNCTIONS = {
     name: RULES
@@ -36,6 +37,9 @@ FORMULA_FUNCTIONS = {
         "final_index",
     )
 }
+FORMULA_FUNCTIONS.update(
+    {name: ROUNDING for name in ("round_half_away", "round_half_away_frac", "started_steps")}
+)
 
 RETIRED_FUNCTIONS = {
     "calculate_ros",
