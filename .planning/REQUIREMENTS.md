@@ -7,7 +7,7 @@
 
 ### Foundation (FOUND)
 
-- [ ] **FOUND-01**: Maintainer can set up the environment with one command (uv-managed venv, `pyproject.toml` + `uv.lock`); all scripts run via `uv run`, independent of the Inkscape `python` on PATH
+- [x] **FOUND-01**: Maintainer can set up the environment with one command (uv-managed venv, `pyproject.toml` + `uv.lock`); all scripts run via `uv run`, independent of the Inkscape `python` on PATH
 - [ ] **FOUND-02**: Characterization tests pin current simulation outputs (KZ, damage, costs, RoS per selection and tier) before any refactoring
 - [ ] **FOUND-03**: Every game formula exists exactly once in a shared `planspiel/` package used by simulation, balance analysis and print generation; root scripts remain as thin wrappers so documented commands keep working
 - [ ] **FOUND-04**: Config is read as UTF-8 everywhere, and all German display strings in config use real umlauts/ß instead of transliterations
@@ -119,7 +119,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| FOUND-01 | Phase 1 | Pending |
+| FOUND-01 | Phase 1 | Complete |
 | FOUND-02 | Phase 1 | Pending |
 | FOUND-03 | Phase 1 | Pending |
 | FOUND-04 | Phase 1 | Pending |
@@ -167,6 +167,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | LEG-02 | Phase 7 | Pending |
 
 **Coverage:**
+
 - v1 requirements: 46 total
 - Mapped to phases: 46
 - Unmapped: 0 ✓

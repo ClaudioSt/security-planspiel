@@ -6,14 +6,14 @@ current_phase: 1
 current_phase_name: Simulation Foundation
 status: executing
 stopped_at: Phase 1 planned
-last_updated: "2026-09-30T13:47:07.626Z"
+last_updated: "2026-09-30T13:49:58.448Z"
 last_activity: 2026-09-30
 last_activity_desc: Phase 1 execution started
 progress:
   total_phases: 7
   completed_phases: 0
   total_plans: 7
-  completed_plans: 0
+  completed_plans: 1
   percent: 0
 ---
 
@@ -29,8 +29,8 @@ See: .planning/PROJECT.md (updated 2026-09-29)
 ## Current Position
 
 Phase: 1 (Simulation Foundation) — EXECUTING
-Plan: 1 of 7
-Status: Executing Phase 1
+Plan: 2 of 7
+Status: Ready to execute
 Last activity: 2026-09-30 — Phase 1 execution started
 
 Progress: [░░░░░░░░░░] 0%
@@ -55,6 +55,7 @@ Progress: [░░░░░░░░░░] 0%
 - Trend: -
 
 *Updated after each plan completion*
+| Phase 01 P01 | 15min | 2 tasks | 13 files |
 
 ## Accumulated Context
 
@@ -68,6 +69,7 @@ Recent decisions affecting current work:
 - [Init]: uv + `pyproject.toml` + `uv.lock` (FOUND-01); LaTeX kept over Typst; Excel attack calculator retired
 - [Init]: Downgrade allowed (no init refund, OPEX drops next wave); RoS counts own spend only, event effects out both ways
 - [Init]: Measure cards show CIA/costs/dependencies only; wave weights and bonus links revealed on attack worksheets
+- [Phase 01-01]: uv_build range >=0.12,<0.13; python-preference only-managed; openpyxl/python-pptx runtime deps for legacy generators only
 
 ### Pending Todos
 
@@ -90,6 +92,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-09-29T14:08:12.259Z
+Last session: 2026-09-30T13:49:51.882Z
 Stopped at: Phase 1 context gathered
 Resume file: .planning/phases/01-simulation-foundation/01-CONTEXT.md
