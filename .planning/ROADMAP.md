@@ -32,7 +32,16 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Loading the config yields correct German text (real umlauts/ß, no mojibake). The shared rounding/step helper returns the paper result at boundary inputs (exactly 10.000 €, 10.001 €, zero, negative amounts).
   4. A full enumeration per tier, including over-budget combinations, finishes without exhausting memory and reports top-K, percentiles, best in-budget vs best over-budget, and the Pareto count. A complete dump is written only on explicit request.
   5. The config validator rejects a config with a broken reference (e.g. an unknown measure id). It warns on hand-calculability violations, flagging today's wave-3 KZ slope (17/7) and any broken printed invariant such as `base_severity != mitigation_cap`.
-**Plans**: TBD
+**Plans**: 7 plans (strictly sequential, one wave each)
+
+Plans:
+- [ ] 01-01-PLAN.md — FOUND-01: uv environment, lockfile, `planspiel` package skeleton (Wave 1)
+- [ ] 01-02-PLAN.md — FOUND-04: UTF-8 everywhere, real umlauts in config (Wave 2)
+- [ ] 01-03-PLAN.md — FOUND-02: golden characterization tests + full per-tier digests (Wave 3)
+- [ ] 01-04-PLAN.md — FOUND-03: every formula once in `planspiel/`, root scripts as thin wrappers (Wave 4)
+- [ ] 01-05-PLAN.md — FOUND-07: config validator (errors + hand-calculability warnings) (Wave 5)
+- [ ] 01-06-PLAN.md — FOUND-05: exact arithmetic + paper rounding/step helper (Wave 6)
+- [ ] 01-07-PLAN.md — FOUND-06: bounded full enumeration incl. over-budget, compact report (Wave 7)
 
 ### Phase 2: Rule Changes
 **Goal**: Every rule participants stumbled over at MHP is defined unambiguously, implemented test-first in the shared rules module and documented in README. Templates can then be written against a settled rule set. Numeric values (X, slopes, weights) stay provisional until Phase 6.
