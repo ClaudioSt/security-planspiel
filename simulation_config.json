@@ -54,7 +54,7 @@
     },
     {
       "id": 2,
-      "name": "OT-Stoerung",
+      "name": "OT-Störung",
       "attack_id": "ot",
       "weights": {
         "c": 0.2,
@@ -228,19 +228,19 @@
       "dependencies": []
     }
   },
-  "_comment_events": "Quelle: final_documents/Events_Security-Game.pptx (9 Folien). 'Backup & Recovery' (Folie 1) ist nicht separat aufgefuehrt, da identisch mit der M4-Recovery-Mechanik auf Angriffsebene (attacks.*.allow_recovery + measures.M4.levels.*.recovery: 0.10/0.30/0.50 -> Endschaden x 0.90/0.70/0.50).",
+  "_comment_events": "Quelle: final_documents/Events_Security-Game.pptx (9 Folien). 'Backup & Recovery' (Folie 1) ist nicht separat aufgeführt, da identisch mit der M4-Recovery-Mechanik auf Angriffsebene (attacks.*.allow_recovery + measures.M4.levels.*.recovery: 0.10/0.30/0.50 -> Endschaden x 0.90/0.70/0.50).",
   "events": {
     "wave_1": [
       {
         "id": "kurswechsel",
         "name": "Kurswechsel",
-        "description": "Die Geschaeftsfuehrung richtet die Sicherheitsstrategie neu aus: genau ein Massnahmenwechsel ist durchzufuehren, nur die Kostendifferenz der Init-Kosten wird verrechnet.",
+        "description": "Die Geschäftsführung richtet die Sicherheitsstrategie neu aus: genau ein Maßnahmenwechsel ist durchzuführen, nur die Kostendifferenz der Init-Kosten wird verrechnet.",
         "type": "noop"
       },
       {
         "id": "operative_unterstuetzung",
-        "name": "Operative Unterstuetzung",
-        "description": "Ein zentraler Rahmenvertrag senkt die laufenden Betriebskosten: OPEX -2.000 EUR pro aktiver Massnahme in der kommenden Welle.",
+        "name": "Operative Unterstützung",
+        "description": "Ein zentraler Rahmenvertrag senkt die laufenden Betriebskosten: OPEX -2.000 EUR pro aktiver Maßnahme in der kommenden Welle.",
         "type": "opex_discount_per_active_measure",
         "opex_per_measure": -2
       }
@@ -249,14 +249,14 @@
       {
         "id": "sparprogramm",
         "name": "Sparprogramm",
-        "description": "Der CFO verkuendet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+        "description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
         "type": "flat_budget",
         "budget_delta": -20
       },
       {
         "id": "oem_audit",
         "name": "OEM-Audit",
-        "description": "Der Automobilkunde prueft die Grundkontrollen: M1 IAM/PAM, M2 Logging & SIEM/MDR, M4 Backup & Disaster Recovery, M5 OT/IT-Netz-Segmentierung, M7 Vulnerability & Patch Management, jeweils mindestens Level 1.",
+        "description": "Der Automobilkunde prüft die Grundkontrollen: M1 IAM/PAM, M2 Logging & SIEM/MDR, M4 Backup & Disaster Recovery, M5 OT/IT-Netz-Segmentierung, M7 Vulnerability & Patch Management, jeweils mindestens Level 1.",
         "type": "checklist_tier",
         "measures": ["M1", "M2", "M4", "M5", "M7"],
         "min_level": 1,
@@ -265,7 +265,7 @@
       {
         "id": "kritische_schwachstelle",
         "name": "Kritische Schwachstelle im System",
-        "description": "Eine aktiv ausgenutzte Schwachstelle wird gemeldet - die Reaktion haengt vom Niveau des Patch Managements (M7) ab.",
+        "description": "Eine aktiv ausgenutzte Schwachstelle wird gemeldet - die Reaktion hängt vom Niveau des Patch Managements (M7) ab.",
         "type": "measure_level_tier",
         "measure": "M7",
         "tiers": {"0": -5, "1": 0, "2": 3, "3": 7}
@@ -275,7 +275,7 @@
       {
         "id": "exzellenz_bonus",
         "name": "Exzellenz-Bonus",
-        "description": "Fuer jede Massnahme auf hoechstem Niveau (Level 3) gibt es +5 KZ.",
+        "description": "Für jede Maßnahme auf höchstem Niveau (Level 3) gibt es +5 KZ.",
         "type": "level_bonus_per_measure",
         "level": 3,
         "kz_per_measure": 5
@@ -283,7 +283,7 @@
       {
         "id": "nervige_authentifizierung",
         "name": "Nervige Authentifizierung",
-        "description": "Verschaerfte Zugriffskontrollen (M1 >= Level 2) ohne begleitende Schulung (M6 = Level 0) erzeugen Frust: KZ -10.",
+        "description": "Verschärfte Zugriffskontrollen (M1 >= Level 2) ohne begleitende Schulung (M6 = Level 0) erzeugen Frust: KZ -10.",
         "type": "and_condition",
         "clauses": [
           {"measure": "M1", "min_level": 2},
@@ -297,7 +297,7 @@
     {
       "id": "budget_review",
       "name": "Budget Review",
-      "description": "Nach Abschluss wird das Restbudget geprueft: <0 EUR -> KZ -15, 0-25.000 -> KZ 0, 25.001-50.000 -> KZ +5, 50.001-75.000 -> KZ +10, >=75.001 -> KZ +15.",
+      "description": "Nach Abschluss wird das Restbudget geprüft: <0 EUR -> KZ -15, 0-25.000 -> KZ 0, 25.001-50.000 -> KZ +5, 50.001-75.000 -> KZ +10, >=75.001 -> KZ +15.",
       "type": "final_budget_tier",
       "tiers": [[-100000, -15], [0, 0], [25, 5], [50, 10], [75, 15]]
     }
