@@ -13,7 +13,7 @@
 - [x] **FOUND-04**: Config is read as UTF-8 everywhere, and all German display strings in config use real umlauts/ß instead of transliterations
 - [ ] **FOUND-05**: Calculations use exact (integer/fraction) arithmetic and one tested rounding/step helper that matches how facilitators round on paper
 - [ ] **FOUND-06**: Full enumeration including over-budget combinations runs per tier within measured memory and runtime bounds, using compact per-combination aggregates (top-K, percentiles, best in- vs over-budget, Pareto count); full dump only on request
-- [ ] **FOUND-07**: A config validator rejects broken references and flags hand-calculability violations (non-linear or awkward slopes, printed invariants such as `base_severity == mitigation_cap`)
+- [x] **FOUND-07**: A config validator rejects broken references and flags hand-calculability violations (non-linear or awkward slopes, printed invariants such as `base_severity == mitigation_cap`)
 
 ### Rules (RULE)
 
@@ -125,7 +125,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | FOUND-04 | Phase 1 | Complete |
 | FOUND-05 | Phase 1 | Pending |
 | FOUND-06 | Phase 1 | Pending |
-| FOUND-07 | Phase 1 | Pending |
+| FOUND-07 | Phase 1 | Complete |
 | RULE-01 | Phase 2 | Pending |
 | RULE-02 | Phase 2 | Pending |
 | RULE-03 | Phase 2 | Pending |
