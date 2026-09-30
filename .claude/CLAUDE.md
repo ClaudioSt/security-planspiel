@@ -34,10 +34,8 @@ This project refines the game after its live run at the MHP workshop (2026-09): 
 
 ## Runtime
 
-- Python 3.11 (verified via `python3 --version` → 3.11.15 in this environment; all scripts use `#!/usr/bin/env python3` and only rely on the standard library plus two third-party packages, so any modern Python 3.9+ should work, no version pin exists in the repo)
-- None present. There is no `requirements.txt`, `pyproject.toml`, `setup.py`, `Pipfile`, or `environment.yml` anywhere in the repo.
-- No lockfile of any kind — third-party dependencies are unpinned and undocumented; they must be inferred from `import` statements.
-- This means dependency installation is currently manual/tribal knowledge (`pip install openpyxl python-pptx`) — not enforced or reproducible from the repo alone.
+- Python 3.12, uv-managed (`.python-version`); dependencies pinned in `pyproject.toml` and locked in `uv.lock`; setup: `uv sync`; run everything via `uv run`.
+- `pyproject.toml` + `uv.lock` (uv_build, flat layout, console script `planspiel`); dev dependency pytest.
 
 ## Frameworks
 
@@ -63,7 +61,7 @@ This project refines the game after its live run at the MHP workshop (2026-09): 
 
 ## Platform Requirements
 
-- Any OS with Python 3.9+ installed plus `pip install openpyxl python-pptx` run manually (no automated dependency bootstrap exists)
+- Any OS with uv installed; `uv sync` provisions Python 3.12 and all dependencies.
 - `jq` recommended (per `CLAUDE.md`) for inspecting the large `sim_low.json` / `sim_med.json` files without loading them fully into an editor or Python REPL
 - None — this is not a deployed application. "Production" output is the printed/exported game material in `final_documents/` (docx/pptx/pdf) used live at the tabletop session; there is no server, hosting, or runtime deployment target.
 
