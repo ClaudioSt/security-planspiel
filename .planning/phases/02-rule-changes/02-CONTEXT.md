@@ -58,11 +58,18 @@ Numeric values (X, step-reward sizes, slopes) stay provisional until Phase 6. Pr
 ### RoS ledger (RULE-06)
 - **D-21:** Own spend counts in RoS: Init, Init differences from upgrades and adds, regular OPEX (level-dependent per wave once moves exist), and the Kurswechsel delta (D-12). Kept out of RoS but still part of the budget ledger: event OPEX penalties, event OPEX discounts (Operative Unterstützung), event budget deltas (Sparprogramm). Today `evaluate_plan` passes `ledger.total_cost`, which includes event OPEX, into `ros()`. That must split into a security-spend total for RoS and a budget-balance total for the Budget Review and penalty.
 
+### Plan-phase clarifications (2026-10-01, after research; see 02-RESEARCH.md U1–U6)
+- **D-24:** **Simulation layers.** The Phase-1 static enumeration stays as the exact, labelled **"reference plan without window moves"** (a legal game only for D-22-exempt plans) and is the basis of the RULE-04 gate. A **swap layer** (every wave-1 plan × each legal Kurswechsel swap) is added as the legal minimum. Reports and summaries label which layer a number comes from; static best results must not be presented as achievable legal results.
+- **D-25:** **Provisional X = 9**, one global value (maximum of the measured per-tier minima 9 / 5 / 3, E-target removed). Set in config when the penalty lands (RULE-03); the RULE-04 gate verifies it on static plans. Low tier > ~5 → logged as a Phase-6 input in STATE.md (D-18). The slow gate over move paths (swap/window families, ~10–15 min) is **deferred to Phase 6**.
+- **D-26:** **Single term: "Maßnahmentausch"** (one measure out, another in). "Maßnahmenwechsel" is the retired MHP term; README notes the replacement. RULE-01 and ROADMAP SC1 wording updated accordingly.
+- **D-27:** **Net pricing within a window:** only each measure's net level change in a window is priced (Init(level at window end) − Init(level at window start) if positive, never a refund); the declared Kurswechsel pair carries the D-11 credit.
+- **D-28:** **Swap sub-rules:** the dropped measure ends the window at level 0; the incoming measure's level is its level at window end; a dependent broken by the drop must be lowered or cancelled by the team in the same window (D-07) — the simulation uses the minimal downward repair as canonical.
+
 ### Claude's Discretion
 - **Definition of the "trimmed in-budget version"** for the trim-back gate. Research defines it precisely and justifies it. The starting point to evaluate is: among all in-budget plans reachable from the over-budget plan by only lowering or cancelling levels, take the best. It must be deterministic, computable per tier within the Phase-1 enumeration bounds, and explainable in one sentence for the debrief.
 - **How change-window moves enter the enumeration** (bounded change-path model) and how the gate and reports treat plans with moves. Research flagged this as a key topic. Keep the static-plan enumeration from Phase 1 as the baseline and add move paths only as far as RULE-02/04 need them.
 - Config schema for moves, the Kurswechsel mechanic, the penalty X and the generated boundary text. Validator rules for it are new errors and warnings in `planspiel/validate.py`.
-- Whether "Maßnahmentausch" or "Maßnahmenwechsel" is the single term (D-08).
+- ~~Whether "Maßnahmentausch" or "Maßnahmenwechsel" is the single term (D-08).~~ Decided: D-26.
 
 </decisions>
 
@@ -138,6 +145,7 @@ Numeric values (X, step-reward sizes, slopes) stay provisional until Phase 6. Pr
 
 - Softening step rewards (Exzellenz/OEM-Audit/M7) if the trim-back X is too high: value change in Phase 6 (D-18).
 - Final value of X: Phase 6 calibration.
+- Slow trim-back gate over move paths (swap + window-1/window-2 families): Phase 6 (D-25).
 - Printing the move rules, the Kurswechsel card, the Budget Review card and the penalty lookup table: Phases 4/5 templates.
 - Code review warnings from Phase 1 not touched by this phase's rule work (WR-01..05, WR-08..10): optional `/gsd-code-review 1 --fix`; not part of RULE-01..08.
 

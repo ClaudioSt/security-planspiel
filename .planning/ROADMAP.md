@@ -14,7 +14,7 @@ This milestone turns the MHP workshop feedback into a game that facilitators and
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Simulation Foundation** - Reproducible env, characterization tests, shared `planspiel/` rules module, exact arithmetic, streaming enumeration incl. over-budget plans, config validator (completed 2026-10-01)
-- [ ] **Phase 2: Rule Changes** - Settle Levelwechsel/Maßnahmenwechsel, downgrade, linear overspend penalty + gate, Sparprogramm window, RoS ledger, Budget Review boundaries, E-target mechanic (TDD)
+- [ ] **Phase 2: Rule Changes** - Settle Levelwechsel/Maßnahmentausch, downgrade, linear overspend penalty + gate, Sparprogramm window, RoS ledger, Budget Review boundaries, E-target mechanic (TDD)
 - [ ] **Phase 3: Content Source & Veiling** - All German prose in one content source keyed by config id, veiled vs revealed attack texts, clue matrix
 - [ ] **Phase 4: Print Pipeline & Attack Worksheets** - Non-interactive, reproducible LaTeX → PDF build; generated Angriff 1–3 worksheets proven equal to the simulation
 - [ ] **Phase 5: Player & Facilitator Print Material** - Measure/event/Budget Review cards, budget + RoS sheets, tracking sheet, "So funktioniert eine Welle", Welle 0, facilitator master sheet, veiling scan
@@ -55,7 +55,7 @@ Plans:
 **Requirements**: RULE-01, RULE-02, RULE-03, RULE-04, RULE-05, RULE-06, RULE-07, RULE-08
 **Success Criteria** (what must be TRUE):
 
-  1. README and config distinguish "Levelwechsel" (same measure, other level) from "Maßnahmenwechsel" (swap one measure for another), and the Kurswechsel event names exactly which move it allows. The simulation models change-window moves, including a downgrade that keeps initial costs sunk and lowers OPEX from the next wave.
+  1. README and config distinguish "Levelwechsel" (same measure, other level) from "Maßnahmentausch" (swap one measure for another; replaces the MHP term "Maßnahmenwechsel"), and the Kurswechsel event names exactly which move it allows. The simulation models change-window moves, including a downgrade that keeps initial costs sunk and lowers OPEX from the next wave.
   2. A plan over budget loses X KZ per started 10.000 € (X read from config, penalty lookup table derivable for print). A team pushed over budget by an event such as Sparprogramm is penalized only if it is still over budget after the change window.
   3. The overspend gate runs per tier in the test suite and compares every over-budget plan with its own trimmed in-budget version. It reports the minimum X required under current values and fails, naming the offending plan, when X in config is set too low.
   4. RoS for any selection is identical with and without event cost effects (penalties and discounts); only initial costs, regular OPEX and the Kurswechsel init difference count. Budget Review tiers give the same result in sim and print at the 25k/50k/75k boundaries, with boundary text derived from the tier list.
