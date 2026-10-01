@@ -147,7 +147,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 3 
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Simulation Foundation | 7/7 | Complete   | 2026-10-01 |
+| 1. Simulation Foundation | 7/7 | Complete    | 2026-10-01 |
 | 2. Rule Changes | 0/TBD | Not started | - |
 | 3. Content Source & Veiling | 0/TBD | Not started | - |
 | 4. Print Pipeline & Attack Worksheets | 0/TBD | Not started | - |
