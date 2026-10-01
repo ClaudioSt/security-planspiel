@@ -64,14 +64,36 @@ Plans:
 **Plans**: 8 plans (one per requirement, strictly sequential)
 
 Plans:
+**Wave 1**
 
 - [ ] 02-01-PLAN.md — RULE-08: remove the unprinted E-target bonus/malus; golden diff tool; reviewed snapshot change (Wave 1)
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
 - [ ] 02-02-PLAN.md — RULE-06: RoS from own security spend only; two-total budget ledger (Wave 2)
+
+**Wave 3** *(blocked on Wave 2 completion)*
+
 - [ ] 02-03-PLAN.md — RULE-03: linear overspend penalty −X per started 10.000 € (X = 9 provisional), store columns, lookup rows (Wave 3)
+
+**Wave 4** *(blocked on Wave 3 completion)*
+
 - [ ] 02-04-PLAN.md — RULE-07: Budget Review boundaries "ab" with text generated from the tier list (Wave 4)
+
+**Wave 5** *(blocked on Wave 4 completion)*
+
 - [ ] 02-05-PLAN.md — RULE-01: Levelwechsel/Maßnahmentausch vocabulary, Kurswechsel as forced swap with tested swap rules, reference-plan labels (Wave 5)
+
+**Wave 6** *(blocked on Wave 5 completion)*
+
 - [ ] 02-06-PLAN.md — RULE-02: change-window moves, exact path evaluator, swap layer as legal minimum (Wave 6)
+
+**Wave 7** *(blocked on Wave 6 completion)*
+
 - [ ] 02-07-PLAN.md — RULE-05: event-induced overrun penalised only if still over after the window (Wave 7)
+
+**Wave 8** *(blocked on Wave 7 completion)*
+
 - [ ] 02-08-PLAN.md — RULE-04: per-tier trim-back overspend gate, `planspiel gate`, Phase-6 X input (Wave 8)
 
 **Research flag**: yes. Topics: trim-back criterion mechanics ("trimmed version" definition, interaction with step rewards: OEM-Audit tiers, M7 tiers, Exzellenz +5/L3, E-target bonus) and a bounded change-model enumeration for downgrade/swap moves in the change window.
