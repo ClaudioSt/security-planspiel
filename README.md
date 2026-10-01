@@ -211,19 +211,36 @@ Für eine vollständige, deterministische Enumeration aller möglichen Outcomes 
 
 **Setup (einmalig):** `uv sync` installiert die verwaltete Python-Version (3.12) und alle Abhängigkeiten exakt aus `uv.lock`. Alle Befehle laufen über `uv run` – unabhängig davon, welches `python` auf dem PATH liegt. Tests: `uv run pytest`.
 
-**Beispiel:**
+**Zusammenfassung (Standardlauf):**
+```
+uv run python simulate_outcomes.py --config simulation_config.json --budget-tier medium
+```
+
+Der Standardlauf bewertet jede gültige Kombination des Tiers, auch die über Budget, und schreibt `simulation_summary_medium.json` (anderer Pfad über `--summary`) sowie eine kurze Konsolentabelle: Top-K (Standard 10, `--top K`) nach End-KZ, RoS und Final-Index (vorläufig bis zur Neuskalierung), Perzentile (Nearest-Rank) von KZ und RoS getrennt nach im/über Budget, das beste Ergebnis im Budget gegenüber dem besten über Budget (End-KZ) und die Pareto-Front End-KZ gegen eigene Kosten. Definitionen: "über Budget" heißt Init + OPEX × Wellen + Event-OPEX > Budget + Event-Budget; "eigene Kosten" sind Init + OPEX × Wellen ohne Event-Effekte; der RoS ist bei Kosten 0 nicht definiert (n/a). Alle Tiers nacheinander:
+```
+for t in low medium high; do uv run python simulate_outcomes.py --budget-tier $t; done
+```
+
+**Vollständiger Dump nur auf Anfrage:**
+```
+uv run python simulate_outcomes.py --budget-tier medium --dump-jsonl simulation_full_medium.jsonl
+```
+
+Der Dump enthält eine JSON-Zeile je gültiger Kombination (Code-Ziffern in der Maßnahmen-Reihenfolge der Config) und ist sehr groß; nie vollständig einlesen, nur zeilenweise oder gezielt auswerten.
+
+**Legacy-Vollausgabe (Eingabe für `analyze_simulation_results.py`):**
 ```
 uv run python simulate_outcomes.py --config simulation_config.json --budget-tier medium --output simulation_results.json
 ```
 
-Die Ausgabe enthält alle zulässigen Maßnahmen‑Kombinationen (inkl. Level 0–3), die End‑KZ, Schäden, CIA‑Mali sowie die Kostenübersicht.
+Die Ausgabe enthält alle Maßnahmen-Kombinationen im Budget (inkl. Level 0-3), die End-KZ, Schäden, CIA-Mali sowie die Kostenübersicht.
 
-**Budget-Filter (realistische Outcomes, Budget voll nutzen):**
+**Legacy-Vollausgabe mit Budget-Filter (realistische Outcomes, Budget voll nutzen):**
 ```
 uv run python simulate_outcomes.py --config simulation_config.json --budget-tier medium --budget-utilization 0.9 --output simulation_results.json
 ```
 
-Optional lassen sich harte Budget-Grenzen setzen:
+`--budget-max` ist keine harte Obergrenze: Es ist nur die Basis für `--budget-utilization` (Schwelle = Anteil × `--budget-max`); die harte Grenze ist das Tier-Budget inkl. Event-Budget. `--budget-min`, `--budget-max` und `--budget-utilization` wirken nur zusammen mit `--output`.
 ```
 uv run python simulate_outcomes.py --config simulation_config.json --budget-min 300 --budget-max 380 --output simulation_results.json
 ```
