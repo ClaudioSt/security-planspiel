@@ -1,5 +1,6 @@
 import argparse
 import json
+import time
 from fractions import Fraction
 from pathlib import Path
 from typing import Dict, Optional
@@ -7,7 +8,15 @@ from typing import Dict, Optional
 from planspiel import rules
 from planspiel.cli import configure_utf8_stdio
 from planspiel.config import load_config
-from planspiel.enumerate import LEVEL_OPTIONS, iter_selections
+from planspiel.enumerate import LEVEL_OPTIONS, enumerate_tier, iter_selections
+from planspiel.report import (
+    DEFAULT_TOP_K,
+    SUMMARY_FILENAME,
+    dump_record,
+    format_console,
+    summarize_tier,
+    write_summary,
+)
 
 
 def to_legacy_json(obj):
@@ -78,32 +87,120 @@ def run_simulation(
     return summary
 
 
-def parse_args(argv=None):
+def build_parser():
     parser = argparse.ArgumentParser(description="Enumerate all deterministic outcomes for the planspiel.")
     parser.add_argument("--config", default="simulation_config.json", help="Path to simulation config JSON.")
     parser.add_argument("--budget-tier", default=None, help="Budget tier name (low|medium|high).")
-    parser.add_argument("--output", default="simulation_results.json", help="Output JSON file path.")
+    parser.add_argument(
+        "--output",
+        default=None,
+        help="Legacy-Vollausgabe als JSON (nur Kombinationen im Budget, Eingabe für analyze_simulation_results.py). "
+        "Ohne --output wird die Zusammenfassung über alle Kombinationen geschrieben.",
+    )
     parser.add_argument("--budget-min", type=int, default=None, help="Minimum total cost filter (points).")
     parser.add_argument("--budget-max", type=int, default=None, help="Maximum total cost filter (points).")
     parser.add_argument(
         "--budget-utilization",
         type=float,
-        default=0.0,
+        default=None,
         help="Minimum utilization of budget max (e.g. 0.9 for 90%%).",
     )
-    return parser.parse_args(argv)
+    parser.add_argument(
+        "--summary",
+        default=None,
+        help="Pfad der Zusammenfassung (Standard: simulation_summary_<tier>.json im Arbeitsverzeichnis).",
+    )
+    parser.add_argument(
+        "--dump-jsonl",
+        default=None,
+        help="Vollständiger Dump aller gültigen Kombinationen als JSONL (nur auf Anfrage, sehr groß).",
+    )
+    parser.add_argument(
+        "--top", type=int, default=None, help=f"Anzahl der Einträge je Top-Liste (Standard: {DEFAULT_TOP_K})."
+    )
+    return parser
+
+
+def parse_args(argv=None):
+    parser = build_parser()
+    args = parser.parse_args(argv)
+    if args.output is None:
+        legacy = [
+            flag
+            for flag, value in (
+                ("--budget-min", args.budget_min),
+                ("--budget-max", args.budget_max),
+                ("--budget-utilization", args.budget_utilization),
+            )
+            if value is not None
+        ]
+        if legacy:
+            parser.error(f"{', '.join(legacy)} wirken nur zusammen mit --output (Legacy-Vollausgabe).")
+    else:
+        summary_flags = [
+            flag
+            for flag, given in (
+                ("--summary", args.summary is not None),
+                ("--dump-jsonl", args.dump_jsonl is not None),
+                ("--top", args.top is not None),
+            )
+            if given
+        ]
+        if summary_flags:
+            parser.error(f"{', '.join(summary_flags)} sind mit --output (Legacy-Vollausgabe) nicht kombinierbar.")
+    if args.top is not None and args.top < 1:
+        parser.error("--top muss mindestens 1 sein.")
+    return args
+
+
+def _enumerate(cfg, tier_name, dump_path):
+    if dump_path is None:
+        return enumerate_tier(cfg, tier_name)
+    base_losses = rules.base_losses(cfg.waves, cfg.attacks)
+    measure_ids = cfg.measure_ids
+    with open(dump_path, "w", encoding="utf-8", newline="\n") as handle:
+
+        def write(code_index, outcome):
+            record = dump_record(measure_ids, code_index, outcome, base_losses)
+            handle.write(json.dumps(record, ensure_ascii=False, separators=(",", ":")) + "\n")
+
+        return enumerate_tier(cfg, tier_name, on_outcome=write)
 
 
 def main(argv=None) -> int:
     configure_utf8_stdio()
     args = parse_args(argv)
-    summary = run_simulation(
-        Path(args.config),
-        args.budget_tier,
-        Path(args.output),
-        args.budget_min,
-        args.budget_max,
-        args.budget_utilization,
-    )
-    print(json.dumps(summary, indent=2))
+    if args.output is not None:
+        summary = run_simulation(
+            Path(args.config),
+            args.budget_tier,
+            Path(args.output),
+            args.budget_min,
+            args.budget_max,
+            args.budget_utilization or 0.0,
+        )
+        print(json.dumps(summary, indent=2))
+        return 0
+
+    cfg = load_config(Path(args.config))
+    tier_name = args.budget_tier or cfg.default_budget_tier
+    if tier_name not in cfg.budget_tiers:
+        build_parser().error(
+            f"Unbekanntes Budget-Tier '{tier_name}'. Verfügbar: {', '.join(cfg.budget_tiers)}."
+        )
+    summary_path = Path(args.summary or SUMMARY_FILENAME.format(tier=tier_name))
+
+    started = time.perf_counter()
+    store = _enumerate(cfg, tier_name, args.dump_jsonl)
+    summary = summarize_tier(cfg, tier_name, store, args.top or DEFAULT_TOP_K)
+    write_summary(summary_path, summary)
+    seconds = time.perf_counter() - started
+
+    print(format_console(summary))
+    print()
+    print(f"Laufzeit: {seconds:.1f} s")
+    print(f"Speicher je Kombination: {store.bytes_per_record} Byte")
+    print(f"Zusammenfassung: {summary_path}")
+    if args.dump_jsonl is not None:
+        print(f"Dump: {args.dump_jsonl}")
     return 0
