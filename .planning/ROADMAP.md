@@ -13,7 +13,7 @@ This milestone turns the MHP workshop feedback into a game that facilitators and
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Simulation Foundation** - Reproducible env, characterization tests, shared `planspiel/` rules module, exact arithmetic, streaming enumeration incl. over-budget plans, config validator
+- [x] **Phase 1: Simulation Foundation** - Reproducible env, characterization tests, shared `planspiel/` rules module, exact arithmetic, streaming enumeration incl. over-budget plans, config validator (completed 2026-10-01)
 - [ ] **Phase 2: Rule Changes** - Settle Levelwechsel/Maßnahmenwechsel, downgrade, linear overspend penalty + gate, Sparprogramm window, RoS ledger, Budget Review boundaries, E-target mechanic (TDD)
 - [ ] **Phase 3: Content Source & Veiling** - All German prose in one content source keyed by config id, veiled vs revealed attack texts, clue matrix
 - [ ] **Phase 4: Print Pipeline & Attack Worksheets** - Non-interactive, reproducible LaTeX → PDF build; generated Angriff 1–3 worksheets proven equal to the simulation
@@ -36,7 +36,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. A full enumeration per tier, including over-budget combinations, finishes without exhausting memory and reports top-K, percentiles, best in-budget vs best over-budget, and the Pareto count. A complete dump is written only on explicit request.
   5. The config validator rejects a config with a broken reference (e.g. an unknown measure id). It warns on hand-calculability violations, flagging today's wave-3 KZ slope (17/7) and any broken printed invariant such as `base_severity != mitigation_cap`.
 
-**Plans**: 6/7 plans executed
+**Plans**: 7/7 plans complete
 
 Plans:
 
@@ -46,7 +46,7 @@ Plans:
 - [x] 01-04-PLAN.md — FOUND-03: every formula once in `planspiel/`, root scripts as thin wrappers (Wave 4)
 - [x] 01-05-PLAN.md — FOUND-07: config validator (errors + hand-calculability warnings) (Wave 5)
 - [x] 01-06-PLAN.md — FOUND-05: exact arithmetic + paper rounding/step helper (Wave 6)
-- [ ] 01-07-PLAN.md — FOUND-06: bounded full enumeration incl. over-budget, compact report (Wave 7)
+- [x] 01-07-PLAN.md — FOUND-06: bounded full enumeration incl. over-budget, compact report (Wave 7)
 
 ### Phase 2: Rule Changes
 
@@ -147,7 +147,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 3 
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Simulation Foundation | 6/7 | In Progress|  |
+| 1. Simulation Foundation | 7/7 | Complete   | 2026-10-01 |
 | 2. Rule Changes | 0/TBD | Not started | - |
 | 3. Content Source & Veiling | 0/TBD | Not started | - |
 | 4. Print Pipeline & Attack Worksheets | 0/TBD | Not started | - |
