@@ -1,5 +1,7 @@
 """Compact result store and enumeration report, checked against an independent brute force (FOUND-06)."""
 import json
+import subprocess
+import sys
 from fractions import Fraction
 
 import pytest
@@ -25,6 +27,7 @@ from planspiel.report import (
     write_summary,
 )
 from planspiel.rounding import exact_to_json
+from planspiel.simulate import run_simulation
 from tests.support import REPO_ROOT, harness
 
 TIERS = ("low", "medium", "high")
@@ -351,3 +354,105 @@ def test_dump_record_keys(mini):
     assert record["code"] == "0011"
     assert record["kz_after"] == [70, 70, 70]
     json.dumps(record)
+
+
+def _run_cli(args, cwd):
+    return subprocess.run(
+        [sys.executable, str(REPO_ROOT / "simulate_outcomes.py"), *args],
+        cwd=cwd,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+
+
+def _valid_count(cfg):
+    return sum(
+        1
+        for code in harness.iter_codes(cfg)
+        if rules.dependencies_satisfied(harness.selection_of(cfg, code), cfg.measures)
+    )
+
+
+def test_cli_default_mode_writes_only_the_summary(mini, tmp_path):
+    result = _run_cli(["--config", str(MINI), "--budget-tier", "low"], tmp_path)
+    assert result.returncode == 0, result.stderr.decode("utf-8", errors="replace")
+    assert sorted(path.name for path in tmp_path.iterdir()) == ["simulation_summary_low.json"]
+    summary = json.loads((tmp_path / "simulation_summary_low.json").read_text(encoding="utf-8"))
+    assert summary["combinations"]["valid"] == _valid_count(mini)
+    assert "Pareto-Front" in result.stdout.decode("utf-8")
+
+
+def test_cli_dump_jsonl_is_complete_and_ascending(mini, tmp_path):
+    result = _run_cli(
+        ["--config", str(MINI), "--budget-tier", "low", "--dump-jsonl", "dump.jsonl"], tmp_path
+    )
+    assert result.returncode == 0, result.stderr.decode("utf-8", errors="replace")
+    assert (tmp_path / "simulation_summary_low.json").is_file()
+    lines = (tmp_path / "dump.jsonl").read_text(encoding="utf-8").splitlines()
+    records = [json.loads(line) for line in lines]
+    assert len(records) == _valid_count(mini)
+    codes = [int(record["code"], 4) for record in records]
+    assert codes == sorted(set(codes))
+    assert {record["over_budget"] for record in records} == {True, False}
+
+
+def test_cli_output_keeps_the_legacy_mode(tmp_path):
+    result = _run_cli(["--config", str(MINI), "--budget-tier", "low", "--output", "legacy.json"], tmp_path)
+    assert result.returncode == 0, result.stderr.decode("utf-8", errors="replace")
+    assert sorted(path.name for path in tmp_path.iterdir()) == ["legacy.json"]
+    data = json.loads((tmp_path / "legacy.json").read_text(encoding="utf-8"))
+    assert sorted(data) == ["results", "summary"]
+
+
+@pytest.mark.parametrize(
+    "args",
+    [
+        ["--budget-utilization", "0.85"],
+        ["--budget-min", "10"],
+        ["--budget-max", "100"],
+        ["--output", "a.json", "--dump-jsonl", "b.jsonl"],
+        ["--output", "a.json", "--summary", "s.json"],
+        ["--output", "a.json", "--top", "3"],
+        ["--top", "0"],
+    ],
+)
+def test_cli_rejects_inconsistent_flags(args, tmp_path):
+    result = _run_cli(["--config", str(MINI), "--budget-tier", "low", *args], tmp_path)
+    assert result.returncode == 2
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_cli_rejection_message_names_output_flag(tmp_path):
+    result = _run_cli(["--config", str(MINI), "--budget-utilization", "0.85"], tmp_path)
+    assert "--output" in result.stderr.decode("utf-8", errors="replace")
+
+
+def test_cli_unknown_tier_lists_tier_names(tmp_path):
+    result = _run_cli(["--config", str(MINI), "--budget-tier", "huge"], tmp_path)
+    assert result.returncode == 2
+    stderr = result.stderr.decode("utf-8", errors="replace")
+    for name in ("low", "medium", "high"):
+        assert name in stderr
+
+
+def test_cli_top_flag_controls_list_length(tmp_path):
+    result = _run_cli(["--config", str(MINI), "--budget-tier", "medium", "--top", "3"], tmp_path)
+    assert result.returncode == 0, result.stderr.decode("utf-8", errors="replace")
+    summary = json.loads((tmp_path / "simulation_summary_medium.json").read_text(encoding="utf-8"))
+    assert summary["top_k"] == 3
+    assert [len(summary["top"][key]) for key in ("kz_final", "ros", "final_index")] == [3, 3, 3]
+
+
+def test_budget_max_only_scales_the_utilization_threshold(tmp_path):
+    out = tmp_path / "out.json"
+    summary = run_simulation(MINI, "low", out, None, 100, 0.0)
+    assert summary["budget_filter"] == {"min": 0, "max": 100, "utilization_min": None}
+    results = json.loads(out.read_text(encoding="utf-8"))["results"]
+    assert any(record["costs"]["total"] > 100 for record in results)
+
+    summary = run_simulation(MINI, "low", out, None, 100, 0.5)
+    assert summary["budget_filter"]["utilization_min"] == 50
+    results = json.loads(out.read_text(encoding="utf-8"))["results"]
+    assert results
+    assert all(record["costs"]["total"] >= 50 for record in results)
