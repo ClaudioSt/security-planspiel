@@ -61,7 +61,19 @@ Plans:
   4. RoS for any selection is identical with and without event cost effects (penalties and discounts); only initial costs, regular OPEX and the Kurswechsel init difference count. Budget Review tiers give the same result in sim and print at the 25k/50k/75k boundaries, with boundary text derived from the tier list.
   5. The per-wave E-target KZ bonus/malus is resolved against the printed MHP material and the decision is logged in PROJECT.md. It is either removed from the simulation or registered as a mechanic the worksheets must print.
 
-**Plans**: TBD
+**Plans**: 8 plans (one per requirement, strictly sequential)
+
+Plans:
+
+- [ ] 02-01-PLAN.md — RULE-08: remove the unprinted E-target bonus/malus; golden diff tool; reviewed snapshot change (Wave 1)
+- [ ] 02-02-PLAN.md — RULE-06: RoS from own security spend only; two-total budget ledger (Wave 2)
+- [ ] 02-03-PLAN.md — RULE-03: linear overspend penalty −X per started 10.000 € (X = 9 provisional), store columns, lookup rows (Wave 3)
+- [ ] 02-04-PLAN.md — RULE-07: Budget Review boundaries "ab" with text generated from the tier list (Wave 4)
+- [ ] 02-05-PLAN.md — RULE-01: Levelwechsel/Maßnahmentausch vocabulary, Kurswechsel as forced swap with tested swap rules, reference-plan labels (Wave 5)
+- [ ] 02-06-PLAN.md — RULE-02: change-window moves, exact path evaluator, swap layer as legal minimum (Wave 6)
+- [ ] 02-07-PLAN.md — RULE-05: event-induced overrun penalised only if still over after the window (Wave 7)
+- [ ] 02-08-PLAN.md — RULE-04: per-tier trim-back overspend gate, `planspiel gate`, Phase-6 X input (Wave 8)
+
 **Research flag**: yes. Topics: trim-back criterion mechanics ("trimmed version" definition, interaction with step rewards: OEM-Audit tiers, M7 tiers, Exzellenz +5/L3, E-target bonus) and a bounded change-model enumeration for downgrade/swap moves in the change window.
 
 ### Phase 3: Content Source & Veiling
@@ -148,7 +160,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 3 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Simulation Foundation | 7/7 | Complete    | 2026-10-01 |
-| 2. Rule Changes | 0/TBD | Not started | - |
+| 2. Rule Changes | 0/8 | Planned | - |
 | 3. Content Source & Veiling | 0/TBD | Not started | - |
 | 4. Print Pipeline & Attack Worksheets | 0/TBD | Not started | - |
 | 5. Player & Facilitator Print Material | 0/TBD | Not started | - |
