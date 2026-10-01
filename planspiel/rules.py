@@ -459,3 +459,106 @@ def evaluate_plan(cfg: Config, tier_name: str, selection: Dict[str, int]) -> Dic
     outcome["over_budget"] = ledger.over_budget
     outcome["ros"] = ros(base_losses(cfg.waves, cfg.attacks), outcome["total_damage"], ledger.total_cost)
     return outcome
+
+
+class CompactOutcome(NamedTuple):
+    kz_final: int
+    own_cost: int
+    total_cost: int
+    damage_eur: int
+    event_opex: int
+    event_budget: int
+    over_budget: bool
+    kz_after: Tuple[int, ...]
+    e_reached: Tuple[bool, ...]
+
+
+class TierKernel:
+    """Lean per-tier evaluation: composes the shared primitives with memoization, no per-wave dict trees."""
+
+    def __init__(self, cfg: Config, tier_name: str):
+        self.cfg = cfg
+        self.tier = cfg.budget_tiers[tier_name]
+        self.wave_count = len(cfg.waves)
+        self.wave_context = []
+        for wave in cfg.waves:
+            attack = cfg.attacks[wave.attack_id]
+            slope = kz_slope(attack.kz_at_full_damage, attack.kz_at_full_mitigation, attack.mitigation_cap)
+            self.wave_context.append((wave, attack, slope, self.tier.e_targets[wave.wave_id]))
+        self._e_scaled = {}
+        self._attack = {}
+        self._e_target = {}
+        self._change = {}
+
+    def evaluate(self, selection: Dict[str, int]) -> Optional[CompactOutcome]:
+        cfg = self.cfg
+        tier = self.tier
+        if not dependencies_satisfied(selection, cfg.measures):
+            return None
+        own_cost = compute_costs(selection, cfg.measures, self.wave_count)[2]
+        cia = compute_cia(selection, cfg.measures, cfg.base_cia)
+        recovery_scaled = _to_int(compute_recovery(selection, cfg.measures) * cfg.rs)
+
+        kz = tier.kz_start
+        damage_total = 0
+        event_opex_total = 0
+        event_budget_total = 0
+        kz_after = []
+        e_reached = []
+        for index, (wave, attack, slope, e_target) in enumerate(self.wave_context):
+            e_key = (index, cia["c"], cia["i"], cia["a"])
+            e_scaled = self._e_scaled.get(e_key)
+            if e_scaled is None:
+                e_scaled = self._e_scaled[e_key] = e_value_scaled(cia, wave.weights, cfg.ws)
+
+            bonus, _ = compute_bonus_reduction(wave, selection)
+            reduction = reduction_above_threshold_scaled(
+                e_scaled, bonus, wave.e_threshold, attack.mitigation_cap, cfg.ws
+            )
+            recovery = recovery_scaled if attack.allow_recovery else 0
+
+            attack_key = (index, reduction, recovery)
+            attack_result = self._attack.get(attack_key)
+            if attack_result is None:
+                severity = severity_scaled(attack.base_severity, tier.severity_multiplier, reduction, cfg.ws)
+                attack_result = self._attack[attack_key] = (
+                    damage_euros(severity, attack.s_unit, recovery, cfg.ws, cfg.rs),
+                    attack_kz_delta(attack.kz_at_full_damage, slope, reduction, cfg.ws),
+                )
+            damage, attack_kz = attack_result
+
+            target_key = (index, e_scaled)
+            target_result = self._e_target.get(target_key)
+            if target_result is None:
+                target_result = self._e_target[target_key] = e_target_check(
+                    wave, Fraction(e_scaled, cfg.ws), e_target
+                )
+            reached, e_target_delta = target_result
+
+            event_kz, event_budget, event_opex, _ = apply_events(wave.wave_id, selection, cfg.events)
+
+            change_key = (index, e_target_delta, reduction, event_kz)
+            change = self._change.get(change_key)
+            if change is None:
+                change = self._change[change_key] = wave_kz_change(e_target_delta, attack_kz, event_kz)
+            kz = clamp_kz(kz + change)
+
+            damage_total += damage
+            event_opex_total += event_opex
+            event_budget_total += event_budget
+            kz_after.append(kz)
+            e_reached.append(reached)
+
+        ledger = budget_ledger(tier.budget, own_cost, event_opex_total, event_budget_total)
+        kz_final, _ = apply_final_events(cfg.final_events, selection, ledger.remaining_budget, kz)
+        return CompactOutcome(
+            kz_final=kz_final,
+            own_cost=own_cost,
+            total_cost=ledger.total_cost,
+            damage_eur=damage_total,
+            event_opex=event_opex_total,
+            event_budget=event_budget_total,
+            over_budget=ledger.over_budget,
+            kz_after=tuple(kz_after),
+            e_reached=tuple(e_reached),
+        )
