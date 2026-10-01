@@ -1,5 +1,5 @@
 from fractions import Fraction
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, NamedTuple, Optional, Tuple
 
 from planspiel.config import Attack, BudgetTier, Config, Event, Measure, Wave
 from planspiel.rounding import round_half_away_frac
@@ -289,6 +289,11 @@ def apply_events(
     return kz_delta, budget_delta, opex_delta, event_results
 
 
+def e_target_check(wave: Wave, e_value, e_target) -> Tuple[bool, int]:
+    reached = e_value >= e_target
+    return reached, wave.kz_bonus if reached else wave.kz_malus
+
+
 def simulate_selection(
     selection: Dict[str, int],
     budget_tier: BudgetTier,
@@ -321,8 +326,7 @@ def simulate_selection(
 
         # Check E-Target
         e_target = budget_tier.e_targets[wave.wave_id]
-        e_reached = e_value >= e_target
-        e_target_delta = wave.kz_bonus if e_reached else wave.kz_malus
+        e_reached, e_target_delta = e_target_check(wave, e_value, e_target)
 
         # Apply events
         event_kz, event_budget, event_opex, event_results = apply_events(
@@ -396,6 +400,40 @@ def over_budget(total_cost: float, budget_available: float) -> bool:
     return total_cost > budget_available
 
 
+class BudgetLedger(NamedTuple):
+    total_cost: int
+    budget_available: int
+    over_budget: bool
+    remaining_budget: int
+
+
+def budget_ledger(tier_budget: int, own_cost: int, event_opex: int, event_budget: int) -> BudgetLedger:
+    total_cost = own_cost + event_opex
+    budget_available = tier_budget + event_budget
+    return BudgetLedger(
+        total_cost=total_cost,
+        budget_available=budget_available,
+        over_budget=over_budget(total_cost, budget_available),
+        remaining_budget=budget_available - total_cost,
+    )
+
+
+def apply_final_events(
+    final_events: List[Event], selection: Dict[str, int], remaining_budget, kz: int
+) -> Tuple[int, List[Dict]]:
+    records = []
+    for event in final_events:
+        ev_kz, _, _, description = evaluate_event(event, selection, remaining_budget=remaining_budget)
+        kz = clamp_kz(kz + ev_kz)
+        records.append({
+            "id": event.id,
+            "name": event.name,
+            "effect_description": description,
+            "kz_delta": ev_kz,
+        })
+    return kz, records
+
+
 def evaluate_plan(cfg: Config, tier_name: str, selection: Dict[str, int]) -> Dict:
     tier = cfg.budget_tiers[tier_name]
     init, opex_per_wave, total_cost = compute_costs(selection, cfg.measures, len(cfg.waves))
@@ -403,32 +441,21 @@ def evaluate_plan(cfg: Config, tier_name: str, selection: Dict[str, int]) -> Dic
         selection, tier, cfg.waves, cfg.attacks, cfg.measures, cfg.events, cfg.base_cia, tier.kz_start,
         cfg.ws, cfg.rs,
     )
-    total_cost += outcome["total_event_opex"]
-    adjusted_budget = tier.budget + outcome["total_event_budget"]
-    is_over_budget = over_budget(total_cost, adjusted_budget)
-    remaining_budget = adjusted_budget - total_cost
+    ledger = budget_ledger(tier.budget, total_cost, outcome["total_event_opex"], outcome["total_event_budget"])
 
-    final_event_results = []
-    for event in cfg.final_events:
-        ev_kz, _, _, description = evaluate_event(event, selection, remaining_budget=remaining_budget)
-        outcome["kz_final"] = clamp_kz(outcome["kz_final"] + ev_kz)
-        final_event_results.append({
-            "id": event.id,
-            "name": event.name,
-            "effect_description": description,
-            "kz_delta": ev_kz,
-        })
-    outcome["final_events"] = final_event_results
+    outcome["kz_final"], outcome["final_events"] = apply_final_events(
+        cfg.final_events, selection, ledger.remaining_budget, outcome["kz_final"]
+    )
 
     outcome["costs"] = {
         "init": init,
         "opex_per_wave": opex_per_wave,
-        "total": total_cost,
+        "total": ledger.total_cost,
         "event_opex": outcome["total_event_opex"],
         "event_budget": outcome["total_event_budget"],
-        "budget_available": adjusted_budget,
+        "budget_available": ledger.budget_available,
     }
 
-    outcome["over_budget"] = is_over_budget
-    outcome["ros"] = ros(base_losses(cfg.waves, cfg.attacks), outcome["total_damage"], total_cost)
+    outcome["over_budget"] = ledger.over_budget
+    outcome["ros"] = ros(base_losses(cfg.waves, cfg.attacks), outcome["total_damage"], ledger.total_cost)
     return outcome
