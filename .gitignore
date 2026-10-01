@@ -13,3 +13,6 @@ __pycache__/
 .pytest_cache/
 
 .planning/phases/01-simulation-foundation/exact-switch/
+
+simulation_summary*.json
+simulation_full*.jsonl
