@@ -6,7 +6,7 @@
 <domain>
 ## Phase Boundary
 
-Every rule participants stumbled over at MHP is defined unambiguously, implemented test-first in `planspiel/rules.py` and documented in README (German rule text). Covers RULE-01..08: change-window moves (Levelwechsel up/down, cancel, add) and the Kurswechsel event, downgrade without refund, a linear overspend penalty with an automated trim-back gate, Sparprogramm handling, an RoS ledger with only the team's own spend, Budget Review boundaries identical in sim and print, and removal of the unprinted E-target bonus/malus.
+Every rule participants stumbled over at MHP is defined unambiguously, implemented test-first in `planspiel/rules.py` and documented in README (German rule text). Covers RULE-01..08: change-window moves (Levelwechsel up/down, cancel, add) and the Kurswechsel event (incl. its edge cases D-22/D-23), downgrade without refund, a linear overspend penalty with an automated trim-back gate, Sparprogramm handling, an RoS ledger with only the team's own spend, Budget Review boundaries identical in sim and print, and removal of the unprinted E-target bonus/malus.
 
 Numeric values (X, step-reward sizes, slopes) stay provisional until Phase 6. Print templates come in Phases 4/5; this phase only fixes rule definitions, config shape, sim behaviour and README text.
 
@@ -41,6 +41,8 @@ Numeric values (X, step-reward sizes, slopes) stay provisional until Phase 6. Pr
 - **D-11:** Cost to the team is **max(0, Init(new measure at chosen level) − Init(dropped measure at its level))**. The customer covers the Init up to the dropped measure's value. A cheaper incoming measure refunds nothing. This is the **only** case where a dropped measure's Init is credited; Init is never refunded anywhere else.
 - **D-12:** The Init delta the team pays counts as **own spend in RoS**. The dropped measure's OPEX stops and the new measure's OPEX is paid by the team from the next wave (D-06).
 - **D-13:** The printed MHP Kurswechsel text ("Differenz … muss gezahlt werden oder wird ‚erstattet'") is superseded. The config `description` and the README must state D-09..D-11 explicitly. The event type changes from `noop` to a real mechanic the simulation models.
+- **D-22:** If a team cannot perform the Maßnahmentausch — no measure was at level 0 in wave 1 (all measures active) or no measure was active in wave 1 — the Kurswechsel has **no effect** for that team. Regular moves in the window stay allowed. The check uses the wave-1 selection. *(Clarified 2026-10-01 in the plan-phase requirements review.)*
+- **D-23:** The incoming measure must be **new**: a measure that was at level 0 in wave 1. A measure cancelled earlier in the same window does not qualify (no cancel-and-re-add). The D-11 credit is the Init of the dropped measure at its **wave-1 level**; moves on that measure earlier in the same window do not change the credit. *(Clarified 2026-10-01: not a money exploit either way — the credit only offsets the dropped measure's sunk Init — chosen to keep Maßnahmentausch and Levelwechsel strictly separate and the swap enumeration small.)*
 
 ### Overspend penalty and Budget Review (RULE-03, RULE-05, RULE-07)
 - **D-14:** "Over budget" is measured **once, at the end**: final remaining budget after all waves and change windows. Teams may go below zero mid-game. RULE-05 (Sparprogramm) is satisfied because the change window after wave 2 lets teams trim before the only check.
