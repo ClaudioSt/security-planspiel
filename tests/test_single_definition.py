@@ -42,7 +42,6 @@ FORMULA_FUNCTIONS = {
         "ros",
         "final_index",
         "budget_ledger",
-        "e_target_check",
         "apply_final_events",
     )
 }
@@ -51,6 +50,7 @@ FORMULA_FUNCTIONS.update(
 )
 
 RETIRED_FUNCTIONS = {
+    "e_target_check",
     "calculate_ros",
     "calculate_combined_score",
     "compute_final_index",
@@ -70,8 +70,6 @@ OPERAND_ATTRIBUTES = {
     "kz_at_full_damage",
     "kz_at_full_mitigation",
     "e_threshold",
-    "kz_bonus",
-    "kz_malus",
     "recovery",
     "init",
     "opex",

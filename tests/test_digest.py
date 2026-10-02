@@ -26,7 +26,7 @@ def test_digest_is_deterministic_and_sensitive(tmp_path):
 
     raw = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
     mutated = copy.deepcopy(raw)
-    mutated["waves"][0]["kz_malus"] -= 1
+    mutated["attacks"]["ransomware"]["kz_at_full_damage"] -= 1
     mutated_path = tmp_path / "simulation_config.json"
     mutated_path.write_text(json.dumps(mutated, ensure_ascii=False), encoding="utf-8")
     assert compute_digest(harness.load_config(mutated_path), "medium", limit=3000)["digest"] != first["digest"]

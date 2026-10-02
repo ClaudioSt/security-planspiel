@@ -36,10 +36,7 @@ def _digest_view(outcome):
         "costs": {"total": outcome.total_cost},
         "total_event_opex": outcome.event_opex,
         "total_event_budget": outcome.event_budget,
-        "waves": [
-            {"kz_after": kz, "e_reached": reached}
-            for kz, reached in zip(outcome.kz_after, outcome.e_reached)
-        ],
+        "waves": [{"kz_after": kz} for kz in outcome.kz_after],
         "over_budget": outcome.over_budget,
     }
 
@@ -58,16 +55,6 @@ def test_budget_ledger_over_budget():
 
 def test_budget_ledger_equality_stays_in_budget():
     assert rules.budget_ledger(380, 380, 0, 0).over_budget is False
-
-
-def test_e_target_check_reached_at_equality():
-    cfg = harness.load_config()
-    assert rules.e_target_check(cfg.waves[0], Fraction(15), 15) == (True, 5)
-
-
-def test_e_target_check_missed():
-    cfg = harness.load_config()
-    assert rules.e_target_check(cfg.waves[0], Fraction(149, 10), 15) == (False, -3)
 
 
 def test_apply_final_events_boundary_is_inclusive():
@@ -138,8 +125,16 @@ def test_kernel_equals_evaluate_plan_on_random_real_codes(tier):
 def test_kernel_equals_evaluate_plan_on_negative_tie_override(tier, tmp_path):
     raw = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
     override = copy.deepcopy(raw)
-    for info in override["budget_tiers"].values():
-        info["e_targets"]["3"] = 40
+    override["events"]["wave_3"].append(
+        {
+            "id": "test_negative_tie",
+            "name": "Test negative tie",
+            "description": "Test-only event forcing a negative .5 tie in wave 3.",
+            "type": "and_condition",
+            "clauses": [{"measure": "M6", "min_level": 0}],
+            "kz_delta": -7,
+        }
+    )
     path = tmp_path / "simulation_config.json"
     path.write_text(json.dumps(override, ensure_ascii=False), encoding="utf-8")
 

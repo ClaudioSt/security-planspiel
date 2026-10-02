@@ -107,7 +107,6 @@ ERROR_MUTATIONS = [
         id="dependency-on-unknown-measure",
     ),
     pytest.param(_dependency_cycle, "ref.dependency_cycle", "measures.", id="dependency-cycle"),
-    pytest.param(_delete(["budget_tiers", "low", "e_targets", "3"]), "schema.e_targets", "budget_tiers.low.e_targets", id="missing-e-target"),
     pytest.param(
         _set(["events", "wave_2", 1, "measures", 0], "M77"),
         "ref.unknown_measure",
@@ -159,6 +158,13 @@ WARNING_MUTATIONS = [
     pytest.param(_set(["waves", 1, "weights", "a"], 0.5), "hand_calc.weights", id="weights-sum-not-one"),
     pytest.param(_set(["measures", "M4", "levels", "1", "recovery"], 0.15), "hand_calc.recovery", id="recovery-two-decimals"),
     pytest.param(_delete(["waves", 0, "e_threshold"]), "schema.default_used", id="hidden-default-e-threshold"),
+    pytest.param(
+        _set(["budget_tiers", "low", "e_targets"], {"1": 15, "2": 17, "3": 19}),
+        "schema.removed_key",
+        id="removed-e-targets",
+    ),
+    pytest.param(_set(["waves", 0, "kz_bonus"], 5), "schema.removed_key", id="removed-kz-bonus"),
+    pytest.param(_set(["waves", 2, "kz_malus"], -7), "schema.removed_key", id="removed-kz-malus"),
 ]
 
 

@@ -60,7 +60,6 @@ def _outcome(kz, own, total=None, damage=0, over=False):
         event_budget=0,
         over_budget=over,
         kz_after=(kz, kz, kz),
-        e_reached=(True, True, True),
     )
 
 
@@ -343,7 +342,6 @@ def test_dump_record_keys(mini):
         "code",
         "kz_final",
         "kz_after",
-        "e_reached",
         "own_cost",
         "total_cost",
         "total_damage",

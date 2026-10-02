@@ -51,8 +51,8 @@ def test_load_config_returns_config_object():
 def test_evaluate_plan_empty_selection_medium():
     cfg = load_config(CONFIG_PATH)
     rec = evaluate_plan(cfg, "medium", _selection(cfg, 0))
-    assert rec["kz_final"] == 15
-    assert [w["kz_after"] for w in rec["waves"]] == [33, 3, 0]
+    assert rec["kz_final"] == 19
+    assert [w["kz_after"] for w in rec["waves"]] == [36, 11, 4]
     assert rec["total_damage"] == 620
     assert rec["costs"]["total"] == 0
     assert rec["costs"]["budget_available"] == 380

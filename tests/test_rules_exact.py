@@ -48,16 +48,18 @@ def test_config_numbers_are_exact():
 
 
 @pytest.mark.parametrize(
-    ("e_target_delta", "attack_delta", "event_kz", "expected"),
+    ("attack_delta", "event_kz", "expected"),
     [
-        (10, Fraction(3, 2), 0, 12),
-        (-7, Fraction(3, 2), 0, -6),
-        (-7, Fraction(-32, 7), 0, -12),
-        (5, Fraction(-6), 1, 0),
+        (Fraction(3, 2), 0, 2),
+        (Fraction(3, 2), -7, -6),
+        (Fraction(-32, 7), -7, -12),
+        (Fraction(-6), 1, -5),
+        (Fraction(5, 2), 0, 3),
+        (Fraction(-5, 2), 0, -3),
     ],
 )
-def test_wave_kz_change_rounds_once_half_away(e_target_delta, attack_delta, event_kz, expected):
-    assert wave_kz_change(e_target_delta, attack_delta, event_kz) == expected
+def test_wave_kz_change_rounds_once_half_away(attack_delta, event_kz, expected):
+    assert wave_kz_change(attack_delta, event_kz) == expected
 
 
 def test_clamp_kz():
@@ -87,18 +89,24 @@ def test_positive_tie_rounds_up():
     wave3 = waves[2]
     assert wave3["capped_reduction"] == Fraction(7, 2)
     assert wave3["kz_delta_attack"] == Fraction(3, 2)
-    assert wave3["e_reached"] is True
-    assert wave3["kz_delta_e_target"] == 10
-    expected = clamp_kz(waves[1]["kz_after"] + wave_kz_change(10, Fraction(3, 2), wave_events_kz(wave3)))
+    expected = clamp_kz(waves[1]["kz_after"] + wave_kz_change(Fraction(3, 2), wave_events_kz(wave3)))
     assert wave3["kz_after"] == expected
-    assert wave3["kz_after"] == clamp_kz(waves[1]["kz_after"] + 12 + wave_events_kz(wave3))
+    assert wave3["kz_after"] == clamp_kz(waves[1]["kz_after"] + 2 + wave_events_kz(wave3))
 
 
-def test_negative_tie_rounds_down_with_raised_wave3_target(tmp_path):
+def test_negative_tie_rounds_down_with_test_only_wave3_event(tmp_path):
     raw = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
     override = copy.deepcopy(raw)
-    for tier in override["budget_tiers"].values():
-        tier["e_targets"]["3"] = 40
+    override["events"]["wave_3"].append(
+        {
+            "id": "test_negative_tie",
+            "name": "Test negative tie",
+            "description": "Test-only event forcing a negative .5 tie in wave 3.",
+            "type": "and_condition",
+            "clauses": [{"measure": "M6", "min_level": 0}],
+            "kz_delta": -7,
+        }
+    )
     path = tmp_path / "simulation_config.json"
     path.write_text(json.dumps(override, ensure_ascii=False), encoding="utf-8")
 
@@ -106,24 +114,23 @@ def test_negative_tie_rounds_down_with_raised_wave3_target(tmp_path):
     record = evaluate(cfg, "medium", tie_code_with_zero_event())
     waves = record["waves"]
     wave3 = waves[2]
-    assert wave3["e_reached"] is False
-    assert wave3["kz_delta_e_target"] == -7
     assert wave3["kz_delta_attack"] == Fraction(3, 2)
-    assert wave3["kz_after"] == clamp_kz(waves[1]["kz_after"] - 6 + wave_events_kz(wave3))
+    assert wave_events_kz(wave3) == -7
+    assert wave3["kz_after"] == clamp_kz(waves[1]["kz_after"] - 6)
 
 
-def test_clamp_happens_after_rounding():
-    cfg = harness.load_config()
-    code = code_with_tag("medium", lambda tag: tag == "census:wave_clamp_high")
-    record = evaluate(cfg, "medium", code)
-    kz_previous = cfg.budget_tiers["medium"].kz_start
-    found = False
-    for wave in record["waves"]:
-        change = wave_kz_change(wave["kz_delta_e_target"], wave["kz_delta_attack"], wave_events_kz(wave))
-        if wave["kz_after"] == 100 and kz_previous + change > 100:
-            found = True
-        kz_previous = wave["kz_after"]
-    assert found
+def test_clamp_happens_after_rounding(tmp_path):
+    raw = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
+    override = copy.deepcopy(raw)
+    override["budget_tiers"]["medium"]["kz_start"] = 100
+    path = tmp_path / "simulation_config.json"
+    path.write_text(json.dumps(override, ensure_ascii=False), encoding="utf-8")
+
+    cfg = harness.load_config(path)
+    wave1 = evaluate(cfg, "medium", "3" * len(cfg.measures))["waves"][0]
+    change = wave_kz_change(wave1["kz_delta_attack"], wave_events_kz(wave1))
+    assert wave1["kz_after"] == 100
+    assert 100 + change > 100
 
 
 @pytest.mark.parametrize("tier", TIERS)
@@ -141,18 +148,18 @@ def test_damage_is_whole_euros(tier):
     assert checked > 0
 
 
-def test_e_value_compared_exactly_with_target():
+def test_gesamtreduktion_compared_exactly_with_threshold():
     cfg = harness.load_config()
-    code = code_with_tag("medium", lambda tag: tag == "census:e_eq_target_w2")
+    code = code_with_tag("medium", lambda tag: tag == "census:g_eq_threshold_w2")
     wave2 = evaluate(cfg, "medium", code)["waves"][1]
-    assert wave2["e_value"] == wave2["e_target"]
-    assert wave2["e_reached"] is True
+    assert wave2["gesamtreduktion"] == cfg.waves[1].e_threshold
+    assert wave2["capped_reduction"] == 0
 
 
 def test_empty_selection_medium():
     cfg = harness.load_config()
     record = evaluate(cfg, "medium", "0" * len(cfg.measures))
-    assert record["kz_final"] == 15
+    assert record["kz_final"] == 19
     assert record["total_damage"] == 620
 
 
