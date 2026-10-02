@@ -33,7 +33,7 @@ Ein **konfigurationsgetriebenes IT‑Security‑Planspiel** für einen Automotiv
 - **Maßnahmen (L1/L2/L3):**  
   - Attribute: `costInit`, `costOpex`, `cia={c,i,a}`, `mitigations` (gegen Angriffe), `eventEffects`, `dependencies`.
   - **Level‑Intuition:** L1 = Basis (gering), L2 = Standard (mittel), L3 = erweitert (hoch). Stärkegrade sind **parametrierbar**.
-- **Wellen:** Jede Welle besitzt **Gewichte (wC,wI,wA)**, ein **E‑Ziel**, und **Angriffe** (Anzahl frei konfigurierbar).
+- **Wellen:** Jede Welle besitzt **Gewichte (wC,wI,wA)**, eine **E‑Schwelle** und **Angriffe** (Anzahl frei konfigurierbar).
 - **Events:** Regelbasierte Trigger (Zeit, Signale, Maßnahmen‑Level) mit klaren Effekten (Budget/KZ/Severity‑Mod/Faktoren).
 - **Discovery‑Signale:** Kontextscores (z. B. OT‑Dauerbetrieb, Auditdruck, SaaS‑Kritikalität, Lieferkette), die Gewichte/Angriffe/Erwartungen **deterministisch** steuern.
 - **Angriffe:** `baseSeverity`, `sUnit` (Schaden je Stufe), `kzUnit` (KZ‑Verlust je Stufe), `ciaImpactPerStep`, referenzierte Mitigations.
@@ -52,8 +52,7 @@ Ein **konfigurationsgetriebenes IT‑Security‑Planspiel** für einen Automotiv
 4. **Welle**  
    a) Events anwenden (Trigger)  
    b) Angriffe deterministisch auflösen (siehe „Deterministische Auflösung“)  
-   c) **E‑Ziel** prüfen (**KZ‑Bonus/Malus**)  
-   d) **OPEX** zahlen & **Erholung** anwenden (falls konfiguriert)
+   c) **OPEX** zahlen & **Erholung** anwenden (falls konfiguriert)
 5. **Change‑Fenster**  
    Upgrades/Swaps gemäß Regeln (wirksam **ab nächster Welle**), mit **Kommunikationseffekten** auf KZ.
 6. **Abschluss & Debrief**  
@@ -125,8 +124,8 @@ Ein **konfigurationsgetriebenes IT‑Security‑Planspiel** für einen Automotiv
 - **Team‑CIA:** `Team_C`, `Team_I`, `Team_A` = Summe der Maßnahmen‑CIA.  
 - **Gewichteter Erfüllungsgrad:**  
   `E = Team_C * wC + Team_I * wI + Team_A * wA`
-- **E‑Schwelle:** pro Welle konfigurierbar → **KZ‑Bonus/Malus** bei Erreichen/Verfehlen.
-- **Rundung (wie auf Papier):** Die KZ-Änderung je Welle (Angriff + E-Ziel + Events) wird genau einmal auf eine ganze Zahl gerundet, ab ,5 vom Betrag aufgerundet (+2,5 → +3, −2,5 → −3); danach wird die KZ auf 0–100 begrenzt. E-Wert, Gesamtreduktion, Reduktion über Schwelle und Schweregrad bleiben exakt; der Schaden bleibt exakt in ganzen Euro.
+- **E‑Schwelle:** pro Welle konfigurierbar; nur die Gesamtreduktion (E‑Wert + Gesamtbonus) oberhalb der Schwelle mindert den Angriff. Einen eigenen KZ‑Bonus/Malus für ein E‑Ziel gibt es nicht.
+- **Rundung (wie auf Papier):** Die KZ-Änderung je Welle (Angriff + Events) wird genau einmal auf eine ganze Zahl gerundet, ab ,5 vom Betrag aufgerundet (+2,5 → +3, −2,5 → −3); danach wird die KZ auf 0–100 begrenzt. E-Wert, Gesamtreduktion, Reduktion über Schwelle und Schweregrad bleiben exakt; der Schaden bleibt exakt in ganzen Euro.
 - **Return on Security (RoS):**
 Gesamtkosten  = Sum(Init) + Sum(OPEX je Welle) + Sum(Straf-OPEX aus Events)
 Verluste      = Sum(Damage über alle Angriffe)
@@ -169,11 +168,11 @@ RoS           = (Vermeidete Verluste − Gesamtkosten) / Gesamtkosten
 | Change‑Fenster | Upgrades/Swaps | Mx L* → L* | Δ | Δ | Kommunikation (KZ‑Effekt) |
 
 ### Tabelle 2 – Ergebnisse je Welle (E, KZ, Schäden, CIA)
-| Welle | Gewichte (wC/wI/wA) | Team‑CIA (C/I/A) | **E** | E‑Ziel erreicht? | KZ Δ (Welle) | Angriffe (kurz) | Sum Schaden | CIA‑Mali (temporär) | Recovery angewandt? |
-|---|---|---|---:|---|---:|---|---:|---|---|
-| 1 | [ ] / [ ] / [ ] | [ ] / [ ] / [ ] | [ ] | Ja/Nein | [ ] | A1: G=…, A2: G=… | [ ] | C−… I−… A−… | Ja/Nein |
-| 2 | [ ] / [ ] / [ ] | [ ] / [ ] / [ ] | [ ] | Ja/Nein | [ ] | A1: G=…, A2: G=… | [ ] | C−… I−… A−… | Ja/Nein |
-| 3 | [ ] / [ ] / [ ] | [ ] / [ ] / [ ] | [ ] | Ja/Nein | [ ] | A1: G=…, A2: G=… | [ ] | C−… I−… A−… | Ja/Nein |
+| Welle | Gewichte (wC/wI/wA) | Team‑CIA (C/I/A) | **E** | KZ Δ (Welle) | Angriffe (kurz) | Sum Schaden | CIA‑Mali (temporär) | Recovery angewandt? |
+|---|---|---|---:|---:|---|---:|---|---|
+| 1 | [ ] / [ ] / [ ] | [ ] / [ ] / [ ] | [ ] | [ ] | A1: G=…, A2: G=… | [ ] | C−… I−… A−… | Ja/Nein |
+| 2 | [ ] / [ ] / [ ] | [ ] / [ ] / [ ] | [ ] | [ ] | A1: G=…, A2: G=… | [ ] | C−… I−… A−… | Ja/Nein |
+| 3 | [ ] / [ ] / [ ] | [ ] / [ ] / [ ] | [ ] | [ ] | A1: G=…, A2: G=… | [ ] | C−… I−… A−… | Ja/Nein |
 
 > **Finale Kennzahlen (unter der Tabelle):**  
 > **Gesamtkosten:** [ ] **Gesamtverluste:** [ ] **Vermeidete Verluste:** [ ] **RoS:** [ ] **Finale KZ:** [ ]
@@ -184,8 +183,8 @@ RoS           = (Vermeidete Verluste − Gesamtkosten) / Gesamtkosten
 
 > Alle Werte sind **frei wählbar** und sollten vor dem Spiel **einfach** auf einer Seite dokumentiert werden.
 
-- **KZ‑Startwert**, **KZ‑Effekte** je Budgetspanne/E‑Ziel/Change‑Kommunikation.  
-- **Gewichte pro Welle (wC,wI,wA)** und **E‑Zielschwellen**.  
+- **KZ‑Startwert**, **KZ‑Effekte** je Budgetspanne/Change‑Kommunikation.  
+- **Gewichte pro Welle (wC,wI,wA)** und **E‑Schwellen**.  
 - **Mitigation‑Cap** pro Angriff, **Level‑Mitigation** (L1/L2/L3).  
 - **Angriffswerte**: `baseSeverity`, `sUnit`, `kzUnit`, `ciaImpactPerStep`.  
 - **Event‑Trigger** und **Effekt‑Faktoren** (Budget/KZ/Severity/Straf‑OPEX).  

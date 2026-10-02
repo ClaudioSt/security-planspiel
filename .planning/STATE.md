@@ -91,7 +91,7 @@ Recent decisions affecting current work:
 ### Blockers/Concerns
 
 - [Phase 2/6]: Step rewards (OEM-Audit tiers, M7 tiers, Exzellenz +5/L3, E-target bonus) can make going ~8k over budget worth up to +34 KZ, so the trim-back X may be impractical. If Phase 2's gate reports X > ~5, decide on capping overspend or softening step rewards in Phase 2, not Phase 6, because either choice changes printed rules.
-- [Phase 2]: RULE-08 needs the printed MHP material (`final_documents/Angriff-*.docx`) checked for the E-target bonus/malus before deciding print vs remove.
+- [Phase 7]: the retired `generate_attack_calculator.py` raises KeyError on `kz_bonus`/`kz_malus` since plan 02-01 (D-29: untouched until LEG-01); `docs/folienkonzept_spielphasen_mechtech.md` still mentions the E-Ziel-Check (LEG-02).
 - [Phase 4]: MiKTeX AutoInstall=ask hangs scripted builds; the first Phase 4 plan must be a non-interactive smoke build.
 - [Phase 1]: Interpreter trap until FOUND-01 lands (`python` on PATH is Inkscape's 3.12 without packages); full enumeration JSONs are >100 MB, so never read them whole.
 

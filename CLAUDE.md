@@ -32,7 +32,7 @@ Python-Skripte:
 
 ## Spielmechanik in Kürze (Stand: aktuell implementiert in `planspiel/rules.py`)
 
-- **State Machine pro Durchlauf:** Discovery → Budgetverhandlung → Maßnahmenwahl → Welle (Events → Angriffe → E-Ziel-Check → OPEX/Recovery) → Change-Fenster → Abschluss.
+- **State Machine pro Durchlauf:** Discovery → Budgetverhandlung → Maßnahmenwahl → Welle (Events → Angriffe → OPEX/Recovery) → Change-Fenster → Abschluss.
 - **E-Wert je Welle:** `E-Wert = Team_C*wC + Team_I*wI + Team_A*wA` (Team-CIA = `base_cia` + Summe der Maßnahmen-CIA-Beiträge).
 - **Gesamtbonus:** Summe der `bonus_measures`-Boni, deren Maßnahme das jeweilige `min_level` erreicht (pro Welle 2-3 thematisch passende Maßnahmen).
 - **Gesamtreduktion:** `E-Wert + Gesamtbonus`.
@@ -41,7 +41,7 @@ Python-Skripte:
   - `severity = max(0, base_severity*severity_multiplier − reduktion_ueber_schwelle)`
   - `Schaden = severity * s_unit`, ggf. `* (1 − recovery_factor)` wenn `allow_recovery` und M4 aktiv
   - `KZ-Delta = kz_at_full_damage + (reduktion_ueber_schwelle / mitigation_cap) * (kz_at_full_mitigation − kz_at_full_damage)` — **linear interpoliert**, absichtlich (siehe Kommentar in `attack_kz_delta()` in `planspiel/rules.py`), nicht die ggf. abweichende Fall-3-Subformel aus älteren Dokumenten.
-- **Rundung (wie auf Papier):** Die KZ-Änderung je Welle (Angriff + E-Ziel + Events) wird genau einmal auf eine ganze Zahl gerundet, ab ,5 vom Betrag aufgerundet (+2,5 → +3, −2,5 → −3; `planspiel.rounding.round_half_away`); danach wird die KZ auf 0–100 begrenzt. E-Wert, Gesamtreduktion, Reduktion über Schwelle und Schweregrad bleiben exakt (Ganzzahl-Arithmetik über `Fraction`/Skalierung), der Schaden bleibt exakt in ganzen Euro. Pythons eingebautes `round()` (halb zur geraden Zahl) ist in `planspiel/rules.py` und `planspiel/rounding.py` verboten.
+- **Rundung (wie auf Papier):** Die KZ-Änderung je Welle (Angriff + Events) wird genau einmal auf eine ganze Zahl gerundet, ab ,5 vom Betrag aufgerundet (+2,5 → +3, −2,5 → −3; `planspiel.rounding.round_half_away`); danach wird die KZ auf 0–100 begrenzt. E-Wert, Gesamtreduktion, Reduktion über Schwelle und Schweregrad bleiben exakt (Ganzzahl-Arithmetik über `Fraction`/Skalierung), der Schaden bleibt exakt in ganzen Euro. Pythons eingebautes `round()` (halb zur geraden Zahl) ist in `planspiel/rules.py` und `planspiel/rounding.py` verboten.
 - **RoS:** `(620.000 − Gesamtschaden − Gesamtkosten) / Gesamtkosten`. **Final-Index** (facilitatorseitiger Vergleichswert über Teams/Tiers): `weight_kz * KZ + weight_ros * (RoS * 100)`, Default-Gewichte 1.0/1.0 (siehe `analyze_simulation_results.py`).
 - Alle Formeln sind **fix**, alle Werte dazu **konfigurierbar** über `simulation_config.json`.
 

@@ -112,7 +112,7 @@ Every balance decision is checked against these (measurable via full enumeration
 | RoS = own spend only; event effects out in both directions | Symmetric, matches Decisions & Disruptions ledgers | ✓ Decided 2026-09-29 |
 | Sparprogramm overrun → re-plan window before penalty | Teams shouldn't be punished for an external shock they can still react to | ✓ Decided 2026-09-29 |
 | Measure cards CIA only; wave weights hidden until reveal | Weights and attack links would reveal attacks | ✓ Decided 2026-09-29 |
-| E-target bonus/malus: check printed MHP material first | Sim applies it, print doesn't show it | — Pending (phase with RULE-08) |
+| E-target bonus/malus: check printed MHP material first | Sim applies it, print doesn't show it | ✓ Decided 2026-10-01: removed from the simulation (RULE-08, D-19); no printed MHP material uses it, so sim and paper agree |
 | Keep LaTeX (not Typst) | Known, mature tool | ✓ Decided 2026-09-29 |
 | Drop 0.85 utilization filter, rescale Final-Index in rebalance | Filter hides the real optimum; RoS·100 dominates | ✓ Decided 2026-09-29 |
 | Excel attack calculator retired | Generated worksheets + facilitator sheet replace it | ✓ Decided 2026-09-29 |
