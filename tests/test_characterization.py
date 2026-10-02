@@ -3,6 +3,8 @@ import json
 
 import pytest
 
+from planspiel.rounding import started_steps
+from planspiel.rules import penalty_params
 from tests.support import CONFIG_PATH, REPO_ROOT, harness
 from tests.support.golden import check_golden, normalize
 from tests.support.golden_cases import SEED, build_case_list
@@ -64,13 +66,19 @@ def test_golden_covers_required_categories(tier):
     cases = read_golden(tier)["cases"]
     tags = {tag for case in cases for tag in case["tags"]}
 
+    x, step = penalty_params(harness.load_config().final_events)
+
+    def overspend_penalty(case):
+        costs = case["expected"]["costs"]
+        return -x * started_steps(costs["total"] - costs["budget_available"], step)
+
     over_budget_strategies = [
         c for c in cases
         if any(t.startswith("strategy:") for t in c["tags"])
         and c["expected"]["over_budget"]
-        and c["expected"]["final_events"][0]["kz_delta"] == -15
+        and c["expected"]["final_events"][0]["kz_delta"] == overspend_penalty(c) < 0
     ]
-    assert over_budget_strategies, "no over-budget strategy pinned with Budget Review -15 (D-09)"
+    assert over_budget_strategies, "no over-budget strategy pinned with the linear overspend penalty (D-09, D-15)"
 
     empty = next(c for c in cases if "edge:empty" in c["tags"])
     assert empty["expected"]["ros"] is None

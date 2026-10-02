@@ -1,7 +1,7 @@
 from fractions import Fraction
 
 from planspiel.config import Config, load_config
-from planspiel.rules import base_losses, evaluate_plan, final_index, over_budget, ros
+from planspiel.rules import base_losses, evaluate_plan, final_index, over_budget, penalty_params, ros
 from tests.support import CONFIG_PATH
 
 
@@ -68,6 +68,8 @@ def test_evaluate_plan_empty_selection_medium():
 
 def test_evaluate_plan_all_l3_low_is_over_budget_with_final_event_penalty():
     cfg = load_config(CONFIG_PATH)
+    x, _ = penalty_params(cfg.final_events)
     rec = evaluate_plan(cfg, "low", _selection(cfg, 3))
     assert rec["over_budget"] is True
-    assert rec["final_events"][0]["kz_delta"] == -15
+    assert rec["final_events"][0]["kz_delta"] == -x * 89
+    assert rec["kz_final"] == 0

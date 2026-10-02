@@ -50,7 +50,7 @@ def mini():
     return harness.load_config(MINI)
 
 
-def _outcome(kz, own, total=None, damage=0, over=False):
+def _outcome(kz, own, total=None, damage=0, over=False, kz_pre_review=None, remaining=0):
     return rules.CompactOutcome(
         kz_final=kz,
         own_cost=own,
@@ -60,6 +60,8 @@ def _outcome(kz, own, total=None, damage=0, over=False):
         event_budget=0,
         over_budget=over,
         kz_after=(kz, kz, kz),
+        kz_pre_review=kz if kz_pre_review is None else kz_pre_review,
+        remaining=remaining,
     )
 
 
@@ -154,8 +156,8 @@ def test_code_from_index_follows_iter_selections_order(mini):
 def test_store_layout_and_record_roundtrip():
     store = ResultStore(620)
     assert tuple((name, store.column(name).typecode) for name, _ in STORE_LAYOUT) == STORE_LAYOUT
-    assert store.bytes_per_record == 16
-    store.append(7, _outcome(80, 100, total=110, damage=12345, over=True))
+    assert store.bytes_per_record == 19
+    store.append(7, _outcome(80, 100, total=110, damage=12345, over=True, kz_pre_review=95, remaining=-890))
     record = store.record(0)
     assert isinstance(record, CompactRecord)
     assert record.code_index == 7
@@ -164,6 +166,8 @@ def test_store_layout_and_record_roundtrip():
     assert record.total_cost == 110
     assert record.damage_eur == 12345
     assert record.over_budget is True
+    assert record.kz_pre_review == 95
+    assert record.remaining == -890
     assert record.ros == rules.ros(620, Fraction(12345, 1000), 100)
     assert len(store) == 1
 
@@ -178,6 +182,10 @@ def test_store_refuses_to_wrap_out_of_range_values():
     store = ResultStore(620)
     with pytest.raises(OverflowError):
         store.append(0, _outcome(50, 70000))
+    with pytest.raises(OverflowError):
+        store.append(0, _outcome(50, 10, remaining=40000))
+    with pytest.raises(OverflowError):
+        store.append(0, _outcome(50, 10, remaining=-40000))
 
 
 @pytest.mark.parametrize("tier", TIERS)
@@ -341,9 +349,11 @@ def test_dump_record_keys(mini):
     assert list(record) == [
         "code",
         "kz_final",
+        "kz_pre_review",
         "kz_after",
         "own_cost",
         "total_cost",
+        "remaining",
         "total_damage",
         "ros",
         "final_index",
@@ -351,6 +361,8 @@ def test_dump_record_keys(mini):
     ]
     assert record["code"] == "0011"
     assert record["kz_after"] == [70, 70, 70]
+    assert record["kz_pre_review"] == 70
+    assert record["remaining"] == 0
     json.dumps(record)
 
 

@@ -67,7 +67,8 @@ def test_apply_final_events_boundary_is_inclusive():
 
 def test_apply_final_events_negative_remaining_budget():
     cfg = harness.load_config()
-    assert rules.apply_final_events(cfg.final_events, {}, -1, 50)[0] == 35
+    x, _ = rules.penalty_params(cfg.final_events)
+    assert rules.apply_final_events(cfg.final_events, {}, -1, 50)[0] == 50 - x
 
 
 def test_apply_final_events_clamps():

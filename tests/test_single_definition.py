@@ -13,6 +13,7 @@ from tests.support import REPO_ROOT
 RULES = "planspiel/rules.py"
 CONFIG = "planspiel/config.py"
 ROUNDING = "planspiel/rounding.py"
+REVIEW_TEXT = "planspiel/review_text.py"
 
 FORMULA_FUNCTIONS = {
     name: RULES
@@ -44,11 +45,14 @@ FORMULA_FUNCTIONS = {
         "budget_ledger",
         "security_spend",
         "apply_final_events",
+        "budget_review_delta",
+        "penalty_params",
     )
 }
 FORMULA_FUNCTIONS.update(
     {name: ROUNDING for name in ("round_half_away", "round_half_away_frac", "started_steps")}
 )
+FORMULA_FUNCTIONS.update({name: REVIEW_TEXT for name in ("format_eur", "penalty_rows")})
 
 RETIRED_FUNCTIONS = {
     "e_target_check",
@@ -76,6 +80,7 @@ OPERAND_ATTRIBUTES = {
     "opex",
     "weights",
     "bonus",
+    "kz_per_step",
 }
 
 ROOT_SCRIPT_MODULES = {"simulate_outcomes", "analyze_simulation_results", "balance_analysis"}

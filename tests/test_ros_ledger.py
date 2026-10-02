@@ -128,7 +128,7 @@ def test_store_ros_uses_own_cost_not_total():
         0,
         rules.CompactOutcome(
             kz_final=80, own_cost=100, total_cost=110, damage_eur=12345, event_opex=10,
-            event_budget=0, over_budget=False, kz_after=(80, 80, 80),
+            event_budget=0, over_budget=False, kz_after=(80, 80, 80), kz_pre_review=80, remaining=0,
         ),
     )
     assert store.record(0).ros == rules.ros(620, Fraction(12345, 1000), 100)
@@ -139,7 +139,7 @@ def test_dump_record_ros_uses_own_cost():
     base = rules.base_losses(mini.waves, mini.attacks)
     outcome = rules.CompactOutcome(
         kz_final=70, own_cost=100, total_cost=104, damage_eur=5000, event_opex=4,
-        event_budget=0, over_budget=False, kz_after=(70, 70, 70),
+        event_budget=0, over_budget=False, kz_after=(70, 70, 70), kz_pre_review=70, remaining=0,
     )
     record = dump_record(mini.measure_ids, 5, outcome, base)
     assert record["ros"] == exact_to_json(rules.ros(base, Fraction(5), 100))
