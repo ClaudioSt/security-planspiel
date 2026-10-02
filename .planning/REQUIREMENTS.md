@@ -22,7 +22,7 @@
 - [ ] **RULE-03**: Going over budget costs −X KZ per started 10.000 € over budget (linear, printable as lookup table); X is a config parameter
 - [ ] **RULE-04**: An automated gate proves overspending is never profitable under the trim-back criterion: every over-budget plan loses to its own trimmed-into-budget version, per tier
 - [ ] **RULE-05**: If an event (e.g. Sparprogramm) pushes a team over budget, the team gets the change window to return within budget; the penalty applies only if it is still over afterwards
-- [ ] **RULE-06**: RoS counts only the team's own security spend (initial costs, regular OPEX, Kurswechsel init difference); event cost effects are excluded in both directions (penalties and discounts)
+- [x] **RULE-06**: RoS counts only the team's own security spend (initial costs, regular OPEX, Kurswechsel init difference); event cost effects are excluded in both directions (penalties and discounts)
 - [ ] **RULE-07**: Budget Review tier boundaries are identical in print and simulation (no off-by-one at 25k/50k/75k)
 - [x] **RULE-08**: The per-wave E-target KZ bonus/malus is checked against what the printed MHP material actually used, then either printed on the worksheets or removed from the simulation — sim and paper agree afterwards
 
@@ -131,7 +131,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RULE-03 | Phase 2 | Pending |
 | RULE-04 | Phase 2 | Pending |
 | RULE-05 | Phase 2 | Pending |
-| RULE-06 | Phase 2 | Pending |
+| RULE-06 | Phase 2 | Complete |
 | RULE-07 | Phase 2 | Pending |
 | RULE-08 | Phase 2 | Complete |
 | VEIL-01 | Phase 3 | Pending |
