@@ -42,6 +42,7 @@ FORMULA_FUNCTIONS = {
         "ros",
         "final_index",
         "budget_ledger",
+        "security_spend",
         "apply_final_events",
     )
 }

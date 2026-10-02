@@ -44,13 +44,13 @@ def _digest_view(outcome):
 def test_budget_ledger_in_budget():
     ledger = rules.budget_ledger(400, 250, -12, -20)
     assert ledger == rules.BudgetLedger(
-        total_cost=238, budget_available=380, over_budget=False, remaining_budget=142
+        total_cost=238, budget_available=380, over_budget=False, remaining_budget=142, security_spend=250
     )
 
 
 def test_budget_ledger_over_budget():
     ledger = rules.budget_ledger(400, 400, -2, -20)
-    assert ledger == rules.BudgetLedger(398, 380, True, -18)
+    assert ledger == rules.BudgetLedger(398, 380, True, -18, 400)
 
 
 def test_budget_ledger_equality_stays_in_budget():

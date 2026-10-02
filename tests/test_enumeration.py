@@ -71,7 +71,7 @@ def _brute_records(cfg, tier):
         if not rec["valid"]:
             continue
         outcome = harness.compact_from_plan(cfg, rec)
-        ros = rules.ros(base, rec["total_damage"], outcome.total_cost)
+        ros = rules.ros(base, rec["total_damage"], outcome.own_cost)
         records.append(
             {
                 "code": code,
@@ -164,7 +164,7 @@ def test_store_layout_and_record_roundtrip():
     assert record.total_cost == 110
     assert record.damage_eur == 12345
     assert record.over_budget is True
-    assert record.ros == rules.ros(620, Fraction(12345, 1000), 110)
+    assert record.ros == rules.ros(620, Fraction(12345, 1000), 100)
     assert len(store) == 1
 
 
@@ -287,7 +287,7 @@ def test_summary_matches_brute_force(mini, tier):
 def test_zero_cost_plan_has_no_ros_and_final_index_equals_kz(mini):
     summary = summarize_tier(mini, "low", enumerate_tier(mini, "low"), top_k=1000)
     records = _brute_records(mini, "low")
-    zero = [r for r in records if r["total"] == 0]
+    zero = [r for r in records if r["own"] == 0]
     assert len(zero) == 1
     code = zero[0]["code"]
     assert code not in [e["code"] for e in summary["top"]["ros"]]

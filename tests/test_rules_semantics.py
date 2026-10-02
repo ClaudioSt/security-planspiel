@@ -26,6 +26,11 @@ def test_final_index_falls_back_to_kz_without_ros():
     assert final_index(80, None, 1.0, 1.0) == 80
 
 
+def test_final_index_without_ros_honours_the_kz_weight():
+    assert final_index(80, None, Fraction(2), Fraction(1)) == 160
+    assert final_index(80, None) == 80
+
+
 def test_final_index_weights():
     assert final_index(80, 0.5, 1.0, 1.0) == 130.0
     assert final_index(80, 0.5, 2.0, 0.5) == 185.0
