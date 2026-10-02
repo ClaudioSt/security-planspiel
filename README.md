@@ -127,10 +127,12 @@ Ein **konfigurationsgetriebenes IT‑Security‑Planspiel** für einen Automotiv
 - **E‑Schwelle:** pro Welle konfigurierbar; nur die Gesamtreduktion (E‑Wert + Gesamtbonus) oberhalb der Schwelle mindert den Angriff. Einen eigenen KZ‑Bonus/Malus für ein E‑Ziel gibt es nicht.
 - **Rundung (wie auf Papier):** Die KZ-Änderung je Welle (Angriff + Events) wird genau einmal auf eine ganze Zahl gerundet, ab ,5 vom Betrag aufgerundet (+2,5 → +3, −2,5 → −3); danach wird die KZ auf 0–100 begrenzt. E-Wert, Gesamtreduktion, Reduktion über Schwelle und Schweregrad bleiben exakt; der Schaden bleibt exakt in ganzen Euro.
 - **Return on Security (RoS):**
-Gesamtkosten  = Sum(Init) + Sum(OPEX je Welle) + Sum(Straf-OPEX aus Events)
+Gesamtkosten  = eigene Sicherheitsausgaben = Σ Init + Σ Init‑Differenzen aus Upgrades und neuen Maßnahmen + Σ OPEX je Welle (Level der jeweiligen Welle) + Kurswechsel‑Differenz
 Verluste      = Sum(Damage über alle Angriffe)
 Vermeidete Verluste = Sum(Basisverluste ohne Mitigation) − Verluste
 RoS           = (Vermeidete Verluste − Gesamtkosten) / Gesamtkosten
+
+Nicht enthalten: Event‑Effekte auf Kosten oder Budget (Straf‑OPEX, OPEX‑Rabatte wie „Operative Unterstützung“, Budget‑Kürzungen wie „Sparprogramm“); sie zählen nur für das Budget.
 
 > **Einfach auswertbar:** Alle relevanten Größen (Kosten, Verluste, KZ, E) lassen sich in **1–2 Tabellen** zusammenfassen (siehe Vorlagen unten).
 
@@ -215,7 +217,7 @@ Für eine vollständige, deterministische Enumeration aller möglichen Outcomes 
 uv run python simulate_outcomes.py --config simulation_config.json --budget-tier medium
 ```
 
-Der Standardlauf bewertet jede gültige Kombination des Tiers, auch die über Budget, und schreibt `simulation_summary_medium.json` (anderer Pfad über `--summary`) sowie eine kurze Konsolentabelle: Top-K (Standard 10, `--top K`) nach End-KZ, RoS und Final-Index (vorläufig bis zur Neuskalierung), Perzentile (Nearest-Rank) von KZ und RoS getrennt nach im/über Budget, das beste Ergebnis im Budget gegenüber dem besten über Budget (End-KZ) und die Pareto-Front End-KZ gegen eigene Kosten. Definitionen: "über Budget" heißt Init + OPEX × Wellen + Event-OPEX > Budget + Event-Budget; "eigene Kosten" sind Init + OPEX × Wellen ohne Event-Effekte; der RoS ist bei Kosten 0 nicht definiert (n/a). Alle Tiers nacheinander:
+Der Standardlauf bewertet jede gültige Kombination des Tiers, auch die über Budget, und schreibt `simulation_summary_medium.json` (anderer Pfad über `--summary`) sowie eine kurze Konsolentabelle: Top-K (Standard 10, `--top K`) nach End-KZ, RoS und Final-Index (vorläufig bis zur Neuskalierung), Perzentile (Nearest-Rank) von KZ und RoS getrennt nach im/über Budget, das beste Ergebnis im Budget gegenüber dem besten über Budget (End-KZ) und die Pareto-Front End-KZ gegen eigene Kosten. Definitionen: "über Budget" heißt Init + OPEX × Wellen + Event-OPEX > Budget + Event-Budget; "eigene Kosten" sind Init + OPEX je Welle (plus Init-Differenzen bei Change-Fenster-Zügen), ohne Event-Effekte; der RoS rechnet nur mit den eigenen Kosten und ist bei eigenen Kosten 0 nicht definiert (n/a). Alle Tiers nacheinander:
 ```
 for t in low medium high; do uv run python simulate_outcomes.py --budget-tier $t; done
 ```
