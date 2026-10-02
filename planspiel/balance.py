@@ -331,10 +331,9 @@ def run_analysis(config_path: Path = DEFAULT_CONFIG_PATH):
             print(f"  Kosten: {rec['costs']['total']}k | CIA: C={cia['c']}, I={cia['i']}, A={cia['a']}")
 
             for w in rec["waves"]:
-                e_status = "[OK]" if w["e_reached"] else "[X]"
                 bonus = f"+{w['bonus_reduction']}B" if w["bonus_reduction"] > 0 else ""
                 events_kz = sum(e.get("kz_delta", 0) for e in w["events"])
-                print(f"  W{w['wave_id']}: E={w['e_value']:.1f}/{w['e_target']} {e_status}, "
+                print(f"  W{w['wave_id']}: E={w['e_value']:.1f}, "
                       f"Sev={w['severity']:.1f}{bonus}, Dmg={w['damage']:.0f}k, Evt={events_kz:+d}, KZ={w['kz_after']}")
 
             kz_status = "OK" if rec["kz_final"] >= POSITIVE_KZ_THRESHOLD else "KRIT"

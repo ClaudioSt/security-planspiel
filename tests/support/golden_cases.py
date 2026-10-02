@@ -57,7 +57,7 @@ def _wave_totals(cfg, tier_name, record):
     prev_kz = cfg.budget_tiers[tier_name].kz_start
     for index, wave in enumerate(record["waves"]):
         event_kz = sum(event["kz_delta"] for event in wave["events"])
-        total = wave["kz_delta_attack"] + wave["kz_delta_e_target"] + event_kz
+        total = wave["kz_delta_attack"] + event_kz
         yield index + 1, wave, event_kz, total, prev_kz + total
         prev_kz = wave["kz_after"]
 
@@ -85,8 +85,6 @@ def _census(cfg, tier_name):
         for number, wave, event_kz, total, pre_clamp in _wave_totals(cfg, tier_name, record):
             wave_cfg = cfg.waves[number - 1]
             cap = cfg.attacks[wave_cfg.attack_id].mitigation_cap
-            if wave["e_value"] == wave["e_target"]:
-                hit(f"census:e_eq_target_w{number}", code)
             if wave["gesamtreduktion"] == wave_cfg.e_threshold:
                 hit(f"census:g_eq_threshold_w{number}", code)
             if wave["gesamtreduktion"] == wave_cfg.e_threshold + cap:
@@ -104,8 +102,7 @@ def _census(cfg, tier_name):
 
 def _ordered_census_tags(cfg, found, ties):
     waves = range(1, len(cfg.waves) + 1)
-    order = [f"census:e_eq_target_w{n}" for n in waves]
-    order += [f"census:g_eq_threshold_w{n}" for n in waves]
+    order = [f"census:g_eq_threshold_w{n}" for n in waves]
     order += [f"census:g_eq_threshold_plus_cap_w{n}" for n in waves]
     order += ["census:final_kz_100", "census:wave_clamp_high", "census:wave_clamp_low"]
     order += [f"census:remaining_{v}" for v in REMAINING_BUDGET_TARGETS]

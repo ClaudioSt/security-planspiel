@@ -33,8 +33,6 @@ class Wave:
     attack_id: str
     weights: Dict[str, Fraction]
     e_threshold: int
-    kz_bonus: int
-    kz_malus: int
     bonus_measures: List[BonusMeasure]
 
 
@@ -60,7 +58,6 @@ class BudgetTier:
     budget: int
     kz_start: int
     severity_multiplier: Fraction
-    e_targets: Dict[int, int]
 
 
 @dataclass
@@ -131,7 +128,6 @@ def load_config(path: Path) -> Config:
             budget=info["budget"],
             kz_start=info.get("kz_start", 60),
             severity_multiplier=info.get("severity_multiplier", Fraction(1)),
-            e_targets={int(k): v for k, v in info["e_targets"].items()},
         )
 
     attacks = {
@@ -165,8 +161,6 @@ def load_config(path: Path) -> Config:
             attack_id=wave["attack_id"],
             weights=wave["weights"],
             e_threshold=wave.get("e_threshold", 18),
-            kz_bonus=wave["kz_bonus"],
-            kz_malus=wave["kz_malus"],
             bonus_measures=bonus_measures,
         ))
 

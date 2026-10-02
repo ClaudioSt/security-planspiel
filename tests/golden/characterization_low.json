@@ -26,7 +26,7 @@
           "M9": 0,
           "M10": 0
         },
-        "kz_final": 76,
+        "kz_final": 54,
         "total_damage": "531.68",
         "total_event_opex": -12,
         "total_event_budget": -20,
@@ -46,8 +46,6 @@
               "a": 21
             },
             "e_value": "21.8",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "21.8",
@@ -55,7 +53,6 @@
             "severity": 8,
             "damage": 144,
             "kz_delta_attack": -6,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -74,7 +71,7 @@
                 "opex_delta": -12
               }
             ],
-            "kz_after": 49
+            "kz_after": 44
           },
           {
             "wave_id": 2,
@@ -86,8 +83,6 @@
               "a": 21
             },
             "e_value": "21.4",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "21.4",
@@ -95,7 +90,6 @@
             "severity": "8.6",
             "damage": "247.68",
             "kz_delta_attack": "-3.32",
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -122,7 +116,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 58
+            "kz_after": 46
           },
           {
             "wave_id": 3,
@@ -134,8 +128,6 @@
               "a": 21
             },
             "e_value": "21.4",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "21.4",
@@ -143,7 +135,6 @@
             "severity": 7,
             "damage": 140,
             "kz_delta_attack": -7,
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -162,7 +153,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 61
+            "kz_after": 39
           }
         ],
         "final_events": [
@@ -204,7 +195,7 @@
           "M9": 0,
           "M10": 0
         },
-        "kz_final": 78,
+        "kz_final": 56,
         "total_damage": "489.2",
         "total_event_opex": -10,
         "total_event_budget": -20,
@@ -224,8 +215,6 @@
               "a": 18
             },
             "e_value": "21.6",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 6,
             "bonus_descriptions": [
               "EDR/XDR erkennt Ransomware früh"
@@ -235,7 +224,6 @@
             "severity": "3.4",
             "damage": "61.2",
             "kz_delta_attack": "3.2",
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -254,7 +242,7 @@
                 "opex_delta": -10
               }
             ],
-            "kz_after": 58
+            "kz_after": 53
           },
           {
             "wave_id": 2,
@@ -266,8 +254,6 @@
               "a": 18
             },
             "e_value": "19.8",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "19.8",
@@ -275,7 +261,6 @@
             "severity": 10,
             "damage": 288,
             "kz_delta_attack": -5,
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -302,7 +287,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 60
+            "kz_after": 48
           },
           {
             "wave_id": 3,
@@ -314,8 +299,6 @@
               "a": 18
             },
             "e_value": "21.1",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "21.1",
@@ -323,7 +306,6 @@
             "severity": 7,
             "damage": 140,
             "kz_delta_attack": -7,
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -342,7 +324,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 63
+            "kz_after": 41
           }
         ],
         "final_events": [
@@ -384,7 +366,7 @@
           "M9": 0,
           "M10": 0
         },
-        "kz_final": 69,
+        "kz_final": 47,
         "total_damage": 572,
         "total_event_opex": -10,
         "total_event_budget": -20,
@@ -404,8 +386,6 @@
               "a": 17
             },
             "e_value": "19.8",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "19.8",
@@ -413,7 +393,6 @@
             "severity": 8,
             "damage": 144,
             "kz_delta_attack": -6,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -432,7 +411,7 @@
                 "opex_delta": -10
               }
             ],
-            "kz_after": 49
+            "kz_after": 44
           },
           {
             "wave_id": 2,
@@ -444,8 +423,6 @@
               "a": 17
             },
             "e_value": "18.4",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "18.4",
@@ -453,7 +430,6 @@
             "severity": 10,
             "damage": 288,
             "kz_delta_attack": -5,
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -480,7 +456,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 51
+            "kz_after": 39
           },
           {
             "wave_id": 3,
@@ -492,8 +468,6 @@
               "a": 17
             },
             "e_value": "19.3",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "19.3",
@@ -501,7 +475,6 @@
             "severity": 7,
             "damage": 140,
             "kz_delta_attack": -7,
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -520,7 +493,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 54
+            "kz_after": 32
           }
         ],
         "final_events": [
@@ -562,7 +535,7 @@
           "M9": 0,
           "M10": 0
         },
-        "kz_final": 86,
+        "kz_final": 64,
         "total_damage": "514.4",
         "total_event_opex": -14,
         "total_event_budget": -20,
@@ -582,8 +555,6 @@
               "a": 21
             },
             "e_value": 23,
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": 23,
@@ -591,7 +562,6 @@
             "severity": 8,
             "damage": 144,
             "kz_delta_attack": -6,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -610,7 +580,7 @@
                 "opex_delta": -14
               }
             ],
-            "kz_after": 49
+            "kz_after": 44
           },
           {
             "wave_id": 2,
@@ -622,8 +592,6 @@
               "a": 21
             },
             "e_value": 22,
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": 22,
@@ -631,7 +599,6 @@
             "severity": 8,
             "damage": "230.4",
             "kz_delta_attack": "-2.6",
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -658,7 +625,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 68
+            "kz_after": 56
           },
           {
             "wave_id": 3,
@@ -670,8 +637,6 @@
               "a": 21
             },
             "e_value": "22.7",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "22.7",
@@ -679,7 +644,6 @@
             "severity": 7,
             "damage": 140,
             "kz_delta_attack": -7,
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -698,7 +662,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 71
+            "kz_after": 49
           }
         ],
         "final_events": [
@@ -740,7 +704,7 @@
           "M9": 2,
           "M10": 2
         },
-        "kz_final": 59,
+        "kz_final": 37,
         "total_damage": 572,
         "total_event_opex": -10,
         "total_event_budget": -20,
@@ -760,8 +724,6 @@
               "a": 18
             },
             "e_value": "20.4",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "20.4",
@@ -769,7 +731,6 @@
             "severity": 8,
             "damage": 144,
             "kz_delta_attack": -6,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -788,7 +749,7 @@
                 "opex_delta": -10
               }
             ],
-            "kz_after": 49
+            "kz_after": 44
           },
           {
             "wave_id": 2,
@@ -800,8 +761,6 @@
               "a": 18
             },
             "e_value": "19.2",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "19.2",
@@ -809,7 +768,6 @@
             "severity": 10,
             "damage": 288,
             "kz_delta_attack": -5,
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -836,7 +794,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 41
+            "kz_after": 29
           },
           {
             "wave_id": 3,
@@ -848,8 +806,6 @@
               "a": 18
             },
             "e_value": "20.2",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "20.2",
@@ -857,7 +813,6 @@
             "severity": 7,
             "damage": 140,
             "kz_delta_attack": -7,
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -876,7 +831,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 44
+            "kz_after": 22
           }
         ],
         "final_events": [
@@ -918,7 +873,7 @@
           "M9": 0,
           "M10": 0
         },
-        "kz_final": 22,
+        "kz_final": 37,
         "total_damage": 476,
         "total_event_opex": -2,
         "total_event_budget": -20,
@@ -938,8 +893,6 @@
               "a": 15
             },
             "e_value": "13.8",
-            "e_target": 15,
-            "e_reached": false,
             "bonus_reduction": 6,
             "bonus_descriptions": [
               "Backup ermöglicht schnelle Wiederherstellung"
@@ -949,7 +902,6 @@
             "severity": 8,
             "damage": 112,
             "kz_delta_attack": -6,
-            "kz_delta_e_target": -3,
             "events": [
               {
                 "id": "kurswechsel",
@@ -968,7 +920,7 @@
                 "opex_delta": -2
               }
             ],
-            "kz_after": 41
+            "kz_after": 44
           },
           {
             "wave_id": 2,
@@ -980,8 +932,6 @@
               "a": 15
             },
             "e_value": "14.4",
-            "e_target": 17,
-            "e_reached": false,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "14.4",
@@ -989,7 +939,6 @@
             "severity": 10,
             "damage": 224,
             "kz_delta_attack": -5,
-            "kz_delta_e_target": -5,
             "events": [
               {
                 "id": "sparprogramm",
@@ -1016,7 +965,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 21
+            "kz_after": 29
           },
           {
             "wave_id": 3,
@@ -1028,8 +977,6 @@
               "a": 15
             },
             "e_value": "13.3",
-            "e_target": 19,
-            "e_reached": false,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "13.3",
@@ -1037,7 +984,6 @@
             "severity": 7,
             "damage": 140,
             "kz_delta_attack": -7,
-            "kz_delta_e_target": -7,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -1056,7 +1002,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 7
+            "kz_after": 22
           }
         ],
         "final_events": [
@@ -1098,7 +1044,7 @@
           "M9": 0,
           "M10": 0
         },
-        "kz_final": 74,
+        "kz_final": 52,
         "total_damage": 572,
         "total_event_opex": -10,
         "total_event_budget": -20,
@@ -1118,8 +1064,6 @@
               "a": 20
             },
             "e_value": "19.2",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "19.2",
@@ -1127,7 +1071,6 @@
             "severity": 8,
             "damage": 144,
             "kz_delta_attack": -6,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -1146,7 +1089,7 @@
                 "opex_delta": -10
               }
             ],
-            "kz_after": 49
+            "kz_after": 44
           },
           {
             "wave_id": 2,
@@ -1158,8 +1101,6 @@
               "a": 20
             },
             "e_value": "19.6",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "19.6",
@@ -1167,7 +1108,6 @@
             "severity": 10,
             "damage": 288,
             "kz_delta_attack": -5,
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -1194,7 +1134,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 56
+            "kz_after": 44
           },
           {
             "wave_id": 3,
@@ -1206,8 +1146,6 @@
               "a": 20
             },
             "e_value": 19,
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": 19,
@@ -1215,7 +1153,6 @@
             "severity": 7,
             "damage": 140,
             "kz_delta_attack": -7,
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -1234,7 +1171,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 59
+            "kz_after": 37
           }
         ],
         "final_events": [
@@ -1276,7 +1213,7 @@
           "M9": 0,
           "M10": 0
         },
-        "kz_final": 92,
+        "kz_final": 70,
         "total_damage": "433.76",
         "total_event_opex": -16,
         "total_event_budget": -20,
@@ -1296,8 +1233,6 @@
               "a": 23
             },
             "e_value": "24.6",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "24.6",
@@ -1305,7 +1240,6 @@
             "severity": "6.4",
             "damage": "115.2",
             "kz_delta_attack": "-2.8",
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -1324,7 +1258,7 @@
                 "opex_delta": -16
               }
             ],
-            "kz_after": 52
+            "kz_after": 47
           },
           {
             "wave_id": 2,
@@ -1336,8 +1270,6 @@
               "a": 23
             },
             "e_value": "23.8",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "23.8",
@@ -1345,7 +1277,6 @@
             "severity": "6.2",
             "damage": "178.56",
             "kz_delta_attack": "-0.44",
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -1372,7 +1303,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 74
+            "kz_after": 62
           },
           {
             "wave_id": 3,
@@ -1384,8 +1315,6 @@
               "a": 23
             },
             "e_value": "24.2",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "24.2",
@@ -1393,7 +1322,6 @@
             "severity": 7,
             "damage": 140,
             "kz_delta_attack": -7,
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -1412,7 +1340,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 77
+            "kz_after": 55
           }
         ],
         "final_events": [
@@ -1454,7 +1382,7 @@
           "M9": 0,
           "M10": 0
         },
-        "kz_final": 86,
+        "kz_final": 64,
         "total_damage": 284,
         "total_event_opex": -12,
         "total_event_budget": -20,
@@ -1474,8 +1402,6 @@
               "a": 23
             },
             "e_value": 23,
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": 23,
@@ -1483,7 +1409,6 @@
             "severity": 8,
             "damage": 144,
             "kz_delta_attack": -6,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -1502,7 +1427,7 @@
                 "opex_delta": -12
               }
             ],
-            "kz_after": 49
+            "kz_after": 44
           },
           {
             "wave_id": 2,
@@ -1514,8 +1439,6 @@
               "a": 23
             },
             "e_value": 23,
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 9,
             "bonus_descriptions": [
               "OT/IT-Segmentierung isoliert Produktion"
@@ -1525,7 +1448,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 7,
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -1552,7 +1474,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 68
+            "kz_after": 56
           },
           {
             "wave_id": 3,
@@ -1564,8 +1486,6 @@
               "a": 23
             },
             "e_value": "22.6",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "22.6",
@@ -1573,7 +1493,6 @@
             "severity": 7,
             "damage": 140,
             "kz_delta_attack": -7,
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -1592,7 +1511,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 71
+            "kz_after": 49
           }
         ],
         "final_events": [
@@ -1634,7 +1553,7 @@
           "M9": 0,
           "M10": 0
         },
-        "kz_final": 84,
+        "kz_final": 62,
         "total_damage": "85.12",
         "total_event_opex": -14,
         "total_event_budget": -20,
@@ -1654,8 +1573,6 @@
               "a": 24
             },
             "e_value": "28.4",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 15,
             "bonus_descriptions": [
               "EDR/XDR erkennt Ransomware früh",
@@ -1667,7 +1584,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -1686,7 +1602,7 @@
                 "opex_delta": -14
               }
             ],
-            "kz_after": 65
+            "kz_after": 60
           },
           {
             "wave_id": 2,
@@ -1698,8 +1614,6 @@
               "a": 24
             },
             "e_value": "26.2",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "26.2",
@@ -1707,7 +1621,6 @@
             "severity": "3.8",
             "damage": "85.12",
             "kz_delta_attack": "2.44",
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -1734,7 +1647,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 79
+            "kz_after": 67
           },
           {
             "wave_id": 3,
@@ -1746,8 +1659,6 @@
               "a": 24
             },
             "e_value": "27.7",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 6,
             "bonus_descriptions": [
               "SIEM erkennt Datenabfluss"
@@ -1757,7 +1668,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -1776,7 +1686,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 99
+            "kz_after": 77
           }
         ],
         "final_events": [
@@ -1818,7 +1728,7 @@
           "M9": 0,
           "M10": 0
         },
-        "kz_final": 82,
+        "kz_final": 60,
         "total_damage": "125.44",
         "total_event_opex": -12,
         "total_event_budget": -20,
@@ -1838,8 +1748,6 @@
               "a": 22
             },
             "e_value": "26.8",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 15,
             "bonus_descriptions": [
               "EDR/XDR erkennt Ransomware früh",
@@ -1851,7 +1759,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -1870,7 +1777,7 @@
                 "opex_delta": -12
               }
             ],
-            "kz_after": 65
+            "kz_after": 60
           },
           {
             "wave_id": 2,
@@ -1882,8 +1789,6 @@
               "a": 22
             },
             "e_value": "24.4",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "24.4",
@@ -1891,7 +1796,6 @@
             "severity": "5.6",
             "damage": "125.44",
             "kz_delta_attack": "0.28",
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -1918,7 +1822,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 77
+            "kz_after": 65
           },
           {
             "wave_id": 3,
@@ -1930,8 +1834,6 @@
               "a": 22
             },
             "e_value": "26.2",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 6,
             "bonus_descriptions": [
               "SIEM erkennt Datenabfluss"
@@ -1941,7 +1843,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -1960,7 +1861,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 97
+            "kz_after": 75
           }
         ],
         "final_events": [
@@ -2002,7 +1903,7 @@
           "M9": 0,
           "M10": 0
         },
-        "kz_final": 94,
+        "kz_final": 72,
         "total_damage": "98.56",
         "total_event_opex": -12,
         "total_event_budget": -20,
@@ -2022,8 +1923,6 @@
               "a": 24
             },
             "e_value": "27.2",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 15,
             "bonus_descriptions": [
               "EDR/XDR erkennt Ransomware früh",
@@ -2035,7 +1934,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -2054,7 +1952,7 @@
                 "opex_delta": -12
               }
             ],
-            "kz_after": 65
+            "kz_after": 60
           },
           {
             "wave_id": 2,
@@ -2066,8 +1964,6 @@
               "a": 24
             },
             "e_value": "25.6",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "25.6",
@@ -2075,7 +1971,6 @@
             "severity": "4.4",
             "damage": "98.56",
             "kz_delta_attack": "1.72",
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -2102,7 +1997,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 74
+            "kz_after": 62
           },
           {
             "wave_id": 3,
@@ -2114,8 +2009,6 @@
               "a": 24
             },
             "e_value": "26.4",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 6,
             "bonus_descriptions": [
               "SIEM erkennt Datenabfluss"
@@ -2125,7 +2018,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -2144,7 +2036,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 94
+            "kz_after": 72
           }
         ],
         "final_events": [
@@ -2186,7 +2078,7 @@
           "M9": 0,
           "M10": 0
         },
-        "kz_final": 100,
+        "kz_final": 79,
         "total_damage": "57.6",
         "total_event_opex": -14,
         "total_event_budget": -20,
@@ -2206,8 +2098,6 @@
               "a": 27
             },
             "e_value": "27.8",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "27.8",
@@ -2215,7 +2105,6 @@
             "severity": "3.2",
             "damage": "57.6",
             "kz_delta_attack": "3.6",
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -2234,7 +2123,7 @@
                 "opex_delta": -14
               }
             ],
-            "kz_after": 59
+            "kz_after": 54
           },
           {
             "wave_id": 2,
@@ -2246,8 +2135,6 @@
               "a": 27
             },
             "e_value": "27.4",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 15,
             "bonus_descriptions": [
               "OT/IT-Segmentierung isoliert Produktion",
@@ -2258,7 +2145,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 7,
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -2285,7 +2171,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 81
+            "kz_after": 69
           },
           {
             "wave_id": 3,
@@ -2297,8 +2183,6 @@
               "a": 27
             },
             "e_value": "27.2",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 6,
             "bonus_descriptions": [
               "SIEM erkennt Datenabfluss"
@@ -2308,7 +2192,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -2327,7 +2210,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 100
+            "kz_after": 79
           }
         ],
         "final_events": [
@@ -2369,7 +2252,7 @@
           "M9": 2,
           "M10": 2
         },
-        "kz_final": 91,
+        "kz_final": 69,
         "total_damage": "276.16",
         "total_event_opex": -18,
         "total_event_budget": -20,
@@ -2389,8 +2272,6 @@
               "a": 24
             },
             "e_value": "27.6",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "27.6",
@@ -2398,7 +2279,6 @@
             "severity": "3.4",
             "damage": "61.2",
             "kz_delta_attack": "3.2",
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -2417,7 +2297,7 @@
                 "opex_delta": -18
               }
             ],
-            "kz_after": 58
+            "kz_after": 53
           },
           {
             "wave_id": 2,
@@ -2429,8 +2309,6 @@
               "a": 24
             },
             "e_value": "25.8",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "25.8",
@@ -2438,7 +2316,6 @@
             "severity": "4.2",
             "damage": "120.96",
             "kz_delta_attack": "1.96",
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -2465,7 +2342,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 82
+            "kz_after": 70
           },
           {
             "wave_id": 3,
@@ -2477,8 +2354,6 @@
               "a": 24
             },
             "e_value": "27.3",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "27.3",
@@ -2486,7 +2361,6 @@
             "severity": "4.7",
             "damage": 94,
             "kz_delta_attack": "-99/70",
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -2505,7 +2379,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 91
+            "kz_after": 69
           }
         ],
         "final_events": [
@@ -2547,7 +2421,7 @@
           "M9": 0,
           "M10": 0
         },
-        "kz_final": 90,
+        "kz_final": 68,
         "total_damage": "223.92",
         "total_event_opex": -14,
         "total_event_budget": -20,
@@ -2567,8 +2441,6 @@
               "a": 22
             },
             "e_value": "27.2",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "27.2",
@@ -2576,7 +2448,6 @@
             "severity": "3.8",
             "damage": "68.4",
             "kz_delta_attack": "2.4",
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -2595,7 +2466,7 @@
                 "opex_delta": -14
               }
             ],
-            "kz_after": 57
+            "kz_after": 52
           },
           {
             "wave_id": 2,
@@ -2607,8 +2478,6 @@
               "a": 22
             },
             "e_value": "24.6",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "24.6",
@@ -2616,7 +2485,6 @@
             "severity": "5.4",
             "damage": "155.52",
             "kz_delta_attack": "0.52",
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -2643,7 +2511,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 70
+            "kz_after": 58
           },
           {
             "wave_id": 3,
@@ -2655,8 +2523,6 @@
               "a": 22
             },
             "e_value": "26.5",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 23,
             "bonus_descriptions": [
               "IAM/PAM verhindert unbefugten Zugriff",
@@ -2668,7 +2534,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -2687,7 +2552,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 90
+            "kz_after": 68
           }
         ],
         "final_events": [
@@ -2729,7 +2594,7 @@
           "M9": 0,
           "M10": 0
         },
-        "kz_final": 83,
+        "kz_final": 61,
         "total_damage": 342,
         "total_event_opex": -6,
         "total_event_budget": -20,
@@ -2749,8 +2614,6 @@
               "a": 18
             },
             "e_value": "20.8",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 12,
             "bonus_descriptions": [
               "EDR/XDR erkennt Ransomware früh",
@@ -2761,7 +2624,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -2780,7 +2642,7 @@
                 "opex_delta": -6
               }
             ],
-            "kz_after": 65
+            "kz_after": 60
           },
           {
             "wave_id": 2,
@@ -2792,8 +2654,6 @@
               "a": 18
             },
             "e_value": "19.4",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "19.4",
@@ -2801,7 +2661,6 @@
             "severity": 10,
             "damage": 224,
             "kz_delta_attack": -5,
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -2828,7 +2687,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 62
+            "kz_after": 50
           },
           {
             "wave_id": 3,
@@ -2840,8 +2699,6 @@
               "a": 18
             },
             "e_value": "20.1",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 6,
             "bonus_descriptions": [
               "SIEM erkennt Datenabfluss"
@@ -2851,7 +2708,6 @@
             "severity": "5.9",
             "damage": 118,
             "kz_delta_attack": "-303/70",
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -2870,7 +2726,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 68
+            "kz_after": 46
           }
         ],
         "final_events": [
@@ -2912,7 +2768,7 @@
           "M9": 0,
           "M10": 0
         },
-        "kz_final": 96,
+        "kz_final": 74,
         "total_damage": "328.96",
         "total_event_opex": -16,
         "total_event_budget": -20,
@@ -2932,8 +2788,6 @@
               "a": 24
             },
             "e_value": "25.6",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 3,
             "bonus_descriptions": [
               "Geschulte Mitarbeiter erkennen Phishing"
@@ -2943,7 +2797,6 @@
             "severity": "2.4",
             "damage": "43.2",
             "kz_delta_attack": "5.2",
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -2962,7 +2815,7 @@
                 "opex_delta": -16
               }
             ],
-            "kz_after": 60
+            "kz_after": 55
           },
           {
             "wave_id": 2,
@@ -2974,8 +2827,6 @@
               "a": 24
             },
             "e_value": "24.8",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "24.8",
@@ -2983,7 +2834,6 @@
             "severity": "5.2",
             "damage": "149.76",
             "kz_delta_attack": "0.76",
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -3010,7 +2860,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 83
+            "kz_after": 71
           },
           {
             "wave_id": 3,
@@ -3022,8 +2872,6 @@
               "a": 24
             },
             "e_value": "25.2",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "25.2",
@@ -3031,7 +2879,6 @@
             "severity": "6.8",
             "damage": 136,
             "kz_delta_attack": "-228/35",
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -3050,7 +2897,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 86
+            "kz_after": 64
           }
         ],
         "final_events": [
@@ -3093,7 +2940,7 @@
           "M9": 0,
           "M10": 0
         },
-        "kz_final": 85,
+        "kz_final": 80,
         "total_damage": 0,
         "total_event_opex": -16,
         "total_event_budget": -20,
@@ -3113,8 +2960,6 @@
               "a": 29
             },
             "e_value": "33.8",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 15,
             "bonus_descriptions": [
               "EDR/XDR erkennt Ransomware früh",
@@ -3126,7 +2971,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -3145,7 +2989,7 @@
                 "opex_delta": -16
               }
             ],
-            "kz_after": 65
+            "kz_after": 60
           },
           {
             "wave_id": 2,
@@ -3157,8 +3001,6 @@
               "a": 29
             },
             "e_value": "31.4",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 6,
             "bonus_descriptions": [
               "Patch Management schließt OT-Schwachstellen"
@@ -3168,7 +3010,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 7,
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -3195,7 +3036,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 97
+            "kz_after": 85
           },
           {
             "wave_id": 3,
@@ -3207,8 +3048,6 @@
               "a": 29
             },
             "e_value": "33.2",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 14,
             "bonus_descriptions": [
               "IAM/PAM verhindert unbefugten Zugriff",
@@ -3219,7 +3058,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -3238,7 +3076,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 100
+            "kz_after": 95
           }
         ],
         "final_events": [
@@ -3280,7 +3118,7 @@
           "M9": 0,
           "M10": 0
         },
-        "kz_final": 85,
+        "kz_final": 80,
         "total_damage": 0,
         "total_event_opex": -16,
         "total_event_budget": -20,
@@ -3300,8 +3138,6 @@
               "a": 31
             },
             "e_value": "33.4",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 15,
             "bonus_descriptions": [
               "EDR/XDR erkennt Ransomware früh",
@@ -3313,7 +3149,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -3332,7 +3167,7 @@
                 "opex_delta": -16
               }
             ],
-            "kz_after": 65
+            "kz_after": 60
           },
           {
             "wave_id": 2,
@@ -3344,8 +3179,6 @@
               "a": 31
             },
             "e_value": "32.2",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 15,
             "bonus_descriptions": [
               "OT/IT-Segmentierung isoliert Produktion",
@@ -3356,7 +3189,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 7,
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -3383,7 +3215,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 97
+            "kz_after": 85
           },
           {
             "wave_id": 3,
@@ -3395,8 +3227,6 @@
               "a": 31
             },
             "e_value": "32.8",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 6,
             "bonus_descriptions": [
               "SIEM erkennt Datenabfluss"
@@ -3406,7 +3236,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -3425,7 +3254,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 100
+            "kz_after": 95
           }
         ],
         "final_events": [
@@ -3467,7 +3296,7 @@
           "M9": 0,
           "M10": 0
         },
-        "kz_final": 85,
+        "kz_final": 80,
         "total_damage": 0,
         "total_event_opex": -14,
         "total_event_budget": -20,
@@ -3487,8 +3316,6 @@
               "a": 29
             },
             "e_value": "31.8",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 15,
             "bonus_descriptions": [
               "EDR/XDR erkennt Ransomware früh",
@@ -3500,7 +3327,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -3519,7 +3345,7 @@
                 "opex_delta": -14
               }
             ],
-            "kz_after": 65
+            "kz_after": 60
           },
           {
             "wave_id": 2,
@@ -3531,8 +3357,6 @@
               "a": 29
             },
             "e_value": "30.4",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 15,
             "bonus_descriptions": [
               "OT/IT-Segmentierung isoliert Produktion",
@@ -3543,7 +3367,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 7,
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -3570,7 +3393,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 97
+            "kz_after": 85
           },
           {
             "wave_id": 3,
@@ -3582,8 +3405,6 @@
               "a": 29
             },
             "e_value": "31.3",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 6,
             "bonus_descriptions": [
               "SIEM erkennt Datenabfluss"
@@ -3593,7 +3414,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -3612,7 +3432,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 100
+            "kz_after": 95
           }
         ],
         "final_events": [
@@ -3654,7 +3474,7 @@
           "M9": 0,
           "M10": 0
         },
-        "kz_final": 85,
+        "kz_final": 77,
         "total_damage": 0,
         "total_event_opex": -16,
         "total_event_budget": -20,
@@ -3674,8 +3494,6 @@
               "a": 28
             },
             "e_value": 32,
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 15,
             "bonus_descriptions": [
               "EDR/XDR erkennt Ransomware früh",
@@ -3687,7 +3505,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -3706,7 +3523,7 @@
                 "opex_delta": -16
               }
             ],
-            "kz_after": 65
+            "kz_after": 60
           },
           {
             "wave_id": 2,
@@ -3718,8 +3535,6 @@
               "a": 28
             },
             "e_value": 30,
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": 30,
@@ -3727,7 +3542,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 7,
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -3754,7 +3568,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 94
+            "kz_after": 82
           },
           {
             "wave_id": 3,
@@ -3766,8 +3580,6 @@
               "a": 28
             },
             "e_value": "31.4",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 14,
             "bonus_descriptions": [
               "IAM/PAM verhindert unbefugten Zugriff",
@@ -3778,7 +3590,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -3797,7 +3608,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 100
+            "kz_after": 92
           }
         ],
         "final_events": [
@@ -3839,7 +3650,7 @@
           "M9": 2,
           "M10": 2
         },
-        "kz_final": 85,
+        "kz_final": 77,
         "total_damage": 0,
         "total_event_opex": -18,
         "total_event_budget": -20,
@@ -3859,8 +3670,6 @@
               "a": 28
             },
             "e_value": "32.4",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 12,
             "bonus_descriptions": [
               "EDR/XDR erkennt Ransomware früh",
@@ -3871,7 +3680,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -3890,7 +3698,7 @@
                 "opex_delta": -18
               }
             ],
-            "kz_after": 65
+            "kz_after": 60
           },
           {
             "wave_id": 2,
@@ -3902,8 +3710,6 @@
               "a": 28
             },
             "e_value": "30.2",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "30.2",
@@ -3911,7 +3717,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 7,
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -3938,7 +3743,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 94
+            "kz_after": 82
           },
           {
             "wave_id": 3,
@@ -3950,8 +3755,6 @@
               "a": 28
             },
             "e_value": "31.9",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 6,
             "bonus_descriptions": [
               "SIEM erkennt Datenabfluss"
@@ -3961,7 +3764,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -3980,7 +3782,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 100
+            "kz_after": 92
           }
         ],
         "final_events": [
@@ -4023,7 +3825,7 @@
           "M9": 1,
           "M10": 1
         },
-        "kz_final": 93,
+        "kz_final": 71,
         "total_damage": "299.12",
         "total_event_opex": -20,
         "total_event_budget": -20,
@@ -4043,8 +3845,6 @@
               "a": 24
             },
             "e_value": "27.2",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "27.2",
@@ -4052,7 +3852,6 @@
             "severity": "3.8",
             "damage": "68.4",
             "kz_delta_attack": "2.4",
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -4071,7 +3870,7 @@
                 "opex_delta": -20
               }
             ],
-            "kz_after": 57
+            "kz_after": 52
           },
           {
             "wave_id": 2,
@@ -4083,8 +3882,6 @@
               "a": 24
             },
             "e_value": "25.6",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "25.6",
@@ -4092,7 +3889,6 @@
             "severity": "4.4",
             "damage": "126.72",
             "kz_delta_attack": "1.72",
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -4119,7 +3915,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 81
+            "kz_after": 69
           },
           {
             "wave_id": 3,
@@ -4131,8 +3927,6 @@
               "a": 24
             },
             "e_value": "26.8",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "26.8",
@@ -4140,7 +3934,6 @@
             "severity": "5.2",
             "damage": 104,
             "kz_delta_attack": "-92/35",
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -4159,7 +3952,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 88
+            "kz_after": 66
           }
         ],
         "final_events": [
@@ -4201,7 +3994,7 @@
           "M9": 3,
           "M10": 3
         },
-        "kz_final": 85,
+        "kz_final": 71,
         "total_damage": "74.8",
         "total_event_opex": -16,
         "total_event_budget": -20,
@@ -4221,8 +4014,6 @@
               "a": 25
             },
             "e_value": 31,
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 12,
             "bonus_descriptions": [
               "EDR/XDR erkennt Ransomware früh",
@@ -4233,7 +4024,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -4252,7 +4042,7 @@
                 "opex_delta": -16
               }
             ],
-            "kz_after": 65
+            "kz_after": 60
           },
           {
             "wave_id": 2,
@@ -4264,8 +4054,6 @@
               "a": 25
             },
             "e_value": 28,
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": 28,
@@ -4273,7 +4061,6 @@
             "severity": 2,
             "damage": "44.8",
             "kz_delta_attack": "4.6",
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -4300,7 +4087,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 82
+            "kz_after": 70
           },
           {
             "wave_id": 3,
@@ -4312,8 +4099,6 @@
               "a": 25
             },
             "e_value": "30.5",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "30.5",
@@ -4321,7 +4106,6 @@
             "severity": "1.5",
             "damage": 30,
             "kz_delta_attack": "89/14",
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -4340,7 +4124,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 100
+            "kz_after": 86
           }
         ],
         "final_events": [
@@ -4382,7 +4166,7 @@
           "M9": 0,
           "M10": 0
         },
-        "kz_final": 85,
+        "kz_final": 81,
         "total_damage": "20.88",
         "total_event_opex": -16,
         "total_event_budget": -20,
@@ -4402,8 +4186,6 @@
               "a": 28
             },
             "e_value": "30.8",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "30.8",
@@ -4411,7 +4193,6 @@
             "severity": "0.2",
             "damage": "3.6",
             "kz_delta_attack": "9.6",
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -4430,7 +4211,7 @@
                 "opex_delta": -16
               }
             ],
-            "kz_after": 65
+            "kz_after": 60
           },
           {
             "wave_id": 2,
@@ -4442,8 +4223,6 @@
               "a": 28
             },
             "e_value": "29.4",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "29.4",
@@ -4451,7 +4230,6 @@
             "severity": "0.6",
             "damage": "17.28",
             "kz_delta_attack": "6.28",
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -4478,7 +4256,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 93
+            "kz_after": 81
           },
           {
             "wave_id": 3,
@@ -4490,8 +4268,6 @@
               "a": 28
             },
             "e_value": "30.1",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 23,
             "bonus_descriptions": [
               "IAM/PAM verhindert unbefugten Zugriff",
@@ -4503,7 +4279,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -4522,7 +4297,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 100
+            "kz_after": 96
           }
         ],
         "final_events": [
@@ -4564,7 +4339,7 @@
           "M9": 0,
           "M10": 0
         },
-        "kz_final": 85,
+        "kz_final": 70,
         "total_damage": "167.04",
         "total_event_opex": -12,
         "total_event_budget": -20,
@@ -4584,8 +4359,6 @@
               "a": 21
             },
             "e_value": "27.4",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 6,
             "bonus_descriptions": [
               "EDR/XDR erkennt Ransomware früh"
@@ -4595,7 +4368,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -4614,7 +4386,7 @@
                 "opex_delta": -12
               }
             ],
-            "kz_after": 65
+            "kz_after": 60
           },
           {
             "wave_id": 2,
@@ -4626,8 +4398,6 @@
               "a": 21
             },
             "e_value": "24.2",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "24.2",
@@ -4635,7 +4405,6 @@
             "severity": "5.8",
             "damage": "167.04",
             "kz_delta_attack": "0.04",
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -4662,7 +4431,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 77
+            "kz_after": 65
           },
           {
             "wave_id": 3,
@@ -4674,8 +4443,6 @@
               "a": 21
             },
             "e_value": "26.8",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 6,
             "bonus_descriptions": [
               "SIEM erkennt Datenabfluss"
@@ -4685,7 +4452,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -4704,7 +4470,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 100
+            "kz_after": 85
           }
         ],
         "final_events": [
@@ -4747,7 +4513,7 @@
           "M9": 0,
           "M10": 0
         },
-        "kz_final": 15,
+        "kz_final": 27,
         "total_damage": 620,
         "total_event_opex": 0,
         "total_event_budget": -20,
@@ -4767,8 +4533,6 @@
               "a": 10
             },
             "e_value": 10,
-            "e_target": 15,
-            "e_reached": false,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": 10,
@@ -4776,7 +4540,6 @@
             "severity": 8,
             "damage": 160,
             "kz_delta_attack": -6,
-            "kz_delta_e_target": -3,
             "events": [
               {
                 "id": "kurswechsel",
@@ -4795,7 +4558,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 41
+            "kz_after": 44
           },
           {
             "wave_id": 2,
@@ -4807,8 +4570,6 @@
               "a": 10
             },
             "e_value": 10,
-            "e_target": 17,
-            "e_reached": false,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": 10,
@@ -4816,7 +4577,6 @@
             "severity": 10,
             "damage": 320,
             "kz_delta_attack": -5,
-            "kz_delta_e_target": -5,
             "events": [
               {
                 "id": "sparprogramm",
@@ -4843,7 +4603,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 11
+            "kz_after": 19
           },
           {
             "wave_id": 3,
@@ -4855,8 +4615,6 @@
               "a": 10
             },
             "e_value": 10,
-            "e_target": 19,
-            "e_reached": false,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": 10,
@@ -4864,7 +4622,6 @@
             "severity": 7,
             "damage": 140,
             "kz_delta_attack": -7,
-            "kz_delta_e_target": -7,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -4883,7 +4640,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 0
+            "kz_after": 12
           }
         ],
         "final_events": [
@@ -4945,8 +4702,6 @@
               "a": 49
             },
             "e_value": "55.4",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 15,
             "bonus_descriptions": [
               "EDR/XDR erkennt Ransomware früh",
@@ -4958,7 +4713,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -4977,7 +4731,7 @@
                 "opex_delta": -20
               }
             ],
-            "kz_after": 65
+            "kz_after": 60
           },
           {
             "wave_id": 2,
@@ -4989,8 +4743,6 @@
               "a": 49
             },
             "e_value": "52.2",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 15,
             "bonus_descriptions": [
               "OT/IT-Segmentierung isoliert Produktion",
@@ -5001,7 +4753,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 7,
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -5028,7 +4779,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 100
+            "kz_after": 89
           },
           {
             "wave_id": 3,
@@ -5040,8 +4791,6 @@
               "a": 49
             },
             "e_value": "54.4",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 23,
             "bonus_descriptions": [
               "IAM/PAM verhindert unbefugten Zugriff",
@@ -5053,7 +4802,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -5121,7 +4869,7 @@
           "M9": 0,
           "M10": 0
         },
-        "kz_final": 46,
+        "kz_final": 53,
         "total_damage": 492,
         "total_event_opex": -4,
         "total_event_budget": -20,
@@ -5141,8 +4889,6 @@
               "a": 12
             },
             "e_value": "17.6",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "17.6",
@@ -5150,7 +4896,6 @@
             "severity": 8,
             "damage": 160,
             "kz_delta_attack": -6,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -5169,7 +4914,7 @@
                 "opex_delta": -4
               }
             ],
-            "kz_after": 49
+            "kz_after": 44
           },
           {
             "wave_id": 2,
@@ -5181,8 +4926,6 @@
               "a": 12
             },
             "e_value": "14.8",
-            "e_target": 17,
-            "e_reached": false,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "14.8",
@@ -5190,7 +4933,6 @@
             "severity": 10,
             "damage": 320,
             "kz_delta_attack": -5,
-            "kz_delta_e_target": -5,
             "events": [
               {
                 "id": "sparprogramm",
@@ -5229,8 +4971,6 @@
               "a": 12
             },
             "e_value": "17.4",
-            "e_target": 19,
-            "e_reached": false,
             "bonus_reduction": 14,
             "bonus_descriptions": [
               "IAM/PAM verhindert unbefugten Zugriff",
@@ -5241,7 +4981,6 @@
             "severity": "0.6",
             "damage": 12,
             "kz_delta_attack": "299/35",
-            "kz_delta_e_target": -7,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -5260,7 +4999,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 31
+            "kz_after": 38
           }
         ],
         "final_events": [
@@ -5309,7 +5048,7 @@
           "M9": 0,
           "M10": 0
         },
-        "kz_final": 39,
+        "kz_final": 46,
         "total_damage": 584,
         "total_event_opex": -4,
         "total_event_budget": -20,
@@ -5329,8 +5068,6 @@
               "a": 14
             },
             "e_value": "18.8",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 6,
             "bonus_descriptions": [
               "EDR/XDR erkennt Ransomware früh"
@@ -5340,7 +5077,6 @@
             "severity": "6.2",
             "damage": 124,
             "kz_delta_attack": "-2.4",
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -5359,7 +5095,7 @@
                 "opex_delta": -4
               }
             ],
-            "kz_after": 53
+            "kz_after": 48
           },
           {
             "wave_id": 2,
@@ -5371,8 +5107,6 @@
               "a": 14
             },
             "e_value": "16.4",
-            "e_target": 17,
-            "e_reached": false,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "16.4",
@@ -5380,7 +5114,6 @@
             "severity": 10,
             "damage": 320,
             "kz_delta_attack": -5,
-            "kz_delta_e_target": -5,
             "events": [
               {
                 "id": "sparprogramm",
@@ -5419,8 +5152,6 @@
               "a": 14
             },
             "e_value": "18.6",
-            "e_target": 19,
-            "e_reached": false,
             "bonus_reduction": 6,
             "bonus_descriptions": [
               "SIEM erkennt Datenabfluss"
@@ -5430,7 +5161,6 @@
             "severity": 7,
             "damage": 140,
             "kz_delta_attack": -7,
-            "kz_delta_e_target": -7,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -5449,7 +5179,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 24
+            "kz_after": 31
           }
         ],
         "final_events": [
@@ -5498,7 +5228,7 @@
           "M9": 0,
           "M10": 0
         },
-        "kz_final": 54,
+        "kz_final": 61,
         "total_damage": "562.4",
         "total_event_opex": -4,
         "total_event_budget": -20,
@@ -5518,8 +5248,6 @@
               "a": 14
             },
             "e_value": "17.6",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "17.6",
@@ -5527,7 +5255,6 @@
             "severity": 8,
             "damage": 160,
             "kz_delta_attack": -6,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -5546,7 +5273,7 @@
                 "opex_delta": -4
               }
             ],
-            "kz_after": 49
+            "kz_after": 44
           },
           {
             "wave_id": 2,
@@ -5558,8 +5285,6 @@
               "a": 14
             },
             "e_value": "15.8",
-            "e_target": 17,
-            "e_reached": false,
             "bonus_reduction": 6,
             "bonus_descriptions": [
               "Patch Management schließt OT-Schwachstellen"
@@ -5569,7 +5294,6 @@
             "severity": "8.2",
             "damage": "262.4",
             "kz_delta_attack": "-2.84",
-            "kz_delta_e_target": -5,
             "events": [
               {
                 "id": "sparprogramm",
@@ -5608,8 +5332,6 @@
               "a": 14
             },
             "e_value": "17.3",
-            "e_target": 19,
-            "e_reached": false,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "17.3",
@@ -5617,7 +5339,6 @@
             "severity": 7,
             "damage": 140,
             "kz_delta_attack": -7,
-            "kz_delta_e_target": -7,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -5636,7 +5357,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 39
+            "kz_after": 46
           }
         ],
         "final_events": [
@@ -5678,7 +5399,7 @@
           "M9": 0,
           "M10": 2
         },
-        "kz_final": 20,
+        "kz_final": 27,
         "total_damage": 620,
         "total_event_opex": -4,
         "total_event_budget": -20,
@@ -5698,8 +5419,6 @@
               "a": 15
             },
             "e_value": 15,
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": 15,
@@ -5707,7 +5426,6 @@
             "severity": 8,
             "damage": 160,
             "kz_delta_attack": -6,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -5726,7 +5444,7 @@
                 "opex_delta": -4
               }
             ],
-            "kz_after": 49
+            "kz_after": 44
           },
           {
             "wave_id": 2,
@@ -5738,8 +5456,6 @@
               "a": 15
             },
             "e_value": 15,
-            "e_target": 17,
-            "e_reached": false,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": 15,
@@ -5747,7 +5463,6 @@
             "severity": 10,
             "damage": 320,
             "kz_delta_attack": -5,
-            "kz_delta_e_target": -5,
             "events": [
               {
                 "id": "sparprogramm",
@@ -5786,8 +5501,6 @@
               "a": 15
             },
             "e_value": "14.8",
-            "e_target": 19,
-            "e_reached": false,
             "bonus_reduction": 9,
             "bonus_descriptions": [
               "Supply Chain Security schützt Schnittstellen"
@@ -5797,7 +5510,6 @@
             "severity": 7,
             "damage": 140,
             "kz_delta_attack": -7,
-            "kz_delta_e_target": -7,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -5816,7 +5528,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 5
+            "kz_after": 12
           }
         ],
         "final_events": [
@@ -5858,7 +5570,7 @@
           "M9": 3,
           "M10": 0
         },
-        "kz_final": 39,
+        "kz_final": 34,
         "total_damage": 604,
         "total_event_opex": -4,
         "total_event_budget": -20,
@@ -5878,8 +5590,6 @@
               "a": 17
             },
             "e_value": 17,
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": 17,
@@ -5887,7 +5597,6 @@
             "severity": 8,
             "damage": 160,
             "kz_delta_attack": -6,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -5906,7 +5615,7 @@
                 "opex_delta": -4
               }
             ],
-            "kz_after": 49
+            "kz_after": 44
           },
           {
             "wave_id": 2,
@@ -5918,8 +5627,6 @@
               "a": 17
             },
             "e_value": 17,
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": 17,
@@ -5927,7 +5634,6 @@
             "severity": 10,
             "damage": 320,
             "kz_delta_attack": -5,
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -5954,7 +5660,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 31
+            "kz_after": 19
           },
           {
             "wave_id": 3,
@@ -5966,8 +5672,6 @@
               "a": 17
             },
             "e_value": "16.8",
-            "e_target": 19,
-            "e_reached": false,
             "bonus_reduction": 9,
             "bonus_descriptions": [
               "Supply Chain Security schützt Schnittstellen"
@@ -5977,7 +5681,6 @@
             "severity": "6.2",
             "damage": 124,
             "kz_delta_attack": "-177/35",
-            "kz_delta_e_target": -7,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -5996,7 +5699,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 24
+            "kz_after": 19
           }
         ],
         "final_events": [
@@ -6038,7 +5741,7 @@
           "M9": 1,
           "M10": 3
         },
-        "kz_final": 74,
+        "kz_final": 52,
         "total_damage": 620,
         "total_event_opex": -8,
         "total_event_budget": -20,
@@ -6058,8 +5761,6 @@
               "a": 19
             },
             "e_value": 19,
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": 19,
@@ -6067,7 +5768,6 @@
             "severity": 8,
             "damage": 160,
             "kz_delta_attack": -6,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -6086,7 +5786,7 @@
                 "opex_delta": -8
               }
             ],
-            "kz_after": 49
+            "kz_after": 44
           },
           {
             "wave_id": 2,
@@ -6098,8 +5798,6 @@
               "a": 19
             },
             "e_value": 19,
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": 19,
@@ -6107,7 +5805,6 @@
             "severity": 10,
             "damage": 320,
             "kz_delta_attack": -5,
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -6134,7 +5831,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 51
+            "kz_after": 39
           },
           {
             "wave_id": 3,
@@ -6146,8 +5843,6 @@
               "a": 19
             },
             "e_value": 19,
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": 19,
@@ -6155,7 +5850,6 @@
             "severity": 7,
             "damage": 140,
             "kz_delta_attack": -7,
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -6174,7 +5868,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 59
+            "kz_after": 37
           }
         ],
         "final_events": [
@@ -6216,7 +5910,7 @@
           "M9": 2,
           "M10": 3
         },
-        "kz_final": 93,
+        "kz_final": 71,
         "total_damage": 230,
         "total_event_opex": -8,
         "total_event_budget": -20,
@@ -6236,8 +5930,6 @@
               "a": 21
             },
             "e_value": 23,
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": 23,
@@ -6245,7 +5937,6 @@
             "severity": 8,
             "damage": 160,
             "kz_delta_attack": -6,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -6264,7 +5955,7 @@
                 "opex_delta": -8
               }
             ],
-            "kz_after": 49
+            "kz_after": 44
           },
           {
             "wave_id": 2,
@@ -6276,8 +5967,6 @@
               "a": 21
             },
             "e_value": 22,
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 6,
             "bonus_descriptions": [
               "Patch Management schließt OT-Schwachstellen"
@@ -6287,7 +5976,6 @@
             "severity": 2,
             "damage": 64,
             "kz_delta_attack": "4.6",
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -6314,7 +6002,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 59
+            "kz_after": 47
           },
           {
             "wave_id": 3,
@@ -6326,8 +6014,6 @@
               "a": 21
             },
             "e_value": "22.7",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 9,
             "bonus_descriptions": [
               "Supply Chain Security schützt Schnittstellen"
@@ -6337,7 +6023,6 @@
             "severity": "0.3",
             "damage": 6,
             "kz_delta_attack": "649/70",
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -6356,7 +6041,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 83
+            "kz_after": 61
           }
         ],
         "final_events": [
@@ -6398,7 +6083,7 @@
           "M9": 0,
           "M10": 3
         },
-        "kz_final": 83,
+        "kz_final": 61,
         "total_damage": 548,
         "total_event_opex": -6,
         "total_event_budget": -20,
@@ -6418,8 +6103,6 @@
               "a": 20
             },
             "e_value": 20,
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": 20,
@@ -6427,7 +6110,6 @@
             "severity": 8,
             "damage": 160,
             "kz_delta_attack": -6,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -6446,7 +6128,7 @@
                 "opex_delta": -6
               }
             ],
-            "kz_after": 49
+            "kz_after": 44
           },
           {
             "wave_id": 2,
@@ -6458,8 +6140,6 @@
               "a": 20
             },
             "e_value": 20,
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": 20,
@@ -6467,7 +6147,6 @@
             "severity": 10,
             "damage": 320,
             "kz_delta_attack": -5,
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -6494,7 +6173,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 46
+            "kz_after": 34
           },
           {
             "wave_id": 3,
@@ -6506,8 +6185,6 @@
               "a": 20
             },
             "e_value": "19.6",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 9,
             "bonus_descriptions": [
               "Supply Chain Security schützt Schnittstellen"
@@ -6517,7 +6194,6 @@
             "severity": "3.4",
             "damage": 68,
             "kz_delta_attack": "61/35",
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -6536,7 +6212,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 68
+            "kz_after": 46
           }
         ],
         "final_events": [
@@ -6578,7 +6254,7 @@
           "M9": 0,
           "M10": 0
         },
-        "kz_final": 25,
+        "kz_final": 32,
         "total_damage": 620,
         "total_event_opex": -4,
         "total_event_budget": -20,
@@ -6598,8 +6274,6 @@
               "a": 17
             },
             "e_value": "16.2",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "16.2",
@@ -6607,7 +6281,6 @@
             "severity": 8,
             "damage": 160,
             "kz_delta_attack": -6,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -6626,7 +6299,7 @@
                 "opex_delta": -4
               }
             ],
-            "kz_after": 49
+            "kz_after": 44
           },
           {
             "wave_id": 2,
@@ -6638,8 +6311,6 @@
               "a": 17
             },
             "e_value": "16.6",
-            "e_target": 17,
-            "e_reached": false,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "16.6",
@@ -6647,7 +6318,6 @@
             "severity": 10,
             "damage": 320,
             "kz_delta_attack": -5,
-            "kz_delta_e_target": -5,
             "events": [
               {
                 "id": "sparprogramm",
@@ -6686,8 +6356,6 @@
               "a": 17
             },
             "e_value": 16,
-            "e_target": 19,
-            "e_reached": false,
             "bonus_reduction": 9,
             "bonus_descriptions": [
               "Supply Chain Security schützt Schnittstellen"
@@ -6697,7 +6365,6 @@
             "severity": 7,
             "damage": 140,
             "kz_delta_attack": -7,
-            "kz_delta_e_target": -7,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -6716,7 +6383,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 10
+            "kz_after": 17
           }
         ],
         "final_events": [
@@ -6758,7 +6425,7 @@
           "M9": 3,
           "M10": 3
         },
-        "kz_final": 85,
+        "kz_final": 75,
         "total_damage": 0,
         "total_event_opex": -10,
         "total_event_budget": -20,
@@ -6778,8 +6445,6 @@
               "a": 26
             },
             "e_value": 28,
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 3,
             "bonus_descriptions": [
               "Geschulte Mitarbeiter erkennen Phishing"
@@ -6789,7 +6454,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -6808,7 +6472,7 @@
                 "opex_delta": -10
               }
             ],
-            "kz_after": 65
+            "kz_after": 60
           },
           {
             "wave_id": 2,
@@ -6820,8 +6484,6 @@
               "a": 26
             },
             "e_value": 27,
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 6,
             "bonus_descriptions": [
               "Patch Management schließt OT-Schwachstellen"
@@ -6831,7 +6493,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 7,
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -6858,7 +6519,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 77
+            "kz_after": 65
           },
           {
             "wave_id": 3,
@@ -6870,8 +6531,6 @@
               "a": 26
             },
             "e_value": "27.7",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 9,
             "bonus_descriptions": [
               "Supply Chain Security schützt Schnittstellen"
@@ -6881,7 +6540,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -6900,7 +6558,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 100
+            "kz_after": 90
           }
         ],
         "final_events": [
@@ -6943,7 +6601,7 @@
           "M9": 1,
           "M10": 3
         },
-        "kz_final": 100,
+        "kz_final": 78,
         "total_damage": 120,
         "total_event_opex": -10,
         "total_event_budget": -20,
@@ -6963,8 +6621,6 @@
               "a": 23
             },
             "e_value": 25,
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": 25,
@@ -6972,7 +6628,6 @@
             "severity": 6,
             "damage": 120,
             "kz_delta_attack": -2,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -6991,7 +6646,7 @@
                 "opex_delta": -10
               }
             ],
-            "kz_after": 53
+            "kz_after": 48
           },
           {
             "wave_id": 2,
@@ -7003,8 +6658,6 @@
               "a": 23
             },
             "e_value": 24,
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 6,
             "bonus_descriptions": [
               "Patch Management schließt OT-Schwachstellen"
@@ -7014,7 +6667,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 7,
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -7041,7 +6693,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 65
+            "kz_after": 53
           },
           {
             "wave_id": 3,
@@ -7053,8 +6705,6 @@
               "a": 23
             },
             "e_value": "24.7",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 9,
             "bonus_descriptions": [
               "Supply Chain Security schützt Schnittstellen"
@@ -7064,7 +6714,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -7083,7 +6732,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 95
+            "kz_after": 73
           }
         ],
         "final_events": [
@@ -7125,7 +6774,7 @@
           "M9": 2,
           "M10": 3
         },
-        "kz_final": 90,
+        "kz_final": 68,
         "total_damage": "360.8",
         "total_event_opex": -10,
         "total_event_budget": -20,
@@ -7145,8 +6794,6 @@
               "a": 24
             },
             "e_value": "23.2",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "23.2",
@@ -7154,7 +6801,6 @@
             "severity": "7.8",
             "damage": 156,
             "kz_delta_attack": "-5.6",
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -7173,7 +6819,7 @@
                 "opex_delta": -10
               }
             ],
-            "kz_after": 49
+            "kz_after": 44
           },
           {
             "wave_id": 2,
@@ -7185,8 +6831,6 @@
               "a": 24
             },
             "e_value": "23.6",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "23.6",
@@ -7194,7 +6838,6 @@
             "severity": "6.4",
             "damage": "204.8",
             "kz_delta_attack": "-0.68",
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -7221,7 +6864,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 55
+            "kz_after": 43
           },
           {
             "wave_id": 3,
@@ -7233,8 +6876,6 @@
               "a": 24
             },
             "e_value": 23,
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 9,
             "bonus_descriptions": [
               "Supply Chain Security schützt Schnittstellen"
@@ -7244,7 +6885,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -7263,7 +6903,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 80
+            "kz_after": 58
           }
         ],
         "final_events": [
@@ -7305,7 +6945,7 @@
           "M9": 3,
           "M10": 3
         },
-        "kz_final": 85,
+        "kz_final": 64,
         "total_damage": 108,
         "total_event_opex": -8,
         "total_event_budget": -20,
@@ -7325,8 +6965,6 @@
               "a": 24
             },
             "e_value": "25.6",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "25.6",
@@ -7334,7 +6972,6 @@
             "severity": "5.4",
             "damage": 108,
             "kz_delta_attack": "-0.8",
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -7353,7 +6990,7 @@
                 "opex_delta": -8
               }
             ],
-            "kz_after": 54
+            "kz_after": 49
           },
           {
             "wave_id": 2,
@@ -7365,8 +7002,6 @@
               "a": 24
             },
             "e_value": "24.8",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 6,
             "bonus_descriptions": [
               "Patch Management schließt OT-Schwachstellen"
@@ -7376,7 +7011,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 7,
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -7403,7 +7037,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 66
+            "kz_after": 54
           },
           {
             "wave_id": 3,
@@ -7415,8 +7049,6 @@
               "a": 24
             },
             "e_value": "25.2",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 9,
             "bonus_descriptions": [
               "Supply Chain Security schützt Schnittstellen"
@@ -7426,7 +7058,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -7445,7 +7076,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 100
+            "kz_after": 79
           }
         ],
         "final_events": [
@@ -7487,7 +7118,7 @@
           "M9": 1,
           "M10": 3
         },
-        "kz_final": 78,
+        "kz_final": 56,
         "total_damage": "196.8",
         "total_event_opex": -10,
         "total_event_budget": -20,
@@ -7507,8 +7138,6 @@
               "a": 26
             },
             "e_value": "25.2",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 3,
             "bonus_descriptions": [
               "Geschulte Mitarbeiter erkennen Phishing"
@@ -7518,7 +7147,6 @@
             "severity": "2.8",
             "damage": 56,
             "kz_delta_attack": "4.4",
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -7537,7 +7165,7 @@
                 "opex_delta": -10
               }
             ],
-            "kz_after": 59
+            "kz_after": 54
           },
           {
             "wave_id": 2,
@@ -7549,8 +7177,6 @@
               "a": 26
             },
             "e_value": "25.6",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "25.6",
@@ -7558,7 +7184,6 @@
             "severity": "4.4",
             "damage": "140.8",
             "kz_delta_attack": "1.72",
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -7585,7 +7210,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 58
+            "kz_after": 46
           },
           {
             "wave_id": 3,
@@ -7597,8 +7222,6 @@
               "a": 26
             },
             "e_value": "25.2",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 9,
             "bonus_descriptions": [
               "Supply Chain Security schützt Schnittstellen"
@@ -7608,7 +7231,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -7627,7 +7249,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 93
+            "kz_after": 71
           }
         ],
         "final_events": [
@@ -7669,7 +7291,7 @@
           "M9": 3,
           "M10": 1
         },
-        "kz_final": 92,
+        "kz_final": 70,
         "total_damage": "256.8",
         "total_event_opex": -12,
         "total_event_budget": -20,
@@ -7689,8 +7311,6 @@
               "a": 26
             },
             "e_value": "25.2",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "25.2",
@@ -7698,7 +7318,6 @@
             "severity": "5.8",
             "damage": 116,
             "kz_delta_attack": "-1.6",
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -7717,7 +7336,7 @@
                 "opex_delta": -12
               }
             ],
-            "kz_after": 53
+            "kz_after": 48
           },
           {
             "wave_id": 2,
@@ -7729,8 +7348,6 @@
               "a": 26
             },
             "e_value": "25.6",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "25.6",
@@ -7738,7 +7355,6 @@
             "severity": "4.4",
             "damage": "140.8",
             "kz_delta_attack": "1.72",
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -7765,7 +7381,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 62
+            "kz_after": 50
           },
           {
             "wave_id": 3,
@@ -7777,8 +7393,6 @@
               "a": 26
             },
             "e_value": 25,
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 9,
             "bonus_descriptions": [
               "Supply Chain Security schützt Schnittstellen"
@@ -7788,7 +7402,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -7807,7 +7420,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 92
+            "kz_after": 70
           }
         ],
         "final_events": [
@@ -7849,7 +7462,7 @@
           "M9": 3,
           "M10": 0
         },
-        "kz_final": 93,
+        "kz_final": 71,
         "total_damage": "148.8",
         "total_event_opex": -8,
         "total_event_budget": -20,
@@ -7869,8 +7482,6 @@
               "a": 23
             },
             "e_value": "24.2",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "24.2",
@@ -7878,7 +7489,6 @@
             "severity": "6.8",
             "damage": 136,
             "kz_delta_attack": "-3.6",
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -7897,7 +7507,7 @@
                 "opex_delta": -8
               }
             ],
-            "kz_after": 51
+            "kz_after": 46
           },
           {
             "wave_id": 2,
@@ -7909,8 +7519,6 @@
               "a": 23
             },
             "e_value": "23.6",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 6,
             "bonus_descriptions": [
               "Patch Management schließt OT-Schwachstellen"
@@ -7920,7 +7528,6 @@
             "severity": "0.4",
             "damage": "12.8",
             "kz_delta_attack": "6.52",
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -7947,7 +7554,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 63
+            "kz_after": 51
           },
           {
             "wave_id": 3,
@@ -7959,8 +7566,6 @@
               "a": 23
             },
             "e_value": "23.9",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 9,
             "bonus_descriptions": [
               "Supply Chain Security schützt Schnittstellen"
@@ -7970,7 +7575,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -7989,7 +7593,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 93
+            "kz_after": 71
           }
         ],
         "final_events": [
@@ -8031,7 +7635,7 @@
           "M9": 2,
           "M10": 3
         },
-        "kz_final": 100,
+        "kz_final": 78,
         "total_damage": 120,
         "total_event_opex": -10,
         "total_event_budget": -20,
@@ -8051,8 +7655,6 @@
               "a": 25
             },
             "e_value": 25,
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": 25,
@@ -8060,7 +7662,6 @@
             "severity": 6,
             "damage": 120,
             "kz_delta_attack": -2,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -8079,7 +7680,7 @@
                 "opex_delta": -10
               }
             ],
-            "kz_after": 53
+            "kz_after": 48
           },
           {
             "wave_id": 2,
@@ -8091,8 +7692,6 @@
               "a": 25
             },
             "e_value": 25,
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 6,
             "bonus_descriptions": [
               "Patch Management schließt OT-Schwachstellen"
@@ -8102,7 +7701,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 7,
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -8129,7 +7727,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 70
+            "kz_after": 58
           },
           {
             "wave_id": 3,
@@ -8141,8 +7739,6 @@
               "a": 25
             },
             "e_value": "24.8",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 9,
             "bonus_descriptions": [
               "Supply Chain Security schützt Schnittstellen"
@@ -8152,7 +7748,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -8171,7 +7766,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 95
+            "kz_after": 73
           }
         ],
         "final_events": [
@@ -8213,7 +7808,7 @@
           "M9": 3,
           "M10": 2
         },
-        "kz_final": 65,
+        "kz_final": 43,
         "total_damage": "463.2",
         "total_event_opex": -8,
         "total_event_budget": -20,
@@ -8233,8 +7828,6 @@
               "a": 21
             },
             "e_value": "21.8",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "21.8",
@@ -8242,7 +7835,6 @@
             "severity": 8,
             "damage": 160,
             "kz_delta_attack": -6,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -8261,7 +7853,7 @@
                 "opex_delta": -8
               }
             ],
-            "kz_after": 49
+            "kz_after": 44
           },
           {
             "wave_id": 2,
@@ -8273,8 +7865,6 @@
               "a": 21
             },
             "e_value": "21.4",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "21.4",
@@ -8282,7 +7872,6 @@
             "severity": "8.6",
             "damage": "275.2",
             "kz_delta_attack": "-3.32",
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -8309,7 +7898,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 33
+            "kz_after": 21
           },
           {
             "wave_id": 3,
@@ -8321,8 +7910,6 @@
               "a": 21
             },
             "e_value": "21.6",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 9,
             "bonus_descriptions": [
               "Supply Chain Security schützt Schnittstellen"
@@ -8332,7 +7919,6 @@
             "severity": "1.4",
             "damage": 28,
             "kz_delta_attack": "6.6",
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -8351,7 +7937,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 60
+            "kz_after": 38
           }
         ],
         "final_events": [
@@ -8393,7 +7979,7 @@
           "M9": 3,
           "M10": 3
         },
-        "kz_final": 81,
+        "kz_final": 59,
         "total_damage": "389.6",
         "total_event_opex": -8,
         "total_event_budget": -20,
@@ -8413,8 +7999,6 @@
               "a": 20
             },
             "e_value": "22.4",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "22.4",
@@ -8422,7 +8006,6 @@
             "severity": 8,
             "damage": 160,
             "kz_delta_attack": -6,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -8441,7 +8024,7 @@
                 "opex_delta": -8
               }
             ],
-            "kz_after": 49
+            "kz_after": 44
           },
           {
             "wave_id": 2,
@@ -8453,8 +8036,6 @@
               "a": 20
             },
             "e_value": "21.2",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 6,
             "bonus_descriptions": [
               "Patch Management schließt OT-Schwachstellen"
@@ -8464,7 +8045,6 @@
             "severity": "2.8",
             "damage": "89.6",
             "kz_delta_attack": "3.64",
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -8491,7 +8071,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 58
+            "kz_after": 46
           },
           {
             "wave_id": 3,
@@ -8503,8 +8083,6 @@
               "a": 20
             },
             "e_value": "22.2",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "22.2",
@@ -8512,7 +8090,6 @@
             "severity": 7,
             "damage": 140,
             "kz_delta_attack": -7,
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -8531,7 +8108,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 71
+            "kz_after": 49
           }
         ],
         "final_events": [
@@ -8573,7 +8150,7 @@
           "M9": 3,
           "M10": 0
         },
-        "kz_final": 81,
+        "kz_final": 59,
         "total_damage": 496,
         "total_event_opex": -6,
         "total_event_budget": -20,
@@ -8593,8 +8170,6 @@
               "a": 21
             },
             "e_value": 21,
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": 21,
@@ -8602,7 +8177,6 @@
             "severity": 8,
             "damage": 160,
             "kz_delta_attack": -6,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -8621,7 +8195,7 @@
                 "opex_delta": -6
               }
             ],
-            "kz_after": 49
+            "kz_after": 44
           },
           {
             "wave_id": 2,
@@ -8633,8 +8207,6 @@
               "a": 21
             },
             "e_value": 21,
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": 21,
@@ -8642,7 +8214,6 @@
             "severity": 9,
             "damage": 288,
             "kz_delta_attack": "-3.8",
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -8669,7 +8240,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 47
+            "kz_after": 35
           },
           {
             "wave_id": 3,
@@ -8681,8 +8252,6 @@
               "a": 21
             },
             "e_value": "20.6",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 9,
             "bonus_descriptions": [
               "Supply Chain Security schützt Schnittstellen"
@@ -8692,7 +8261,6 @@
             "severity": "2.4",
             "damage": 48,
             "kz_delta_attack": "146/35",
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -8711,7 +8279,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 71
+            "kz_after": 49
           }
         ],
         "final_events": [
@@ -8753,7 +8321,7 @@
           "M9": 2,
           "M10": 0
         },
-        "kz_final": 99,
+        "kz_final": 77,
         "total_damage": "202.8",
         "total_event_opex": -8,
         "total_event_budget": -20,
@@ -8773,8 +8341,6 @@
               "a": 22
             },
             "e_value": "23.2",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "23.2",
@@ -8782,7 +8348,6 @@
             "severity": "7.8",
             "damage": 156,
             "kz_delta_attack": "-5.6",
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -8801,7 +8366,7 @@
                 "opex_delta": -8
               }
             ],
-            "kz_after": 49
+            "kz_after": 44
           },
           {
             "wave_id": 2,
@@ -8813,8 +8378,6 @@
               "a": 22
             },
             "e_value": "22.6",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 6,
             "bonus_descriptions": [
               "Patch Management schließt OT-Schwachstellen"
@@ -8824,7 +8387,6 @@
             "severity": "1.4",
             "damage": "44.8",
             "kz_delta_attack": "5.32",
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -8851,7 +8413,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 59
+            "kz_after": 47
           },
           {
             "wave_id": 3,
@@ -8863,8 +8425,6 @@
               "a": 22
             },
             "e_value": "22.9",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 9,
             "bonus_descriptions": [
               "Supply Chain Security schützt Schnittstellen"
@@ -8874,7 +8434,6 @@
             "severity": "0.1",
             "damage": 2,
             "kz_delta_attack": "683/70",
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -8893,7 +8452,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 84
+            "kz_after": 62
           }
         ],
         "final_events": [
@@ -8935,7 +8494,7 @@
           "M9": 2,
           "M10": 3
         },
-        "kz_final": 85,
+        "kz_final": 67,
         "total_damage": 70,
         "total_event_opex": -12,
         "total_event_budget": -20,
@@ -8955,8 +8514,6 @@
               "a": 28
             },
             "e_value": "28.4",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 3,
             "bonus_descriptions": [
               "Geschulte Mitarbeiter erkennen Phishing"
@@ -8966,7 +8523,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -8985,7 +8541,7 @@
                 "opex_delta": -12
               }
             ],
-            "kz_after": 65
+            "kz_after": 60
           },
           {
             "wave_id": 2,
@@ -8997,8 +8553,6 @@
               "a": 28
             },
             "e_value": "28.2",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 15,
             "bonus_descriptions": [
               "OT/IT-Segmentierung isoliert Produktion",
@@ -9009,7 +8563,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 7,
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -9036,7 +8589,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 82
+            "kz_after": 70
           },
           {
             "wave_id": 3,
@@ -9048,8 +8601,6 @@
               "a": 28
             },
             "e_value": "28.5",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "28.5",
@@ -9057,7 +8608,6 @@
             "severity": "3.5",
             "damage": 70,
             "kz_delta_attack": "1.5",
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -9076,7 +8626,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 100
+            "kz_after": 82
           }
         ],
         "final_events": [
@@ -9118,7 +8668,7 @@
           "M9": 1,
           "M10": 2
         },
-        "kz_final": 90,
+        "kz_final": 68,
         "total_damage": "313.2",
         "total_event_opex": -10,
         "total_event_budget": -20,
@@ -9138,8 +8688,6 @@
               "a": 20
             },
             "e_value": "22.8",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "22.8",
@@ -9147,7 +8695,6 @@
             "severity": 8,
             "damage": 160,
             "kz_delta_attack": -6,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -9166,7 +8713,7 @@
                 "opex_delta": -10
               }
             ],
-            "kz_after": 49
+            "kz_after": 44
           },
           {
             "wave_id": 2,
@@ -9178,8 +8725,6 @@
               "a": 20
             },
             "e_value": "21.4",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 6,
             "bonus_descriptions": [
               "Patch Management schließt OT-Schwachstellen"
@@ -9189,7 +8734,6 @@
             "severity": "2.6",
             "damage": "83.2",
             "kz_delta_attack": "3.88",
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -9216,7 +8760,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 63
+            "kz_after": 51
           },
           {
             "wave_id": 3,
@@ -9228,8 +8772,6 @@
               "a": 20
             },
             "e_value": "22.5",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 6,
             "bonus_descriptions": [
               "SIEM erkennt Datenabfluss"
@@ -9239,7 +8781,6 @@
             "severity": "3.5",
             "damage": 70,
             "kz_delta_attack": "1.5",
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -9258,7 +8799,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 75
+            "kz_after": 53
           }
         ],
         "final_events": [
@@ -9300,7 +8841,7 @@
           "M9": 3,
           "M10": 0
         },
-        "kz_final": 73,
+        "kz_final": 50,
         "total_damage": 550,
         "total_event_opex": -8,
         "total_event_budget": -20,
@@ -9320,8 +8861,6 @@
               "a": 17
             },
             "e_value": "20.6",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "20.6",
@@ -9329,7 +8868,6 @@
             "severity": 8,
             "damage": 160,
             "kz_delta_attack": -6,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -9348,7 +8886,7 @@
                 "opex_delta": -8
               }
             ],
-            "kz_after": 49
+            "kz_after": 44
           },
           {
             "wave_id": 2,
@@ -9360,8 +8898,6 @@
               "a": 17
             },
             "e_value": "18.8",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "18.8",
@@ -9369,7 +8905,6 @@
             "severity": 10,
             "damage": 320,
             "kz_delta_attack": -5,
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -9396,7 +8931,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 51
+            "kz_after": 39
           },
           {
             "wave_id": 3,
@@ -9408,8 +8943,6 @@
               "a": 17
             },
             "e_value": "20.5",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 8,
             "bonus_descriptions": [
               "IAM/PAM verhindert unbefugten Zugriff"
@@ -9419,7 +8952,6 @@
             "severity": "3.5",
             "damage": 70,
             "kz_delta_attack": "1.5",
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -9438,7 +8970,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 58
+            "kz_after": 35
           }
         ],
         "final_events": [
@@ -9480,7 +9012,7 @@
           "M9": 1,
           "M10": 1
         },
-        "kz_final": 74,
+        "kz_final": 52,
         "total_damage": "473.2",
         "total_event_opex": -10,
         "total_event_budget": -20,
@@ -9500,8 +9032,6 @@
               "a": 22
             },
             "e_value": 20,
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": 20,
@@ -9509,7 +9039,6 @@
             "severity": 8,
             "damage": 144,
             "kz_delta_attack": -6,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -9528,7 +9057,7 @@
                 "opex_delta": -10
               }
             ],
-            "kz_after": 49
+            "kz_after": 44
           },
           {
             "wave_id": 2,
@@ -9540,8 +9069,6 @@
               "a": 22
             },
             "e_value": 21,
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": 21,
@@ -9549,7 +9076,6 @@
             "severity": 9,
             "damage": "259.2",
             "kz_delta_attack": "-3.8",
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -9576,7 +9102,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 47
+            "kz_after": 35
           },
           {
             "wave_id": 3,
@@ -9588,8 +9114,6 @@
               "a": 22
             },
             "e_value": "19.5",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 9,
             "bonus_descriptions": [
               "Supply Chain Security schützt Schnittstellen"
@@ -9599,7 +9123,6 @@
             "severity": "3.5",
             "damage": 70,
             "kz_delta_attack": "1.5",
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -9618,7 +9141,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 59
+            "kz_after": 37
           }
         ],
         "final_events": [
@@ -9680,8 +9203,6 @@
               "a": 30
             },
             "e_value": "32.8",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 9,
             "bonus_descriptions": [
               "Backup ermöglicht schnelle Wiederherstellung",
@@ -9692,7 +9213,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -9711,7 +9231,7 @@
                 "opex_delta": -16
               }
             ],
-            "kz_after": 65
+            "kz_after": 60
           },
           {
             "wave_id": 2,
@@ -9723,8 +9243,6 @@
               "a": 30
             },
             "e_value": "31.4",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 6,
             "bonus_descriptions": [
               "Patch Management schließt OT-Schwachstellen"
@@ -9734,7 +9252,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 7,
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -9761,7 +9278,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 97
+            "kz_after": 85
           },
           {
             "wave_id": 3,
@@ -9773,8 +9290,6 @@
               "a": 30
             },
             "e_value": "32.1",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 8,
             "bonus_descriptions": [
               "IAM/PAM verhindert unbefugten Zugriff"
@@ -9784,7 +9299,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -9865,8 +9379,6 @@
               "a": 36
             },
             "e_value": "41.2",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 6,
             "bonus_descriptions": [
               "EDR/XDR erkennt Ransomware früh"
@@ -9876,7 +9388,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -9895,7 +9406,7 @@
                 "opex_delta": -18
               }
             ],
-            "kz_after": 65
+            "kz_after": 60
           },
           {
             "wave_id": 2,
@@ -9907,8 +9418,6 @@
               "a": 36
             },
             "e_value": "38.6",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 15,
             "bonus_descriptions": [
               "OT/IT-Segmentierung isoliert Produktion",
@@ -9919,7 +9428,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 7,
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -9946,7 +9454,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 100
+            "kz_after": 89
           },
           {
             "wave_id": 3,
@@ -9958,8 +9466,6 @@
               "a": 36
             },
             "e_value": "40.5",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 6,
             "bonus_descriptions": [
               "SIEM erkennt Datenabfluss"
@@ -9969,7 +9475,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -10050,8 +9555,6 @@
               "a": 33
             },
             "e_value": "37.8",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 9,
             "bonus_descriptions": [
               "Backup ermöglicht schnelle Wiederherstellung",
@@ -10062,7 +9565,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -10081,7 +9583,7 @@
                 "opex_delta": -18
               }
             ],
-            "kz_after": 65
+            "kz_after": 60
           },
           {
             "wave_id": 2,
@@ -10093,8 +9595,6 @@
               "a": 33
             },
             "e_value": "35.4",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 6,
             "bonus_descriptions": [
               "Patch Management schließt OT-Schwachstellen"
@@ -10104,7 +9604,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 7,
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -10131,7 +9630,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 97
+            "kz_after": 85
           },
           {
             "wave_id": 3,
@@ -10143,8 +9642,6 @@
               "a": 33
             },
             "e_value": 37,
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 23,
             "bonus_descriptions": [
               "IAM/PAM verhindert unbefugten Zugriff",
@@ -10156,7 +9653,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -10237,8 +9733,6 @@
               "a": 42
             },
             "e_value": "46.8",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 12,
             "bonus_descriptions": [
               "EDR/XDR erkennt Ransomware früh",
@@ -10249,7 +9743,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -10268,7 +9761,7 @@
                 "opex_delta": -18
               }
             ],
-            "kz_after": 65
+            "kz_after": 60
           },
           {
             "wave_id": 2,
@@ -10280,8 +9773,6 @@
               "a": 42
             },
             "e_value": "44.4",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 15,
             "bonus_descriptions": [
               "OT/IT-Segmentierung isoliert Produktion",
@@ -10292,7 +9783,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 7,
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -10319,7 +9809,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 100
+            "kz_after": 89
           },
           {
             "wave_id": 3,
@@ -10331,8 +9821,6 @@
               "a": 42
             },
             "e_value": "45.6",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 23,
             "bonus_descriptions": [
               "IAM/PAM verhindert unbefugten Zugriff",
@@ -10344,7 +9832,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -10405,7 +9892,7 @@
           "M9": 1,
           "M10": 0
         },
-        "kz_final": 100,
+        "kz_final": 79,
         "total_damage": "154.08",
         "total_event_opex": -14,
         "total_event_budget": -20,
@@ -10425,8 +9912,6 @@
               "a": 24
             },
             "e_value": "26.8",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 3,
             "bonus_descriptions": [
               "Geschulte Mitarbeiter erkennen Phishing"
@@ -10436,7 +9921,6 @@
             "severity": "1.2",
             "damage": "21.6",
             "kz_delta_attack": "7.6",
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -10455,7 +9939,7 @@
                 "opex_delta": -14
               }
             ],
-            "kz_after": 63
+            "kz_after": 58
           },
           {
             "wave_id": 2,
@@ -10467,8 +9951,6 @@
               "a": 24
             },
             "e_value": "25.4",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 0,
             "bonus_descriptions": [],
             "gesamtreduktion": "25.4",
@@ -10476,7 +9958,6 @@
             "severity": "4.6",
             "damage": "132.48",
             "kz_delta_attack": "1.48",
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -10503,7 +9984,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 71
+            "kz_after": 59
           },
           {
             "wave_id": 3,
@@ -10515,8 +9996,6 @@
               "a": 24
             },
             "e_value": "26.5",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 9,
             "bonus_descriptions": [
               "Supply Chain Security schützt Schnittstellen"
@@ -10526,7 +10005,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -10545,7 +10023,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 96
+            "kz_after": 74
           }
         ],
         "final_events": [
@@ -10587,7 +10065,7 @@
           "M9": 0,
           "M10": 3
         },
-        "kz_final": 85,
+        "kz_final": 72,
         "total_damage": 0,
         "total_event_opex": -14,
         "total_event_budget": -20,
@@ -10607,8 +10085,6 @@
               "a": 30
             },
             "e_value": "34.4",
-            "e_target": 15,
-            "e_reached": true,
             "bonus_reduction": 6,
             "bonus_descriptions": [
               "EDR/XDR erkennt Ransomware früh"
@@ -10618,7 +10094,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 5,
             "events": [
               {
                 "id": "kurswechsel",
@@ -10637,7 +10112,7 @@
                 "opex_delta": -14
               }
             ],
-            "kz_after": 65
+            "kz_after": 60
           },
           {
             "wave_id": 2,
@@ -10649,8 +10124,6 @@
               "a": 30
             },
             "e_value": "32.2",
-            "e_target": 17,
-            "e_reached": true,
             "bonus_reduction": 9,
             "bonus_descriptions": [
               "OT/IT-Segmentierung isoliert Produktion"
@@ -10660,7 +10133,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 7,
-            "kz_delta_e_target": 7,
             "events": [
               {
                 "id": "sparprogramm",
@@ -10687,7 +10159,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 79
+            "kz_after": 67
           },
           {
             "wave_id": 3,
@@ -10699,8 +10171,6 @@
               "a": 30
             },
             "e_value": "33.9",
-            "e_target": 19,
-            "e_reached": true,
             "bonus_reduction": 14,
             "bonus_descriptions": [
               "IAM/PAM verhindert unbefugten Zugriff",
@@ -10711,7 +10181,6 @@
             "severity": 0,
             "damage": 0,
             "kz_delta_attack": 10,
-            "kz_delta_e_target": 10,
             "events": [
               {
                 "id": "exzellenz_bonus",
@@ -10730,7 +10199,7 @@
                 "opex_delta": 0
               }
             ],
-            "kz_after": 100
+            "kz_after": 87
           }
         ],
         "final_events": [

@@ -111,6 +111,13 @@ class _Validator:
     def warning(self, code: str, path: str, message: str) -> None:
         self.issues.append(Issue("warning", code, path, message))
 
+    def removed_key(self, key: str, path: str) -> None:
+        self.warning(
+            "schema.removed_key",
+            path,
+            f"Schlüssel '{key}' wird nicht mehr verwendet (E-Ziel-Bonus/Malus entfernt) und ignoriert",
+        )
+
     def int_value(self, value: Any, path: str, lo: Optional[int] = None, hi: Optional[int] = None) -> Optional[int]:
         if isinstance(value, bool) or not isinstance(value, int):
             self.error("schema.type", path, f"Ganzzahl erwartet, gefunden {value!r}")
@@ -327,8 +334,9 @@ class _Validator:
                 self.int_value(wave["e_threshold"], f"{path}.e_threshold", lo=0)
             else:
                 self.warning("schema.default_used", f"{path}.e_threshold", "e_threshold fehlt, der Lader setzt 18")
-            self.int_field(wave, "kz_bonus", path)
-            self.int_field(wave, "kz_malus", path)
+            for removed in ("kz_bonus", "kz_malus"):
+                if removed in wave:
+                    self.removed_key(removed, f"{path}.{removed}")
             bonus_measures = wave.get("bonus_measures", [])
             if self.container(bonus_measures, list, f"{path}.bonus_measures"):
                 for bm_index, bm in enumerate(bonus_measures):
@@ -349,7 +357,6 @@ class _Validator:
             return
         if default_tier is not None and default_tier not in tiers:
             self.error("ref.unknown_tier", "default_budget_tier", f"Unbekannter Budget-Tier {default_tier!r}")
-        expected = {str(wave_id) for wave_id in self.wave_ids}
         for name, info in tiers.items():
             path = f"budget_tiers.{name}"
             if not self.container(info, dict, path):
@@ -363,17 +370,8 @@ class _Validator:
                 self.number_value(info["severity_multiplier"], f"{path}.severity_multiplier", lo=0)
             else:
                 self.warning("schema.default_used", f"{path}.severity_multiplier", "severity_multiplier fehlt, der Lader setzt 1.0")
-            e_targets = self.field(info, "e_targets", path)
-            if e_targets is None or not self.container(e_targets, dict, f"{path}.e_targets"):
-                continue
-            if self.wave_ids and set(e_targets) != expected:
-                self.error(
-                    "schema.e_targets",
-                    f"{path}.e_targets",
-                    f"e_targets muss genau die Wellen {sorted(expected)} enthalten, gefunden {sorted(e_targets)}",
-                )
-            for key, value in e_targets.items():
-                self.int_value(value, f"{path}.e_targets.{key}", lo=0)
+            if "e_targets" in info:
+                self.removed_key("e_targets", f"{path}.e_targets")
 
     def check_events(self, events: Any, final_events: Any, measures: dict) -> None:
         if isinstance(events, dict):

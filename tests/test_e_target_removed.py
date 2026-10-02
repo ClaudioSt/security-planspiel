@@ -184,3 +184,13 @@ def test_gesamtreduktion_is_compared_exactly_with_threshold():
     wave2 = _evaluate(cfg, "medium", code)["waves"][1]
     assert wave2["gesamtreduktion"] == cfg.waves[1].e_threshold
     assert wave2["capped_reduction"] == 0
+
+
+def test_readme_and_claude_md_describe_no_e_target_check():
+    readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8").replace("\u2011", "-")
+    claude_md = (REPO_ROOT / "CLAUDE.md").read_text(encoding="utf-8").replace("\u2011", "-")
+    assert "E-Ziel prüfen" not in readme
+    assert "E-Ziel erreicht" not in readme
+    assert "E-Ziel-Check" not in claude_md
+    assert "Angriff + E-Ziel" not in claude_md
+    assert "Angriff + E-Ziel" not in readme

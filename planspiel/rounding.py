@@ -4,7 +4,7 @@ from fractions import Fraction
 def round_half_away(n: int, d: int = 1) -> int:
     """n/d (d > 0) auf eine ganze Zahl runden, ab ,5 vom Betrag aufrunden (kaufmännisch).
 
-    Druckbare Regel: "KZ-Änderung je Welle (Angriff + E-Ziel + Events) auf ganze Zahl runden,
+    Druckbare Regel: "KZ-Änderung je Welle (Angriff + Events) auf ganze Zahl runden,
     ab ,5 vom Betrag aufrunden". Nur Ganzzahl-Arithmetik; Pythons eingebautes Runden
     (halb zur geraden Zahl) wird bewusst nicht benutzt.
     """

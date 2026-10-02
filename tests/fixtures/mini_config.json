@@ -9,32 +9,17 @@
     "low": {
       "budget": 350,
       "kz_start": 50,
-      "severity_multiplier": 1.0,
-      "e_targets": {
-        "1": 15,
-        "2": 17,
-        "3": 19
-      }
+      "severity_multiplier": 1.0
     },
     "medium": {
       "budget": 400,
       "kz_start": 42,
-      "severity_multiplier": 1.0,
-      "e_targets": {
-        "1": 15,
-        "2": 17,
-        "3": 19
-      }
+      "severity_multiplier": 1.0
     },
     "high": {
       "budget": 450,
       "kz_start": 34,
-      "severity_multiplier": 1.0,
-      "e_targets": {
-        "1": 15,
-        "2": 17,
-        "3": 19
-      }
+      "severity_multiplier": 1.0
     }
   },
   "waves": [
@@ -48,8 +33,6 @@
         "a": 0.2
       },
       "e_threshold": 23,
-      "kz_bonus": 5,
-      "kz_malus": -3,
       "bonus_measures": [
         {
           "measure": "M4",
@@ -75,8 +58,6 @@
         "a": 0.6
       },
       "e_threshold": 20,
-      "kz_bonus": 7,
-      "kz_malus": -5,
       "bonus_measures": []
     },
     {
@@ -89,8 +70,6 @@
         "a": 0.2
       },
       "e_threshold": 25,
-      "kz_bonus": 10,
-      "kz_malus": -7,
       "bonus_measures": [
         {
           "measure": "M1",

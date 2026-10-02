@@ -22,7 +22,6 @@ def canon(value) -> str:
 
 def canonical_line(code: str, record: dict) -> str:
     kz_after = ",".join(canon(wave["kz_after"]) for wave in record["waves"])
-    reached = "".join(canon(wave["e_reached"]) for wave in record["waves"])
     fields = [
         code,
         canon(record["kz_final"]),
@@ -31,7 +30,6 @@ def canonical_line(code: str, record: dict) -> str:
         canon(record["total_event_opex"]),
         canon(record["total_event_budget"]),
         kz_after,
-        reached,
         canon(record["over_budget"]),
     ]
     return "|".join(fields)

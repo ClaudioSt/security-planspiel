@@ -104,9 +104,9 @@ def attack_kz_delta(kz_at_full_damage, slope: Fraction, reduction_scaled: int, w
     return kz_at_full_damage + slope * Fraction(reduction_scaled, ws)
 
 
-def wave_kz_change(e_target_delta, attack_kz_delta, event_kz) -> int:
-    """Einziger Rundungspunkt: KZ-Änderung der Welle (Angriff + E-Ziel + Events), ab ,5 vom Betrag aufrunden."""
-    return round_half_away_frac(Fraction(e_target_delta) + attack_kz_delta + Fraction(event_kz))
+def wave_kz_change(attack_kz_delta, event_kz) -> int:
+    """Einziger Rundungspunkt: KZ-Änderung der Welle (Angriff + Events), ab ,5 vom Betrag aufrunden."""
+    return round_half_away_frac(attack_kz_delta + Fraction(event_kz))
 
 
 def apply_attack(
@@ -289,11 +289,6 @@ def apply_events(
     return kz_delta, budget_delta, opex_delta, event_results
 
 
-def e_target_check(wave: Wave, e_value, e_target) -> Tuple[bool, int]:
-    reached = e_value >= e_target
-    return reached, wave.kz_bonus if reached else wave.kz_malus
-
-
 def simulate_selection(
     selection: Dict[str, int],
     budget_tier: BudgetTier,
@@ -324,10 +319,6 @@ def simulate_selection(
         )
         e_value = attack_result["e_value"]
 
-        # Check E-Target
-        e_target = budget_tier.e_targets[wave.wave_id]
-        e_reached, e_target_delta = e_target_check(wave, e_value, e_target)
-
         # Apply events
         event_kz, event_budget, event_opex, event_results = apply_events(
             wave.wave_id, selection, events
@@ -336,7 +327,7 @@ def simulate_selection(
         total_event_opex += event_opex
 
         # KZ-Änderung der Welle einmal runden, dann begrenzen
-        kz = clamp_kz(kz + wave_kz_change(e_target_delta, attack_result["kz_delta"], event_kz))
+        kz = clamp_kz(kz + wave_kz_change(attack_result["kz_delta"], event_kz))
 
         total_damage += attack_result["damage"]
         for key in cia_mali:
@@ -348,8 +339,6 @@ def simulate_selection(
             "attack": wave.attack_id,
             "cia": cia,
             "e_value": e_value,
-            "e_target": e_target,
-            "e_reached": e_reached,
             "bonus_reduction": attack_result["bonus_reduction"],
             "bonus_descriptions": attack_result["bonus_descriptions"],
             "gesamtreduktion": attack_result["gesamtreduktion"],
@@ -357,7 +346,6 @@ def simulate_selection(
             "severity": attack_result["severity"],
             "damage": attack_result["damage"],
             "kz_delta_attack": attack_result["kz_delta"],
-            "kz_delta_e_target": e_target_delta,
             "events": event_results,
             "kz_after": kz,
         })
@@ -470,7 +458,6 @@ class CompactOutcome(NamedTuple):
     event_budget: int
     over_budget: bool
     kz_after: Tuple[int, ...]
-    e_reached: Tuple[bool, ...]
 
 
 class TierKernel:
@@ -484,10 +471,9 @@ class TierKernel:
         for wave in cfg.waves:
             attack = cfg.attacks[wave.attack_id]
             slope = kz_slope(attack.kz_at_full_damage, attack.kz_at_full_mitigation, attack.mitigation_cap)
-            self.wave_context.append((wave, attack, slope, self.tier.e_targets[wave.wave_id]))
+            self.wave_context.append((wave, attack, slope))
         self._e_scaled = {}
         self._attack = {}
-        self._e_target = {}
         self._change = {}
 
     def evaluate(self, selection: Dict[str, int]) -> Optional[CompactOutcome]:
@@ -504,8 +490,7 @@ class TierKernel:
         event_opex_total = 0
         event_budget_total = 0
         kz_after = []
-        e_reached = []
-        for index, (wave, attack, slope, e_target) in enumerate(self.wave_context):
+        for index, (wave, attack, slope) in enumerate(self.wave_context):
             e_key = (index, cia["c"], cia["i"], cia["a"])
             e_scaled = self._e_scaled.get(e_key)
             if e_scaled is None:
@@ -527,27 +512,18 @@ class TierKernel:
                 )
             damage, attack_kz = attack_result
 
-            target_key = (index, e_scaled)
-            target_result = self._e_target.get(target_key)
-            if target_result is None:
-                target_result = self._e_target[target_key] = e_target_check(
-                    wave, Fraction(e_scaled, cfg.ws), e_target
-                )
-            reached, e_target_delta = target_result
-
             event_kz, event_budget, event_opex, _ = apply_events(wave.wave_id, selection, cfg.events)
 
-            change_key = (index, e_target_delta, reduction, event_kz)
+            change_key = (index, reduction, event_kz)
             change = self._change.get(change_key)
             if change is None:
-                change = self._change[change_key] = wave_kz_change(e_target_delta, attack_kz, event_kz)
+                change = self._change[change_key] = wave_kz_change(attack_kz, event_kz)
             kz = clamp_kz(kz + change)
 
             damage_total += damage
             event_opex_total += event_opex
             event_budget_total += event_budget
             kz_after.append(kz)
-            e_reached.append(reached)
 
         ledger = budget_ledger(tier.budget, own_cost, event_opex_total, event_budget_total)
         kz_final, _ = apply_final_events(cfg.final_events, selection, ledger.remaining_budget, kz)
@@ -560,5 +536,4 @@ class TierKernel:
             event_budget=event_budget_total,
             over_budget=ledger.over_budget,
             kz_after=tuple(kz_after),
-            e_reached=tuple(e_reached),
         )
