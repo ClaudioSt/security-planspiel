@@ -45,6 +45,17 @@ EXPECTED = {
         "ros_changed": 0,
         "damage_changed": 0,
     },
+    "02-02": {
+        "kz_changed": 0,
+        "in_budget_pre": {"low": 69_454, "medium": 124_321, "high": 197_753},
+        "in_budget_post": {"low": 69_454, "medium": 124_321, "high": 197_753},
+        "flips": 0,
+        "ros_changed": 779_900,
+        "max_ros": "0.1206",
+        "best_ros": "0002012210 (1.581) -> 0002022200 (1.494)",
+        "ros_overlap": "93 / 100",
+        "damage_changed": 0,
+    },
 }
 
 
@@ -251,9 +262,9 @@ def tier_section(out_dir, pre_label, post_label, tier, plan):
         f"| best in-budget plan | {describe_best(pre, best_in_pre, n_measures)} | {describe_best(post, best_in_post, n_measures)} | - |",
         f"| best over-budget plan | {describe_best(pre, best_over_pre, n_measures)} | {describe_best(post, best_over_post, n_measures)} | - |",
         f"| RoS changed | - | {len(ros_changed)} | {exp('ros_changed')} |",
-        f"| max abs RoS change | - | {max_ros_text} | - |",
-        f"| best-RoS plan | {ros_text(best_ros_pre)} | {ros_text(best_ros_post)} | - |",
-        f"| top-100 RoS overlap | - | {overlap} / 100 | - |",
+        f"| max abs RoS change | - | {max_ros_text} | {exp('max_ros')} |",
+        f"| best-RoS plan | {ros_text(best_ros_pre)} | {ros_text(best_ros_post)} | {exp('best_ros')} |",
+        f"| top-100 RoS overlap | - | {overlap} / 100 | {exp('ros_overlap')} |",
         f"| damage changed | - | {len(damage_changed)} | {exp('damage_changed')} |",
         f"| own cost changed | - | {own_changed} | 0 |",
         f"| budget total changed | - | {total_changed} | 0 |",
