@@ -6,14 +6,14 @@ current_phase: 2
 current_phase_name: Rule Changes
 status: executing
 stopped_at: Phase 2 context gathered
-last_updated: "2026-10-02T12:42:57.513Z"
+last_updated: "2026-10-02T21:24:26.843Z"
 last_activity: 2026-10-02
 last_activity_desc: Phase 2 execution started
 progress:
   total_phases: 7
   completed_phases: 1
   total_plans: 15
-  completed_plans: 7
+  completed_plans: 8
   percent: 14
 ---
 
@@ -29,8 +29,8 @@ See: .planning/PROJECT.md (updated 2026-09-29)
 ## Current Position
 
 Phase: 2 (Rule Changes) — EXECUTING
-Plan: 1 of 8
-Status: Executing Phase 2
+Plan: 2 of 8
+Status: Ready to execute
 Last activity: 2026-10-02 — Phase 2 execution started
 
 Progress: [░░░░░░░░░░] 0%
@@ -62,6 +62,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01 P05 | 35min | 2 tasks | 6 files |
 | Phase 01 P06 | 9h | 4 tasks | 25 files |
 | Phase 01 P07 | 3h | 3 tasks | 14 files |
+| Phase 02 P01 | multi-session | 4 tasks | 31 files |
 
 ## Accumulated Context
 
@@ -83,6 +84,7 @@ Recent decisions affecting current work:
 - [Phase 01]: Validator detects dependency cycles on the measure graph (any-level edges); config.check_config lazily imports validate to avoid a rules/config cycle
 - [Phase 01]: 01-06: rounding rule (half away from zero, once per wave, then clamp 0..100) and float-to-exact snapshot change approved by the user; committed as one explicit commit 0d342f6
 - [Phase 01]: 01-07: over-budget has one definition (rules.budget_ledger) shared by evaluate_plan and the memoized TierKernel; store is 16 B per combination, RoS derived exactly on access; --budget-max quirk pinned, not fixed
+- [Phase 02]: RULE-08/D-19: per-wave E-target bonus/malus removed from the simulation (not printed on MHP material); D-20 reviewed snapshot change
 
 ### Pending Todos
 
@@ -105,6 +107,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-10-01T09:19:27.453Z
+Last session: 2026-10-02T21:24:19.650Z
 Stopped at: Phase 2 context gathered
 Resume file: .planning/phases/02-rule-changes/02-CONTEXT.md
