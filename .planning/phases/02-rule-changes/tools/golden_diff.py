@@ -56,6 +56,19 @@ EXPECTED = {
         "ros_overlap": "93 / 100",
         "damage_changed": 0,
     },
+    "02-03": {
+        "kz_changed": {"low": 712_882, "medium": 658_015, "high": 584_583},
+        "kz_changed_in": 0,
+        "kz_changed_over": {"low": 712_882, "medium": 658_015, "high": 584_583},
+        "in_budget_pre": {"low": 69_454, "medium": 124_321, "high": 197_753},
+        "in_budget_post": {"low": 69_454, "medium": 124_321, "high": 197_753},
+        "flips": 0,
+        "best_in_budget": {"low": "98 -> 98", "medium": "100 -> 100", "high": "100 -> 100"},
+        "best_over_budget": {"low": "85 -> 91", "medium": "85 -> 91", "high": "85 -> 89"},
+        "zero_over": {"low": 606_209, "medium": 525_877, "high": 442_578},
+        "ros_changed": 0,
+        "damage_changed": 0,
+    },
 }
 
 
@@ -158,6 +171,36 @@ def top_ros_codes(columns, count, limit=100):
     return [code for _, code in scored[:limit]]
 
 
+def overspend_lines(pre, post, count, wave_count):
+    try:
+        kz_per_step, step = rules.penalty_params(load_config(CONFIG_PATH).final_events)
+    except (AttributeError, ValueError):
+        return []
+    last = f"kz_after_{wave_count}"
+    rows = {}
+    for i in range(count):
+        if not post["over_budget"][i]:
+            continue
+        steps = -((post["remaining"][i]) // step)
+        row = rows.setdefault(steps, {"n": 0, "best_pre": -1, "best_post": -1, "zero": 0})
+        row["n"] += 1
+        row["best_pre"] = max(row["best_pre"], pre["kz_final"][i])
+        row["best_post"] = max(row["best_post"], post["kz_final"][i])
+        row["zero"] += post["kz_final"][i] == 0
+    lines = [
+        f"Overspend distribution (post, X = {kz_per_step} KZ per started {step} kEUR; steps = ceil(-remaining / {step})):",
+        "",
+        "| steps | penalty | over-budget plans | best KZ before | best KZ after | KZ = 0 after |",
+        "|---|---|---|---|---|---|",
+    ]
+    for steps in sorted(rows):
+        row = rows[steps]
+        lines.append(f"| {steps} | {-kz_per_step * steps} | {row['n']} | {row['best_pre']} | {row['best_post']} | {row['zero']} |")
+    saturated = sum(1 for i in range(count) if post["over_budget"][i] and post[last][i] - kz_per_step * (-((post["remaining"][i]) // step)) <= 0)
+    lines += ["", f"Over-budget plans whose penalty alone takes KZ before the review to 0 or below: {saturated}", ""]
+    return lines
+
+
 def tier_section(out_dir, pre_label, post_label, tier, plan):
     pre, meta = load_columns(out_dir, pre_label, tier)
     post, post_meta = load_columns(out_dir, post_label, tier)
@@ -252,11 +295,11 @@ def tier_section(out_dir, pre_label, post_label, tier, plan):
         f"| in-budget count | {in_pre} | {in_post} | {exp('in_budget_pre')} / {exp('in_budget_post')} |",
         f"| over-budget flips | - | {over_flips} | {exp('flips')} |",
         f"| KZ changed (all) | - | {len(kz_changed)} | {exp('kz_changed')} |",
-        f"| KZ changed (pre in-budget) | - | {kz_changed_pre_in} | - |",
-        f"| KZ changed (pre over-budget) | - | {kz_changed_pre_over} | - |",
+        f"| KZ changed (pre in-budget) | - | {kz_changed_pre_in} | {exp('kz_changed_in')} |",
+        f"| KZ changed (pre over-budget) | - | {kz_changed_pre_over} | {exp('kz_changed_over')} |",
         f"| mean KZ shift | - | {float(mean_shift):.2f} | {exp('mean_shift')} |",
         f"| KZ = 0 (all) | - | {zero_all} | - |",
-        f"| KZ = 0 (over-budget) | - | {zero_over} | - |",
+        f"| KZ = 0 (over-budget) | - | {zero_over} | {exp('zero_over')} |",
         f"| best in-budget KZ | {kz_of(pre, best_in_pre)} | {kz_of(post, best_in_post)} | {exp('best_in_budget')} |",
         f"| best over-budget KZ | {kz_of(pre, best_over_pre)} | {kz_of(post, best_over_post)} | {exp('best_over_budget')} |",
         f"| best in-budget plan | {describe_best(pre, best_in_pre, n_measures)} | {describe_best(post, best_in_post, n_measures)} | - |",
@@ -282,6 +325,8 @@ def tier_section(out_dir, pre_label, post_label, tier, plan):
         f"- over-budget flips: {codes_text(flip_codes, n_measures)}",
         "",
     ]
+    if plan == "02-03":
+        lines += overspend_lines(pre, post, count, wave_count)
     return lines
 
 
