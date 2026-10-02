@@ -53,12 +53,13 @@ class ResultStore:
     def record(self, i: int) -> CompactRecord:
         columns = self._columns
         damage_eur = columns["damage_eur"][i]
+        own_cost = columns["own_cost"][i]
         total_cost = columns["total_cost"][i]
         return CompactRecord(
             code_index=columns["code_index"][i],
             kz_final=columns["kz_final"][i],
-            own_cost=columns["own_cost"][i],
-            ros=rules.ros(self.base_losses, Fraction(damage_eur, 1000), total_cost),
+            own_cost=own_cost,
+            ros=rules.ros(self.base_losses, Fraction(damage_eur, 1000), own_cost),
             damage_eur=damage_eur,
             over_budget=bool(columns["over_budget"][i]),
             total_cost=total_cost,

@@ -64,7 +64,7 @@ def compact_from_plan(cfg: Config, rec: dict):
     costs = rec["costs"]
     return CompactOutcome(
         kz_final=rec["kz_final"],
-        own_cost=costs["init"] + costs["opex_per_wave"] * len(cfg.waves),
+        own_cost=costs["security_spend"],
         total_cost=costs["total"],
         damage_eur=int(damage),
         event_opex=rec["total_event_opex"],

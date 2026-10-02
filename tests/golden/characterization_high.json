@@ -167,13 +167,14 @@
         "costs": {
           "init": 130,
           "opex_per_wave": 20,
+          "security_spend": 190,
           "total": 178,
           "event_opex": -12,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "-1121/2225"
+        "ros": "-1271/2375"
       }
     },
     {
@@ -338,13 +339,14 @@
         "costs": {
           "init": 122,
           "opex_per_wave": 24,
+          "security_spend": 194,
           "total": 184,
           "event_opex": -10,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "-133/460"
+        "ros": "-158/485"
       }
     },
     {
@@ -507,13 +509,14 @@
         "costs": {
           "init": 90,
           "opex_per_wave": 18,
+          "security_spend": 144,
           "total": 134,
           "event_opex": -10,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "-43/67"
+        "ros": "-2/3"
       }
     },
     {
@@ -676,13 +679,14 @@
         "costs": {
           "init": 160,
           "opex_per_wave": 24,
+          "security_spend": 232,
           "total": 218,
           "event_opex": -14,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "-281/545"
+        "ros": "-79/145"
       }
     },
     {
@@ -845,13 +849,14 @@
         "costs": {
           "init": 118,
           "opex_per_wave": 24,
+          "security_spend": 190,
           "total": 180,
           "event_opex": -10,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "-11/15"
+        "ros": "-71/95"
       }
     },
     {
@@ -1016,13 +1021,14 @@
         "costs": {
           "init": 40,
           "opex_per_wave": 12,
+          "security_spend": 76,
           "total": 74,
           "event_opex": -2,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "35/37"
+        "ros": "17/19"
       }
     },
     {
@@ -1185,13 +1191,14 @@
         "costs": {
           "init": 116,
           "opex_per_wave": 18,
+          "security_spend": 170,
           "total": 160,
           "event_opex": -10,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "-0.7"
+        "ros": "-61/85"
       }
     },
     {
@@ -1354,13 +1361,14 @@
         "costs": {
           "init": 176,
           "opex_per_wave": 28,
+          "security_spend": 260,
           "total": 244,
           "event_opex": -16,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "-361/1525"
+        "ros": "-461/1625"
       }
     },
     {
@@ -1525,13 +1533,14 @@
         "costs": {
           "init": 160,
           "opex_per_wave": 24,
+          "security_spend": 232,
           "total": 220,
           "event_opex": -12,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "29/55"
+        "ros": "13/29"
       }
     },
     {
@@ -1700,13 +1709,14 @@
         "costs": {
           "init": 236,
           "opex_per_wave": 48,
+          "security_spend": 380,
           "total": 366,
           "event_opex": -14,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "2111/4575"
+        "ros": "968/2375"
       }
     },
     {
@@ -1875,13 +1885,14 @@
         "costs": {
           "init": 220,
           "opex_per_wave": 44,
+          "security_spend": 352,
           "total": 340,
           "event_opex": -12,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "966/2125"
+        "ros": "0.405"
       }
     },
     {
@@ -2050,13 +2061,14 @@
         "costs": {
           "init": 206,
           "opex_per_wave": 44,
+          "security_spend": 338,
           "total": 326,
           "event_opex": -12,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "2443/4075"
+        "ros": "2293/4225"
       }
     },
     {
@@ -2224,13 +2236,14 @@
         "costs": {
           "init": 230,
           "opex_per_wave": 38,
+          "security_spend": 344,
           "total": 330,
           "event_opex": -14,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "581/825"
+        "ros": "273/430"
       }
     },
     {
@@ -2393,13 +2406,14 @@
         "costs": {
           "init": 228,
           "opex_per_wave": 36,
+          "security_spend": 336,
           "total": 318,
           "event_opex": -18,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "323/3975"
+        "ros": "7/300"
       }
     },
     {
@@ -2566,13 +2580,14 @@
         "costs": {
           "init": 216,
           "opex_per_wave": 42,
+          "security_spend": 342,
           "total": 328,
           "event_opex": -14,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "851/4100"
+        "ros": "676/4275"
       }
     },
     {
@@ -2740,13 +2755,14 @@
         "costs": {
           "init": 146,
           "opex_per_wave": 30,
+          "security_spend": 236,
           "total": 230,
           "event_opex": -6,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "24/115"
+        "ros": "21/118"
       }
     },
     {
@@ -2911,13 +2927,14 @@
         "costs": {
           "init": 190,
           "opex_per_wave": 32,
+          "security_spend": 286,
           "total": 270,
           "event_opex": -16,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "263/3375"
+        "ros": "63/3575"
       }
     },
     {
@@ -3090,13 +3107,14 @@
         "costs": {
           "init": 330,
           "opex_per_wave": 60,
+          "security_spend": 510,
           "total": 494,
           "event_opex": -16,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": true,
-        "ros": "63/247"
+        "ros": "11/51"
       }
     },
     {
@@ -3268,13 +3286,14 @@
         "costs": {
           "init": 330,
           "opex_per_wave": 58,
+          "security_spend": 504,
           "total": 488,
           "event_opex": -16,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": true,
-        "ros": "33/122"
+        "ros": "29/126"
       }
     },
     {
@@ -3446,13 +3465,14 @@
         "costs": {
           "init": 314,
           "opex_per_wave": 54,
+          "security_spend": 476,
           "total": 462,
           "event_opex": -14,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": true,
-        "ros": "79/231"
+        "ros": "36/119"
       }
     },
     {
@@ -3622,13 +3642,14 @@
         "costs": {
           "init": 306,
           "opex_per_wave": 56,
+          "security_spend": 474,
           "total": 458,
           "event_opex": -16,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": true,
-        "ros": "81/229"
+        "ros": "73/237"
       }
     },
     {
@@ -3796,13 +3817,14 @@
         "costs": {
           "init": 314,
           "opex_per_wave": 54,
+          "security_spend": 476,
           "total": 458,
           "event_opex": -18,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": true,
-        "ros": "81/229"
+        "ros": "36/119"
       }
     },
     {
@@ -3966,13 +3988,14 @@
         "costs": {
           "init": 206,
           "opex_per_wave": 33,
+          "security_spend": 305,
           "total": 285,
           "event_opex": -20,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "299/2375"
+        "ros": "397/7625"
       }
     },
     {
@@ -4138,13 +4161,14 @@
         "costs": {
           "init": 296,
           "opex_per_wave": 58,
+          "security_spend": 470,
           "total": 454,
           "event_opex": -16,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": true,
-        "ros": "228/1135"
+        "ros": "0.16"
       }
     },
     {
@@ -4311,13 +4335,14 @@
         "costs": {
           "init": 290,
           "opex_per_wave": 52,
+          "security_spend": 446,
           "total": 430,
           "event_opex": -16,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "2114/5375"
+        "ros": "1914/5575"
       }
     },
     {
@@ -4484,13 +4509,14 @@
         "costs": {
           "init": 246,
           "opex_per_wave": 58,
+          "security_spend": 420,
           "total": 408,
           "event_opex": -12,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "281/2550"
+        "ros": "206/2625"
       }
     },
     {
@@ -4654,6 +4680,7 @@
         "costs": {
           "init": 0,
           "opex_per_wave": 0,
+          "security_spend": 0,
           "total": 0,
           "event_opex": 0,
           "event_budget": -20,
@@ -4834,13 +4861,14 @@
         "costs": {
           "init": 766,
           "opex_per_wave": 158,
+          "security_spend": 1240,
           "total": 1220,
           "event_opex": -20,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": true,
-        "ros": "-30/61"
+        "ros": "-0.5"
       }
     },
     {
@@ -5013,13 +5041,14 @@
         "costs": {
           "init": 150,
           "opex_per_wave": 28,
+          "security_spend": 234,
           "total": 230,
           "event_opex": -4,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "-51/115"
+        "ros": "-53/117"
       }
     },
     {
@@ -5193,13 +5222,14 @@
         "costs": {
           "init": 140,
           "opex_per_wave": 26,
+          "security_spend": 218,
           "total": 214,
           "event_opex": -4,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "-89/107"
+        "ros": "-91/109"
       }
     },
     {
@@ -5371,13 +5401,14 @@
         "costs": {
           "init": 96,
           "opex_per_wave": 16,
+          "security_spend": 144,
           "total": 140,
           "event_opex": -4,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "-103/175"
+        "ros": "-0.6"
       }
     },
     {
@@ -5542,6 +5573,7 @@
         "costs": {
           "init": 64,
           "opex_per_wave": 13,
+          "security_spend": 103,
           "total": 99,
           "event_opex": -4,
           "event_budget": -20,
@@ -5713,13 +5745,14 @@
         "costs": {
           "init": 106,
           "opex_per_wave": 22,
+          "security_spend": 172,
           "total": 168,
           "event_opex": -4,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "-19/21"
+        "ros": "-39/43"
       }
     },
     {
@@ -5882,6 +5915,7 @@
         "costs": {
           "init": 128,
           "opex_per_wave": 19,
+          "security_spend": 185,
           "total": 177,
           "event_opex": -8,
           "event_budget": -20,
@@ -6055,13 +6089,14 @@
         "costs": {
           "init": 170,
           "opex_per_wave": 33,
+          "security_spend": 269,
           "total": 261,
           "event_opex": -8,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "43/87"
+        "ros": "121/269"
       }
     },
     {
@@ -6226,13 +6261,14 @@
         "costs": {
           "init": 140,
           "opex_per_wave": 30,
+          "security_spend": 230,
           "total": 224,
           "event_opex": -6,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "-19/28"
+        "ros": "-79/115"
       }
     },
     {
@@ -6397,6 +6433,7 @@
         "costs": {
           "init": 80,
           "opex_per_wave": 18,
+          "security_spend": 134,
           "total": 130,
           "event_opex": -4,
           "event_budget": -20,
@@ -6572,13 +6609,14 @@
         "costs": {
           "init": 258,
           "opex_per_wave": 54,
+          "security_spend": 420,
           "total": 410,
           "event_opex": -10,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "21/41"
+        "ros": "10/21"
       }
     },
     {
@@ -6745,13 +6783,14 @@
         "costs": {
           "init": 192,
           "opex_per_wave": 39,
+          "security_spend": 309,
           "total": 299,
           "event_opex": -10,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "201/299"
+        "ros": "191/309"
       }
     },
     {
@@ -6916,13 +6955,14 @@
         "costs": {
           "init": 186,
           "opex_per_wave": 31,
+          "security_spend": 279,
           "total": 269,
           "event_opex": -10,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "-49/1345"
+        "ros": "-11/155"
       }
     },
     {
@@ -7091,13 +7131,14 @@
         "costs": {
           "init": 224,
           "opex_per_wave": 46,
+          "security_spend": 362,
           "total": 352,
           "event_opex": -10,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "59/88"
+        "ros": "113/181"
       }
     },
     {
@@ -7266,13 +7307,14 @@
         "costs": {
           "init": 274,
           "opex_per_wave": 58,
+          "security_spend": 448,
           "total": 438,
           "event_opex": -10,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": true,
-        "ros": "91/219"
+        "ros": "43/112"
       }
     },
     {
@@ -7441,13 +7483,14 @@
         "costs": {
           "init": 284,
           "opex_per_wave": 53,
+          "security_spend": 443,
           "total": 431,
           "event_opex": -12,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": true,
-        "ros": "189/431"
+        "ros": "177/443"
       }
     },
     {
@@ -7616,13 +7659,14 @@
         "costs": {
           "init": 284,
           "opex_per_wave": 52,
+          "security_spend": 440,
           "total": 430,
           "event_opex": -10,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "17/43"
+        "ros": "4/11"
       }
     },
     {
@@ -7790,13 +7834,14 @@
         "costs": {
           "init": 274,
           "opex_per_wave": 48,
+          "security_spend": 418,
           "total": 406,
           "event_opex": -12,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "67/203"
+        "ros": "61/209"
       }
     },
     {
@@ -7964,13 +8009,14 @@
         "costs": {
           "init": 274,
           "opex_per_wave": 47,
+          "security_spend": 415,
           "total": 405,
           "event_opex": -10,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "151/405"
+        "ros": "141/415"
       }
     },
     {
@@ -8137,13 +8183,14 @@
         "costs": {
           "init": 252,
           "opex_per_wave": 47,
+          "security_spend": 393,
           "total": 381,
           "event_opex": -12,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "731/1905"
+        "ros": "671/1965"
       }
     },
     {
@@ -8312,13 +8359,14 @@
         "costs": {
           "init": 240,
           "opex_per_wave": 50,
+          "security_spend": 390,
           "total": 380,
           "event_opex": -10,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "59/95"
+        "ros": "113/195"
       }
     },
     {
@@ -8485,13 +8533,14 @@
         "costs": {
           "init": 240,
           "opex_per_wave": 42,
+          "security_spend": 366,
           "total": 356,
           "event_opex": -10,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "41/89"
+        "ros": "77/183"
       }
     },
     {
@@ -8656,13 +8705,14 @@
         "costs": {
           "init": 238,
           "opex_per_wave": 43,
+          "security_spend": 367,
           "total": 355,
           "event_opex": -12,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "301/1775"
+        "ros": "241/1835"
       }
     },
     {
@@ -8830,13 +8880,14 @@
         "costs": {
           "init": 260,
           "opex_per_wave": 45,
+          "security_spend": 395,
           "total": 383,
           "event_opex": -12,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "167/383"
+        "ros": "31/79"
       }
     },
     {
@@ -9003,13 +9054,14 @@
         "costs": {
           "init": 180,
           "opex_per_wave": 26,
+          "security_spend": 258,
           "total": 248,
           "event_opex": -10,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "147/620"
+        "ros": "122/645"
       }
     },
     {
@@ -9174,13 +9226,14 @@
         "costs": {
           "init": 166,
           "opex_per_wave": 32,
+          "security_spend": 262,
           "total": 254,
           "event_opex": -8,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "-92/127"
+        "ros": "-96/131"
       }
     },
     {
@@ -9345,13 +9398,14 @@
         "costs": {
           "init": 122,
           "opex_per_wave": 21,
+          "security_spend": 185,
           "total": 175,
           "event_opex": -10,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "-141/875"
+        "ros": "-191/925"
       }
     },
     {
@@ -9521,13 +9575,14 @@
         "costs": {
           "init": 328,
           "opex_per_wave": 61,
+          "security_spend": 511,
           "total": 495,
           "event_opex": -16,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": true,
-        "ros": "25/99"
+        "ros": "109/511"
       }
     },
     {
@@ -9697,13 +9752,14 @@
         "costs": {
           "init": 516,
           "opex_per_wave": 101,
+          "security_spend": 819,
           "total": 801,
           "event_opex": -18,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": true,
-        "ros": "-181/801"
+        "ros": "-199/819"
       }
     },
     {
@@ -9875,13 +9931,14 @@
         "costs": {
           "init": 416,
           "opex_per_wave": 80,
+          "security_spend": 656,
           "total": 638,
           "event_opex": -18,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": true,
-        "ros": "-9/319"
+        "ros": "-9/164"
       }
     },
     {
@@ -10054,13 +10111,14 @@
         "costs": {
           "init": 618,
           "opex_per_wave": 124,
+          "security_spend": 990,
           "total": 972,
           "event_opex": -18,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": true,
-        "ros": "-88/243"
+        "ros": "-37/99"
       }
     },
     {
@@ -10227,13 +10285,14 @@
         "costs": {
           "init": 184,
           "opex_per_wave": 39,
+          "security_spend": 301,
           "total": 287,
           "event_opex": -14,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": false,
-        "ros": "639/1025"
+        "ros": "589/1075"
       }
     },
     {
@@ -10403,13 +10462,14 @@
         "costs": {
           "init": 432,
           "opex_per_wave": 78,
+          "security_spend": 666,
           "total": 652,
           "event_opex": -14,
           "event_budget": -20,
           "budget_available": 430
         },
         "over_budget": true,
-        "ros": "-8/163"
+        "ros": "-23/333"
       }
     }
   ]

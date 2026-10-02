@@ -54,7 +54,9 @@ def print_section(title: str):
 def item_ros(item: Dict, base_losses: Optional[float]) -> Optional[float]:
     if base_losses is None:
         return None
-    return rules.ros(base_losses, item["total_damage"], item["costs"]["total"])
+    costs = item["costs"]
+    own_spend = costs["security_spend"] if "security_spend" in costs else costs["total"] - costs["event_opex"]
+    return rules.ros(base_losses, item["total_damage"], own_spend)
 
 
 def print_ros_and_final_index(item: Dict, base_losses: Optional[float], weight_kz: Fraction, weight_ros: Fraction):

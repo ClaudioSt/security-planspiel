@@ -81,7 +81,7 @@ def summarize_tier(cfg, tier_name: str, store: ResultStore, top_k: int = DEFAULT
     ros_cache = {}
 
     def ros_of(i):
-        key = (damage_col[i], total_col[i])
+        key = (damage_col[i], own_col[i])
         try:
             return ros_cache[key]
         except KeyError:
@@ -93,7 +93,7 @@ def summarize_tier(cfg, tier_name: str, store: ResultStore, top_k: int = DEFAULT
     fi_cache = {}
 
     def final_index_of(i):
-        key = (kz_col[i], damage_col[i], total_col[i])
+        key = (kz_col[i], damage_col[i], own_col[i])
         try:
             return fi_cache[key]
         except KeyError:
@@ -138,9 +138,9 @@ def summarize_tier(cfg, tier_name: str, store: ResultStore, top_k: int = DEFAULT
     for name, flag in (("in_budget", 0), ("over_budget", 1)):
         kz_values = [kz for kz, over in zip(kz_col, over_col) if over == flag]
         counts = Counter(
-            (damage, total)
-            for damage, total, over in zip(damage_col, total_col, over_col)
-            if over == flag and total != 0
+            (damage, own)
+            for damage, own, over in zip(damage_col, own_col, over_col)
+            if over == flag and own != 0
         )
         ordered_keys = sorted(counts, key=ros_cache.__getitem__)
         ros_sorted = [ros_cache[key] for key in ordered_keys for _ in range(counts[key])]
@@ -274,7 +274,7 @@ def write_summary(path, summary: Dict) -> None:
 
 
 def dump_record(measure_ids, code_index: int, outcome, base_losses) -> Dict:
-    ros = rules.ros(base_losses, Fraction(outcome.damage_eur, 1000), outcome.total_cost)
+    ros = rules.ros(base_losses, Fraction(outcome.damage_eur, 1000), outcome.own_cost)
     return {
         "code": code_from_index(code_index, len(measure_ids)),
         "kz_final": outcome.kz_final,

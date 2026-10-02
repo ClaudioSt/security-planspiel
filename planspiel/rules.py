@@ -1,5 +1,5 @@
 from fractions import Fraction
-from typing import Dict, List, NamedTuple, Optional, Tuple
+from typing import Dict, List, NamedTuple, Optional, Sequence, Tuple
 
 from planspiel.config import Attack, BudgetTier, Config, Event, Measure, Wave
 from planspiel.rounding import round_half_away_frac
@@ -34,6 +34,11 @@ def compute_costs(selection: Dict[str, int], measures: Dict[str, Measure], wave_
         opex_per_wave += level_data.opex
     total = init + opex_per_wave * wave_count
     return init, opex_per_wave, total
+
+
+def security_spend(init: int, opex_by_wave: Sequence[int], window_costs: Sequence[int] = ()) -> int:
+    """Eigene Sicherheitsausgaben für den RoS: Init, OPEX je Welle, Init-Differenzen im Change-Fenster inkl. Kurswechsel-Differenz; keine Event-Effekte."""
+    return init + sum(opex_by_wave) + sum(window_costs)
 
 
 def compute_recovery(selection: Dict[str, int], measures: Dict[str, Measure]) -> Fraction:
@@ -369,18 +374,18 @@ def base_losses(waves: List[Wave], attacks: Dict[str, Attack]) -> int:
     return total
 
 
-def ros(base_losses: float, total_damage: float, total_cost: float) -> Optional[Fraction]:
-    if total_cost == 0:
+def ros(base_losses: float, total_damage: float, own_spend: float) -> Optional[Fraction]:
+    if own_spend == 0:
         return None
     avoided_losses = Fraction(base_losses) - total_damage
-    return (avoided_losses - total_cost) / total_cost
+    return (avoided_losses - own_spend) / own_spend
 
 
 def final_index(
     kz_final: int, ros: Optional[Fraction], weight_kz: Fraction = Fraction(1), weight_ros: Fraction = Fraction(1)
 ) -> Fraction:
     if ros is None:
-        return kz_final
+        return weight_kz * kz_final
     return (weight_kz * kz_final) + (weight_ros * (ros * 100))
 
 
@@ -393,16 +398,18 @@ class BudgetLedger(NamedTuple):
     budget_available: int
     over_budget: bool
     remaining_budget: int
+    security_spend: int
 
 
-def budget_ledger(tier_budget: int, own_cost: int, event_opex: int, event_budget: int) -> BudgetLedger:
-    total_cost = own_cost + event_opex
+def budget_ledger(tier_budget: int, own_spend: int, event_opex: int, event_budget: int) -> BudgetLedger:
+    total_cost = own_spend + event_opex
     budget_available = tier_budget + event_budget
     return BudgetLedger(
         total_cost=total_cost,
         budget_available=budget_available,
         over_budget=over_budget(total_cost, budget_available),
         remaining_budget=budget_available - total_cost,
+        security_spend=own_spend,
     )
 
 
@@ -424,12 +431,13 @@ def apply_final_events(
 
 def evaluate_plan(cfg: Config, tier_name: str, selection: Dict[str, int]) -> Dict:
     tier = cfg.budget_tiers[tier_name]
-    init, opex_per_wave, total_cost = compute_costs(selection, cfg.measures, len(cfg.waves))
+    init, opex_per_wave, _ = compute_costs(selection, cfg.measures, len(cfg.waves))
+    own = security_spend(init, [opex_per_wave] * len(cfg.waves))
     outcome = simulate_selection(
         selection, tier, cfg.waves, cfg.attacks, cfg.measures, cfg.events, cfg.base_cia, tier.kz_start,
         cfg.ws, cfg.rs,
     )
-    ledger = budget_ledger(tier.budget, total_cost, outcome["total_event_opex"], outcome["total_event_budget"])
+    ledger = budget_ledger(tier.budget, own, outcome["total_event_opex"], outcome["total_event_budget"])
 
     outcome["kz_final"], outcome["final_events"] = apply_final_events(
         cfg.final_events, selection, ledger.remaining_budget, outcome["kz_final"]
@@ -438,6 +446,7 @@ def evaluate_plan(cfg: Config, tier_name: str, selection: Dict[str, int]) -> Dic
     outcome["costs"] = {
         "init": init,
         "opex_per_wave": opex_per_wave,
+        "security_spend": ledger.security_spend,
         "total": ledger.total_cost,
         "event_opex": outcome["total_event_opex"],
         "event_budget": outcome["total_event_budget"],
@@ -445,7 +454,7 @@ def evaluate_plan(cfg: Config, tier_name: str, selection: Dict[str, int]) -> Dic
     }
 
     outcome["over_budget"] = ledger.over_budget
-    outcome["ros"] = ros(base_losses(cfg.waves, cfg.attacks), outcome["total_damage"], ledger.total_cost)
+    outcome["ros"] = ros(base_losses(cfg.waves, cfg.attacks), outcome["total_damage"], ledger.security_spend)
     return outcome
 
 
@@ -481,7 +490,8 @@ class TierKernel:
         tier = self.tier
         if not dependencies_satisfied(selection, cfg.measures):
             return None
-        own_cost = compute_costs(selection, cfg.measures, self.wave_count)[2]
+        init, opex_per_wave, _ = compute_costs(selection, cfg.measures, self.wave_count)
+        own_cost = security_spend(init, (opex_per_wave,) * self.wave_count)
         cia = compute_cia(selection, cfg.measures, cfg.base_cia)
         recovery_scaled = _to_int(compute_recovery(selection, cfg.measures) * cfg.rs)
 

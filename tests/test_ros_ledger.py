@@ -21,7 +21,7 @@ BUDGET_VALUES = (-20, 0, 15)
 
 def test_security_spend_sums_init_opex_and_window_costs():
     assert rules.security_spend(250, (40, 40, 40)) == 370
-    assert rules.security_spend(250, (40, 30, 30), (20,)) == 360
+    assert rules.security_spend(250, (40, 30, 30), (20,)) == 370
     assert rules.security_spend(0, ()) == 0
 
 
@@ -153,3 +153,11 @@ def test_analyze_item_ros_uses_security_spend():
 def test_analyze_item_ros_falls_back_for_legacy_records():
     item = {"total_damage": 96, "costs": {"total": 238, "event_opex": -12}}
     assert analyze.item_ros(item, 620) == rules.ros(620, 96, 250)
+
+
+def test_readme_ros_cost_line_has_no_event_effects():
+    lines = (REPO_ROOT / "README.md").read_text(encoding="utf-8").splitlines()
+    cost_lines = [line for line in lines if line.startswith("Gesamtkosten")]
+    assert len(cost_lines) == 1
+    assert "Kurswechsel" in cost_lines[0]
+    assert "Straf" not in cost_lines[0]
