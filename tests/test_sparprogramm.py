@@ -187,3 +187,9 @@ def test_sparprogramm_description_states_the_end_check_and_the_window():
         text = [e for e in events if e["id"] == "sparprogramm"][0]["description"]
         assert "Geprüft wird das Restbudget erst am Ende" in text
         assert "Change-Fenster" in text
+
+
+def test_readme_states_event_overrun_rule():
+    text = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
+    assert "Sparprogramm" in text
+    assert "am Ende noch überzogen" in text

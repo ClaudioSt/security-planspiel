@@ -170,6 +170,7 @@ Nicht enthalten: Event‑Effekte auf Kosten oder Budget (Straf‑OPEX, OPEX‑Ra
 - **Stufengrenzen:** Eine Restbudget‑Stufe gilt ab ihrem Mindestbetrag einschließlich („ab …“). Die Kartentexte werden aus der Stufenliste der Konfiguration erzeugt (`planspiel.review_text.boundary_text`), nie von Hand geschrieben; dieselbe Liste nutzt die Simulation.
 - **Restbudget < 0 (Überziehung):** −X KZ **je angefangene Schrittweite** Überziehung. X (`overspend_penalty.kz_per_step`) und die Schrittweite (`overspend_penalty.step`) stehen in der Config und sind bis zur Neuskalierung vorläufig. Die Nachschlagetabelle für die Karte wird daraus erzeugt (`planspiel.review_text.penalty_rows`).
 - **Begrenzung:** Nach dem Budget Review wird die KZ auf 0–100 begrenzt; weitere Überziehung senkt sie dann nicht unter null.
+- **Event‑induzierte Überziehung:** Events wie das Sparprogramm können ein Team zwischenzeitlich über das Budget bringen. Im folgenden Change‑Fenster kann es durch Herabstufen oder Kündigen zurück ins Budget kommen; das spart nur OPEX späterer Wellen, Init wird nie erstattet. Bestraft wird nur, wer am Ende noch überzogen hat. Eine Budgetkürzung in der letzten Welle sollte es nicht geben, weil danach kein Change‑Fenster mehr folgt (der Validator warnt).
 
 ---
 

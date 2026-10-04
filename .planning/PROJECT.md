@@ -110,7 +110,7 @@ Every balance decision is checked against these (measurable via full enumeration
 | Overspend X calibrated on trim-back criterion | Every over-budget plan must lose to its own trimmed version; step rewards make marginal criterion infeasible | ✓ Decided 2026-09-29 |
 | Downgrade allowed: no init refund, OPEX drops next wave | Gives teams an adaptation lever; requires change model in sim | ✓ Decided 2026-09-29; implemented 2026-10-04 (RULE-02: `evaluate_path`, net pricing D-27, swap layer D-24) |
 | RoS = own spend only; event effects out in both directions | Symmetric, matches Decisions & Disruptions ledgers | ✓ Decided 2026-09-29 |
-| Sparprogramm overrun → re-plan window before penalty | Teams shouldn't be punished for an external shock they can still react to | ✓ Decided 2026-09-29 |
+| Sparprogramm overrun → re-plan window before penalty | Teams shouldn't be punished for an external shock they can still react to | ✓ Decided 2026-09-29; implemented 2026-10-01 (RULE-05, D-14: single end check, pinned on legal paths) |
 | Measure cards CIA only; wave weights hidden until reveal | Weights and attack links would reveal attacks | ✓ Decided 2026-09-29 |
 | E-target bonus/malus: check printed MHP material first | Sim applies it, print doesn't show it | ✓ Decided 2026-10-01: removed from the simulation (RULE-08, D-19); no printed MHP material uses it, so sim and paper agree |
 | Budget Review boundaries '≥' (ab) with text generated from the tier list | MHP card said 25.001–50.000 while the sim used ≥ 25.000 (CR-01) | ✓ Implemented 2026-10-01 (RULE-07, D-16) |
