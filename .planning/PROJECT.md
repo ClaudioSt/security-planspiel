@@ -114,6 +114,7 @@ Every balance decision is checked against these (measurable via full enumeration
 | Measure cards CIA only; wave weights hidden until reveal | Weights and attack links would reveal attacks | ✓ Decided 2026-09-29 |
 | E-target bonus/malus: check printed MHP material first | Sim applies it, print doesn't show it | ✓ Decided 2026-10-01: removed from the simulation (RULE-08, D-19); no printed MHP material uses it, so sim and paper agree |
 | Budget Review boundaries '≥' (ab) with text generated from the tier list | MHP card said 25.001–50.000 while the sim used ≥ 25.000 (CR-01) | ✓ Implemented 2026-10-01 (RULE-07, D-16) |
+| Single term 'Maßnahmentausch'; Kurswechsel forces exactly one swap, customer covers Init up to the dropped measure | MHP terms collided and the card promised refunds | ✓ Implemented 2026-10-04 (RULE-01; D-09..D-13, D-22, D-23, D-26, D-28) |
 | Keep LaTeX (not Typst) | Known, mature tool | ✓ Decided 2026-09-29 |
 | Drop 0.85 utilization filter, rescale Final-Index in rebalance | Filter hides the real optimum; RoS·100 dominates | ✓ Decided 2026-09-29 |
 | Excel attack calculator retired | Generated worksheets + facilitator sheet replace it | ✓ Decided 2026-09-29 |

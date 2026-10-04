@@ -145,6 +145,21 @@ Nicht enthalten: Event‑Effekte auf Kosten oder Budget (Straf‑OPEX, OPEX‑Ra
 - **Kommunikationseffekt:** Reife Business‑/BCP‑Kommunikation kann KZ‑Effekte der Changes positiv beeinflussen (konfigurierbar).  
 - **Zwangs‑Change (optional):** Bei starker Zielverfehlung kann ein **mindestens ein relevantes Upgrade** erforderlich sein (Regel konfigurierbar).
 
+### Begriffe: Levelwechsel und Maßnahmentausch
+
+- **Levelwechsel:** dieselbe Maßnahme, anderes Level, hoch oder runter. Kündigen ist ein Levelwechsel auf Level 0. Eine neue Maßnahme hinzufügen ist ein eigener Zug.
+- **Maßnahmentausch:** eine Maßnahme raus, eine andere rein. Es gibt ihn nur durch das Event Kurswechsel. Der Begriff ersetzt den früheren MHP‑Begriff „Maßnahmenwechsel“.
+
+### Kurswechsel (Maßnahmentausch)
+
+- **Wirkung:** Im Change‑Fenster nach der Welle mit dem Event Kurswechsel führt jedes Team **genau einen Maßnahmentausch** durch, zusätzlich zu allen normalen Levelwechseln und neuen Maßnahmen dieses Fensters.
+- **Was getauscht wird:** Die wegfallende Maßnahme war in der Kurswechsel‑Welle aktiv und endet auf Level 0. Die neue Maßnahme war in der Kurswechsel‑Welle nicht aktiv (kein Kündigen und Wiederaufnehmen im selben Fenster) und kann auf jedem Level starten.
+- **Kosten:** Das Team zahlt **max(0, Init neu − Init weg)**. Init weg ist das Init der wegfallenden Maßnahme auf ihrem Level in der Kurswechsel‑Welle, Init neu das Init der neuen Maßnahme auf ihrem gewählten Level. Der Kunde übernimmt die Init‑Kosten der neuen Maßnahme also bis zur Höhe der wegfallenden. Eine günstigere neue Maßnahme bringt **keine Erstattung**. Das ist der einzige Fall, in dem das Init einer wegfallenden Maßnahme angerechnet wird; sonst wird Init nie erstattet. Der vom Team gezahlte Mehrbetrag zählt als eigene Ausgabe im RoS. Die OPEX der wegfallenden Maßnahme entfällt, die der neuen zahlt das Team ab der nächsten Welle.
+- **Abhängigkeiten:** Hängen andere Maßnahmen von der wegfallenden ab, senkt oder kündigt das Team sie im selben Fenster passend, denn nach jedem Fenster müssen alle Abhängigkeiten gültig sein. Die Simulation senkt dafür minimal ab: jede betroffene Maßnahme auf das höchste Level, dessen Abhängigkeiten noch erfüllt sind.
+- **Kein Tausch möglich:** War in der Kurswechsel‑Welle keine oder jede Maßnahme aktiv, entfällt der Tausch für das Team. Normale Züge im Fenster bleiben erlaubt.
+- **Platzierung:** Es gibt höchstens einen Kurswechsel, und nicht in der letzten Welle, weil danach kein Change‑Fenster folgt.
+- **Überholter Kartentext:** Die MHP‑Karte mit der Erstattung der Differenz gilt nicht mehr; maßgeblich sind die Beschreibung in der Config und dieser Abschnitt.
+
 ---
 
 ## Budget Review und Überziehung
@@ -232,6 +247,8 @@ Der Standardlauf bewertet jede gültige Kombination des Tiers, auch die über Bu
 ```
 for t in low medium high; do uv run python simulate_outcomes.py --budget-tier $t; done
 ```
+
+**Referenzplan:** Die Enumeration bewertet den **Referenzplan ohne Change‑Fenster‑Züge**: Der Plan der ersten Welle bleibt unverändert, der Kurswechsel wird nicht angewendet. Das ist nur für Pläne ein legales Spiel, bei denen kein Maßnahmentausch möglich ist; die besten Werte sind Referenzwerte und keine erreichbaren Spielergebnisse. Konsole, Summary‑JSON (`layer`, `layer_label`), Balance‑Report und Legacy‑Auswertung tragen dieses Label.
 
 **Vollständiger Dump nur auf Anfrage:**
 ```
