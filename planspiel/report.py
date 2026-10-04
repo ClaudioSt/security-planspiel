@@ -13,6 +13,8 @@ DEFAULT_TOP_K = 10
 CONSOLE_TOP_LINES = 3
 SUMMARY_FILENAME = "simulation_summary_{tier}.json"
 FINAL_INDEX_STATUS = "vorläufig (Gewichte bis zur Neuskalierung in Phase 6)"
+REFERENCE_LAYER = "referenz"
+REFERENCE_LABEL = "Referenzplan ohne Change-Fenster-Züge"
 
 
 def nearest_rank(sorted_values: List, p: int):
@@ -166,6 +168,9 @@ def summarize_tier(cfg, tier_name: str, store: ResultStore, top_k: int = DEFAULT
     return {
         "format": 1,
         "tier": tier_name,
+        "layer": REFERENCE_LAYER,
+        "layer_label": REFERENCE_LABEL
+        + " (Kurswechsel nicht angewendet; legales Spiel nur ohne möglichen Maßnahmentausch)",
         "budget": tier.budget,
         "kz_start": tier.kz_start,
         "measures": measure_ids,
@@ -222,6 +227,7 @@ def format_console(summary: Dict) -> str:
     combos = summary["combinations"]
     best = summary["best"]
     lines = [
+        summary["layer_label"],
         f"Tier {summary['tier']}: Budget {summary['budget']}, Start-KZ {summary['kz_start']}",
         f"Kombinationen: {combos['valid']} gültig, davon {combos['in_budget']} im Budget "
         f"und {combos['over_budget']} über Budget",

@@ -5,15 +5,17 @@ from planspiel.config import Attack, BudgetTier, Config, Event, Measure, Wave
 from planspiel.rounding import round_half_away_frac, started_steps
 
 
-def dependencies_satisfied(selection: Dict[str, int], measures: Dict[str, Measure]) -> bool:
-    for measure_id, level in selection.items():
-        measure = measures[measure_id]
-        for dependency in measure.dependencies:
-            if level >= dependency["level"]:
-                for req in dependency["requires"]:
-                    if selection.get(req["measure"], 0) < req["min_level"]:
-                        return False
+def _requirements_met(measure: Measure, level: int, selection: Dict[str, int]) -> bool:
+    for dependency in measure.dependencies:
+        if level >= dependency["level"]:
+            for req in dependency["requires"]:
+                if selection.get(req["measure"], 0) < req["min_level"]:
+                    return False
     return True
+
+
+def dependencies_satisfied(selection: Dict[str, int], measures: Dict[str, Measure]) -> bool:
+    return all(_requirements_met(measures[measure_id], level, selection) for measure_id, level in selection.items())
 
 
 def compute_cia(selection: Dict[str, int], measures: Dict[str, Measure], base_cia: Dict[str, int]) -> Dict[str, int]:
@@ -217,6 +219,62 @@ def penalty_params(final_events: List[Event]) -> Tuple[int, int]:
     raise ValueError("Kein final_budget_tier-Event in final_events")
 
 
+def swap_possible(selection: Dict[str, int]) -> bool:
+    """Kurswechsel (D-22): ein Maßnahmentausch ist nur möglich, wenn in der Kurswechsel-Welle
+    mindestens eine Maßnahme aktiv und mindestens eine inaktiv ist."""
+    levels = selection.values()
+    return any(level > 0 for level in levels) and any(level == 0 for level in levels)
+
+
+def swap_legal(wave1: Dict[str, int], window_end: Dict[str, int], dropped: str, incoming: str) -> bool:
+    """Maßnahmentausch (D-09, D-23, D-28): die wegfallende Maßnahme war in der Kurswechsel-Welle aktiv und
+    endet auf Level 0; die neue war dort inaktiv und ist am Fensterende aktiv (kein Kündigen und Wiederaufnehmen)."""
+    return (
+        dropped != incoming
+        and wave1[dropped] > 0
+        and window_end[dropped] == 0
+        and wave1[incoming] == 0
+        and window_end[incoming] > 0
+    )
+
+
+def swap_credit(
+    measures: Dict[str, Measure], wave1: Dict[str, int], dropped: str, incoming: str, window_end: Dict[str, int]
+) -> int:
+    """Kurswechsel-Gutschrift (D-11, D-23): Init der wegfallenden Maßnahme auf ihrem Level der Kurswechsel-Welle,
+    höchstens die Init-Kosten der neuen Maßnahme; das Team zahlt max(0, Init neu − Init weg), nie eine Erstattung."""
+    return min(
+        measures[dropped].levels[wave1[dropped]].init,
+        measures[incoming].levels[window_end[incoming]].init,
+    )
+
+
+def swap_repair(selection: Dict[str, int], dropped: str, measures: Dict[str, Measure]) -> Dict[str, int]:
+    """Kanonische Reparatur (D-28): die wegfallende Maßnahme auf 0, dann jede Maßnahme auf das höchste Level
+    senken, dessen Abhängigkeiten erfüllt sind, bis sich nichts mehr ändert."""
+    repaired = dict(selection)
+    repaired[dropped] = 0
+    changed = True
+    while changed:
+        changed = False
+        for measure_id in measures:
+            level = repaired.get(measure_id, 0)
+            while level > 0 and not _requirements_met(measures[measure_id], level, repaired):
+                level -= 1
+            if level != repaired.get(measure_id, 0):
+                repaired[measure_id] = level
+                changed = True
+    return repaired
+
+
+def kurswechsel_wave(events: Dict[int, List[Event]]) -> Optional[int]:
+    """Wellen-ID, deren Events den Kurswechsel enthalten; None ohne Kurswechsel."""
+    for wave_id in sorted(events):
+        if any(event.type == "kurswechsel" for event in events[wave_id]):
+            return wave_id
+    return None
+
+
 def evaluate_event(
     event: Event,
     selection: Dict[str, int],
@@ -229,12 +287,10 @@ def evaluate_event(
     """
     p = event.params
 
-    if event.type == "noop":
-        # "Kurswechsel": freier Maßnahmenwechsel mit Kostendifferenz - eine
-        # Strategieentscheidung der Teams, die sich nicht in der statischen
-        # Maßnahmen-Enumeration abbilden laesst. Wird hier kostenneutral (0)
-        # angenommen.
-        return 0, 0, 0, "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)"
+    if event.type == "kurswechsel":
+        # Pflicht-Maßnahmentausch im Change-Fenster danach (D-13): wird vom Pfadmodell angewendet,
+        # im statischen Referenzplan ohne Change-Fenster-Züge hat das Event keine Wirkung.
+        return 0, 0, 0, "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)"
 
     if event.type == "flat_budget":
         return 0, 0, p["budget_delta"], event.description

@@ -314,6 +314,8 @@ def test_summary_is_deterministic_and_has_no_timing(mini):
     assert list(first) == [
         "format",
         "tier",
+        "layer",
+        "layer_label",
         "budget",
         "kz_start",
         "measures",
@@ -341,6 +343,14 @@ def test_format_console_labels(mini):
     text = format_console(summarize_tier(mini, "low", enumerate_tier(mini, "low")))
     for label in ("Pareto-Front", "im Budget", "über Budget", "Final-Index (vorläufig)", "Perzentile"):
         assert label in text
+    assert text.splitlines()[0].startswith("Referenzplan ohne Change-Fenster-Züge")
+
+
+def test_summary_labels_the_static_layer(mini):
+    summary = summarize_tier(mini, "low", enumerate_tier(mini, "low"))
+    assert summary["layer"] == "referenz"
+    assert summary["layer_label"].startswith("Referenzplan ohne Change-Fenster-Züge")
+    assert "Kurswechsel nicht angewendet" in summary["layer_label"]
 
 
 def test_dump_record_keys(mini):

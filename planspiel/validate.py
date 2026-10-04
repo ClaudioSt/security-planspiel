@@ -8,7 +8,7 @@ from typing import Any, Dict, List, Optional, Tuple
 from planspiel.rules import kz_slope
 
 KNOWN_EVENT_TYPES = (
-    "noop",
+    "kurswechsel",
     "flat_budget",
     "opex_discount_per_active_measure",
     "checklist_tier",
@@ -19,7 +19,7 @@ KNOWN_EVENT_TYPES = (
 )
 
 REQUIRED_EVENT_PARAMS = {
-    "noop": (),
+    "kurswechsel": (),
     "flat_budget": ("budget_delta",),
     "opex_discount_per_active_measure": ("opex_per_measure",),
     "checklist_tier": ("measures", "min_level", "tiers"),
@@ -374,6 +374,7 @@ class _Validator:
                 self.removed_key("e_targets", f"{path}.e_targets")
 
     def check_events(self, events: Any, final_events: Any, measures: dict) -> None:
+        kurswechsel_seen = 0
         if isinstance(events, dict):
             for key, wave_events in events.items():
                 path = f"events.{key}"
@@ -384,6 +385,16 @@ class _Validator:
                     continue
                 for index, event in enumerate(wave_events):
                     self.check_event(event, f"{path}[{index}]", measures, final=False)
+                    if isinstance(event, dict) and event.get("type") == "kurswechsel":
+                        kurswechsel_seen += 1
+                        if kurswechsel_seen > 1:
+                            self.error("schema.kurswechsel_count", f"{path}[{index}]", "höchstens ein Kurswechsel erlaubt")
+                        if match is not None and self.wave_ids and int(match.group(1)) == max(self.wave_ids):
+                            self.error(
+                                "schema.event_placement",
+                                f"{path}[{index}]",
+                                "Kurswechsel braucht ein Change-Fenster danach; in der letzten Welle nicht erlaubt",
+                            )
         if isinstance(final_events, list):
             for index, event in enumerate(final_events):
                 self.check_event(event, f"final_events[{index}]", measures, final=True)
@@ -416,7 +427,7 @@ class _Validator:
             return
         getattr(self, f"event_{event_type}")(event, path, measures)
 
-    def event_noop(self, event: dict, path: str, measures: dict) -> None:
+    def event_kurswechsel(self, event: dict, path: str, measures: dict) -> None:
         pass
 
     def event_flat_budget(self, event: dict, path: str, measures: dict) -> None:

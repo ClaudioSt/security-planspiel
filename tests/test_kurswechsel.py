@@ -261,3 +261,24 @@ def test_kurswechsel_description_uses_the_one_vocabulary(path):
     assert "Levelwechsel" in description
     assert "Maßnahmenwechsel" not in description
     assert not any(char.isdigit() for char in description)
+
+
+def test_readme_uses_the_one_vocabulary():
+    readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
+    assert "Levelwechsel" in readme
+    assert "Maßnahmentausch" in readme
+    assert "Begriffe: Levelwechsel und Maßnahmentausch" in readme
+    assert "Kurswechsel (Maßnahmentausch)" in readme
+    assert readme.count("Maßnahmenwechsel") == 1
+
+
+@pytest.mark.parametrize("path", [CONFIG_PATH, MINI], ids=["real", "mini"])
+def test_no_display_string_uses_the_retired_term(path):
+    cfg = load_config(path)
+    strings = [measure.name for measure in cfg.measures.values()]
+    for wave_events in (*cfg.events.values(), cfg.final_events):
+        for event in wave_events:
+            strings += [event.name, event.description]
+    for wave in cfg.waves:
+        strings += [wave.name] + [bonus.description for bonus in wave.bonus_measures]
+    assert [text for text in strings if "Maßnahmenwechsel" in text] == []

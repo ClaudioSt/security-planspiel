@@ -128,6 +128,7 @@ def test_analyze_handles_zero_cost_plan(tmp_path):
     stdout = result.stdout.decode("utf-8")
     assert "Final-Index" in stdout
     assert "n/a" in stdout
+    assert "Referenzplan ohne Change-Fenster-Züge" in stdout
 
 
 def test_balance_runs_with_canonical_semantics():
@@ -135,5 +136,6 @@ def test_balance_runs_with_canonical_semantics():
     assert result.returncode == 0, result.stderr.decode("utf-8", errors="replace")
     stdout = result.stdout.decode("utf-8")
     assert "Final-Index (vorläufig)" in stdout
+    assert "Referenzplan ohne Change-Fenster-Züge" in stdout
     assert "ÜBER BUDGET" in stdout
     assert "Score=" not in stdout

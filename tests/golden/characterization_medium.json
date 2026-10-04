@@ -57,7 +57,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -229,7 +229,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -399,7 +399,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -569,7 +569,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -739,7 +739,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -911,7 +911,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -1081,7 +1081,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -1251,7 +1251,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -1421,7 +1421,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -1597,7 +1597,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -1773,7 +1773,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -1949,7 +1949,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -2121,7 +2121,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -2296,7 +2296,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -2466,7 +2466,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -2643,7 +2643,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -2817,7 +2817,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -2992,7 +2992,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -3171,7 +3171,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -3350,7 +3350,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -3529,7 +3529,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -3705,7 +3705,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -3878,7 +3878,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -4051,7 +4051,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -4221,7 +4221,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -4397,7 +4397,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -4570,7 +4570,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -4744,7 +4744,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -4928,7 +4928,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -5110,7 +5110,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -5289,7 +5289,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -5461,7 +5461,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -5633,7 +5633,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -5805,7 +5805,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -5975,7 +5975,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -6149,7 +6149,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -6321,7 +6321,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -6496,7 +6496,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -6671,7 +6671,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -6845,7 +6845,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -7019,7 +7019,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -7193,7 +7193,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -7367,7 +7367,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -7541,7 +7541,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -7715,7 +7715,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -7887,7 +7887,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -8059,7 +8059,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -8233,7 +8233,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -8409,7 +8409,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -8582,7 +8582,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -8756,7 +8756,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -8928,7 +8928,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -9103,7 +9103,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -9279,7 +9279,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -9457,7 +9457,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -9636,7 +9636,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -9815,7 +9815,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0
@@ -9989,7 +9989,7 @@
               {
                 "id": "kurswechsel",
                 "name": "Kurswechsel",
-                "effect_description": "Kurswechsel: kostenneutral angenommen (Spielerentscheidung, nicht simuliert)",
+                "effect_description": "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)",
                 "kz_delta": 0,
                 "budget_delta": 0,
                 "opex_delta": 0

@@ -10,6 +10,7 @@ from typing import Dict, List
 from planspiel import rules
 from planspiel.cli import configure_utf8_stdio
 from planspiel.config import load_config
+from planspiel.report import REFERENCE_LABEL
 
 DEFAULT_CONFIG_PATH = Path(__file__).resolve().parents[1] / "simulation_config.json"
 
@@ -272,6 +273,7 @@ def run_analysis(config_path: Path = DEFAULT_CONFIG_PATH):
     cfg = load_config(config_path)
     wave_count = len(cfg.waves)
 
+    print(f"Basis: {REFERENCE_LABEL}")
     print("=" * 100)
     print(f"KOSTEN-REFERENZ (Init + {wave_count}*OPEX)")
     print("=" * 100)

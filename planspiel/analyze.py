@@ -7,6 +7,7 @@ from typing import Dict, List, Optional
 from planspiel import rules
 from planspiel.cli import configure_utf8_stdio
 from planspiel.config import load_config
+from planspiel.report import REFERENCE_LABEL
 
 
 def load_results(path: Path) -> Dict:
@@ -90,6 +91,7 @@ def compute_summary(data: Dict, top_n: int, base_losses: Optional[float], weight
         for item in results
     ]
 
+    print(f"Basis: {REFERENCE_LABEL}")
     print_section("Gesamtübersicht")
     print(f"Outcomes: {len(results)}")
     print(f"KZ: min {format_kz(min(kz_values))}, max {format_kz(max(kz_values))}")

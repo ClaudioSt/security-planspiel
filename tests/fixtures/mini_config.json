@@ -320,8 +320,8 @@
       {
         "id": "kurswechsel",
         "name": "Kurswechsel",
-        "description": "Die Geschäftsführung richtet die Sicherheitsstrategie neu aus: genau ein Maßnahmenwechsel ist durchzuführen, nur die Kostendifferenz der Init-Kosten wird verrechnet.",
-        "type": "noop"
+        "description": "Die Geschäftsführung richtet die Sicherheitsstrategie neu aus. Im Change-Fenster nach dieser Welle führt jedes Team genau einen Maßnahmentausch durch: Eine in dieser Welle aktive Maßnahme fällt ganz weg, eine in dieser Welle nicht aktive Maßnahme kommt auf einem frei wählbaren Level hinzu. Der Kunde übernimmt die Init-Kosten der neuen Maßnahme bis zur Höhe der Init-Kosten der wegfallenden Maßnahme auf ihrem Level in dieser Welle; nur einen Mehrbetrag zahlt das Team, eine günstigere neue Maßnahme bringt keine Erstattung. Abhängige Maßnahmen der wegfallenden Maßnahme senkt das Team im selben Fenster passend ab. Ist in dieser Welle keine oder jede Maßnahme aktiv, entfällt der Tausch. Normale Levelwechsel im selben Change-Fenster bleiben erlaubt.",
+        "type": "kurswechsel"
       },
       {
         "id": "operative_unterstuetzung",
