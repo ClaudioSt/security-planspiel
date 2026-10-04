@@ -344,3 +344,11 @@ def test_window_selection_with_a_wrong_measure_set_is_rejected(real):
 
 def test_path_error_is_a_value_error(real):
     assert issubclass(rules.PathError, ValueError)
+
+
+def test_readme_change_window_rules():
+    readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8").replace("\u2011", "-")
+    for phrase in ("Netto-Änderung", "ab der nächsten Welle", "planspiel tausch"):
+        assert phrase in readme, phrase
+    for retired in ("Change-Gebühr", "Kommunikationseffekt", "Zwangs-Change"):
+        assert retired not in readme, retired

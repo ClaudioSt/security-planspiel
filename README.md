@@ -20,7 +20,7 @@ Ein **konfigurationsgetriebenes IT‑Security‑Planspiel** für einen Automotiv
 
 ## Rollen
 
-- **Beratungsteams**: Treffen Budget‑ und Maßnahmenentscheidungen, reagieren auf Events/Angriffe, kommunizieren Changes.
+- **Beratungsteams**: Treffen Budget‑ und Maßnahmenentscheidungen, reagieren auf Events/Angriffe, setzen Changes im Change‑Fenster um.
 - **Unternehmensvertreter (Facilitator)**: Spielt den Kunden, moderiert Discovery, setzt deterministische Trigger, erklärt Effekte.
 - Optional: **Attack/Rules Controller** (kann der Facilitator mit übernehmen).
 
@@ -54,7 +54,7 @@ Ein **konfigurationsgetriebenes IT‑Security‑Planspiel** für einen Automotiv
    b) Angriffe deterministisch auflösen (siehe „Deterministische Auflösung“)  
    c) **OPEX** zahlen & **Erholung** anwenden (falls konfiguriert)
 5. **Change‑Fenster**  
-   Upgrades/Swaps gemäß Regeln (wirksam **ab nächster Welle**), mit **Kommunikationseffekten** auf KZ.
+   Levelwechsel, Kündigen, Hinzufügen (wirksam **ab der nächsten Welle**); nach der Kurswechsel‑Welle zusätzlich der Pflicht‑Maßnahmentausch.
 6. **Abschluss & Debrief**  
    Einfache **Auswertung** (1–2 Tabellen) und Reflexion.
 
@@ -127,7 +127,7 @@ Ein **konfigurationsgetriebenes IT‑Security‑Planspiel** für einen Automotiv
 - **E‑Schwelle:** pro Welle konfigurierbar; nur die Gesamtreduktion (E‑Wert + Gesamtbonus) oberhalb der Schwelle mindert den Angriff. Einen eigenen KZ‑Bonus/Malus für ein E‑Ziel gibt es nicht.
 - **Rundung (wie auf Papier):** Die KZ-Änderung je Welle (Angriff + Events) wird genau einmal auf eine ganze Zahl gerundet, ab ,5 vom Betrag aufgerundet (+2,5 → +3, −2,5 → −3); danach wird die KZ auf 0–100 begrenzt. E-Wert, Gesamtreduktion, Reduktion über Schwelle und Schweregrad bleiben exakt; der Schaden bleibt exakt in ganzen Euro.
 - **Return on Security (RoS):**
-Gesamtkosten  = eigene Sicherheitsausgaben = Σ Init + Σ Init‑Differenzen aus Upgrades und neuen Maßnahmen + Σ OPEX je Welle (Level der jeweiligen Welle) + Kurswechsel‑Differenz
+Gesamtkosten  = eigene Sicherheitsausgaben = Σ Init + Σ Init‑Differenzen aus Hochstufungen und neuen Maßnahmen im Change‑Fenster + Σ OPEX je Welle (Level der jeweiligen Welle) + Kurswechsel‑Differenz
 Verluste      = Sum(Damage über alle Angriffe)
 Vermeidete Verluste = Sum(Basisverluste ohne Mitigation) − Verluste
 RoS           = (Vermeidete Verluste − Gesamtkosten) / Gesamtkosten
@@ -140,10 +140,11 @@ Nicht enthalten: Event‑Effekte auf Kosten oder Budget (Straf‑OPEX, OPEX‑Ra
 
 ## Change‑Fenster (Planbarkeit + Agency)
 
-- **Zeitpunkte:** Zwischen den Wellen.  
-- **Erlaubt:** Upgrades L1→L2→L3 (wirksam **ab nächster Welle**), Swaps (eine raus, eine rein) mit konfigurierbarer **Change‑Gebühr**.  
-- **Kommunikationseffekt:** Reife Business‑/BCP‑Kommunikation kann KZ‑Effekte der Changes positiv beeinflussen (konfigurierbar).  
-- **Zwangs‑Change (optional):** Bei starker Zielverfehlung kann ein **mindestens ein relevantes Upgrade** erforderlich sein (Regel konfigurierbar).
+- **Zeitpunkt:** Zwischen zwei Wellen. Nach der letzten Welle gibt es kein Change‑Fenster.  
+- **Erlaubte Züge** (beliebig viele, nur das Budget begrenzt): Levelwechsel hoch, Levelwechsel runter, Maßnahme kündigen (Levelwechsel auf Level 0) und neue Maßnahme hinzufügen. Einen freien Maßnahmentausch gibt es nicht: Kündigen und Hinzufügen sind zwei getrennte Züge. Den Maßnahmentausch gibt es nur durch den Kurswechsel (siehe unten).  
+- **Kosten:** Hochstufen und Hinzufügen kosten die **Init‑Differenz** (neue Maßnahme: das volle Init des gewählten Levels). Je Maßnahme zählt nur die **Netto‑Änderung** im Fenster: Init auf dem Level am Fensterende minus Init auf dem Level am Fensteranfang, wenn das positiv ist. Runterstufen und Kündigen **erstatten nie** Init. Züge kosten keine zusätzliche Gebühr.  
+- **Wirkung:** Init‑Differenzen werden sofort im Fenster gebucht. CIA‑Werte, Boni, Level‑Effekte und das OPEX des neuen Levels gelten ab der nächsten Welle.  
+- **Abhängigkeiten:** Nach jedem Fenster müssen alle Abhängigkeiten erfüllt sein, mit derselben Prüfung wie zu Spielbeginn. Wer eine Abhängigkeit bricht, passt die abhängige Maßnahme im selben Fenster an.
 
 ### Begriffe: Levelwechsel und Maßnahmentausch
 
@@ -192,7 +193,7 @@ Nicht enthalten: Event‑Effekte auf Kosten oder Budget (Straf‑OPEX, OPEX‑Ra
 | Discovery | Signale (Kurz) | – | – | – | z. B. OT‑Betrieb ausgeprägt, OEM‑Audit bald |
 | Budget | Startbudget | – | – | – | Trade‑off Erwartung/KZ |
 | Wellen‑Start | Maßnahmen‑Set | Mx L* … | Σ | Σ | Abhängigkeiten erfüllt? |
-| Change‑Fenster | Upgrades/Swaps | Mx L* → L* | Δ | Δ | Kommunikation (KZ‑Effekt) |
+| Change‑Fenster | Levelwechsel / Kündigen / Hinzufügen / Maßnahmentausch (Kurswechsel) | Mx L* → L* | Δ Init (netto, nie negativ) | neues OPEX ab nächster Welle | Abhängigkeiten erfüllt? |
 
 ### Tabelle 2 – Ergebnisse je Welle (E, KZ, Schäden, CIA)
 | Welle | Gewichte (wC/wI/wA) | Team‑CIA (C/I/A) | **E** | KZ Δ (Welle) | Angriffe (kurz) | Sum Schaden | CIA‑Mali (temporär) | Recovery angewandt? |
@@ -210,7 +211,7 @@ Nicht enthalten: Event‑Effekte auf Kosten oder Budget (Straf‑OPEX, OPEX‑Ra
 
 > Alle Werte sind **frei wählbar** und sollten vor dem Spiel **einfach** auf einer Seite dokumentiert werden.
 
-- **KZ‑Startwert**, **KZ‑Effekte** je Budgetspanne/Change‑Kommunikation.  
+- **KZ‑Startwert**, **KZ‑Effekte** je Budgetspanne.  
 - **Gewichte pro Welle (wC,wI,wA)** und **E‑Schwellen**.  
 - **Mitigation‑Cap** pro Angriff, **Level‑Mitigation** (L1/L2/L3).  
 - **Überziehungsstrafe X** je angefangene Schrittweite (Budget Review).  
@@ -249,6 +250,13 @@ for t in low medium high; do uv run python simulate_outcomes.py --budget-tier $t
 ```
 
 **Referenzplan:** Die Enumeration bewertet den **Referenzplan ohne Change‑Fenster‑Züge**: Der Plan der ersten Welle bleibt unverändert, der Kurswechsel wird nicht angewendet. Das ist nur für Pläne ein legales Spiel, bei denen kein Maßnahmentausch möglich ist; die besten Werte sind Referenzwerte und keine erreichbaren Spielergebnisse. Konsole, Summary‑JSON (`layer`, `layer_label`), Balance‑Report und Legacy‑Auswertung tragen dieses Label.
+
+**Tausch‑Schicht (legales Minimum):**
+```
+uv run planspiel tausch --tier medium
+```
+
+Die Tausch‑Schicht bewertet jeden gültigen Plan der ersten Welle mit jedem legalen Maßnahmentausch des Kurswechsels (sonst unverändert; Pläne, bei denen kein Tausch möglich ist, wie sie sind). Die abhängigen Maßnahmen der wegfallenden Maßnahme werden dabei minimal abgesenkt; weitere Züge im Fenster werden nicht durchprobiert. Sie schreibt `simulation_summary_tausch_<tier>.json` und beschriftet ihre Zahlen mit „Pflicht‑Maßnahmentausch (Kurswechsel), legales Minimum“. Ohne `--tier` laufen alle Tiers der Konfiguration; `--summary-dir` wählt das Zielverzeichnis. Einzelne Spielpfade mit beliebigen Zügen wertet `planspiel.rules.evaluate_path` exakt aus.
 
 **Vollständiger Dump nur auf Anfrage:**
 ```
