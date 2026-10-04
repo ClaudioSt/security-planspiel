@@ -202,7 +202,7 @@ def format_gate_report(result: GateResult) -> str:
     if witness is not None:
         lines.append(
             f"  bestimmender Plan {witness['code']}: Restbudget {witness['remaining']} k€, "
-            f"{witness['steps']} angefangene Schritte, KZ vor Review {witness['kz_pre_review']}, "
+            f"angefangene Schritte {witness['steps']}, KZ vor Review {witness['kz_pre_review']}, "
             f"End-KZ {witness['kz_final']}, nötiges X {witness['required_x']}"
         )
         lines.append(
