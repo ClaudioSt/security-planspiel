@@ -14,6 +14,7 @@ RULES = "planspiel/rules.py"
 CONFIG = "planspiel/config.py"
 ROUNDING = "planspiel/rounding.py"
 REVIEW_TEXT = "planspiel/review_text.py"
+GATE = "planspiel/gate.py"
 
 FORMULA_FUNCTIONS = {
     name: RULES
@@ -63,6 +64,7 @@ FORMULA_FUNCTIONS.update(
     {name: ROUNDING for name in ("round_half_away", "round_half_away_frac", "started_steps")}
 )
 FORMULA_FUNCTIONS.update({name: REVIEW_TEXT for name in ("format_eur", "penalty_rows", "boundary_text")})
+FORMULA_FUNCTIONS.update({name: GATE for name in ("lowering_closure", "required_penalty_x")})
 
 RETIRED_FUNCTIONS = {
     "e_target_check",
