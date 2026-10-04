@@ -69,6 +69,20 @@ EXPECTED = {
         "ros_changed": 0,
         "damage_changed": 0,
     },
+    "02-05": {
+        "kz_changed": 0,
+        "kz_changed_in": 0,
+        "kz_changed_over": 0,
+        "in_budget_pre": {"low": 69_454, "medium": 124_321, "high": 197_753},
+        "in_budget_post": {"low": 69_454, "medium": 124_321, "high": 197_753},
+        "flips": 0,
+        "mean_shift": "0.00",
+        "best_in_budget": {"low": "98 -> 98", "medium": "100 -> 100", "high": "100 -> 100"},
+        "best_over_budget": {"low": "91 -> 91", "medium": "91 -> 91", "high": "89 -> 89"},
+        "zero_over": {"low": 606_209, "medium": 525_877, "high": 442_578},
+        "ros_changed": 0,
+        "damage_changed": 0,
+    },
 }
 
 
