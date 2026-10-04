@@ -395,6 +395,22 @@ class _Validator:
                                 f"{path}[{index}]",
                                 "Kurswechsel braucht ein Change-Fenster danach; in der letzten Welle nicht erlaubt",
                             )
+                    if (
+                        isinstance(event, dict)
+                        and event.get("type") == "flat_budget"
+                        and isinstance(event.get("budget_delta"), int)
+                        and not isinstance(event.get("budget_delta"), bool)
+                        and event["budget_delta"] < 0
+                        and match is not None
+                        and self.wave_ids
+                        and int(match.group(1)) == max(self.wave_ids)
+                    ):
+                        self.warning(
+                            "rules.event_without_window",
+                            f"{path}[{index}]",
+                            "Budgetkürzung in der letzten Welle: danach gibt es kein Change-Fenster mehr, "
+                            "die Überziehung wird ohne Reaktionsmöglichkeit am Ende geprüft",
+                        )
         if isinstance(final_events, list):
             for index, event in enumerate(final_events):
                 self.check_event(event, f"final_events[{index}]", measures, final=True)

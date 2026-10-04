@@ -94,7 +94,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -266,7 +266,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -436,7 +436,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -606,7 +606,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -776,7 +776,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -948,7 +948,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -1118,7 +1118,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -1288,7 +1288,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -1460,7 +1460,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -1634,7 +1634,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -1810,7 +1810,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -1986,7 +1986,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -2161,7 +2161,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -2333,7 +2333,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -2503,7 +2503,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -2680,7 +2680,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -2854,7 +2854,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -3031,7 +3031,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -3211,7 +3211,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -3390,7 +3390,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -3566,7 +3566,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -3742,7 +3742,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -3915,7 +3915,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -4088,7 +4088,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -4258,7 +4258,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -4434,7 +4434,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -4607,7 +4607,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -4784,7 +4784,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -4965,7 +4965,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -5147,7 +5147,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -5328,7 +5328,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -5498,7 +5498,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -5670,7 +5670,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -5842,7 +5842,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -6014,7 +6014,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -6186,7 +6186,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -6358,7 +6358,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -6534,7 +6534,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -6708,7 +6708,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -6880,7 +6880,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -7056,7 +7056,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -7232,7 +7232,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -7408,7 +7408,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -7584,7 +7584,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -7761,7 +7761,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -7934,7 +7934,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -8108,7 +8108,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -8284,7 +8284,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -8458,7 +8458,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -8630,7 +8630,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -8807,7 +8807,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -8979,7 +8979,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -9151,7 +9151,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -9323,7 +9323,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -9500,7 +9500,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -9677,7 +9677,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -9854,7 +9854,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -10034,7 +10034,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -10210,7 +10210,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -10386,7 +10386,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0

@@ -228,7 +228,7 @@
       {
         "id": "sparprogramm",
         "name": "Sparprogramm",
-        "description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR.",
+        "description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
         "type": "flat_budget",
         "budget_delta": -20
       },
