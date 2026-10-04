@@ -5,15 +5,15 @@ milestone_name: milestone
 current_phase: 2
 current_phase_name: Rule Changes
 status: executing
-stopped_at: Completed 02-03-PLAN.md
-last_updated: "2026-10-04T17:50:52.564Z"
+stopped_at: Completed 02-06-PLAN.md
+last_updated: "2026-10-04T18:23:39.165Z"
 last_activity: 2026-10-02
 last_activity_desc: Phase 2 execution started
 progress:
   total_phases: 7
   completed_phases: 1
   total_plans: 15
-  completed_plans: 12
+  completed_plans: 13
   percent: 14
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-09-29)
 ## Current Position
 
 Phase: 2 (Rule Changes) — EXECUTING
-Plan: 6 of 8
+Plan: 7 of 8
 Status: Ready to execute
 Last activity: 2026-10-02 — Phase 2 execution started
 
@@ -67,6 +67,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 02 P03 | multi-session | 3 tasks tasks | 26 files files |
 | Phase 02 P04 | single session | 2 tasks | 11 files |
 | Phase 02 P05 | multi-session | 3 tasks | 17 files |
+| Phase 02 P06 | 31min | 3 tasks | 11 files |
 
 ## Accumulated Context
 
@@ -93,6 +94,8 @@ Recent decisions affecting current work:
 - [Phase 02]: RULE-03/D-15: over-budget plans lose X KZ per started 10.000 EUR (provisional X=9, step 10 kEUR, config overspend_penalty), measured once at the end (D-14); kz_pre_review and remaining stored for the RULE-04 gate; no validator warning for large X
 - [Phase 02]: RULE-07/D-16: Budget Review tiers inclusive (ab), first minimum 0, card text generated via review_text.boundary_text; _tier_lookup raises below domain (WR-07); closes CR-01
 - [Phase 02-05]: Kurswechsel is one forced Massnahmentausch (D-09..D-13, D-22, D-23, D-28); static enumeration is the reference plan without change-window moves (D-24); goldens changed text-only
+- [Phase 02]: 02-06 RULE-02: evaluate_path models Levelwechsel up/down, cancel and add with net Init pricing per measure (D-27), no refund, no fee, effects and OPEX from the next wave, dependencies valid after every window
+- [Phase 02]: 02-06 D-24: the swap layer (every valid wave-1 plan x every legal Kurswechsel swap with minimal repair; exempt plans static) is the legal minimum and is labelled; 37,300,736 swap paths per tier, about 4 min and 62 MB per tier; low-tier legal best in budget KZ 100 vs static reference 98
 
 ### Pending Todos
 
@@ -115,6 +118,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-10-04T17:50:52.553Z
-Stopped at: Completed 02-03-PLAN.md
+Last session: 2026-10-04T18:23:39.154Z
+Stopped at: Completed 02-06-PLAN.md
 Resume file: .planning/phases/02-rule-changes/02-CONTEXT.md
