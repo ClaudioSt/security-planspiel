@@ -100,6 +100,10 @@ Task 3 was the blocking human-verify checkpoint. The reviewer replied "approved"
 - `tests/test_validate.py` was listed in the plan but was not modified in the commits; the new validator rules (`schema.kurswechsel_count`, last-wave placement, `noop` unknown) are exercised in `tests/test_kurswechsel.py` (parametrized error mutations) instead.
 - Stale README change-window bullets (the old description of the Kurswechsel-adjacent change-window moves) are intentionally left for plan 02-06, which rewrites the change window as the path model.
 - The golden diff dumps under `.planning/phases/02-rule-changes/golden-diff/` are not committed.
+- A Kurswechsel in `final_events` was already rejected by the existing placement rule (`schema.event_placement`); only the last-wave and count rules are new, so that validator case already passed at RED.
+- The PROJECT.md Key Decisions row is dated 2026-10-04 (the implementation date) instead of the plan's 2026-10-01.
+- Line endings preserved: touched CRLF files kept CRLF, goldens stay LF per `.gitattributes`, the new `tests/test_kurswechsel.py` is CRLF like the other tests.
+- `.planning/PROJECT.md` still uses the retired term "Maßnahmenwechsel" in the historical open-requirement and context lines (lines 38 and 76); left as history.
 
 ## Notes for later plans
 
