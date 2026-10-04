@@ -433,7 +433,7 @@ class _Validator:
             for index, measure_id in enumerate(listed):
                 self.check_measure_ref(measure_id, f"{path}.measures[{index}]", measures)
         self.int_value(event["min_level"], f"{path}.min_level", lo=1, hi=3)
-        self.check_tiers(event["tiers"], f"{path}.tiers", max_minimum=count)
+        self.check_tiers(event["tiers"], f"{path}.tiers", max_minimum=count, first_minimum=0)
 
     def event_measure_level_tier(self, event: dict, path: str, measures: dict) -> None:
         self.check_measure_ref(event["measure"], f"{path}.measure", measures)
@@ -468,7 +468,7 @@ class _Validator:
             self.int_value(clause[present[0]], f"{clause_path}.{present[0]}", lo=0, hi=3)
 
     def event_final_budget_tier(self, event: dict, path: str, measures: dict) -> None:
-        self.check_tiers(event["tiers"], f"{path}.tiers")
+        self.check_tiers(event["tiers"], f"{path}.tiers", first_minimum=0)
         penalty_path = f"{path}.overspend_penalty"
         penalty = event["overspend_penalty"]
         if not self.container(penalty, dict, penalty_path):
@@ -482,7 +482,9 @@ class _Validator:
                 f"Schrittweite {step} k€ weicht von 10 k€ ab, die gedruckte Regel lautet \"je angefangene 10.000 €\"",
             )
 
-    def check_tiers(self, tiers: Any, path: str, max_minimum: Optional[int] = None) -> None:
+    def check_tiers(
+        self, tiers: Any, path: str, max_minimum: Optional[int] = None, first_minimum: Optional[int] = None
+    ) -> None:
         if not self.container(tiers, list, path):
             return
         if not tiers:
@@ -502,6 +504,8 @@ class _Validator:
                     self.error("schema.tiers_order", tier_path, f"Stufenminimum {minimum} größer als die Anzahl der Maßnahmen ({max_minimum})")
         if any(later <= earlier for earlier, later in zip(minima, minima[1:])):
             self.error("schema.tiers_order", path, f"Stufenminima müssen streng aufsteigend sein, gefunden {minima}")
+        if first_minimum is not None and minima and minima[0] != first_minimum:
+            self.error("schema.tiers_order", path, f"erstes Stufenminimum muss {first_minimum} sein, gefunden {minima[0]}")
 
     def check_exactness(self) -> None:
         raw = self.raw

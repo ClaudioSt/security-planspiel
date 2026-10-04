@@ -18,3 +18,23 @@ def penalty_rows(kz_per_step: int, step_k: int, max_kz: int = 100) -> List[Tuple
         ((i - 1) * step_k * 1000 + 1, i * step_k * 1000, -kz_per_step * i)
         for i in range(1, count + 1)
     ]
+
+
+def _tier_value_text(value: int) -> str:
+    if value == 0:
+        return "±0"
+    return f"+{value}" if value > 0 else f"−{-value}"
+
+
+def boundary_text(tiers: List[List[int]]) -> str:
+    """Kartentext der Restbudget-Stufen, erzeugt aus der Stufenliste (k€, erstes Minimum 0).
+
+    D-16: "ab" gilt einschließlich, dieselbe Liste nutzt die Simulation (≥).
+    """
+    if len(tiers) == 1:
+        return f"ab 0 € → {_tier_value_text(tiers[0][1])}"
+    parts = [f"0 – {format_eur(tiers[1][0] * 1000 - 1)} € → {_tier_value_text(tiers[0][1])}"]
+    parts.extend(
+        f"ab {format_eur(minimum * 1000)} € → {_tier_value_text(value)}" for minimum, value in tiers[1:]
+    )
+    return ", ".join(parts)

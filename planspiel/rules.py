@@ -185,7 +185,10 @@ def _tier_lookup(value: float, tiers: List[List[float]]) -> float:
     """
     tiers: list of [min_inclusive, value], sorted ascending by min_inclusive.
     Returns the value of the highest tier whose min_inclusive <= value.
+    Werte unterhalb des ersten Minimums sind kein gültiger Eingang und lösen ValueError aus.
     """
+    if value < tiers[0][0]:
+        raise ValueError(f"Wert {value} liegt unter dem ersten Stufenminimum {tiers[0][0]}")
     result = tiers[0][1]
     for min_inclusive, tier_value in tiers:
         if value >= min_inclusive:

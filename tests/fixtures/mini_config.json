@@ -419,10 +419,6 @@
       "type": "final_budget_tier",
       "tiers": [
         [
-          -100000,
-          -15
-        ],
-        [
           0,
           0
         ],
