@@ -276,9 +276,10 @@
     {
       "id": "budget_review",
       "name": "Budget Review",
-      "description": "Nach Abschluss wird das Restbudget geprüft: <0 EUR -> KZ -15, 0-25.000 -> KZ 0, 25.001-50.000 -> KZ +5, 50.001-75.000 -> KZ +10, >=75.001 -> KZ +15.",
+      "description": "Nach Abschluss wird das Restbudget geprüft.",
       "type": "final_budget_tier",
-      "tiers": [[-100000, -15], [0, 0], [25, 5], [50, 10], [75, 15]]
+      "tiers": [[-100000, -15], [0, 0], [25, 5], [50, 10], [75, 15]],
+      "overspend_penalty": {"kz_per_step": 9, "step": 10}
     }
   ]
 }

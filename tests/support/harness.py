@@ -71,4 +71,6 @@ def compact_from_plan(cfg: Config, rec: dict):
         event_budget=rec["total_event_budget"],
         over_budget=rec["over_budget"],
         kz_after=tuple(wave["kz_after"] for wave in rec["waves"]),
+        kz_pre_review=rec["waves"][-1]["kz_after"],
+        remaining=costs["budget_available"] - costs["total"],
     )

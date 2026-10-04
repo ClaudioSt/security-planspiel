@@ -14,6 +14,8 @@ STORE_LAYOUT = (
     ("total_cost", "i"),
     ("damage_eur", "I"),
     ("over_budget", "B"),
+    ("kz_pre_review", "B"),
+    ("remaining", "h"),
 )
 
 
@@ -25,10 +27,12 @@ class CompactRecord(NamedTuple):
     damage_eur: int
     over_budget: bool
     total_cost: int
+    kz_pre_review: int
+    remaining: int
 
 
 class ResultStore:
-    """One 16-byte record per dependency-valid combination, integers only (D-17)."""
+    """One 19-byte record per dependency-valid combination, integers only (D-17)."""
 
     def __init__(self, base_losses):
         assert array("I").itemsize >= 4
@@ -43,6 +47,8 @@ class ResultStore:
         columns["total_cost"].append(outcome.total_cost)
         columns["damage_eur"].append(outcome.damage_eur)
         columns["over_budget"].append(1 if outcome.over_budget else 0)
+        columns["kz_pre_review"].append(outcome.kz_pre_review)
+        columns["remaining"].append(outcome.remaining)
 
     def __len__(self) -> int:
         return len(self._columns["code_index"])
@@ -63,6 +69,8 @@ class ResultStore:
             damage_eur=damage_eur,
             over_budget=bool(columns["over_budget"][i]),
             total_cost=total_cost,
+            kz_pre_review=columns["kz_pre_review"][i],
+            remaining=columns["remaining"][i],
         )
 
     @property

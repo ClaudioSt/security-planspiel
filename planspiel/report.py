@@ -278,9 +278,11 @@ def dump_record(measure_ids, code_index: int, outcome, base_losses) -> Dict:
     return {
         "code": code_from_index(code_index, len(measure_ids)),
         "kz_final": outcome.kz_final,
+        "kz_pre_review": outcome.kz_pre_review,
         "kz_after": list(outcome.kz_after),
         "own_cost": outcome.own_cost,
         "total_cost": outcome.total_cost,
+        "remaining": outcome.remaining,
         "total_damage": exact_to_json(Fraction(outcome.damage_eur, 1000)),
         "ros": None if ros is None else exact_to_json(ros),
         "final_index": exact_to_json(rules.final_index(outcome.kz_final, ros)),

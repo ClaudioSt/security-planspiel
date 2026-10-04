@@ -2957,7 +2957,7 @@
           "M9": 0,
           "M10": 0
         },
-        "kz_final": 64,
+        "kz_final": 16,
         "total_damage": 0,
         "total_event_opex": -16,
         "total_event_budget": -20,
@@ -3101,7 +3101,7 @@
             "id": "budget_review",
             "name": "Budget Review",
             "effect_description": "Restbudget -64k€",
-            "kz_delta": -15
+            "kz_delta": -63
           }
         ],
         "costs": {
@@ -3136,7 +3136,7 @@
           "M9": 0,
           "M10": 0
         },
-        "kz_final": 64,
+        "kz_final": 25,
         "total_damage": 0,
         "total_event_opex": -16,
         "total_event_budget": -20,
@@ -3280,7 +3280,7 @@
             "id": "budget_review",
             "name": "Budget Review",
             "effect_description": "Restbudget -58k€",
-            "kz_delta": -15
+            "kz_delta": -54
           }
         ],
         "costs": {
@@ -3315,7 +3315,7 @@
           "M9": 0,
           "M10": 0
         },
-        "kz_final": 64,
+        "kz_final": 43,
         "total_damage": 0,
         "total_event_opex": -14,
         "total_event_budget": -20,
@@ -3459,7 +3459,7 @@
             "id": "budget_review",
             "name": "Budget Review",
             "effect_description": "Restbudget -32k€",
-            "kz_delta": -15
+            "kz_delta": -36
           }
         ],
         "costs": {
@@ -3494,7 +3494,7 @@
           "M9": 0,
           "M10": 0
         },
-        "kz_final": 61,
+        "kz_final": 49,
         "total_damage": 0,
         "total_event_opex": -16,
         "total_event_budget": -20,
@@ -3636,7 +3636,7 @@
             "id": "budget_review",
             "name": "Budget Review",
             "effect_description": "Restbudget -28k€",
-            "kz_delta": -15
+            "kz_delta": -27
           }
         ],
         "costs": {
@@ -3671,7 +3671,7 @@
           "M9": 2,
           "M10": 2
         },
-        "kz_final": 61,
+        "kz_final": 49,
         "total_damage": 0,
         "total_event_opex": -18,
         "total_event_budget": -20,
@@ -3811,7 +3811,7 @@
             "id": "budget_review",
             "name": "Budget Review",
             "effect_description": "Restbudget -28k€",
-            "kz_delta": -15
+            "kz_delta": -27
           }
         ],
         "costs": {
@@ -4017,7 +4017,7 @@
           "M9": 3,
           "M10": 3
         },
-        "kz_final": 55,
+        "kz_final": 43,
         "total_damage": "74.8",
         "total_event_opex": -16,
         "total_event_budget": -20,
@@ -4155,7 +4155,7 @@
             "id": "budget_review",
             "name": "Budget Review",
             "effect_description": "Restbudget -24k€",
-            "kz_delta": -15
+            "kz_delta": -27
           }
         ],
         "costs": {
@@ -4709,7 +4709,7 @@
           "M9": 3,
           "M10": 3
         },
-        "kz_final": 85,
+        "kz_final": 0,
         "total_damage": 0,
         "total_event_opex": -20,
         "total_event_budget": -20,
@@ -4855,7 +4855,7 @@
             "id": "budget_review",
             "name": "Budget Review",
             "effect_description": "Restbudget -790k€",
-            "kz_delta": -15
+            "kz_delta": -711
           }
         ],
         "costs": {
@@ -7160,7 +7160,7 @@
           "M9": 3,
           "M10": 3
         },
-        "kz_final": 64,
+        "kz_final": 70,
         "total_damage": 0,
         "total_event_opex": -10,
         "total_event_budget": -20,
@@ -7301,7 +7301,7 @@
             "id": "budget_review",
             "name": "Budget Review",
             "effect_description": "Restbudget -8k€",
-            "kz_delta": -15
+            "kz_delta": -9
           }
         ],
         "costs": {
@@ -7336,7 +7336,7 @@
           "M9": 2,
           "M10": 3
         },
-        "kz_final": 64,
+        "kz_final": 70,
         "total_damage": 0,
         "total_event_opex": -12,
         "total_event_budget": -20,
@@ -7477,7 +7477,7 @@
             "id": "budget_review",
             "name": "Budget Review",
             "effect_description": "Restbudget -1k€",
-            "kz_delta": -15
+            "kz_delta": -9
           }
         ],
         "costs": {
@@ -9427,7 +9427,7 @@
           "M9": 0,
           "M10": 2
         },
-        "kz_final": 74,
+        "kz_final": 26,
         "total_damage": 0,
         "total_event_opex": -16,
         "total_event_budget": -20,
@@ -9569,7 +9569,7 @@
             "id": "budget_review",
             "name": "Budget Review",
             "effect_description": "Restbudget -65k€",
-            "kz_delta": -15
+            "kz_delta": -63
           }
         ],
         "costs": {
@@ -9604,7 +9604,7 @@
           "M9": 3,
           "M10": 2
         },
-        "kz_final": 85,
+        "kz_final": 0,
         "total_damage": 0,
         "total_event_opex": -18,
         "total_event_budget": -20,
@@ -9746,7 +9746,7 @@
             "id": "budget_review",
             "name": "Budget Review",
             "effect_description": "Restbudget -371k€",
-            "kz_delta": -15
+            "kz_delta": -342
           }
         ],
         "costs": {
@@ -9781,7 +9781,7 @@
           "M9": 3,
           "M10": 1
         },
-        "kz_final": 74,
+        "kz_final": 0,
         "total_damage": 0,
         "total_event_opex": -18,
         "total_event_budget": -20,
@@ -9925,7 +9925,7 @@
             "id": "budget_review",
             "name": "Budget Review",
             "effect_description": "Restbudget -208k€",
-            "kz_delta": -15
+            "kz_delta": -189
           }
         ],
         "costs": {
@@ -9960,7 +9960,7 @@
           "M9": 1,
           "M10": 2
         },
-        "kz_final": 85,
+        "kz_final": 0,
         "total_damage": 0,
         "total_event_opex": -18,
         "total_event_budget": -20,
@@ -10105,7 +10105,7 @@
             "id": "budget_review",
             "name": "Budget Review",
             "effect_description": "Restbudget -542k€",
-            "kz_delta": -15
+            "kz_delta": -495
           }
         ],
         "costs": {
@@ -10314,7 +10314,7 @@
           "M9": 0,
           "M10": 3
         },
-        "kz_final": 56,
+        "kz_final": 0,
         "total_damage": 0,
         "total_event_opex": -14,
         "total_event_budget": -20,
@@ -10456,7 +10456,7 @@
             "id": "budget_review",
             "name": "Budget Review",
             "effect_description": "Restbudget -222k€",
-            "kz_delta": -15
+            "kz_delta": -207
           }
         ],
         "costs": {

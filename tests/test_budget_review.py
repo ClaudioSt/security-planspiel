@@ -283,3 +283,9 @@ def test_large_penalty_is_not_a_validator_warning():
     assert _errors(issues) == []
     assert {issue.code for issue in _warnings(issues)} == {"hand_calc.kz_slope"}
 
+
+def test_readme_documents_linear_penalty():
+    text = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
+    assert "Budget Review und Überziehung" in text
+    assert "angefangene" in text
+    assert "overspend_penalty" in text

@@ -26,7 +26,7 @@ REQUIRED_EVENT_PARAMS = {
     "measure_level_tier": ("measure", "tiers"),
     "level_bonus_per_measure": ("level", "kz_per_measure"),
     "and_condition": ("clauses", "kz_delta"),
-    "final_budget_tier": ("tiers",),
+    "final_budget_tier": ("tiers", "overspend_penalty"),
 }
 
 CIA_KEYS = {"c", "i", "a"}
@@ -469,6 +469,18 @@ class _Validator:
 
     def event_final_budget_tier(self, event: dict, path: str, measures: dict) -> None:
         self.check_tiers(event["tiers"], f"{path}.tiers")
+        penalty_path = f"{path}.overspend_penalty"
+        penalty = event["overspend_penalty"]
+        if not self.container(penalty, dict, penalty_path):
+            return
+        self.int_field(penalty, "kz_per_step", penalty_path, lo=1)
+        step = self.int_field(penalty, "step", penalty_path, lo=1)
+        if step is not None and step != 10:
+            self.warning(
+                "hand_calc.penalty_step",
+                f"{penalty_path}.step",
+                f"Schrittweite {step} k€ weicht von 10 k€ ab, die gedruckte Regel lautet \"je angefangene 10.000 €\"",
+            )
 
     def check_tiers(self, tiers: Any, path: str, max_minimum: Optional[int] = None) -> None:
         if not self.container(tiers, list, path):

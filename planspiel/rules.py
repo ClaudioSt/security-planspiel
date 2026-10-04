@@ -2,7 +2,7 @@ from fractions import Fraction
 from typing import Dict, List, NamedTuple, Optional, Sequence, Tuple
 
 from planspiel.config import Attack, BudgetTier, Config, Event, Measure, Wave
-from planspiel.rounding import round_half_away_frac
+from planspiel.rounding import round_half_away_frac, started_steps
 
 
 def dependencies_satisfied(selection: Dict[str, int], measures: Dict[str, Measure]) -> bool:
@@ -193,6 +193,27 @@ def _tier_lookup(value: float, tiers: List[List[float]]) -> float:
     return result
 
 
+def budget_review_delta(remaining: float, tiers: List[List[float]], kz_per_step: int, step: int) -> int:
+    """KZ-Änderung des Budget Reviews aus dem Restbudget (k€).
+
+    Druckbare Regel: Restbudget >= 0 -> Bonus nach Stufentabelle; Restbudget < 0 ->
+    "je angefangene Schrittweite Überziehung −X KZ". Die Schrittweite step ist in k€ wie
+    das Budget-Ledger und wird explizit an started_steps gegeben.
+    """
+    if remaining < 0:
+        return -kz_per_step * started_steps(-remaining, step)
+    return _tier_lookup(remaining, tiers)
+
+
+def penalty_params(final_events: List[Event]) -> Tuple[int, int]:
+    """(kz_per_step, step in k€) des ersten Budget-Review-Events."""
+    for event in final_events:
+        if event.type == "final_budget_tier":
+            penalty = event.params["overspend_penalty"]
+            return penalty["kz_per_step"], penalty["step"]
+    raise ValueError("Kein final_budget_tier-Event in final_events")
+
+
 def evaluate_event(
     event: Event,
     selection: Dict[str, int],
@@ -249,7 +270,8 @@ def evaluate_event(
         return kz_delta, 0, 0, "Bedingung erfüllt" if all_met else "Bedingung nicht erfüllt"
 
     if event.type == "final_budget_tier":
-        kz_delta = _tier_lookup(remaining_budget, p["tiers"])
+        penalty = p["overspend_penalty"]
+        kz_delta = budget_review_delta(remaining_budget, p["tiers"], penalty["kz_per_step"], penalty["step"])
         return kz_delta, 0, 0, f"Restbudget {remaining_budget:.0f}k€"
 
     raise ValueError(f"Unknown event type: {event.type}")
@@ -467,6 +489,8 @@ class CompactOutcome(NamedTuple):
     event_budget: int
     over_budget: bool
     kz_after: Tuple[int, ...]
+    kz_pre_review: int
+    remaining: int
 
 
 class TierKernel:
@@ -546,4 +570,6 @@ class TierKernel:
             event_budget=event_budget_total,
             over_budget=ledger.over_budget,
             kz_after=tuple(kz_after),
+            kz_pre_review=kz,
+            remaining=ledger.remaining_budget,
         )
