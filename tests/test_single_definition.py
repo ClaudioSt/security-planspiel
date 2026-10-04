@@ -47,6 +47,11 @@ FORMULA_FUNCTIONS = {
         "apply_final_events",
         "budget_review_delta",
         "penalty_params",
+        "swap_possible",
+        "swap_legal",
+        "swap_credit",
+        "swap_repair",
+        "kurswechsel_wave",
     )
 }
 FORMULA_FUNCTIONS.update(
