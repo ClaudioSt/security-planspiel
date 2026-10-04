@@ -52,7 +52,7 @@ FORMULA_FUNCTIONS = {
 FORMULA_FUNCTIONS.update(
     {name: ROUNDING for name in ("round_half_away", "round_half_away_frac", "started_steps")}
 )
-FORMULA_FUNCTIONS.update({name: REVIEW_TEXT for name in ("format_eur", "penalty_rows")})
+FORMULA_FUNCTIONS.update({name: REVIEW_TEXT for name in ("format_eur", "penalty_rows", "boundary_text")})
 
 RETIRED_FUNCTIONS = {
     "e_target_check",

@@ -82,6 +82,10 @@ def _reverse_budget_tiers(raw):
     raw["final_events"][0]["tiers"].reverse()
 
 
+def _budget_review_first_minimum_negative(raw):
+    raw["final_events"][0]["tiers"][0][0] = -5
+
+
 def _dependency_cycle(raw):
     raw["measures"]["M2"]["dependencies"] = [
         {"level": 1, "requires": [{"measure": "M1", "min_level": 1}]}
@@ -119,6 +123,13 @@ ERROR_MUTATIONS = [
     pytest.param(_delete(["measures", "M3", "levels", "3"]), "schema.levels", "measures.M3.levels", id="missing-level"),
     pytest.param(_set(["attacks", "ot", "mitigation_cap"], True), "schema.type", "attacks.ot.mitigation_cap", id="bool-is-not-a-number"),
     pytest.param(_reverse_budget_tiers, "schema.tiers_order", "final_events[0].tiers", id="tiers-out-of-order"),
+    pytest.param(_budget_review_first_minimum_negative, "schema.tiers_order", "final_events[0].tiers", id="budget-review-first-minimum-not-zero"),
+    pytest.param(
+        _set(["events", "wave_2", 1, "tiers", 0, 0], -1),
+        "schema.tiers_order",
+        "events.wave_2[1].tiers",
+        id="oem-audit-first-minimum-not-zero",
+    ),
     pytest.param(_set(["attacks", "ot", "mitigation_cap"], 0), "schema.range", "attacks.ot.mitigation_cap", id="mitigation-cap-zero"),
     pytest.param(_set(["waves", 2, "id"], 4), "schema.wave_ids", "waves", id="wave-ids-not-consecutive"),
     pytest.param(_rename_wave_key, "ref.unknown_wave", "events.wave_9", id="events-unknown-wave"),

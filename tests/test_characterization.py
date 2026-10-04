@@ -99,8 +99,8 @@ def mutate_wave1_threshold(raw):
 
 
 def mutate_budget_review_boundary(raw):
-    assert raw["final_events"][0]["tiers"][2][0] == 25
-    raw["final_events"][0]["tiers"][2][0] += 1
+    assert raw["final_events"][0]["tiers"][1][0] == 25
+    raw["final_events"][0]["tiers"][1][0] += 1
 
 
 @pytest.mark.parametrize(
