@@ -375,8 +375,8 @@ def apply_events(
     return kz_delta, budget_delta, opex_delta, event_results
 
 
-def simulate_selection(
-    selection: Dict[str, int],
+def simulate_waves(
+    selections: Sequence[Dict[str, int]],
     budget_tier: BudgetTier,
     waves: List[Wave],
     attacks: Dict[str, Attack],
@@ -387,6 +387,10 @@ def simulate_selection(
     ws: int,
     rs: int,
 ) -> Dict:
+    """Wellenschleife mit der je Welle geltenden Auswahl: CIA, Angriff, Recovery, Bonus und Events der Welle k
+    nutzen selections[k]."""
+    if len(selections) != len(waves):
+        raise ValueError(f"{len(selections)} Auswahlen für {len(waves)} Wellen")
     kz = kz_start
     total_damage = 0
     total_event_opex = 0
@@ -394,7 +398,7 @@ def simulate_selection(
     cia_mali = {"c": 0, "i": 0, "a": 0}
     per_wave = []
 
-    for wave in waves:
+    for wave, selection in zip(waves, selections):
         cia = compute_cia(selection, measures, base_cia)
         attack = attacks[wave.attack_id]
 
@@ -437,13 +441,32 @@ def simulate_selection(
         })
 
     return {
-        "selection": selection,
         "kz_final": kz,
         "total_damage": total_damage,
         "total_event_opex": total_event_opex,
         "total_event_budget": total_event_budget,
         "cia_mali": cia_mali,
         "waves": per_wave,
+    }
+
+
+def simulate_selection(
+    selection: Dict[str, int],
+    budget_tier: BudgetTier,
+    waves: List[Wave],
+    attacks: Dict[str, Attack],
+    measures: Dict[str, Measure],
+    events: Dict[int, List[Event]],
+    base_cia: Dict[str, int],
+    kz_start: int,
+    ws: int,
+    rs: int,
+) -> Dict:
+    return {
+        "selection": selection,
+        **simulate_waves(
+            [selection] * len(waves), budget_tier, waves, attacks, measures, events, base_cia, kz_start, ws, rs
+        ),
     }
 
 
@@ -537,6 +560,130 @@ def evaluate_plan(cfg: Config, tier_name: str, selection: Dict[str, int]) -> Dic
     outcome["over_budget"] = ledger.over_budget
     outcome["ros"] = ros(base_losses(cfg.waves, cfg.attacks), outcome["total_damage"], ledger.security_spend)
     return outcome
+
+
+class Window(NamedTuple):
+    selection: Dict[str, int]
+    swap: Optional[Tuple[str, str]] = None
+
+
+class Path(NamedTuple):
+    start: Dict[str, int]
+    windows: Tuple[Window, ...] = ()
+
+
+class PathError(ValueError):
+    def __init__(self, reason: str, message: str):
+        super().__init__(message)
+        self.reason = reason
+
+
+def window_cost(
+    measures: Dict[str, Measure],
+    before: Dict[str, int],
+    after: Dict[str, int],
+    swap: Optional[Tuple[str, str]] = None,
+) -> int:
+    """Kosten eines Change-Fensters (D-02, D-03, D-27, D-11): nur die Netto-Änderung je Maßnahme im Fenster zählt,
+    nie eine Erstattung; ein deklarierter Maßnahmentausch trägt die Kurswechsel-Gutschrift."""
+    cost = 0
+    for measure_id, measure in measures.items():
+        gain = measure.levels[after.get(measure_id, 0)].init - measure.levels[before.get(measure_id, 0)].init
+        cost += max(0, gain)
+    if swap is not None:
+        dropped, incoming = swap
+        cost -= swap_credit(measures, before, dropped, incoming, after)
+    return cost
+
+
+def _checked_selection(cfg: Config, selection: Dict[str, int], where: str) -> None:
+    if set(selection) != set(cfg.measures):
+        raise PathError("unknown_measure", f"{where}: Die Maßnahmen-IDs passen nicht zur Konfiguration")
+    for measure_id, level in selection.items():
+        if level not in cfg.measures[measure_id].levels:
+            raise PathError("level_range", f"{where}: Level {level} von {measure_id} ist nicht zulässig")
+    if not dependencies_satisfied(selection, cfg.measures):
+        raise PathError("dependencies", f"{where}: Abhängigkeiten nicht erfüllt")
+
+
+def evaluate_path(cfg: Config, tier_name: str, path: Path, *, enforce_kurswechsel: bool = True) -> Dict:
+    """Exakte Auswertung eines Spiels mit Change-Fenstern: Fenster i folgt auf Welle i+1, fehlende Fenster lassen
+    die Auswahl unverändert. Init-Differenzen werden im Fenster gebucht, Wirkung und OPEX gelten ab der nächsten
+    Welle (D-06); der Kurswechsel erzwingt genau einen Maßnahmentausch, außer der Plan ist ausgenommen (D-22)."""
+    tier = cfg.budget_tiers[tier_name]
+    wave_count = len(cfg.waves)
+    if len(path.windows) > wave_count - 1:
+        raise PathError("too_many_windows", f"{len(path.windows)} Fenster bei {wave_count} Wellen")
+
+    _checked_selection(cfg, path.start, "Start")
+    selections = [path.start]
+    for number, window in enumerate(path.windows, start=1):
+        _checked_selection(cfg, window.selection, f"Fenster {number}")
+        selections.append(window.selection)
+    while len(selections) < wave_count:
+        selections.append(selections[-1])
+
+    kurswechsel = kurswechsel_wave(cfg.events)
+    swap_window = None if kurswechsel is None else [wave.wave_id for wave in cfg.waves].index(kurswechsel)
+
+    window_costs = []
+    windows = []
+    for index, window in enumerate(path.windows):
+        before = selections[index]
+        swap = window.swap
+        if swap is not None:
+            if index != swap_window:
+                raise PathError("swap_without_kurswechsel", f"Fenster {index + 1}: Kein Maßnahmentausch ohne Kurswechsel")
+            dropped, incoming = swap
+            if dropped not in before or incoming not in before:
+                raise PathError("unknown_measure", f"Fenster {index + 1}: Tausch nennt eine unbekannte Maßnahme")
+            if not swap_possible(before) or not swap_legal(before, window.selection, dropped, incoming):
+                raise PathError("kurswechsel_illegal", f"Fenster {index + 1}: Der Maßnahmentausch ist nicht zulässig")
+        cost = window_cost(cfg.measures, before, window.selection, swap)
+        window_costs.append(cost)
+        windows.append({"swap": swap, "cost": cost})
+
+    if enforce_kurswechsel and swap_window is not None and swap_possible(selections[swap_window]):
+        if swap_window >= len(path.windows) or path.windows[swap_window].swap is None:
+            raise PathError("kurswechsel_missing", f"Fenster {swap_window + 1}: Der Pflicht-Maßnahmentausch fehlt")
+
+    outcome = simulate_waves(
+        selections, tier, cfg.waves, cfg.attacks, cfg.measures, cfg.events, cfg.base_cia, tier.kz_start,
+        cfg.ws, cfg.rs,
+    )
+    init = compute_costs(path.start, cfg.measures, 1)[0]
+    opex_by_wave = [compute_costs(selection, cfg.measures, 1)[1] for selection in selections]
+    own = security_spend(init, opex_by_wave, window_costs)
+    ledger = budget_ledger(tier.budget, own, outcome["total_event_opex"], outcome["total_event_budget"])
+    kz_final, final_events = apply_final_events(
+        cfg.final_events, selections[-1], ledger.remaining_budget, outcome["kz_final"]
+    )
+
+    return {
+        "selections": selections,
+        "windows": windows,
+        "kz_pre_review": outcome["kz_final"],
+        "kz_final": kz_final,
+        "total_damage": outcome["total_damage"],
+        "total_event_opex": outcome["total_event_opex"],
+        "total_event_budget": outcome["total_event_budget"],
+        "cia_mali": outcome["cia_mali"],
+        "waves": outcome["waves"],
+        "final_events": final_events,
+        "costs": {
+            "init": init,
+            "window_costs": window_costs,
+            "opex_by_wave": opex_by_wave,
+            "security_spend": ledger.security_spend,
+            "event_opex": outcome["total_event_opex"],
+            "event_budget": outcome["total_event_budget"],
+            "total": ledger.total_cost,
+            "budget_available": ledger.budget_available,
+            "remaining": ledger.remaining_budget,
+        },
+        "over_budget": ledger.over_budget,
+        "ros": ros(base_losses(cfg.waves, cfg.attacks), outcome["total_damage"], ledger.security_spend),
+    }
 
 
 class CompactOutcome(NamedTuple):
