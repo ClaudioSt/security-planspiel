@@ -176,6 +176,11 @@ WARNING_MUTATIONS = [
     ),
     pytest.param(_set(["waves", 0, "kz_bonus"], 5), "schema.removed_key", id="removed-kz-bonus"),
     pytest.param(_set(["waves", 2, "kz_malus"], -7), "schema.removed_key", id="removed-kz-malus"),
+    pytest.param(
+        lambda raw: raw["events"]["wave_3"].append(raw["events"]["wave_2"].pop(0)),
+        "rules.event_without_window",
+        id="budget-cut-in-last-wave",
+    ),
 ]
 
 
