@@ -128,3 +128,9 @@ def test_shipped_configs_validate_cleanly(path):
     assert _errors(issues) == []
     assert len(_warnings(issues)) == 1
 
+
+
+def test_readme_states_inclusive_boundaries():
+    readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
+    assert "einschließlich" in readme
+    assert "boundary_text" in readme
