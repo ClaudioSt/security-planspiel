@@ -5,15 +5,15 @@ milestone_name: milestone
 current_phase: 2
 current_phase_name: Rule Changes
 status: executing
-stopped_at: Phase 2 context gathered
-last_updated: "2026-10-02T22:10:57.511Z"
+stopped_at: Completed 02-03-PLAN.md
+last_updated: "2026-10-04T12:55:17.921Z"
 last_activity: 2026-10-02
 last_activity_desc: Phase 2 execution started
 progress:
   total_phases: 7
   completed_phases: 1
   total_plans: 15
-  completed_plans: 9
+  completed_plans: 10
   percent: 14
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-09-29)
 ## Current Position
 
 Phase: 2 (Rule Changes) — EXECUTING
-Plan: 3 of 8
+Plan: 4 of 8
 Status: Ready to execute
 Last activity: 2026-10-02 — Phase 2 execution started
 
@@ -64,6 +64,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01 P07 | 3h | 3 tasks | 14 files |
 | Phase 02 P01 | multi-session | 4 tasks | 31 files |
 | Phase 02 P02 | multi-session | 3 tasks | 18 files |
+| Phase 02 P03 | multi-session | 3 tasks tasks | 26 files files |
 
 ## Accumulated Context
 
@@ -87,6 +88,7 @@ Recent decisions affecting current work:
 - [Phase 01]: 01-07: over-budget has one definition (rules.budget_ledger) shared by evaluate_plan and the memoized TierKernel; store is 16 B per combination, RoS derived exactly on access; --budget-max quirk pinned, not fixed
 - [Phase 02]: RULE-08/D-19: per-wave E-target bonus/malus removed from the simulation (not printed on MHP material); D-20 reviewed snapshot change
 - [Phase 02]: RULE-06/D-21: RoS divides by own security spend only; total_cost keeps budget meaning (digest-stable); plan arithmetic 250+100+20=370 corrected
+- [Phase 02]: RULE-03/D-15: over-budget plans lose X KZ per started 10.000 EUR (provisional X=9, step 10 kEUR, config overspend_penalty), measured once at the end (D-14); kz_pre_review and remaining stored for the RULE-04 gate; no validator warning for large X
 
 ### Pending Todos
 
@@ -94,7 +96,7 @@ Recent decisions affecting current work:
 
 ### Blockers/Concerns
 
-- [Phase 2/6]: Step rewards (OEM-Audit tiers, M7 tiers, Exzellenz +5/L3, E-target bonus) can make going ~8k over budget worth up to +34 KZ, so the trim-back X may be impractical. If Phase 2's gate reports X > ~5, decide on capping overspend or softening step rewards in Phase 2, not Phase 6, because either choice changes printed rules.
+- [Phase 2/6]: Step rewards (OEM-Audit tiers, M7 tiers, Exzellenz +5/L3, E-target bonus) can make going ~8k over budget worth up to +34 KZ, so the trim-back X may be impractical. If Phase 2's gate reports X > ~5, decide on capping overspend or softening step rewards in Phase 2, not Phase 6, because either choice changes printed rules. Update after 02-03 (linear penalty, provisional X = 9): the global enumeration data does not indicate that X > 5 is needed (smallest X making overspend non-optimal: 2 / 0 / 0 per tier, 3 / 1 / 1 if ties must lose); saturation at KZ 0 starts from 5 steps over budget. Final answer pending the 02-08 trim-back gate, which sweeps X from the stored `kz_pre_review` and `remaining`.
 - [Phase 7]: the retired `generate_attack_calculator.py` raises KeyError on `kz_bonus`/`kz_malus` since plan 02-01 (D-29: untouched until LEG-01); `docs/folienkonzept_spielphasen_mechtech.md` still mentions the E-Ziel-Check (LEG-02).
 - [Phase 4]: MiKTeX AutoInstall=ask hangs scripted builds; the first Phase 4 plan must be a non-interactive smoke build.
 - [Phase 1]: Interpreter trap until FOUND-01 lands (`python` on PATH is Inkscape's 3.12 without packages); full enumeration JSONs are >100 MB, so never read them whole.
@@ -109,6 +111,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-10-02T22:10:57.496Z
-Stopped at: Phase 2 context gathered
+Last session: 2026-10-04T12:55:17.909Z
+Stopped at: Completed 02-03-PLAN.md
 Resume file: .planning/phases/02-rule-changes/02-CONTEXT.md

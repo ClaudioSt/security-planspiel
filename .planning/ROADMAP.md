@@ -61,7 +61,7 @@ Plans:
   4. RoS for any selection is identical with and without event cost effects (penalties and discounts); only initial costs, regular OPEX and the Kurswechsel init difference count. Budget Review tiers give the same result in sim and print at the 25k/50k/75k boundaries, with boundary text derived from the tier list.
   5. The per-wave E-target KZ bonus/malus is resolved against the printed MHP material and the decision is logged in PROJECT.md. It is either removed from the simulation or registered as a mechanic the worksheets must print.
 
-**Plans**: 2/8 plans executed
+**Plans**: 3/8 plans executed
 
 Plans:
 **Wave 1**
@@ -74,7 +74,7 @@ Plans:
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
-- [ ] 02-03-PLAN.md — RULE-03: linear overspend penalty −X per started 10.000 € (X = 9 provisional), store columns, lookup rows (Wave 3)
+- [x] 02-03-PLAN.md — RULE-03: linear overspend penalty −X per started 10.000 € (X = 9 provisional), store columns, lookup rows (Wave 3)
 
 **Wave 4** *(blocked on Wave 3 completion)*
 
@@ -182,7 +182,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 3 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Simulation Foundation | 7/7 | Complete    | 2026-10-01 |
-| 2. Rule Changes | 2/8 | In Progress|  |
+| 2. Rule Changes | 3/8 | In Progress|  |
 | 3. Content Source & Veiling | 0/TBD | Not started | - |
 | 4. Print Pipeline & Attack Worksheets | 0/TBD | Not started | - |
 | 5. Player & Facilitator Print Material | 0/TBD | Not started | - |

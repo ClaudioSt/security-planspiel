@@ -19,7 +19,7 @@
 
 - [ ] **RULE-01**: "Levelwechsel" (same measure, different level) and "Maßnahmentausch" (swap one measure for another; replaces the MHP term "Maßnahmenwechsel") are defined unambiguously, and the Kurswechsel event names exactly which move it allows
 - [ ] **RULE-02**: Teams may downgrade a measure's level in the change window; initial costs are not refunded, OPEX drops from the next wave; the simulation models this move
-- [ ] **RULE-03**: Going over budget costs −X KZ per started 10.000 € over budget (linear, printable as lookup table); X is a config parameter
+- [x] **RULE-03**: Going over budget costs −X KZ per started 10.000 € over budget (linear, printable as lookup table); X is a config parameter
 - [ ] **RULE-04**: An automated gate proves overspending is never profitable under the trim-back criterion: every over-budget plan loses to its own trimmed-into-budget version, per tier
 - [ ] **RULE-05**: If an event (e.g. Sparprogramm) pushes a team over budget, the team gets the change window to return within budget; the penalty applies only if it is still over afterwards
 - [x] **RULE-06**: RoS counts only the team's own security spend (initial costs, regular OPEX, Kurswechsel init difference); event cost effects are excluded in both directions (penalties and discounts)
@@ -128,7 +128,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | FOUND-07 | Phase 1 | Complete |
 | RULE-01 | Phase 2 | Pending |
 | RULE-02 | Phase 2 | Pending |
-| RULE-03 | Phase 2 | Pending |
+| RULE-03 | Phase 2 | Complete |
 | RULE-04 | Phase 2 | Pending |
 | RULE-05 | Phase 2 | Pending |
 | RULE-06 | Phase 2 | Complete |
