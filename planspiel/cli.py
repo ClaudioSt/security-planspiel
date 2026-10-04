@@ -29,6 +29,35 @@ def _validate_command(config: str, strict: bool) -> int:
     return 1 if errors or (strict and warnings) else 0
 
 
+def _tausch_command(parser: argparse.ArgumentParser, config: str, tiers: list[str] | None, summary_dir: str) -> int:
+    import time
+
+    from planspiel.config import load_config
+    from planspiel.enumerate import enumerate_swap_layer
+    from planspiel.report import SUMMARY_FILENAME, SWAP_LAYER, format_swap_console, summarize_swap_layer, write_summary
+
+    cfg = load_config(Path(config))
+    names = tiers or list(cfg.budget_tiers)
+    unknown = [name for name in names if name not in cfg.budget_tiers]
+    if unknown:
+        parser.error(f"Unbekanntes Budget-Tier '{unknown[0]}'. Verfügbar: {', '.join(cfg.budget_tiers)}.")
+    target_dir = Path(summary_dir)
+    target_dir.mkdir(parents=True, exist_ok=True)
+    for name in names:
+        started = time.perf_counter()
+        layer = enumerate_swap_layer(cfg, name)
+        summary = summarize_swap_layer(cfg, name, layer)
+        path = target_dir / SUMMARY_FILENAME.format(tier=f"{SWAP_LAYER}_{name}")
+        write_summary(path, summary)
+        seconds = time.perf_counter() - started
+        print(format_swap_console(summary))
+        print()
+        print(f"Laufzeit: {seconds:.1f} s")
+        print(f"Zusammenfassung: {path}")
+        print()
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     configure_utf8_stdio()
     parser = argparse.ArgumentParser(
@@ -47,8 +76,28 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Warnungen zählen als Fehler (wird in Phase 6 verwendet).",
     )
+    tausch_parser = subparsers.add_parser(
+        "tausch",
+        help="Bewertet jeden Plan der ersten Welle mit jedem legalen Maßnahmentausch des Kurswechsels.",
+    )
+    tausch_parser.add_argument(
+        "--config", default="simulation_config.json", help="Pfad zur Konfigurationsdatei."
+    )
+    tausch_parser.add_argument(
+        "--tier",
+        action="append",
+        default=None,
+        help="Budget-Tier (wiederholbar, Standard: alle Tiers der Konfiguration).",
+    )
+    tausch_parser.add_argument(
+        "--summary-dir",
+        default=".",
+        help="Verzeichnis für simulation_summary_tausch_<tier>.json (Standard: Arbeitsverzeichnis).",
+    )
     args = parser.parse_args(argv)
     if args.command is None:
         parser.print_help()
         return 0
+    if args.command == "tausch":
+        return _tausch_command(parser, args.config, args.tier, args.summary_dir)
     return _validate_command(args.config, args.strict)

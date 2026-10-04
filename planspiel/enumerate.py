@@ -106,3 +106,67 @@ def enumerate_tier(
         if on_outcome is not None:
             on_outcome(code_index, outcome)
     return store
+
+
+def enumerate_swap_layer(cfg, tier_name: str) -> Dict:
+    """Tausch-Schicht (D-24): jeder gültige Plan der ersten Welle mit jedem legalen Kurswechsel-Tausch; Pläne ohne
+    möglichen Tausch (D-22) zählen als statischer Pfad. Nur Zähler, KZ-Histogramme und je das beste Ergebnis im
+    und über Budget werden gehalten."""
+    tables = rules.TierTables(cfg, tier_name)
+    prefix = tables.prefix_waves
+    suffix = tables.wave_count - prefix
+    histogram = ([0] * 101, [0] * 101)
+    exempt_by_flag = [0, 0]
+    swaps_by_flag = [0, 0]
+    start_plans = 0
+    last_start = -1
+    best = [None, None]
+    best_head = [None, None]
+    for start, end, dropped, incoming, level, cost in tables.swap_paths():
+        outcome = tables.path_outcome((start,) * prefix + (end,) * suffix, cost)
+        flag = 1 if outcome.over_budget else 0
+        kz_final = outcome.kz_final
+        histogram[flag][kz_final] += 1
+        if start != last_start:
+            start_plans += 1
+            last_start = start
+        if dropped is None:
+            exempt_by_flag[flag] += 1
+        else:
+            swaps_by_flag[flag] += 1
+        head = (-kz_final, outcome.own_cost)
+        if best_head[flag] is not None and head > best_head[flag]:
+            continue
+        key = head + (start, end, -1 if dropped is None else dropped, -1 if incoming is None else incoming)
+        if best[flag] is None or key < best[flag][0]:
+            best_head[flag] = head
+            best[flag] = (key, {
+                "start": start,
+                "end": end,
+                "dropped": dropped,
+                "incoming": incoming,
+                "level": level,
+                "window_cost": cost,
+                "outcome": outcome,
+            })
+
+    exempt_static = sum(exempt_by_flag)
+    swap_count = sum(swaps_by_flag)
+    return {
+        "kurswechsel_wave": tables.kurswechsel_wave,
+        "counts": {
+            "start_plans": start_plans,
+            "exempt_static": exempt_static,
+            "swap_paths": swap_count,
+            "legal_games": exempt_static + swap_count,
+            "in_budget": exempt_by_flag[0] + swaps_by_flag[0],
+            "over_budget": exempt_by_flag[1] + swaps_by_flag[1],
+            "swap_in_budget": swaps_by_flag[0],
+            "swap_over_budget": swaps_by_flag[1],
+        },
+        "histogram": {"in_budget": histogram[0], "over_budget": histogram[1]},
+        "best": {
+            "in_budget": None if best[0] is None else best[0][1],
+            "over_budget": None if best[1] is None else best[1][1],
+        },
+    }

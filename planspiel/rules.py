@@ -1,3 +1,5 @@
+import itertools
+from array import array
 from fractions import Fraction
 from typing import Dict, List, NamedTuple, Optional, Sequence, Tuple
 
@@ -779,3 +781,175 @@ class TierKernel:
             kz_pre_review=kz,
             remaining=ledger.remaining_budget,
         )
+
+
+_STATE_LEVELS = (0, 1, 2, 3)
+
+
+class TierTables:
+    """Per-state tables eines Tiers für die Pfadauswertung (Tausch-Schicht, D-24). Der Zustandsindex ist der
+    Basis-4-Code mit Maßnahme 0 an höchster Stelle; die Tabellen setzen dieselben Bausteine zusammen wie
+    TierKernel und müssen exakt dasselbe ergeben wie evaluate_path."""
+
+    def __init__(self, cfg: Config, tier_name: str):
+        self.cfg = cfg
+        self.tier = cfg.budget_tiers[tier_name]
+        self.measure_ids = cfg.measure_ids
+        measure_count = len(self.measure_ids)
+        size = len(_STATE_LEVELS) ** measure_count
+        self.wave_count = len(cfg.waves)
+        self.strides = [len(_STATE_LEVELS) ** (measure_count - 1 - i) for i in range(measure_count)]
+        self.valid = bytearray(size)
+        self.change = [array("h", [0]) * size for _ in cfg.waves]
+        self.damage = [array("I", [0]) * size for _ in cfg.waves]
+        self.event_opex = [array("h", [0]) * size for _ in cfg.waves]
+        self.event_budget = [array("h", [0]) * size for _ in cfg.waves]
+        self.init_cost = array("i", [0]) * size
+        self.opex_cost = array("i", [0]) * size
+        self.level_init = [
+            [measure.levels[level].init for level in _STATE_LEVELS] for measure in cfg.measures.values()
+        ]
+        self.kurswechsel_wave = kurswechsel_wave(cfg.events)
+        wave_ids = [wave.wave_id for wave in cfg.waves]
+        self.prefix_waves = (
+            self.wave_count if self.kurswechsel_wave is None else wave_ids.index(self.kurswechsel_wave) + 1
+        )
+        self._needed = {
+            requirement["measure"]
+            for measure in cfg.measures.values()
+            for dependency in measure.dependencies
+            for requirement in dependency["requires"]
+        }
+        self._final = {}
+        self._fill()
+
+    def _fill(self) -> None:
+        cfg = self.cfg
+        tier = self.tier
+        measures = cfg.measures
+        contexts = []
+        for wave in cfg.waves:
+            attack = cfg.attacks[wave.attack_id]
+            slope = kz_slope(attack.kz_at_full_damage, attack.kz_at_full_mitigation, attack.mitigation_cap)
+            contexts.append((wave, attack, slope))
+        e_memo = {}
+        attack_memo = {}
+        change_memo = {}
+        for index, levels in enumerate(itertools.product(_STATE_LEVELS, repeat=len(self.measure_ids))):
+            selection = dict(zip(self.measure_ids, levels))
+            if not dependencies_satisfied(selection, measures):
+                continue
+            self.valid[index] = 1
+            init, opex_per_wave, _ = compute_costs(selection, measures, 1)
+            self.init_cost[index] = init
+            self.opex_cost[index] = opex_per_wave
+            cia = compute_cia(selection, measures, cfg.base_cia)
+            recovery_scaled = _to_int(compute_recovery(selection, measures) * cfg.rs)
+            for k, (wave, attack, slope) in enumerate(contexts):
+                e_key = (k, cia["c"], cia["i"], cia["a"])
+                e_scaled = e_memo.get(e_key)
+                if e_scaled is None:
+                    e_scaled = e_memo[e_key] = e_value_scaled(cia, wave.weights, cfg.ws)
+
+                bonus, _ = compute_bonus_reduction(wave, selection)
+                reduction = reduction_above_threshold_scaled(
+                    e_scaled, bonus, wave.e_threshold, attack.mitigation_cap, cfg.ws
+                )
+                recovery = recovery_scaled if attack.allow_recovery else 0
+
+                attack_key = (k, reduction, recovery)
+                attack_result = attack_memo.get(attack_key)
+                if attack_result is None:
+                    severity = severity_scaled(attack.base_severity, tier.severity_multiplier, reduction, cfg.ws)
+                    attack_result = attack_memo[attack_key] = (
+                        damage_euros(severity, attack.s_unit, recovery, cfg.ws, cfg.rs),
+                        attack_kz_delta(attack.kz_at_full_damage, slope, reduction, cfg.ws),
+                    )
+                damage, attack_kz = attack_result
+
+                event_kz, event_budget, event_opex, _ = apply_events(wave.wave_id, selection, cfg.events)
+                change_key = (k, reduction, event_kz)
+                change = change_memo.get(change_key)
+                if change is None:
+                    change = change_memo[change_key] = wave_kz_change(attack_kz, event_kz)
+
+                self.change[k][index] = change
+                self.damage[k][index] = damage
+                self.event_opex[k][index] = event_opex
+                self.event_budget[k][index] = event_budget
+
+    def path_outcome(self, codes: Sequence[int], window_cost_total: int) -> CompactOutcome:
+        """Ergebnis eines Pfads aus den Zustandsindizes je Welle (codes[k] gilt in Welle k) und den gesamten
+        Fensterkosten; entspricht evaluate_path."""
+        tier = self.tier
+        kz = tier.kz_start
+        damage_total = 0
+        event_opex_total = 0
+        event_budget_total = 0
+        kz_after = []
+        for k, code in enumerate(codes):
+            kz = clamp_kz(kz + self.change[k][code])
+            damage_total += self.damage[k][code]
+            event_opex_total += self.event_opex[k][code]
+            event_budget_total += self.event_budget[k][code]
+            kz_after.append(kz)
+        own_cost = security_spend(
+            self.init_cost[codes[0]], [self.opex_cost[code] for code in codes], (window_cost_total,)
+        )
+        ledger = budget_ledger(tier.budget, own_cost, event_opex_total, event_budget_total)
+        final_key = (ledger.remaining_budget, kz)
+        kz_final = self._final.get(final_key)
+        if kz_final is None:
+            kz_final = self._final[final_key] = apply_final_events(
+                self.cfg.final_events, {}, ledger.remaining_budget, kz
+            )[0]
+        return CompactOutcome(
+            kz_final=kz_final,
+            own_cost=own_cost,
+            total_cost=ledger.total_cost,
+            damage_eur=damage_total,
+            event_opex=event_opex_total,
+            event_budget=event_budget_total,
+            over_budget=ledger.over_budget,
+            kz_after=tuple(kz_after),
+            kz_pre_review=kz,
+            remaining=ledger.remaining_budget,
+        )
+
+    def swap_paths(self):
+        """Erzeugt (start, end, dropped, incoming, level, window_cost) für jeden gültigen Start: ohne möglichen
+        Tausch (D-22) den statischen Pfad (s, s, None, None, 0, 0), sonst jeden legalen Kurswechsel-Tausch mit
+        der kanonischen minimalen Reparatur (D-28). dropped und incoming sind Maßnahmen-Indizes."""
+        measures = self.cfg.measures
+        ids = self.measure_ids
+        strides = self.strides
+        level_init = self.level_init
+        valid = self.valid
+        needed = self._needed
+        count = len(ids)
+        has_kurswechsel = self.kurswechsel_wave is not None
+        for start, levels in enumerate(itertools.product(_STATE_LEVELS, repeat=count)):
+            if not valid[start]:
+                continue
+            selection = dict(zip(ids, levels))
+            if not has_kurswechsel or not swap_possible(selection):
+                yield (start, start, None, None, 0, 0)
+                continue
+            for dropped in range(count):
+                dropped_level = levels[dropped]
+                if dropped_level == 0:
+                    continue
+                if ids[dropped] in needed:
+                    repaired = swap_repair(selection, ids[dropped], measures)
+                    base = sum(repaired[ids[i]] * strides[i] for i in range(count))
+                else:
+                    base = start - dropped_level * strides[dropped]
+                credit_cap = level_init[dropped][dropped_level]
+                for incoming in range(count):
+                    if levels[incoming] != 0:
+                        continue
+                    for level in _STATE_LEVELS[1:]:
+                        end = base + level * strides[incoming]
+                        if valid[end]:
+                            incoming_init = level_init[incoming][level]
+                            yield (start, end, dropped, incoming, level, incoming_init - min(credit_cap, incoming_init))

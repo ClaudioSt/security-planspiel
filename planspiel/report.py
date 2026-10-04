@@ -15,6 +15,8 @@ SUMMARY_FILENAME = "simulation_summary_{tier}.json"
 FINAL_INDEX_STATUS = "vorläufig (Gewichte bis zur Neuskalierung in Phase 6)"
 REFERENCE_LAYER = "referenz"
 REFERENCE_LABEL = "Referenzplan ohne Change-Fenster-Züge"
+SWAP_LAYER = "tausch"
+SWAP_LABEL = "Pflicht-Maßnahmentausch (Kurswechsel), legales Minimum"
 
 
 def nearest_rank(sorted_values: List, p: int):
@@ -270,6 +272,107 @@ def format_console(summary: Dict) -> str:
         highest = pareto["points"][-1]
         lines.append(f"  günstigster Punkt: eigene Kosten {cheapest['own_cost']}, End-KZ {cheapest['kz_final']}")
         lines.append(f"  höchster Punkt: eigene Kosten {highest['own_cost']}, End-KZ {highest['kz_final']}")
+    return "\n".join(lines)
+
+
+def _histogram_rank(histogram: List[int], p: int) -> Optional[int]:
+    total = sum(histogram)
+    if total == 0:
+        return None
+    rank = max(1, (p * total + 99) // 100)
+    seen = 0
+    for value, count in enumerate(histogram):
+        seen += count
+        if seen >= rank:
+            return value
+
+
+def _swap_entry(cfg, layer_best: Optional[Dict], base: int) -> Optional[Dict]:
+    if layer_best is None:
+        return None
+    measure_ids = cfg.measure_ids
+    outcome = layer_best["outcome"]
+    dropped = layer_best["dropped"]
+    incoming = layer_best["incoming"]
+    ros = rules.ros(base, Fraction(outcome.damage_eur, 1000), outcome.own_cost)
+    return {
+        "start": code_from_index(layer_best["start"], len(measure_ids)),
+        "end": code_from_index(layer_best["end"], len(measure_ids)),
+        "dropped": None if dropped is None else measure_ids[dropped],
+        "incoming": None if incoming is None else measure_ids[incoming],
+        "level": layer_best["level"],
+        "window_cost": layer_best["window_cost"],
+        "kz_final": outcome.kz_final,
+        "own_cost": outcome.own_cost,
+        "total_cost": outcome.total_cost,
+        "remaining": outcome.remaining,
+        "ros": None if ros is None else exact_to_json(ros),
+        "over_budget": outcome.over_budget,
+    }
+
+
+def summarize_swap_layer(cfg, tier_name: str, layer: Dict) -> Dict:
+    tier = cfg.budget_tiers[tier_name]
+    base = rules.base_losses(cfg.waves, cfg.attacks)
+    percentiles = {"method": "nearest-rank", "p": list(PERCENTILES)}
+    for name in ("in_budget", "over_budget"):
+        histogram = layer["histogram"][name]
+        percentiles[name] = {
+            "count": sum(histogram),
+            "kz_final": {f"p{p}": _histogram_rank(histogram, p) for p in PERCENTILES},
+        }
+    return {
+        "format": 1,
+        "tier": tier_name,
+        "layer": SWAP_LAYER,
+        "layer_label": SWAP_LABEL,
+        "kurswechsel_wave": layer["kurswechsel_wave"],
+        "budget": tier.budget,
+        "kz_start": tier.kz_start,
+        "measures": cfg.measure_ids,
+        "counts": dict(layer["counts"]),
+        "best": {
+            "metric": "kz_final",
+            "in_budget": _swap_entry(cfg, layer["best"]["in_budget"], base),
+            "over_budget": _swap_entry(cfg, layer["best"]["over_budget"], base),
+        },
+        "percentiles": percentiles,
+    }
+
+
+def _swap_entry_line(entry: Dict) -> str:
+    if entry["dropped"] is None:
+        move = "kein Tausch möglich (statischer Pfad)"
+    else:
+        move = f"Tausch {entry['dropped']} gegen {entry['incoming']} auf Level {entry['level']}"
+    return (
+        f"Start {entry['start']}, Ende {entry['end']}, {move}, Fensterkosten {entry['window_cost']}, "
+        f"End-KZ {entry['kz_final']}, eigene Kosten {entry['own_cost']}, RoS {_number(entry['ros'])}"
+    )
+
+
+def format_swap_console(summary: Dict) -> str:
+    counts = summary["counts"]
+    lines = [
+        summary["layer_label"],
+        f"Tier {summary['tier']}: Budget {summary['budget']}, Start-KZ {summary['kz_start']}",
+        f"Pläne der ersten Welle: {counts['start_plans']} gültig, davon {counts['exempt_static']} ohne möglichen "
+        f"Tausch (statischer Pfad) und {counts['swap_paths']} Tausch-Pfade",
+        f"Legale Spiele: {counts['legal_games']}, davon {counts['in_budget']} im Budget und "
+        f"{counts['over_budget']} über Budget",
+        f"Tausch-Pfade: {counts['swap_in_budget']} im Budget, {counts['swap_over_budget']} über Budget",
+    ]
+    for name, label in (("in_budget", "im Budget"), ("over_budget", "über Budget")):
+        entry = summary["best"][name]
+        lines.append(f"Bestes Ergebnis (End-KZ) {label}: " + ("keines" if entry is None else _swap_entry_line(entry)))
+
+    percentiles = summary["percentiles"]
+    lines.append("")
+    lines.append("Perzentile End-KZ (Nearest-Rank)")
+    lines.append(f"{'':<22}" + "".join(f"{'p' + str(p):>9}" for p in percentiles["p"]))
+    for name, label in (("in_budget", "im Budget"), ("over_budget", "über Budget")):
+        values = percentiles[name]["kz_final"]
+        lines.append(f"{'End-KZ ' + label:<22}" + "".join(f"{_number(values[f'p{p}']):>9}" for p in percentiles["p"]))
     return "\n".join(lines)
 
 
