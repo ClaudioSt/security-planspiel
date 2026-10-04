@@ -28,7 +28,7 @@ Ein **konfigurationsgetriebenes IT‑Security‑Planspiel** für einen Automotiv
 
 ## Kernelemente (Objekte)
 
-- **Budget (B):** Punkte für Erst‑Invest (Init) und laufende Kosten (OPEX).
+- **Budget (B):** Punkte für Erst‑Invest (Init) und laufende Kosten (OPEX). Überziehung kostet linear KZ, siehe Budget Review.
 - **Kundenzufriedenheit (KZ):** Skala mit fester Klammerung (0…100), Effekte **linear und konfigurierbar**.
 - **Maßnahmen (L1/L2/L3):**  
   - Attribute: `costInit`, `costOpex`, `cia={c,i,a}`, `mitigations` (gegen Angriffe), `eventEffects`, `dependencies`.
@@ -147,6 +147,15 @@ Nicht enthalten: Event‑Effekte auf Kosten oder Budget (Straf‑OPEX, OPEX‑Ra
 
 ---
 
+## Budget Review und Überziehung
+
+- **Zeitpunkt:** Das Restbudget (Budget + Budget‑Änderungen durch Events − eigene Kosten − Event‑OPEX) wird **einmal** geprüft, nach der letzten Welle. Zwischenstände unter null sind während des Spiels erlaubt.
+- **Restbudget ≥ 0:** KZ‑Bonus nach den Restbudget‑Stufen aus der Config.
+- **Restbudget < 0 (Überziehung):** −X KZ **je angefangene Schrittweite** Überziehung. X (`overspend_penalty.kz_per_step`) und die Schrittweite (`overspend_penalty.step`) stehen in der Config und sind bis zur Neuskalierung vorläufig. Die Nachschlagetabelle für die Karte wird daraus erzeugt (`planspiel.review_text.penalty_rows`).
+- **Begrenzung:** Nach dem Budget Review wird die KZ auf 0–100 begrenzt; weitere Überziehung senkt sie dann nicht unter null.
+
+---
+
 ## Spielbarkeit & Moderation
 
 - **Einfachheit wahren:**  
@@ -188,6 +197,7 @@ Nicht enthalten: Event‑Effekte auf Kosten oder Budget (Straf‑OPEX, OPEX‑Ra
 - **KZ‑Startwert**, **KZ‑Effekte** je Budgetspanne/Change‑Kommunikation.  
 - **Gewichte pro Welle (wC,wI,wA)** und **E‑Schwellen**.  
 - **Mitigation‑Cap** pro Angriff, **Level‑Mitigation** (L1/L2/L3).  
+- **Überziehungsstrafe X** je angefangene Schrittweite (Budget Review).  
 - **Angriffswerte**: `baseSeverity`, `sUnit`, `kzUnit`, `ciaImpactPerStep`.  
 - **Event‑Trigger** und **Effekt‑Faktoren** (Budget/KZ/Severity/Straf‑OPEX).  
 - **Recovery‑Faktor** und Bedingungen (z. B. über Backups/DR).  

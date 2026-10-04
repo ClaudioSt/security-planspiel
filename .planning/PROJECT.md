@@ -102,7 +102,7 @@ Every balance decision is checked against these (measurable via full enumeration
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Overspending allowed, penalized linearly: −X KZ per started 10k over budget | Keeps overspending as a risky option while removing the flat −15 exploit; X calibrated via full enumeration so over-budget never beats best in-budget | — Pending |
+| Overspending allowed, penalized linearly: −X KZ per started 10k over budget | Keeps overspending as a risky option while removing the flat −15 exploit; X calibrated via full enumeration so over-budget never beats best in-budget | ✓ Implemented 2026-10-01 (RULE-03, D-15): provisional X = 9 (D-25), calibrated in Phase 6 |
 | Event cost effects removed from RoS | RoS should measure efficiency of the team's own security spend, not external shocks | ✓ Implemented 2026-10-01 (RULE-06, D-21): excluded in both directions (penalties and discounts) |
 | Attack names veiled only before the wave, revealed by name when it hits; mechanics always transparent | Players should infer threats from clues, but understand the mechanics fully | ✓ Decided 2026-09-29 |
 | Print material generated via LaTeX → PDF from `simulation_config.json` | Eliminates manual print-sync; precise print layout | ✓ Decided 2026-09-29 |

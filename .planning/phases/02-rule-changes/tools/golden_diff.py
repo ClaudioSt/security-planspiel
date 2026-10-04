@@ -193,9 +193,16 @@ def overspend_lines(pre, post, count, wave_count):
         "| steps | penalty | over-budget plans | best KZ before | best KZ after | KZ = 0 after |",
         "|---|---|---|---|---|---|",
     ]
-    for steps in sorted(rows):
+    shown = -(-100 // kz_per_step)
+    for steps in sorted(s for s in rows if s <= shown):
         row = rows[steps]
         lines.append(f"| {steps} | {-kz_per_step * steps} | {row['n']} | {row['best_pre']} | {row['best_post']} | {row['zero']} |")
+    rest = [rows[s] for s in rows if s > shown]
+    if rest:
+        lines.append(
+            f"| >{shown} (max {max(s for s in rows)}) | <= {-kz_per_step * (shown + 1)} | {sum(r['n'] for r in rest)} | "
+            f"{max(r['best_pre'] for r in rest)} | {max(r['best_post'] for r in rest)} | {sum(r['zero'] for r in rest)} |"
+        )
     saturated = sum(1 for i in range(count) if post["over_budget"][i] and post[last][i] - kz_per_step * (-((post["remaining"][i]) // step)) <= 0)
     lines += ["", f"Over-budget plans whose penalty alone takes KZ before the review to 0 or below: {saturated}", ""]
     return lines
