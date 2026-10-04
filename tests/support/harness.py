@@ -56,6 +56,26 @@ def evaluate(cfg: Config, tier_name: str, selection: dict) -> dict:
     return {"valid": True, **rules.evaluate_plan(cfg, tier_name, selection)}
 
 
+def compact_from_path(cfg: Config, rec: dict):
+    from planspiel.rules import CompactOutcome
+
+    damage = rec["total_damage"] * 1000
+    assert damage.denominator == 1
+    costs = rec["costs"]
+    return CompactOutcome(
+        kz_final=rec["kz_final"],
+        own_cost=costs["security_spend"],
+        total_cost=costs["total"],
+        damage_eur=int(damage),
+        event_opex=rec["total_event_opex"],
+        event_budget=rec["total_event_budget"],
+        over_budget=rec["over_budget"],
+        kz_after=tuple(wave["kz_after"] for wave in rec["waves"]),
+        kz_pre_review=rec["kz_pre_review"],
+        remaining=costs["remaining"],
+    )
+
+
 def compact_from_plan(cfg: Config, rec: dict):
     from planspiel.rules import CompactOutcome
 

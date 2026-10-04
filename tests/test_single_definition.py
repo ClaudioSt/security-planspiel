@@ -52,6 +52,9 @@ FORMULA_FUNCTIONS = {
         "swap_credit",
         "swap_repair",
         "kurswechsel_wave",
+        "simulate_waves",
+        "window_cost",
+        "evaluate_path",
     )
 }
 FORMULA_FUNCTIONS.update(
