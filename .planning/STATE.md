@@ -6,14 +6,14 @@ current_phase: 2
 current_phase_name: Rule Changes
 status: executing
 stopped_at: Completed 02-03-PLAN.md
-last_updated: "2026-10-04T13:00:33.025Z"
+last_updated: "2026-10-04T17:50:52.564Z"
 last_activity: 2026-10-02
 last_activity_desc: Phase 2 execution started
 progress:
   total_phases: 7
   completed_phases: 1
   total_plans: 15
-  completed_plans: 11
+  completed_plans: 12
   percent: 14
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-09-29)
 ## Current Position
 
 Phase: 2 (Rule Changes) — EXECUTING
-Plan: 5 of 8
+Plan: 6 of 8
 Status: Ready to execute
 Last activity: 2026-10-02 — Phase 2 execution started
 
@@ -66,6 +66,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 02 P02 | multi-session | 3 tasks | 18 files |
 | Phase 02 P03 | multi-session | 3 tasks tasks | 26 files files |
 | Phase 02 P04 | single session | 2 tasks | 11 files |
+| Phase 02 P05 | multi-session | 3 tasks | 17 files |
 
 ## Accumulated Context
 
@@ -91,6 +92,7 @@ Recent decisions affecting current work:
 - [Phase 02]: RULE-06/D-21: RoS divides by own security spend only; total_cost keeps budget meaning (digest-stable); plan arithmetic 250+100+20=370 corrected
 - [Phase 02]: RULE-03/D-15: over-budget plans lose X KZ per started 10.000 EUR (provisional X=9, step 10 kEUR, config overspend_penalty), measured once at the end (D-14); kz_pre_review and remaining stored for the RULE-04 gate; no validator warning for large X
 - [Phase 02]: RULE-07/D-16: Budget Review tiers inclusive (ab), first minimum 0, card text generated via review_text.boundary_text; _tier_lookup raises below domain (WR-07); closes CR-01
+- [Phase 02-05]: Kurswechsel is one forced Massnahmentausch (D-09..D-13, D-22, D-23, D-28); static enumeration is the reference plan without change-window moves (D-24); goldens changed text-only
 
 ### Pending Todos
 
@@ -113,6 +115,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-10-04T13:00:33.014Z
+Last session: 2026-10-04T17:50:52.553Z
 Stopped at: Completed 02-03-PLAN.md
 Resume file: .planning/phases/02-rule-changes/02-CONTEXT.md
