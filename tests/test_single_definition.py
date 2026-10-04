@@ -55,6 +55,8 @@ FORMULA_FUNCTIONS = {
         "simulate_waves",
         "window_cost",
         "evaluate_path",
+        "path_outcome",
+        "swap_paths",
     )
 }
 FORMULA_FUNCTIONS.update(
