@@ -58,6 +58,25 @@ def _tausch_command(parser: argparse.ArgumentParser, config: str, tiers: list[st
     return 0
 
 
+def _gate_command(parser: argparse.ArgumentParser, config: str, tiers: list[str] | None) -> int:
+    from planspiel.config import load_config
+    from planspiel.gate import format_gate_report, gate_tier
+
+    cfg = load_config(Path(config))
+    names = tiers or list(cfg.budget_tiers)
+    unknown = [name for name in names if name not in cfg.budget_tiers]
+    if unknown:
+        parser.error(f"Unbekanntes Budget-Tier '{unknown[0]}'. Verfügbar: {', '.join(cfg.budget_tiers)}.")
+    all_passed = True
+    for name in names:
+        result = gate_tier(cfg, name)
+        print(format_gate_report(result))
+        print()
+        all_passed = all_passed and result.passed
+    print("Überziehungs-Gate: bestanden" if all_passed else "Überziehungs-Gate: NICHT bestanden")
+    return 0 if all_passed else 1
+
+
 def main(argv: list[str] | None = None) -> int:
     configure_utf8_stdio()
     parser = argparse.ArgumentParser(
@@ -94,10 +113,25 @@ def main(argv: list[str] | None = None) -> int:
         default=".",
         help="Verzeichnis für simulation_summary_tausch_<tier>.json (Standard: Arbeitsverzeichnis).",
     )
+    gate_parser = subparsers.add_parser(
+        "gate",
+        help="Prüft je Tier, dass Überziehen nie lohnt (gekürzte Version im Budget erreicht eine höhere End-KZ).",
+    )
+    gate_parser.add_argument(
+        "--config", default="simulation_config.json", help="Pfad zur Konfigurationsdatei."
+    )
+    gate_parser.add_argument(
+        "--tier",
+        action="append",
+        default=None,
+        help="Budget-Tier (wiederholbar, Standard: alle Tiers der Konfiguration).",
+    )
     args = parser.parse_args(argv)
     if args.command is None:
         parser.print_help()
         return 0
     if args.command == "tausch":
         return _tausch_command(parser, args.config, args.tier, args.summary_dir)
+    if args.command == "gate":
+        return _gate_command(parser, args.config, args.tier)
     return _validate_command(args.config, args.strict)

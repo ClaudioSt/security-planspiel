@@ -5,6 +5,7 @@ from array import array
 import pytest
 
 from planspiel import gate, rules
+from planspiel.cli import main
 from planspiel.enumerate import code_from_index, enumerate_tier
 from planspiel.report import REFERENCE_LABEL
 from planspiel.rounding import started_steps
@@ -266,3 +267,18 @@ def test_gate_result_json_is_stable(mini, tier):
     assert list(data["x_histogram"]) == [str(x) for x in sorted(result.x_histogram)]
     assert gate.gate_result_json(result) == data
     assert "Referenzplan" in gate.format_gate_report(result)
+
+
+def test_gate_command_matches_gate_tier_on_the_mini_config(mini, capsys):
+    expected_passed = gate.gate_tier(mini, "low").passed
+    code = main(["gate", "--config", str(MINI), "--tier", "low"])
+    out = capsys.readouterr().out
+    assert code == (0 if expected_passed else 1)
+    assert REFERENCE_LABEL in out
+    assert ("Überziehungs-Gate: bestanden" if expected_passed else "Überziehungs-Gate: NICHT bestanden") in out
+
+
+def test_gate_command_rejects_an_unknown_tier():
+    with pytest.raises(SystemExit) as raised:
+        main(["gate", "--config", str(MINI), "--tier", "nope"])
+    assert raised.value.code == 2
