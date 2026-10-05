@@ -171,6 +171,7 @@ Nicht enthalten: Event‑Effekte auf Kosten oder Budget (Straf‑OPEX, OPEX‑Ra
 - **Restbudget < 0 (Überziehung):** −X KZ **je angefangene Schrittweite** Überziehung. X (`overspend_penalty.kz_per_step`) und die Schrittweite (`overspend_penalty.step`) stehen in der Config und sind bis zur Neuskalierung vorläufig. Die Nachschlagetabelle für die Karte wird daraus erzeugt (`planspiel.review_text.penalty_rows`).
 - **Begrenzung:** Nach dem Budget Review wird die KZ auf 0–100 begrenzt; weitere Überziehung senkt sie dann nicht unter null.
 - **Event‑induzierte Überziehung:** Events wie das Sparprogramm können ein Team zwischenzeitlich über das Budget bringen. Im folgenden Change‑Fenster kann es durch Herabstufen oder Kündigen zurück ins Budget kommen; das spart nur OPEX späterer Wellen, Init wird nie erstattet. Bestraft wird nur, wer am Ende noch überzogen hat. Eine Budgetkürzung in der letzten Welle sollte es nicht geben, weil danach kein Change‑Fenster mehr folgt (der Validator warnt).
+- **Überziehen lohnt sich nie (automatisch geprüft):** Zu jedem Plan über Budget gibt es eine gekürzte Version – nur Level gesenkt oder Maßnahmen gekündigt, im Budget –, die eine höhere End‑KZ erreicht. `uv run planspiel gate` prüft das je Tier auf dem Referenzplan ohne Change‑Fenster‑Züge, nennt das nötige X und den Plan, der es bestimmt.
 
 ---
 
@@ -258,6 +259,13 @@ uv run planspiel tausch --tier medium
 ```
 
 Die Tausch‑Schicht bewertet jeden gültigen Plan der ersten Welle mit jedem legalen Maßnahmentausch des Kurswechsels (sonst unverändert; Pläne, bei denen kein Tausch möglich ist, wie sie sind). Die abhängigen Maßnahmen der wegfallenden Maßnahme werden dabei minimal abgesenkt; weitere Züge im Fenster werden nicht durchprobiert. Sie schreibt `simulation_summary_tausch_<tier>.json` und beschriftet ihre Zahlen mit „Pflicht‑Maßnahmentausch (Kurswechsel), legales Minimum“. Ohne `--tier` laufen alle Tiers der Konfiguration; `--summary-dir` wählt das Zielverzeichnis. Einzelne Spielpfade mit beliebigen Zügen wertet `planspiel.rules.evaluate_path` exakt aus.
+
+**Überziehungs‑Gate:**
+```
+uv run planspiel gate --tier medium
+```
+
+Das Gate vergleicht je Tier jeden Plan über Budget mit seiner besten gekürzten Version (nur Level gesenkt oder Maßnahmen gekündigt, im Budget, inklusive der positiven Budget‑Review‑Stufe) auf dem Referenzplan ohne Change‑Fenster‑Züge. Es nennt das nötige X (strikt: jeder Plan über Budget verliert; schwach: Gleichstand erlaubt), zählt Pläne, die nicht verlieren können (gekürzte Version endet bei KZ 0) oder nicht kürzbar sind, und endet mit Fehlercode 1 samt dem bestimmenden Plan, wenn das X der Konfiguration zu klein ist. Ohne `--tier` laufen alle Tiers der Konfiguration. Die Prüfung über Spielpfade mit Change‑Fenster‑Zügen folgt mit der Neuskalierung.
 
 **Vollständiger Dump nur auf Anfrage:**
 ```
