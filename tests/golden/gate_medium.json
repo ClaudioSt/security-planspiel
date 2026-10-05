@@ -1,0 +1,31 @@
+{
+  "tier": "medium",
+  "layer": "referenz",
+  "config_x": 9,
+  "step": 10,
+  "over_budget": 658015,
+  "min_x_strict": 5,
+  "min_x_weak": 4,
+  "x_histogram": {
+    "1": 651931,
+    "2": 5778,
+    "3": 258,
+    "4": 37,
+    "5": 11
+  },
+  "witness": {
+    "code": "1101103113",
+    "remaining": -5,
+    "steps": 1,
+    "kz_pre_review": 89,
+    "kz_final": 80,
+    "required_x": 5,
+    "trimmed_code": "1101103111",
+    "trimmed_kz_final": 85,
+    "trimmed_remaining": 57
+  },
+  "unlosable": 0,
+  "untrimmable": 0,
+  "violations_at_config_x": 0,
+  "passed": true
+}

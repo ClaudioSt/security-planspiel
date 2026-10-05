@@ -10,6 +10,7 @@ from planspiel.enumerate import code_from_index, enumerate_tier
 from planspiel.report import REFERENCE_LABEL
 from planspiel.rounding import started_steps
 from tests.support import REPO_ROOT, harness
+from tests.support.golden import check_golden
 
 TIERS = ("low", "medium", "high")
 MINI = REPO_ROOT / "tests" / "fixtures" / "mini_config.json"
@@ -282,3 +283,26 @@ def test_gate_command_rejects_an_unknown_tier():
     with pytest.raises(SystemExit) as raised:
         main(["gate", "--config", str(MINI), "--tier", "nope"])
     assert raised.value.code == 2
+
+
+_GATE_CACHE = {}
+
+
+def _real_gate(tier):
+    if tier not in _GATE_CACHE:
+        _GATE_CACHE[tier] = gate.gate_tier(harness.load_config(), tier)
+    return _GATE_CACHE[tier]
+
+
+@pytest.mark.slow
+@pytest.mark.parametrize("tier", TIERS)
+def test_gate_result_matches_golden(tier, update_golden, golden_report):
+    path = REPO_ROOT / "tests" / "golden" / f"gate_{tier}.json"
+    check_golden(path, gate.gate_result_json(_real_gate(tier)), update_golden, golden_report)
+
+
+@pytest.mark.slow
+@pytest.mark.parametrize("tier", TIERS)
+def test_overspending_never_pays_with_the_configured_x(tier):
+    result = _real_gate(tier)
+    assert result.passed, gate.format_gate_report(result)
