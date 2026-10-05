@@ -32,13 +32,10 @@ Every balance decision is checked against these (measurable via full enumeration
 - ✓ Game is interactive and engaging — validated by MHP workshop feedback ("interaktiv ++"); keep the format
 - ✓ Wave calculation is learnable: waves 2 and 3 fit the planned 20 min once teams knew the procedure — MHP workshop
 - ✓ Safe-to-change simulation foundation: uv env (`uv sync`), golden characterization tests + full digests, every formula once in `planspiel/` with thin root wrappers, UTF-8 config with real umlauts, exact arithmetic with paper rounding, config validator, bounded full enumeration incl. over-budget plans (FOUND-01..07) — Validated in Phase 1: Simulation Foundation
+- ✓ Settled rule set (RULE-01..08): "Levelwechsel" vs "Maßnahmentausch" defined, Kurswechsel forces exactly one swap; change-window moves modelled exactly (downgrade keeps Init sunk, OPEX drops next wave); linear overspend penalty −X per started 10k (X = 9 provisional) with a trim-back overspend gate (min X 9/5/3); event-induced overrun penalized only if still over budget at the end; RoS from own security spend only; Budget Review boundaries generated from the tier list; E-target bonus/malus removed — Validated in Phase 2: Rule Changes
 
 ### Active
 
-- [ ] Rule clarity: "Maßnahmenwechsel" vs "Levelwechsel" are defined unambiguously (Kurswechsel event + rules)
-- [ ] Level downgrade rule decided and documented
-- [ ] Budget overrun penalty is linear (−X KZ per started 10k over budget) and never makes overspending profitable
-- [ ] Event cost effects are excluded from RoS
 - [ ] Players understand how measures work and what attacks/events affect (card legend + explainer)
 - [ ] Attack names veiled in pre-attack material, revealed by name when the wave hits
 - [ ] All print material generated from `simulation_config.json` via LaTeX → PDF (attack worksheets, measure cards, budget/event cards, tracking + how-it-works sheet)
@@ -79,12 +76,13 @@ Every balance decision is checked against these (measurable via full enumeration
 6. "Eventstrafen bei RoS rausnehmen" — event OPEX is currently added to total cost (`simulate_outcomes.py:536`) and distorts RoS.
 
 **Technical state:**
+- Phase 2 complete (2026-10-05): `uv run pytest` (551 fast + 19 slow tests); rules settled in `planspiel/rules.py` (`evaluate_path`, swap rules), `planspiel gate` (trim-back overspend gate, passes with X = 9; zero headroom in the low tier → soften step rewards in Phase 6, D-18), `planspiel tausch` (swap layer = legal minimum), generated review/penalty text in `planspiel/review_text.py`. Code review: 6 non-blocking warnings in `02-REVIEW.md`.
 - Phase 1 complete (2026-10-01): `uv run pytest` (240 fast + 11 slow tests), rules in `planspiel/rules.py`, `planspiel validate`, default `simulate_outcomes.py --budget-tier <t>` enumerates all 782,336 combinations incl. over-budget (~50 s, ~125 MB per tier). Best over-budget final KZ is 85 vs 100 in budget in every tier; Budget Review boundary at exactly 25k/50k/75k contradicts the printed text (review CR-01 → Phase 2 RULE-07).
 - (pre-Phase 1) `simulate_outcomes.py:539` dropped over-budget combinations — now enumerated.
 - Manual print-sync trap: `e_threshold`, `mitigation_cap`, bonus values are printed verbatim on `Angriff-{1,2,3}_*.docx` with no generator; measure cards pptx also hand-maintained.
 - Existing generators: `generate_pptx_cards.py`, `generate_from_template.py` (pptx), `generate_attack_calculator.py` (xlsx).
 - **Interpreter trap:** `python` on PATH is Inkscape's bundled 3.12 without packages → always `uv run` (resolved in Phase 1). MiKTeX 23.10 (pdflatex/lualatex/latexmk) available.
-- Sim ↔ print divergence already exists: per-wave KZ bonus/malus for meeting the E-target (`simulate_outcomes.py:448-449`) is not printed anywhere.
+- (pre-Phase 2) Sim ↔ print divergence on the per-wave E-target bonus/malus — resolved in Phase 2 by removing it from the simulation.
 - Pending todo: `.planning/todos/pending/2026-06-23-angriffe-und-aktionen-nur-indirekt-vermitteln-nie-explizit-b.md`.
 - Codebase map: `.planning/codebase/`.
 
@@ -141,4 +139,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-10-01 after Phase 1 (Simulation Foundation)*
+*Last updated: 2026-10-05 after Phase 2 (Rule Changes)*
