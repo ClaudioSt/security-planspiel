@@ -4,17 +4,17 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: 2
 current_phase_name: Rule Changes
-status: executing
-stopped_at: Completed 02-07-PLAN.md
-last_updated: "2026-10-04T19:37:10.794Z"
+status: verifying
+stopped_at: Completed 02-08-PLAN.md
+last_updated: "2026-10-05T19:06:55.010Z"
 last_activity: 2026-10-02
 last_activity_desc: Phase 2 execution started
 progress:
   total_phases: 7
   completed_phases: 1
   total_plans: 15
-  completed_plans: 14
-  percent: 14
+  completed_plans: 15
+  percent: 29
 ---
 
 # Project State
@@ -30,7 +30,7 @@ See: .planning/PROJECT.md (updated 2026-09-29)
 
 Phase: 2 (Rule Changes) — EXECUTING
 Plan: 8 of 8
-Status: Ready to execute
+Status: Phase complete — ready for verification
 Last activity: 2026-10-02 — Phase 2 execution started
 
 Progress: [░░░░░░░░░░] 0%
@@ -69,6 +69,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 02 P05 | multi-session | 3 tasks | 17 files |
 | Phase 02 P06 | 31min | 3 tasks | 11 files |
 | Phase 02 P07 | ~1h | 2 tasks | 10 files |
+| Phase 02 P08 | 2h | 3 tasks | 12 files |
 
 ## Accumulated Context
 
@@ -98,6 +99,7 @@ Recent decisions affecting current work:
 - [Phase 02]: 02-06 RULE-02: evaluate_path models Levelwechsel up/down, cancel and add with net Init pricing per measure (D-27), no refund, no fee, effects and OPEX from the next wave, dependencies valid after every window
 - [Phase 02]: 02-06 D-24: the swap layer (every valid wave-1 plan x every legal Kurswechsel swap with minimal repair; exempt plans static) is the legal minimum and is labelled; 37,300,736 swap paths per tier, about 4 min and 62 MB per tier; low-tier legal best in budget KZ 100 vs static reference 98
 - [Phase 02]: [02-07] RULE-05/D-14: event-induced overruns need no rules change (single end check); Sparprogramm description carries the end-check sentence, characterization goldens regenerated text-only (user decision, option 1); budget cut in last wave warns via rules.event_without_window
+- [Phase 02-08]: RULE-04 gate measured strict min X 9/5/3 (weak 8/4/3) on static reference; config X=9 passes, zero headroom in low; Phase 6 softens step rewards (D-18); move-path gate deferred (D-25)
 
 ### Pending Todos
 
@@ -120,6 +122,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-10-04T19:37:10.783Z
-Stopped at: Completed 02-07-PLAN.md
+Last session: 2026-10-05T19:06:54.998Z
+Stopped at: Completed 02-08-PLAN.md
 Resume file: .planning/phases/02-rule-changes/02-CONTEXT.md

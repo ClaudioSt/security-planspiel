@@ -61,7 +61,7 @@ Plans:
   4. RoS for any selection is identical with and without event cost effects (penalties and discounts); only initial costs, regular OPEX and the Kurswechsel init difference count. Budget Review tiers give the same result in sim and print at the 25k/50k/75k boundaries, with boundary text derived from the tier list.
   5. The per-wave E-target KZ bonus/malus is resolved against the printed MHP material and the decision is logged in PROJECT.md. It is either removed from the simulation or registered as a mechanic the worksheets must print.
 
-**Plans**: 7/8 plans executed
+**Plans**: 8/8 plans complete
 
 Plans:
 **Wave 1**
@@ -94,7 +94,7 @@ Plans:
 
 **Wave 8** *(blocked on Wave 7 completion)*
 
-- [ ] 02-08-PLAN.md — RULE-04: per-tier trim-back overspend gate, `planspiel gate`, Phase-6 X input (Wave 8)
+- [x] 02-08-PLAN.md — RULE-04: per-tier trim-back overspend gate, `planspiel gate`, Phase-6 X input (Wave 8)
 
 **Research flag**: yes. Topics: trim-back criterion mechanics ("trimmed version" definition, interaction with step rewards: OEM-Audit tiers, M7 tiers, Exzellenz +5/L3, E-target bonus) and a bounded change-model enumeration for downgrade/swap moves in the change window.
 
@@ -182,7 +182,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 3 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Simulation Foundation | 7/7 | Complete    | 2026-10-01 |
-| 2. Rule Changes | 7/8 | In Progress|  |
+| 2. Rule Changes | 8/8 | In Progress|  |
 | 3. Content Source & Veiling | 0/TBD | Not started | - |
 | 4. Print Pipeline & Attack Worksheets | 0/TBD | Not started | - |
 | 5. Player & Facilitator Print Material | 0/TBD | Not started | - |
