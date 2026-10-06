@@ -46,6 +46,7 @@
 - [ ] **PRINT-09**: A one-page "So funktioniert eine Welle" explains the wave calculation and what attacks and events affect
 - [ ] **PRINT-10**: A facilitator master sheet lists per-wave thresholds, caps, bonus tables, event effects, check rows and answer keys for reference selections
 - [ ] **PRINT-11**: Every generated page carries a version stamp (config hash/date)
+- [ ] **PRINT-12**: The pre-wave story documents (Unternehmenssteckbrief, Zeitungsartikel, Anfrage-Mail, Audit-Mail) are generated from the content source via LaTeX; their veiled prose and clues live in `content/texte.toml` (added 2026-10-06, Phase 3 D-14)
 
 ### Session Flow (FLOW)
 
@@ -149,6 +150,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PRINT-09 | Phase 5 | Pending |
 | PRINT-10 | Phase 5 | Pending |
 | PRINT-11 | Phase 4 | Pending |
+| PRINT-12 | Phase 5 | Pending |
 | FLOW-01 | Phase 5 | Pending |
 | FLOW-02 | Phase 7 | Pending |
 | FLOW-03 | Phase 7 | Pending |
@@ -168,10 +170,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 **Coverage:**
 
-- v1 requirements: 46 total
-- Mapped to phases: 46
+- v1 requirements: 47 total
+- Mapped to phases: 47
 - Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-09-29*
-*Last updated: 2026-09-29 after roadmap creation (traceability filled)*
+*Last updated: 2026-10-06 — PRINT-12 added (Phase 3 discussion, D-14)*
