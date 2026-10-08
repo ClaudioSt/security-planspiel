@@ -54,6 +54,14 @@ Requirements: PRINT-02, VEIL-01, VEIL-03 (ROADMAP Phase 3 success criteria 1–5
 - **D-18:** **≥ 2 clues per attack from ≥ 2 distinct source documents** (e.g. Steckbrief + Zeitungsartikel).
 - **D-19:** **Inventory (SC5)** of the hand-maintained docx/pptx (`final_documents/`): every item (wording, colours, branding, images) is marked carried into the content source, kept manual (intro deck, MHP company profile, per PROJECT.md Out of Scope) or deliberately dropped, with a reason.
 
+### Requirement review (plan-phase, 2026-10-08)
+- **D-20:** **Story-text giveaway check = the D-13b list with two exceptions** (user decision). (1) The word **"OT"** is allowed in story texts as a domain term (the Steckbrief uses it in headings and in the clue "kein separates OT-Netz"; the M5 card already prints "OT/IT-Netz-Segmentierung"). Only the attack name "OT-Störung" stays banned, so the attack id `ot` must not match the word "OT" in story texts. (2) The stem **Erpress*** is allowed in story texts as a clue word (e.g. "Erpresser legen Zulieferer lahm"). The veiled attack keys keep the full D-13b list without exceptions.
+- **D-21:** **All story texts are veiled**, including the Unternehmenssteckbrief ("Sinumerik" appears twice), not only the Zeitungsartikel and Anfrage-Mail. Audit-Mail is checked after transcription.
+- **D-22:** **Assets folder for branding (user decision, refines D-19):** a git-tracked folder for company assets and guidelines (logos, colour palettes, fonts, images, brand guidelines), with a README stating its purpose. The user drops further files there. Inventory items for colours, logos, branding and images are carried into this folder (files extracted or copied, colour/font values recorded in a guidelines file there) or marked kept manual / dropped with a reason. `texte.toml` stays text-only. Exact path: Claude's discretion (suggested `content/assets/`).
+- **D-23:** The pre-wave title **"Angriff N" is generated in code from the wave position**; `texte.toml` holds no digit for it, and a scenario variant (SCEN, v4) can reorder attacks without text changes.
+- **D-24:** **Print effect lines for event cards are built in Phase 5 (PRINT-06).** Phase 3 only keeps the simulation's effect labels generated from event params (`flat_budget` no longer returns the config description) and shows that every number removed from prose maps to a config param.
+- **D-25:** The digit-allowlist entries (D-10) are **reviewed by the user at the PRINT-02 checkpoint**, together with the text-only golden diff (D-08).
+
 ### Claude's Discretion
 - Where the digit allowlist lives (TOML header table, separate file or Python constant) and its exact syntax.
 - How measure ids in prose (e.g. OEM-Audit "M1 IAM/PAM, M2 …", Nervige Authentifizierung "M1 ≥ Level 2") pass the digit lint: an id pattern such as `M\d+` on the allowlist, generating those references in code, or rewording.
