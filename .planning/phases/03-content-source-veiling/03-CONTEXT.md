@@ -62,6 +62,13 @@ Requirements: PRINT-02, VEIL-01, VEIL-03 (ROADMAP Phase 3 success criteria 1–5
 - **D-24:** **Print effect lines for event cards are built in Phase 5 (PRINT-06).** Phase 3 only keeps the simulation's effect labels generated from event params (`flat_budget` no longer returns the config description) and shows that every number removed from prose maps to a config param.
 - **D-25:** The digit-allowlist entries (D-10) are **reviewed by the user at the PRINT-02 checkpoint**, together with the text-only golden diff (D-08).
 
+### Research follow-up (plan-phase, 2026-10-08, user decisions)
+- **D-26:** **Veiled text = title word only.** Each attack keeps a per-attack key `veiled.title = "Angriff"` (hook for v4 scenario hints); no teaser sentence. The number comes from code (D-23).
+- **D-27:** **Revealed attack names = worksheet names:** "Ransomware", "OT-Störung", "Datenexfiltration" (as on the printed worksheets and file names; no "(Produktionsausfall)" subtitle).
+- **D-28:** **`levels_simple` without the "Grundschutz:/Besser:/Premium:" prefix** (printed-deck wording). The deck's copy-paste errors (M6 L3, M10 L1 showing M2 texts) are not carried over.
+- **D-29:** **Backup & Recovery slide text → `[sheets.backup_recovery]`** (explains the M4 recovery mechanic, numbers from `measures.M4.levels.*.recovery` in code); no config event; Phase 5 decides whether it is printed.
+- **D-30:** Research defaults (Claude's recommendation, not separately asked; user may override at the checkpoints): single-word table labels (Maßnahme, Level, Summe …) are carried into `texte.toml` as sheet vocabulary; both Zeitungsartikel images are carried into the assets folder (D-22), including the padlock image as a visual clue.
+
 ### Claude's Discretion
 - Where the digit allowlist lives (TOML header table, separate file or Python constant) and its exact syntax.
 - How measure ids in prose (e.g. OEM-Audit "M1 IAM/PAM, M2 …", Nervige Authentifizierung "M1 ≥ Level 2") pass the digit lint: an id pattern such as `M\d+` on the allowlist, generating those references in code, or rewording.
