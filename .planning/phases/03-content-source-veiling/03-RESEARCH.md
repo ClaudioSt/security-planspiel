@@ -204,7 +204,7 @@ Event keys by type (derive from `cfg.events`/`final_events`):
 
 | Event id | type | `narrative` source | other keys |
 |----------|------|--------------------|-----------|
-| kurswechsel | kurswechsel | pptx slide 2 with `Maßnahmenwechsel` → `Maßnahmentausch` | `rule` = current config description (digit-free, vocabulary test already exists) |
+| kurswechsel | kurswechsel | pptx slide 2 narrative verbatim (no retired term in it; `Maßnahmenwechsel` occurs only in the dropped rule line, appendix L5) | `rule` = current config description (digit-free, vocabulary test already exists) |
 | operative_unterstuetzung | opex_discount_per_active_measure | pptx slide 3 | `rule` = "Zählt für jede bestehende Maßnahme in der kommenden Runde" |
 | sparprogramm | flat_budget | pptx slide 4 | `rule` = end-check sentence from config ("Geprüft wird das Restbudget erst am Ende; … Init wird nicht erstattet") |
 | oem_audit | checklist_tier | pptx slide 5 | `checklist_heading` = "Audit Checkliste"; code appends "(mindestens auf Level 1)" and the M1..M7 list from `params` + `measures.*.name` |
