@@ -635,18 +635,24 @@ def check_digits(texts, allow):
 | A15 | Copy (not move) the two PNGs; Letter-to-A4 | Assets | 3.7 MB duplicated until LEG-01 |
 | A16 | Optional story "mechanics vocabulary" lint | Story veiling | Skip if not wanted |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **What is the veiled text, really?**
    - What we know: D-13/D-23 reduce it to the title word; SC3 and VEIL-01 say "a veiled text per attack".
    - What's unclear: whether the user wants one neutral sentence per attack in addition.
    - Recommendation: ship `veiled.title` only; raise at the VEIL-01 checkpoint.
+   - RESOLVED: see D-26 (title word "Angriff" only, per-attack `veiled.title` key, no teaser sentence).
 2. **Attack display names:** printed headings say "OT-Störung (Produktionsausfall)" and "Datenexfiltration"; config says "OT-Störung" and "Exfiltration".
    - Recommendation: `revealed.name` = "Ransomware" / "OT-Störung" / "Datenexfiltration" (printed worksheet names, file names `Angriff-3_Datenexfiltration`); decide at D-13d.
+   - RESOLVED: see D-27 (worksheet names "Ransomware", "OT-Störung", "Datenexfiltration", no subtitle).
 3. **Measure level wording:** prefix or not (A1).
+   - RESOLVED: see D-28 (`levels_simple` without prefix; deck copy-paste errors M6 L3, M10 L1 not carried).
 4. **Table-label vocabulary in TOML:** whether single-word labels (Maßnahme, Level, Summe) belong to `texte.toml` or stay template layout. Recommendation: carry them (SC1 "sheet instructions", FLOW vocabulary consistency).
+   - RESOLVED: see D-30 (single-word labels carried into `texte.toml` as sheet vocabulary).
 5. **Backup & Recovery as an event card:** the pptx has it, config does not (A13). Phase 5 owner decides whether to print it.
+   - RESOLVED: see D-29 (text in `[sheets.backup_recovery]`, no config event; Phase 5 decides printing).
 6. **Zeitungsartikel images:** keep both, including the padlock image? (visual ransomware clue; recommended keep).
+   - RESOLVED: see D-30 (both images carried into the assets folder, padlock image kept as a visual clue).
 
 ## Environment Availability
 
