@@ -2,7 +2,7 @@
 phase: 3
 slug: content-source-veiling
 status: draft
-nyquist_compliant: false
+nyquist_compliant: true
 wave_0_complete: false
 created: 2026-10-08
 ---
@@ -37,23 +37,24 @@ created: 2026-10-08
 
 ## Per-Task Verification Map
 
-Filled by the planner per task; requirement-level map from research:
+Filled by the planner (2026-10-10). Every task writes its tests RED first, so the Wave 0 files are created by the first task that needs them.
 
-| Requirement | Behavior | Test Type | Automated Command | File Exists | Status |
-|-------------|----------|-----------|-------------------|-------------|--------|
-| PRINT-02 | `texte.toml` loads as UTF-8 (umlauts, typographic quotes, CRLF-safe) | unit | `uv run pytest tests/test_texts_loader.py -q` | ❌ W0 | ⬜ pending |
-| PRINT-02 | coverage fails on missing and orphaned keys; real file passes | unit + mutation | `uv run pytest tests/test_texts_coverage.py -q` | ❌ W0 | ⬜ pending |
-| PRINT-02 | digit lint: digits fail, allowlisted tokens pass, stale entry fails, `story` exempt, number words pass | unit | `uv run pytest tests/test_texts_digits.py -q` | ❌ W0 | ⬜ pending |
-| PRINT-02 | config has no prose; validator error `schema.prose_in_config`; `flat_budget` label generated; removed numbers map to params | unit | `uv run pytest tests/test_config_prose_removed.py -q` | ❌ W0 | ⬜ pending |
-| PRINT-02 | 1:1 migration fidelity (MEASURE_META, pre-strip config) | unit | `uv run pytest tests/test_texts_migration.py -q` | ❌ W0 | ⬜ pending |
-| PRINT-02 | golden change is text-only; digests unchanged | script + slow | `uv run python .planning/phases/03-content-source-veiling/tools/golden_text_diff.py` and `uv run pytest -m slow tests/test_digest.py -q` | ❌ W0 | ⬜ pending |
-| PRINT-02 (SC5) | every `final_documents/` file in the inventory with a valid disposition | unit | `uv run pytest tests/test_inventory.py -q` | ❌ W0 | ⬜ pending |
-| VEIL-01 | `Angriff N` / `Angriff N: <Name>` titles from wave position; no digit in TOML | unit | `uv run pytest tests/test_texts_views.py -q` | ❌ W0 | ⬜ pending |
-| VEIL-01 | pre-attack view cannot reach revealed name, id or bonus reason | unit | `uv run pytest tests/test_texts_views.py -q` | ❌ W0 | ⬜ pending |
-| VEIL-01 | giveaway matcher must-pass/must-fail table; veiled keys and event narratives clean | unit | `uv run pytest tests/test_texts_giveaway.py -q` | ❌ W0 | ⬜ pending |
-| VEIL-03 | story texts pass the story profile (D-20 exceptions), RED first | unit | `uv run pytest tests/test_texts_giveaway.py -k story -q` | ❌ W0 | ⬜ pending |
-| VEIL-03 | clue check: ≥2 clues per attack, ≥2 documents, verbatim, pre-wave source, mutations | unit | `uv run pytest tests/test_clues.py -q` | ❌ W0 | ⬜ pending |
-| VEIL-03 | `planspiel clues` prints matrix, exits 0/1 | integration | `uv run pytest tests/test_clues.py -k cli -q` | ❌ W0 | ⬜ pending |
+| Task | Requirement | Behavior | Test Type | Automated Command | File Exists | Status |
+|------|-------------|----------|-----------|-------------------|-------------|--------|
+| 03-01 T1 | PRINT-02 | `texte.toml` loads as UTF-8 (umlauts, typographic quotes, CRLF-safe) | unit | `uv run pytest tests/test_texts_loader.py -q` | ❌ W0 (T1) | ⬜ pending |
+| 03-01 T1 | PRINT-02 | coverage fails on missing and orphaned keys (mini fixture + mutations); CLI `planspiel texts` exits 0/1 | unit + mutation | `uv run pytest tests/test_texts_coverage.py -q` | ❌ W0 (T1) | ⬜ pending |
+| 03-01 T1 | PRINT-02 | digit lint: digits fail, allowlisted tokens pass, stale entry fails, `story` exempt, number words pass; story mechanics lint (D-15) | unit | `uv run pytest tests/test_texts_digits.py -q` | ❌ W0 (T1) | ⬜ pending |
+| 03-01 T2 | PRINT-02 | 1:1 migration fidelity (both MEASURE_META copies, bonus reasons, rule texts, story spot checks); real content passes `check_texts`; pinned allowlist | unit | `uv run pytest tests/test_texts_migration.py tests/test_config_text.py -q` | ❌ W0 (T2) | ⬜ pending |
+| 03-01 T3 | PRINT-02 (SC5) | every `final_documents/` file in `content/INVENTORY.md` with a valid disposition; asset copies byte-identical | unit | `uv run pytest tests/test_inventory.py -q` | ❌ W0 (T3) | ⬜ pending |
+| 03-01 T4 | PRINT-02 | config has no prose; validator error `schema.prose_in_config`; `flat_budget` label generated; removed numbers map to params | unit | `uv run pytest tests/test_config_prose_removed.py tests/test_validate.py -q` | ❌ W0 (T4) | ⬜ pending |
+| 03-01 T5 | PRINT-02 | golden change is text-only; digests and gate goldens unchanged | script + slow | `uv run python .planning/phases/03-content-source-veiling/tools/golden_text_diff.py` and `uv run pytest -m slow tests/test_digest.py -q` | ❌ W0 (T5) | ⬜ pending |
+| 03-01 T6 | PRINT-02 | goldens rewritten only after user decision (D-08, D-25) | decision + regression | `uv run pytest -q` | ✅ | ⬜ pending |
+| 03-02 T1 | VEIL-01 | `Angriff N` / `Angriff N: <Name>` titles from wave position, reorder; pre-attack view cannot reach revealed name, id or bonus reason | unit | `uv run pytest tests/test_texts_views.py tests/test_texts_coverage.py -q` | ❌ W0 (T1) | ⬜ pending |
+| 03-02 T2 | VEIL-01 | giveaway matcher must-pass/must-fail table, D-13b pin; veiled keys and event texts clean | unit | `uv run pytest tests/test_texts_giveaway.py -q` | ❌ W0 (T2) | ⬜ pending |
+| 03-02 T3 | VEIL-01 | revealed texts reviewed before commit (D-13d) | decision + regression | `uv run pytest -q && uv run planspiel texts` | ✅ | ⬜ pending |
+| 03-03 T1 | VEIL-03 | clue check: ≥2 clues per attack, ≥2 documents, verbatim, pre-wave source, mutations; `planspiel clues` exits 0/1 | unit + integration | `uv run pytest tests/test_clues.py -q` | ❌ W0 (T1) | ⬜ pending |
+| 03-03 T2 | VEIL-03 | story texts pass the story profile (D-20 exceptions), RED first; real clue matrix passes; leak test covers story | unit | `uv run pytest tests/test_story_veil.py tests/test_texts_views.py -q` | ❌ W0 (T2) | ⬜ pending |
+| 03-03 T3 | VEIL-03 | rewrites and matrix reviewed before commit (D-13d) | decision + regression | `uv run pytest -q && uv run planspiel clues` | ✅ | ⬜ pending |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 
@@ -63,8 +64,8 @@ Filled by the planner per task; requirement-level map from research:
 
 - [ ] `tests/test_texts_loader.py`, `test_texts_coverage.py`, `test_texts_digits.py`, `test_config_prose_removed.py`, `test_texts_migration.py`, `test_inventory.py` — PRINT-02
 - [ ] `tests/test_texts_views.py`, `test_texts_giveaway.py` — VEIL-01
-- [ ] `tests/test_clues.py` (+ story cases in `test_texts_giveaway.py`) — VEIL-03
-- [ ] `tests/fixtures/mini_texte.toml`, `tests/fixtures/mini_clues.toml` — hand-verifiable fixtures
+- [ ] `tests/test_clues.py`, `tests/test_story_veil.py` — VEIL-03
+- [ ] `tests/fixtures/mini_content/` (`texte.toml`, `digit_allowlist.toml`, `giveaway_terms.toml`, `clues.toml`) — hand-verifiable fixture content dir mirroring `content/`
 - [ ] `.planning/phases/03-content-source-veiling/tools/golden_text_diff.py` — text-only golden classifier
 
 ---

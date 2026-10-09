@@ -111,7 +111,20 @@ Plans:
   4. A facilitator clue matrix shows, per attack, at least two clues and where each appears in the pre-wave material. A check fails if any attack has fewer than two.
   5. An inventory of the current hand-maintained docx/pptx (wording, colours, branding) shows every item either carried into the content source or deliberately dropped.
 
-**Plans**: TBD
+**Plans**: 3 plans
+
+Plans:
+**Wave 1**
+
+- [ ] 03-01-PLAN.md — PRINT-02: `content/texte.toml` + `planspiel texts` (coverage, digit lint), prose stripped from config with reviewed text-only golden change, assets folder and inventory (SC1, SC2, SC5) (Wave 1)
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [ ] 03-02-PLAN.md — VEIL-01: veiled title "Angriff N" vs revealed texts, audience views with leak test, giveaway lint on veiled keys and events, revealed-text review (SC3) (Wave 2)
+
+**Wave 3** *(blocked on Wave 2 completion)*
+
+- [ ] 03-03-PLAN.md — VEIL-03: veiled story documents, `content/clues.toml` + `planspiel clues` (≥ 2 clues from ≥ 2 documents per attack), rewrite and matrix review (SC4) (Wave 3)
 
 ### Phase 4: Print Pipeline & Attack Worksheets
 
@@ -184,7 +197,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 3 
 |-------|----------------|--------|-----------|
 | 1. Simulation Foundation | 7/7 | Complete    | 2026-10-01 |
 | 2. Rule Changes | 8/8 | Complete    | 2026-10-05 |
-| 3. Content Source & Veiling | 0/TBD | Not started | - |
+| 3. Content Source & Veiling | 0/3 | Planned | - |
 | 4. Print Pipeline & Attack Worksheets | 0/TBD | Not started | - |
 | 5. Player & Facilitator Print Material | 0/TBD | Not started | - |
 | 6. Rebalance | 0/TBD | Not started | - |
