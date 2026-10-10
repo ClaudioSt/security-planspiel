@@ -145,6 +145,31 @@ ERROR_MUTATIONS = [
         "attacks.",
         id="damage-not-whole-euros",
     ),
+    pytest.param(
+        _set(["attacks", "ransomware", "description"], "Prosa"),
+        "schema.prose_in_config",
+        "attacks.ransomware.description",
+        id="prose-attack-description",
+    ),
+    pytest.param(_set(["waves", 0, "name"], "Prosa"), "schema.prose_in_config", "waves[0].name", id="prose-wave-name"),
+    pytest.param(
+        _set(["waves", 0, "bonus_measures", 0, "description"], "Prosa"),
+        "schema.prose_in_config",
+        "waves[0].bonus_measures[0].description",
+        id="prose-bonus-description",
+    ),
+    pytest.param(
+        _set(["events", "wave_1", 0, "description"], "Prosa"),
+        "schema.prose_in_config",
+        "events.wave_1[0].description",
+        id="prose-event-description",
+    ),
+    pytest.param(
+        _set(["final_events", 0, "description"], "Prosa"),
+        "schema.prose_in_config",
+        "final_events[0].description",
+        id="prose-final-event-description",
+    ),
 ]
 
 
