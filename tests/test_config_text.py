@@ -131,3 +131,36 @@ def test_display_strings_have_no_transliterations():
 def test_ids_and_keys_stay_ascii():
     offenders = [path for path, text in _walk_ascii_targets(_load_raw()) if not text.isascii()]
     assert offenders == []
+
+
+def _texte_strings():
+    from planspiel.texts import load_texts
+    from tests.support import CONTENT_DIR
+
+    return load_texts(CONTENT_DIR / "texte.toml").strings()
+
+
+def test_texte_toml_has_no_mojibake():
+    offenders = [
+        f"{key}: {marker}" for key, text in _texte_strings() for marker in MOJIBAKE_MARKERS if marker in text
+    ]
+    assert offenders == []
+
+
+def test_texte_toml_has_no_transliterations():
+    offenders = [
+        f"{key}: {text!r} (stem {pattern.pattern})"
+        for key, text in _texte_strings()
+        for pattern in TRANSLITERATION_PATTERNS
+        if pattern.search(text)
+    ]
+    assert offenders == []
+
+
+def test_texte_toml_keys_are_ascii():
+    from planspiel.texts import load_texts
+    from tests.support import CONTENT_DIR
+
+    keys = [key for key, _ in load_texts(CONTENT_DIR / "texte.toml").leaves()]
+    assert keys
+    assert [key for key in keys if not key.isascii()] == []
