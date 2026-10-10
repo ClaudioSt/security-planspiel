@@ -29,6 +29,27 @@ def _validate_command(config: str, strict: bool) -> int:
     return 1 if errors or (strict and warnings) else 0
 
 
+def _texts_command(config: str, content_dir: str) -> int:
+    import tomllib
+
+    from planspiel.config import load_config
+    from planspiel.texts import check_texts, load_content
+
+    try:
+        issues = check_texts(load_config(Path(config)), load_content(Path(content_dir)))
+    except (OSError, tomllib.TOMLDecodeError) as error:
+        print(f"ERROR texts.toml {content_dir}: {error}")
+        print("1 Fehler, 0 Warnung(en)")
+        return 1
+    errors = [issue for issue in issues if issue.level == "error"]
+    warnings = [issue for issue in issues if issue.level == "warning"]
+    for issue in issues:
+        label = "ERROR" if issue.level == "error" else "WARN"
+        print(f"{label} {issue.code} {issue.path}: {issue.message}")
+    print(f"{len(errors)} Fehler, {len(warnings)} Warnung(en)")
+    return 1 if errors else 0
+
+
 def _tausch_command(parser: argparse.ArgumentParser, config: str, tiers: list[str] | None, summary_dir: str) -> int:
     import time
 
@@ -126,10 +147,23 @@ def main(argv: list[str] | None = None) -> int:
         default=None,
         help="Budget-Tier (wiederholbar, Standard: alle Tiers der Konfiguration).",
     )
+    texts_parser = subparsers.add_parser(
+        "texts", help="Prüft content/texte.toml: Abdeckung, Ziffern und Story-Regeln."
+    )
+    texts_parser.add_argument(
+        "--config", default="simulation_config.json", help="Pfad zur Konfigurationsdatei."
+    )
+    texts_parser.add_argument(
+        "--content-dir",
+        default="content",
+        help="Verzeichnis mit texte.toml und digit_allowlist.toml.",
+    )
     args = parser.parse_args(argv)
     if args.command is None:
         parser.print_help()
         return 0
+    if args.command == "texts":
+        return _texts_command(args.config, args.content_dir)
     if args.command == "tausch":
         return _tausch_command(parser, args.config, args.tier, args.summary_dir)
     if args.command == "gate":
