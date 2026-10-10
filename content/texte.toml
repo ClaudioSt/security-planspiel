@@ -1,0 +1,541 @@
+# Inhaltsquelle des Planspiels: alle deutschen Texte für Druckmaterial (PRINT-02).
+#
+# Regeln:
+# - Schlüssel entsprechen Config-IDs (measures, attacks, events, final_events); sheets und story
+#   folgen den in planspiel/texts.py deklarierten Listen.
+# - Keine Spielzahlen in der Prosa und keine {param}-Platzhalter: Zahlen erzeugt der Code aus der Config.
+#   Ausnahmen stehen geprüft in digit_allowlist.toml; der Abschnitt story ist von der Ziffernprüfung ausgenommen.
+# - Prüfen mit: uv run planspiel texts
+# - Datei ist UTF-8 mit LF-Zeilenenden; Texte stehen in einfachen Zeichenketten ohne Zeilenumbruch.
+
+[measures.M1]
+focus = "Zugriffskontrolle, privilegierte Accounts"
+description = "Wer darf was im Unternehmen? Diese Maßnahme stellt sicher, dass nur berechtigte Personen Zugang zu sensiblen Systemen haben - wie ein digitaler Türsteher."
+
+[measures.M1.levels_desc]
+1 = "Zentrale AD, MFA für Admins, Passwortrichtlinie"
+2 = "PAM (Privileged Access Management), Rollenkonzept"
+3 = "JIT-Access, Session-Recording, Access-Reviews"
+
+[measures.M1.levels_simple]
+1 = "Zentrale Benutzerverwaltung, Admins brauchen zwei Faktoren zum Einloggen."
+2 = "Spezielle Verwaltung für Admin-Konten, klare Rollen wer was darf."
+3 = "Zugriff nur bei Bedarf, alle Admin-Aktionen werden aufgezeichnet."
+
+[measures.M2]
+focus = "Sichtbarkeit schaffen, Angriffe erkennen"
+description = "Wie ein Überwachungssystem für die IT: Alle wichtigen Ereignisse werden protokolliert und ausgewertet, um verdächtige Aktivitäten frühzeitig zu erkennen."
+
+[measures.M2.levels_desc]
+1 = "Windows Event Logs zentral sammeln, 30 Tage"
+2 = "SIEM mit Use Cases (Failed Logins, Priv. Escalation)"
+3 = "MDR (Managed Detection & Response) mit 24/7-SOC"
+
+[measures.M2.levels_simple]
+1 = "Protokolle werden gesammelt und 30 Tage aufbewahrt."
+2 = "Automatische Alarme bei verdächtigen Mustern (z.B. viele fehlgeschlagene Logins)."
+3 = "Externe Sicherheitsexperten überwachen rund um die Uhr."
+
+[measures.M3]
+focus = "Schadsoftware auf Clients/Servern erkennen"
+description = "Der Virenschutz für alle Computer im Unternehmen. Erkennt und stoppt Schadsoftware, bevor sie Schaden anrichten kann."
+
+[measures.M3.levels_desc]
+1 = "Aktueller Virenscanner, automatische Updates"
+2 = "EDR mit Behavioral Analysis, Auto-Isolation"
+3 = "XDR (Korrelation Endpoints, Netzwerk, Cloud)"
+
+[measures.M3.levels_simple]
+1 = "Klassischer Virenscanner, der bekannte Schadsoftware erkennt."
+2 = "Erkennt auch unbekannte Bedrohungen anhand von verdächtigem Verhalten, isoliert befallene Rechner automatisch."
+3 = "Vernetzt alle Sicherheitssysteme - erkennt komplexe Angriffe über mehrere Systeme hinweg."
+
+[measures.M4]
+focus = "Daten wiederherstellen, Betrieb aufrechterhalten"
+description = "Die Lebensversicherung für Unternehmensdaten. Regelmäßige Sicherungskopien ermöglichen es, nach einem Angriff oder Ausfall schnell wieder arbeitsfähig zu sein."
+
+[measures.M4.levels_desc]
+1 = "Tägliche Backups Office-IT, 14 Tage, kein Test"
+2 = "3-2-1-Regel, monatliche Restore-Tests"
+3 = "Immutable Backups (Air-Gap), DR-Plan, RTO <4h"
+
+[measures.M4.levels_simple]
+1 = "Tägliche Datensicherung, aber ohne regelmäßige Tests ob die Wiederherstellung funktioniert."
+2 = "Backups an mehreren Orten, monatlich wird geprüft ob Wiederherstellung klappt."
+3 = "Backups sind unveränderbar und vom Netzwerk getrennt - selbst Hacker können sie nicht löschen. Schnelle Wiederherstellung garantiert."
+
+[measures.M5]
+focus = "Produktionsnetz vom Office-Netz trennen"
+description = "Baut digitale Brandmauern zwischen Büro und Produktion. Ein Angriff im Büro soll nicht die Fertigungsanlagen lahmlegen können."
+
+[measures.M5.levels_desc]
+1 = "Logische VLANs, keine Firewall-Regeln"
+2 = "Firewall zwischen OT/IT, Whitelist-Prinzip"
+3 = "IDS/IPS in OT, Micro-Segmentierung (Zonen/Linie)"
+
+[measures.M5.levels_simple]
+1 = "Netzwerke sind logisch getrennt, aber ohne strenge Zugangskontrollen."
+2 = "Echte Firewall zwischen Büro und Produktion - nur explizit erlaubter Datenverkehr kommt durch."
+3 = "Jede Produktionslinie ist einzeln abgesichert, verdächtiger Datenverkehr wird automatisch blockiert."
+
+[measures.M6]
+focus = "Mitarbeitende sensibilisieren, Phishing abwehren"
+description = "Macht Mitarbeiter zur ersten Verteidigungslinie. Geschulte Mitarbeiter erkennen Betrugsversuche und gefährliche E-Mails, bevor Schaden entsteht."
+
+[measures.M6.levels_desc]
+1 = "Jährliche Pflicht-Schulung (E-Learning, 30 Min)"
+2 = "Quartalsweise Schulungen + Phishing-Simulationen"
+3 = "Rollenspez. Training, Incident-Meldeprozess etabliert"
+
+[measures.M6.levels_simple]
+1 = "Einmal im Jahr eine kurze Online-Schulung zum Thema IT-Sicherheit."
+2 = "Regelmäßige Schulungen plus Test-Phishing-Mails, um die Wachsamkeit zu prüfen."
+3 = "Spezielle Trainings je nach Rolle, klarer Prozess zum Melden von Verdachtsfällen."
+
+[measures.M7]
+focus = "Schwachstellen schließen, Angriffsfläche reduzieren"
+description = "Hält alle Systeme auf dem neuesten Stand. Sicherheitslücken werden durch Updates geschlossen, bevor Angreifer sie ausnutzen können."
+
+[measures.M7.levels_desc]
+1 = "Automatische Windows-Updates, sporadisch OT-Patches"
+2 = "Monatliche Patch-Zyklen, Vulnerability-Scans (quartal)"
+3 = "Risk-based Patching (CVSS), wöchentliche Scans, Tool"
+
+[measures.M7.levels_simple]
+1 = "Windows-Updates laufen automatisch, Produktionssysteme werden unregelmäßig aktualisiert."
+2 = "Strukturierter monatlicher Update-Prozess, regelmäßige Suche nach Schwachstellen."
+3 = "Kritische Lücken werden priorisiert geschlossen, wöchentliche automatische Schwachstellen-Scans."
+
+[measures.M8]
+focus = "Lieferanten-Risiken managen, Abhängigkeiten absichern"
+description = "Schützt vor Risiken durch Geschäftspartner. Denn auch über einen gehackten Lieferanten können Angreifer ins Unternehmen gelangen."
+
+[measures.M8.levels_desc]
+1 = "Vertragliche Security-Klauseln, Ad-hoc-Checks"
+2 = "Supplier-Assessments (jährlich), SLA-Monitoring"
+3 = "Continuous Monitoring, Dual-Sourcing, Escrow-Verträge"
+
+[measures.M8.levels_simple]
+1 = "Sicherheitsanforderungen stehen im Vertrag, gelegentliche Überprüfungen."
+2 = "Jährliche Sicherheitsbewertung aller wichtigen Lieferanten, Überwachung der Leistungsversprechen."
+3 = "Kontinuierliche Überwachung, Backup-Lieferanten für kritische Teile, Schutz bei Lieferanten-Insolvenz."
+
+[measures.M9]
+focus = "Cloud-Konfigurationen überwachen & absichern"
+description = "Sichert Daten und Dienste in der Cloud ab. Prüft automatisch, ob Cloud-Systeme sicher konfiguriert sind."
+
+[measures.M9.levels_desc]
+1 = "Basis-Monitoring Cloud-Backup (Veeam)"
+2 = "CSPM-Tool (z.B. Prisma Cloud), Compliance-Checks"
+3 = "Multi-Cloud-Security, IaC-Scanning, CNAPP"
+
+[measures.M9.levels_simple]
+1 = "Einfache Überwachung der Cloud-Backups."
+2 = "Automatische Prüfung ob Cloud-Einstellungen den Sicherheitsrichtlinien entsprechen."
+3 = "Umfassende Sicherheit über mehrere Cloud-Anbieter, automatische Prüfung aller Cloud-Konfigurationen."
+
+[measures.M10]
+focus = "Smartphones/Tablets absichern"
+description = "Schützt mobile Geräte der Mitarbeiter. Verhindert Datenverlust bei Diebstahl und kontrolliert welche Apps genutzt werden dürfen."
+
+[measures.M10.levels_desc]
+1 = "PIN-Pflicht, Remote-Wipe bei Verlust"
+2 = "MDM-Plattform (Intune/Jamf), App-Whitelisting"
+3 = "UEM (Unified Endpoint Mgmt.), MTD (Mobile Threat Def.)"
+
+[measures.M10.levels_simple]
+1 = "PIN-Schutz Pflicht, bei Verlust kann das Gerät aus der Ferne gelöscht werden."
+2 = "Zentrale Verwaltung aller Mobilgeräte, nur zugelassene Apps können installiert werden."
+3 = "Einheitliche Verwaltung aller Endgeräte, aktiver Schutz vor mobilen Bedrohungen."
+
+[attacks.ransomware.revealed]
+name = "Ransomware"
+narrative = "Ein Mitarbeiter hat auf eine gefälschte E-Mail geklickt. Die Angreifer versuchen, Ransomware zu platzieren, die Daten verschlüsselt und ggf. exfiltriert, um anschließend Lösegeld zu erpressen. Ob die Verschlüsselung tatsächlich gelingt und wie stark die Auswirkungen sind, wird im Folgenden anhand Ihrer Sicherheitsmaßnahmen berechnet."
+cia_rationale = "Bei Ransomware zählen Vertraulichkeit (C) und Integrität (I) stärker (Datendiebstahl + Verschlüsselung), Verfügbarkeit (A) ist häufig die Folge daraus."
+case_1 = "Eure Maßnahmen reichen nicht aus, der Angriff setzt sich durch."
+case_2 = "Ihr wehrt den Angriff vollständig ab."
+case_3 = "Ihr mindert die Auswirkungen teilweise."
+
+[attacks.ransomware.revealed.bonus_reasons]
+M3 = "EDR/XDR erkennt Ransomware früh"
+M4 = "Backup ermöglicht schnelle Wiederherstellung"
+M6 = "Geschulte Mitarbeiter erkennen Phishing"
+
+[attacks.ot.revealed]
+name = "OT-Störung"
+narrative = "In eurer Produktionssteuerung wurde eine Schwachstelle ausgenutzt. Die Angreifer zielen darauf, die Fertigung zu stören bzw. stillzulegen. Ob die Produktion wirklich ausfällt und wie stark die Auswirkungen sind, ermittelt ihr im nächsten Schritt anhand eurer Sicherheitsmaßnahmen."
+cia_rationale = "Bei OT-Störungen ist Verfügbarkeit (A) entscheidend, weil ein Stillstand direkt zu Produktionsausfall und Lieferverzug führt; C und I sind hier nachgelagert."
+case_1 = "Eure Maßnahmen reichen nicht aus, die Produktion fällt aus."
+case_2 = "Ihr verhindert den Ausfall vollständig."
+case_3 = "Ihr mindert die Auswirkungen teilweise."
+
+[attacks.ot.revealed.bonus_reasons]
+M5 = "OT/IT-Segmentierung isoliert Produktion"
+M7 = "Patch Management schließt OT-Schwachstellen"
+
+[attacks.exfil.revealed]
+name = "Datenexfiltration"
+narrative = "Über einen kompromittierten Lieferanten-Zugang wurden über Wochen hinweg vertrauliche Konstruktionsdaten abgegriffen. Das Bundesamt für Sicherheit in der Informationstechnik (BSI) informiert euch: Eure Daten werden im Darknet angeboten. Ob (und wie stark) der Abfluss gelingt und welche Folgen daraus entstehen, ermittelt ihr jetzt anhand eurer Sicherheitsmaßnahmen."
+cia_rationale = "Bei Exfiltration zählt Vertraulichkeit (C) am meisten (IP-Diebstahl), Integrität (I) ist relevant (Daten werden kopiert/weiterverarbeitet), Verfügbarkeit (A) bleibt oft weitgehend erhalten."
+case_1 = "Eure Maßnahmen reichen nicht aus, der Datenabfluss gelingt."
+case_2 = "Ihr verhindert die Exfiltration vollständig."
+case_3 = "Ihr reduziert die Auswirkungen teilweise."
+
+[attacks.exfil.revealed.bonus_reasons]
+M1 = "IAM/PAM verhindert unbefugten Zugriff"
+M2 = "SIEM erkennt Datenabfluss"
+M8 = "Supply Chain Security schützt Schnittstellen"
+
+[events.kurswechsel]
+narrative = "Nach den neuesten Erkenntnissen entscheidet die Geschäftsführung: Eure Sicherheitsstrategie wird neu ausgerichtet. Ihr müsst euer Setup anpassen, könnt aber bestehende Investitionen teilweise weiterverwenden. Daher zählt nur die Kostendifferenz."
+rule = "Die Geschäftsführung richtet die Sicherheitsstrategie neu aus. Im Change-Fenster nach dieser Welle führt jedes Team genau einen Maßnahmentausch durch: Eine in dieser Welle aktive Maßnahme fällt ganz weg, eine in dieser Welle nicht aktive Maßnahme kommt auf einem frei wählbaren Level hinzu. Der Kunde übernimmt die Init-Kosten der neuen Maßnahme bis zur Höhe der Init-Kosten der wegfallenden Maßnahme auf ihrem Level in dieser Welle; nur einen Mehrbetrag zahlt das Team, eine günstigere neue Maßnahme bringt keine Erstattung. Abhängige Maßnahmen der wegfallenden Maßnahme senkt das Team im selben Fenster passend ab. Ist in dieser Welle keine oder jede Maßnahme aktiv, entfällt der Tausch. Normale Levelwechsel im selben Change-Fenster bleiben erlaubt."
+
+[events.operative_unterstuetzung]
+narrative = "Ihr bekommt operative Unterstützung: Ein zentraler Rahmenvertrag bzw. Shared-Service senkt kurzfristig die laufenden Betriebskosten eurer Security-Maßnahmen. Für die nächste Runde wird der Betrieb günstiger, ohne dass ihr an Leistung verliert."
+rule = "Zählt für jede bestehende Maßnahme in der kommenden Runde"
+
+[events.sparprogramm]
+narrative = "Der CFO verkündet ein konzernweites Sparprogramm, und auch eure Security-Initiativen bleiben nicht verschont. Das Budget wird gekürzt."
+rule = "Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet)."
+
+[events.oem_audit]
+narrative = "Der große Automobilkunde prüft die Sicherheitsstandards. Im Audit zählt nicht, ob ihr „Best-in-Class“ seid - sondern ob ihr die grundlegenden Kontrollen überhaupt verlässlich umgesetzt habt."
+checklist_heading = "Audit Checkliste"
+
+[events.kritische_schwachstelle]
+narrative = "Ihr werdet von einem Softwarehersteller informiert: In einem von euch genutzten System wurde eine kritische Schwachstelle entdeckt, die aktiv ausgenutzt werden könnte."
+
+[events.kritische_schwachstelle.tier_labels]
+0 = "Patch verzögert/chaotisch"
+1 = "Patch gelingt, aber mit Reibung"
+2 = "Patch planbar und zügig"
+3 = "Patch routiniert, mit Nachweis/Reporting"
+
+[events.exzellenz_bonus]
+narrative = "Maßnahmen, die nachweislich „enterprise-ready“ umgesetzt sind, erhöhen das Vertrauen. Für jede auf höchstem Niveau betriebene Kontrolle gibt es einen Bonus auf eure Kundenzufriedenheit."
+
+[events.nervige_authentifizierung]
+narrative = "Ihr zieht die Zugriffskontrollen an, aber die Belegschaft wurde nicht vorbereitet. Die Folge sind viele Support-Tickets und Frust - intern entsteht der Eindruck, dass Security die Arbeit blockiert."
+
+[final_events.budget_review]
+narrative = "Nach Abschluss eurer Beauftragung macht der CFO den Kassensturz: Nicht nur das Sicherheitsniveau zählt, sondern auch, ob ihr das Budget im Griff hattet."
+rule = "Prüft euer Restbudget."
+
+[sheets.angriff]
+start_values_intro = "Euer Unternehmen startet je Schutzziel mit einem Basiswert. Eure gewählten Maßnahmen erhöhen diese Werte."
+cia_table_instruction = "Tragt die CIA-Werte eurer Maßnahmen ein und berechnet euren Gesamtschutz über alle Schutzziele."
+e_value_intro = "Als Nächstes berechnet ihr den Effektivitätswert (E-Wert). Er zeigt, wie gut ihr gegen diesen Angriffstyp geschützt seid:"
+bonus_intro = "Zusätzlich bekommt ihr einen Bonus, wenn ihr passende Maßnahmen für diesen Angriff mindestens auf dem richtigen Level habt. Der Bonus wird zur Gesamtreduktion addiert."
+case_3_hint = "Berechnet Schaden und KZ:"
+
+[sheets.budget]
+title = "Budget"
+intro = "Das Budget ist das Geld, das euch Beratern für die Umsetzung von Maßnahmen zur Verfügung steht. Mit dem Budget müsst ihr Maßnahmen initiieren und betreiben."
+init_what = "Einmalige Anschaffungskosten für eine Maßnahme (Hardware, Software, Einrichtung)"
+init_when = "Einmal zu Spielbeginn"
+opex_what = "Laufende Betriebskosten (Lizenzen, Personal, Wartung)"
+opex_when = "Jede Welle erneut"
+tier_intro = "Im Planspiel wählt ihr zu Beginn ein Budget-Tier. Je höher euer Budget, desto mehr bzw. stärkere Maßnahmen könnt ihr umsetzen. Gleichzeitig sind die Erwartungen höher, was sich in einem entsprechend angepassten Startwert der Kundenzufriedenheit (KZ) widerspiegelt. Legt daher zuerst euer Budget-Tier fest, bevor ihr eure Maßnahmen auswählt."
+anticipated_sum_intro = "In diesem Sheet plant und trackt ihr euer Budget über alle Wellen. Init-Kosten fallen nur einmalig an, wenn ihr eine Maßnahme einführt oder auf ein höheres Level upgraded. OPEX-Kosten fallen dagegen in jeder Welle an, in der die Maßnahme aktiv ist."
+status_tracker_intro = "Trackt hier nach jeder Welle euren aktuellen Stand: verbleibendes Budget, die aktuellen CIA-Werte (Summe aus Basisschutz + Maßnahmen, siehe jeweilige Angriffskarte) und die kumulierte Kundenzufriedenheit. So habt ihr den Überblick, ohne in den Angriffskarten zurückblättern zu müssen."
+
+[sheets.ros]
+title = "Return on Security"
+instruction = "Trag die folgenden Werte ein:"
+purpose = "Der RoS zeigt, ob sich eure Security-Investition finanziell gelohnt hat."
+
+[sheets.backup_recovery]
+title = "Backup & Recovery"
+subtitle = "Event: Nach jeder Welle mit Recovery-Option"
+narrative = "Nach einem Angriff mit entstandenem Schaden prüft ihr, ob Systeme wiederhergestellt werden müssen oder ob der Betrieb stabil geblieben ist. Falls überhaupt ein Schaden entstanden ist, entscheidet eure Backup- und Recovery-Fähigkeit darüber, wie stark ihr den finanziellen Impact senken könnt."
+
+[sheets.backup_recovery.level_labels]
+0 = "kein Recovery"
+1 = "Basis-Recovery"
+2 = "teilw. Recovery"
+3 = "starke Recovery"
+
+[sheets.labels]
+measure = "Maßnahme"
+level = "Level"
+base_protection = "Basisschutz"
+sum = "Summe"
+from_level = "Ab Level"
+bonus = "Bonus"
+fulfilled = "Erfüllt"
+total_bonus = "Gesamtbonus"
+total_reduction = "Gesamtreduktion"
+e_value = "E-Wert"
+damage = "Schaden"
+satisfaction = "Kundenzufriedenheit"
+case = "Fall"
+cost_type = "Kostenart"
+what = "Was ist das?"
+when = "Wann fällig?"
+tier = "Tier"
+available_budget = "Verfügbares Budget"
+period = "Zeitraum"
+init_costs = "Init-Kosten"
+opex = "OPEX"
+anticipated_sum = "Antizipierte Summe"
+status_tracker = "Status-Tracker"
+point_in_time = "Zeitpunkt"
+budget_remaining = "Budget verbleibend"
+kz_cumulative = "KZ (kumuliert)"
+damage_wave = "Schaden (Welle)"
+start = "Start"
+after_wave = "Nach Welle"
+events = "Events"
+metric = "Kennzahl"
+value = "Wert"
+total_init = "Gesamt Init-Kosten"
+total_opex = "Gesamt OPEX Kosten"
+total_costs = "Gesamtkosten"
+avoided_damage = "Vermiedener Schaden"
+event_after_wave = "Event: Nach Welle"
+condition_met = "Bedingung erfüllt"
+effect = "Auswirkung"
+no_implementation = "Keine Umsetzung"
+final_damage = "Endschaden"
+min_level = "mindestens auf Level"
+
+[story.steckbrief]
+doc_title = "MECHTECH GmbH: Unternehmenssteckbrief"
+
+[story.steckbrief.kurzprofil]
+heading = "Kurzprofil"
+text = "Die MECHTECH GmbH ist ein mittelständischer Präzisionsfertiger mit Schwerpunkt auf Komponenten für E-Antriebe. Am Standort Göppingen (Baden-Württemberg) werden hochgenaue CNC-Komponenten gefertigt und Entwicklungsleistungen für Prototypen sowie Kleinserien erbracht. Der Betrieb ist auf hohe Wiederholgenauigkeit, stabile Prozessketten und termintreue Auslieferung ausgelegt."
+
+[story.steckbrief.produkte]
+heading = "Produkte & Leistungen"
+bullets = [
+    "Präzisions-Getriebeteile für E-Antriebe",
+    "CNC-gefräste Komponenten (Toleranzen < 10 µm)",
+    "Prototyping und Kleinserien für OEMs",
+    "Zerspanungstechnik: 5-Achs-Fräsen und Drehen",
+]
+
+[story.steckbrief.standort_organisation]
+heading = "Standort & Organisation"
+bullets = [
+    "Hauptsitz/Produktion: Göppingen, 1 Halle (3.500 m²)",
+    "Mitarbeitende: ca. 80",
+    "Produktion: 50 (Facharbeiter, Meister, Qualität)",
+    "Verwaltung: 20 (Vertrieb, Einkauf, Buchhaltung)",
+    "Konstruktion/Entwicklung: 8 (CAD, Prozessplanung)",
+    "IT: 2 Admins (1 Vollzeit, 1 Teilzeit)",
+]
+
+[story.steckbrief.eckdaten]
+heading = "Wirtschaftliche Eckdaten"
+bullets = [
+    "Umsatz: ca. 15 Mio. EUR p. a.",
+    "Kundenstruktur: 1 deutscher Premium-OEM als Hauptkunde (ca. 60 % Umsatz)",
+    "Weitere Kunden: ca. 25 (Tier-1-Zulieferer, Maschinenbau)",
+    "Wachstum: ca. +12 % p. a. (getrieben durch E-Mobility-Nachfrage)",
+]
+
+[story.steckbrief.produktion_betrieb]
+heading = "Produktion & Betrieb"
+bullets = [
+    "Betriebsmodell: 24/5 (Mo. bis Fr., 3 Schichten)",
+    "Anlagenpark: 12 CNC-Maschinen, 3 Fertigungslinien",
+    "Produktionssteuerung: MES Siemens Opcenter; SCADA/HMI zur Visualisierung",
+    "CNC-Steuerungen u. a.: Siemens Sinumerik, Heidenhain",
+    "Liefermodell: Just-in-Time an OEM, Liefertermintreue > 98 %",
+    "Operative Prämisse: Unterbrechungen > 4 Stunden wirken sich unmittelbar auf Auslieferungen aus und sind in Vertragskontexten relevant",
+]
+
+[story.steckbrief.it_ot_landschaft]
+heading = "IT-/OT-Landschaft"
+
+[story.steckbrief.it_ot_landschaft.office_engineering]
+heading = "Office / Engineering"
+bullets = [
+    "Windows Server 2019 (Active Directory)",
+    "ca. 30 Windows-PCs (Office, SharePoint, E-Mail)",
+    "CAD: Siemens NX (8 Arbeitsplätze)",
+    "File-Server (Konstruktionsdaten, Dokumente)",
+]
+
+[story.steckbrief.it_ot_landschaft.ot_produktion]
+heading = "OT / Produktion"
+bullets = [
+    "MES (Siemens, Windows-Server)",
+    "SCADA/HMI-Systeme",
+    "12 CNC-Steuerungen (Sinumerik/Heidenhain)",
+    "Office-IT und OT/Produktion nutzen dasselbe LAN (kein separates OT-Netz)",
+]
+
+[story.steckbrief.it_ot_landschaft.saas_cloud]
+heading = "SaaS / Cloud / Externe Anwendungen"
+bullets = [
+    "CRM: Salesforce",
+    "Cloud-Backup: Veeam für Office-Daten (monatliche Sicherung)",
+    "Lieferanten-Portal: extern erreichbare Web-Applikation",
+    "Cloud-Nutzung ist auf Vertriebsprozesse (Salesforce) und die monatliche Backup-Sicherung beschränkt, keine weiteren Fachanwendungen in der Cloud im Einsatz",
+    "Mobilgeräte: Außendienst und Vertrieb nutzen firmeneigene Notebooks, kein separates Mobile-Device-Programm im Einsatz",
+]
+
+[story.steckbrief.betrieb_service]
+heading = "Betriebs- & Service-Setup"
+bullets = [
+    "IT-Betrieb durch 2 Administratoren (Generalistenprofil)",
+    "Administratorzugänge: gemeinsam genutzte Admin-Konten für Server- und Netzwerkkomponenten, keine gesonderte Verwaltung privilegierter Zugriffe",
+    "Externe IT-Dienstleister bei Bedarf, Remote-Zugriff für Support",
+    "Remote-Zugänge durch fünf Lieferanten (u. a. MES, CAD, IT)",
+    "Policies/Standards: derzeit nicht als dokumentierter Satz beschrieben",
+    "Sicherheitsbetrieb: SIEM/EDR nicht als feste Plattformkomponenten genannt",
+    "Patch-/Update-Praxis in der Produktion: Umsetzung im Rahmen verfügbarer Wartungsfenster",
+]
+
+[story.steckbrief.abhaengigkeiten]
+heading = "Abhängigkeiten"
+bullets = [
+    "Hohe Kopplung zwischen Liefermodell (JIT/Termintreue) und Verfügbarkeit von MES/SCADA sowie Engineering- und File-Services",
+    "Relevanz von Konstruktions- und Prozessdaten für Fertigungsfähigkeit und Kundenkommunikation",
+    "Mehrere Remote-Zugänge in Kombination mit schlankem IT-Team und stark integrierter Netzwerkinfrastruktur",
+    "Auslastungs- und Stillstandsfenster als Taktgeber für Änderungen/Updates in der produktionsnahen Umgebung",
+]
+
+[story.zeitungsartikel]
+doc_title = "AUTO TIMES"
+kopfzeile = [
+    "Ausgabe 1, 2026",
+    "Aktuelles in der Automobilindustrie",
+    "Nürnberg",
+]
+ticker = [
+    "Phishing stoppt Fertigung",
+    "Backup? Fehlanzeige!",
+    "MES im Lockdown",
+]
+fusszeile = [
+    "Aktuelles",
+    "Seite 1",
+]
+
+[story.zeitungsartikel.meldung_audit]
+headline = "OEM VERSCHÄRFT SECURITY-ANFORDERUNGEN"
+paragraphs = [
+    "Stuttgart. Ein führender deutscher Automobilhersteller kündigte an, alle Tier-1- und Tier-2-Zulieferer ab Q2/2026 einem IT-Security-Audit zu unterziehen.",
+    "Erwartet werden belastbare Nachweise, dass Zulieferer nicht nur reagieren, sondern strukturiert vorsorgen: von der Fähigkeit, nach einem Vorfall schnell wieder anlaufen zu können, bis zur sauberen Trennung von Büro- und Fertigungsnetzen.",
+    "„Supply Chain Security ist geschäftskritisch\", so ein Sprecher. Bei gravierenden Lücken behalte man sich vor, Aufträge zurückzustellen.",
+]
+caption = "Symbolbild: Verschärfte Audits für Zulieferer."
+
+[story.zeitungsartikel.bericht_vorfall]
+headline = "Ransomware legt Zulieferer tagelang lahm"
+dateline = "Kassel, 10.01.2026"
+lead = "Ein mittelständischer Automotive Zulieferer aus Nordhessen wurde Opfer eines schweren Ransomware-Angriffs. Die Produktion stand für 72 Stunden still, der Schaden wird auf über 500.000 Euro geschätzt."
+caption = "Symbolbild: Stillstand in der Fertigung nach Cyberangriff."
+
+[story.zeitungsartikel.bericht_vorfall.ablauf]
+heading = "DER ANGRIFF"
+paragraphs = [
+    "Laut Informationen des Unternehmens erfolgte der Einbruch über eine Phishing-Mail, die ein Mitarbeiter in der Buchhaltung öffnete. Der klassische Virenschutz des Unternehmens schlug nicht rechtzeitig Alarm. Die Erpresser-Software verschlüsselte innerhalb von 2 Stunden nicht nur Office-Daten, sondern auch das produktionssteuernde MES-System. Erst nach Stunden bemerkte die IT ungewöhnliche Aktivitäten im Netz. Zentrale Systeme waren zudem seit Monaten nicht mehr aktualisiert worden.",
+    "„Wir hatten kein funktionierendes Backup-Konzept\", so der Geschäftsführer unter der Bedingung der Anonymität. Die Angreifer forderten ein Lösegeld von 250.000 Euro in Bitcoin.",
+]
+
+[story.zeitungsartikel.bericht_vorfall.folgen]
+heading = "FOLGEN"
+paragraphs = [
+    "Das Unternehmen entschied sich gegen die Zahlung und setzte die Systeme mit Unterstützung externer Forensiker neu auf. Drei Fertigungslinien standen still, Liefertermine konnten nicht eingehalten werden. Ein OEM-Kunde verhängte Vertragsstrafen wegen Lieferverzugs.",
+    "„Auch kleine Zulieferer sind Ziele\", warnt Dr. Sabine Müller vom BSI. „Angreifer wissen: Produktionsausfälle erzeugen Zahlungsbereitschaft.\"",
+]
+
+[story.anfrage_mail]
+doc_title = "Anfrage: IT-Security-Beratung für MechTech GmbH"
+
+[story.anfrage_mail.kopf]
+von = "\"Dr. Thomas Weber\" <t.weber@mechtech-gmbh.de>"
+an = "\"VWI Security Consulting <security-consulting@vwi.de>\""
+
+[story.anfrage_mail.anrede]
+text = "Sehr geehrte Damen und Herren,"
+
+[story.anfrage_mail.einleitung]
+paragraphs = ["ich wende mich an Sie im Namen der MechTech GmbH. Wir sind ein mittelständischer Zulieferer für die Automotive-Industrie und produzieren Präzisionsteile für E-Antriebe."]
+
+[story.anfrage_mail.lage]
+paragraphs = [
+    "Täglich lesen wir von Ransomware-Angriffen auf Unternehmen unserer Größe und Branche.",
+    "Ehrlich gesagt sind wir mit dem Thema IT-Sicherheit bisher eher reaktiv umgegangen. Wir haben einen Virenscanner und Backups, aber keine strukturierte Security-Strategie. Ehrlich gesagt wissen wir auch nicht genau, wer aktuell überall administrativen Zugriff auf unsere Systeme hat.",
+    "Wir möchten das ändern, wissen aber nicht, wo wir anfangen sollen.",
+]
+
+[story.anfrage_mail.aufgabe]
+heading = "IHRE AUFGABE:"
+text = "Können Sie uns dabei unterstützen, ein sinnvolles Security-Konzept zu entwickeln? Wir hätten Budget für ein Beratungs-projekt und möchten verstehen:"
+bullets = [
+    "Wo sind unsere größten Risiken?",
+    "Welche Maßnahmen sind sinnvoll und umsetzbar?",
+]
+
+[story.anfrage_mail.abschluss]
+paragraphs = ["Könnten Sie sich zunächst ein Bild von unserer Situation machen? Ich stehe für ein Erstgespräch gerne zur Verfügung."]
+
+[story.anfrage_mail.gruss]
+lines = [
+    "Mit freundlichen Grüßen,",
+    "Dr. Thomas Weber",
+    "Geschäftsführer",
+    "MechTech GmbH",
+]
+
+[story.anfrage_mail.fusszeile]
+lines = ["www.mechtech-gmbh.de | Industriestr. 42, 73033 Göppingen"]
+
+[story.audit_mail]
+doc_title = "Information Security Assessment - Supplier Audit Q2/2026"
+
+[story.audit_mail.kopf]
+von = "\"Klaus Hoffmann\" <k.hoffmann@premium-oem.com>"
+an = "\"Dr. Thomas Weber <t.weber@mechtech-gmbh.de>\""
+
+[story.audit_mail.anrede]
+text = "Sehr geehrter Herr Dr. Weber,"
+
+[story.audit_mail.einleitung]
+paragraphs = [
+    "im Rahmen unserer Supplier Security Initiative werden wir alle strategischen Zulieferer in Q2/2026 einem umfassenden IT-Security-Audit unterziehen.",
+    "Angesichts steigender Cyberbedrohungen (insb. Ransomware, Supply-Chain-Angriffe) stellen wir sicher, dass unsere Lieferkette angemessen abgesichert ist.",
+]
+
+[story.audit_mail.nachweise]
+heading = "ERWARTETE NACHWEISE:"
+text = "Im Audit werden wir vor allem folgende Punkte prüfen:"
+bullets = [
+    "IAM/ PAM",
+    "Backup & Disaster Recovery",
+    "Patch Management",
+    "Logging & SIEM",
+    "OT-Segmentierung",
+]
+
+[story.audit_mail.konsequenzen]
+heading = "KONSEQUENZEN:"
+text = "Bei kritischen Lücken behalten wir uns vor:"
+bullets = [
+    "Aufträge zurückzustellen (bis Maßnahmen umgesetzt)",
+    "Vertragsstrafen bei Sicherheitsvorfällen",
+    "Im Wiederholungsfall: Beendigung der Geschäftsbeziehung",
+]
+
+[story.audit_mail.unterstuetzung]
+heading = "UNTERSTÜTZUNG:"
+paragraphs = [
+    "Wir empfehlen Ihnen dringend, externe Beratung hinzuzuziehen und umgehend mit den Vorbereitungen zu beginnen.",
+    "Bei Fragen stehe ich gerne zur Verfügung.",
+]
+
+[story.audit_mail.gruss]
+lines = [
+    "Mit freundlichen Grüßen,",
+    "Klaus Hoffmann",
+    "Supplier Quality Management",
+    "Premium Automotive AG",
+]
+
+[story.audit_mail.fusszeile]
+lines = ["Tel: +49-711-12345| k.hoffmann@premium-oem.com"]

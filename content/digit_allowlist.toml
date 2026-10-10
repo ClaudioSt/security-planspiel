@@ -1,0 +1,39 @@
+# Geprüfte Ausnahmen der Ziffernprüfung für content/texte.toml (D-10, D-25).
+# Jeder Eintrag erlaubt genau diesen Token an genau diesem Schlüssel. Ein Eintrag, dessen Token
+# nicht mehr im Text steht, lässt die Prüfung scheitern (uv run planspiel texts). Neue Einträge
+# brauchen eine bewusste Entscheidung samt Begründung.
+
+[[allow]]
+key = "measures.M2.levels_desc.1"
+token = "30 Tage"
+why = "Aufbewahrungsdauer der Protokolle, kein Spielparameter"
+
+[[allow]]
+key = "measures.M2.levels_simple.1"
+token = "30 Tage"
+why = "Dieselbe Aufbewahrungsdauer in einfacher Sprache"
+
+[[allow]]
+key = "measures.M2.levels_desc.3"
+token = "24/7"
+why = "Betriebszeit des SOC (rund um die Uhr), kein Spielparameter"
+
+[[allow]]
+key = "measures.M4.levels_desc.1"
+token = "14 Tage"
+why = "Aufbewahrungsdauer der Backups, kein Spielparameter"
+
+[[allow]]
+key = "measures.M4.levels_desc.2"
+token = "3-2-1"
+why = "Name der Backup-Regel (3-2-1-Regel), keine Spielzahl"
+
+[[allow]]
+key = "measures.M4.levels_desc.3"
+token = "<4h"
+why = "Wiederanlaufziel (RTO) als Fachbegriff, kein Spielparameter"
+
+[[allow]]
+key = "measures.M6.levels_desc.1"
+token = "30 Min"
+why = "Dauer des E-Learnings, kein Spielparameter"
