@@ -1,0 +1,220 @@
+# Mini-Inhalt für die Tests der Texte-Prüfungen (passt zu tests/fixtures/mini_config.json).
+# Hand-prüfbar und bewusst kurz; die echten Texte stehen in content/texte.toml.
+
+[measures.M1]
+focus = "Zugriffe regeln"
+description = "Wer darf was im Unternehmen? Die Maßnahme legt fest, wer sich wo anmelden darf."
+[measures.M1.levels_desc]
+1 = "Zentrale Benutzerverwaltung mit Zwei-Faktor-Anmeldung für Admins"
+2 = "Rollenmodell und regelmäßige Rechteprüfung"
+3 = "Privilegierte Zugänge nur zeitlich begrenzt und aufgezeichnet"
+[measures.M1.levels_simple]
+1 = "Zentrale Benutzerverwaltung, Admins brauchen zwei Faktoren zum Einloggen."
+2 = "Klare Rollen, Rechte werden regelmäßig geprüft."
+3 = "Besonders mächtige Zugänge gibt es nur auf Zeit und werden aufgezeichnet."
+
+[measures.M2]
+focus = "Ereignisse erkennen"
+description = "Ungewöhnliches wird gesammelt und ausgewertet, damit es auffällt."
+[measures.M2.levels_desc]
+1 = "Zentrale Protokolle, 30 Tage Aufbewahrung"
+2 = "Auswertung mit Alarmregeln"
+3 = "Externes Team überwacht rund um die Uhr"
+[measures.M2.levels_simple]
+1 = "Protokolle werden gesammelt und aufbewahrt."
+2 = "Auffälligkeiten lösen automatisch einen Alarm aus."
+3 = "Externe Sicherheitsexperten überwachen rund um die Uhr."
+
+[measures.M4]
+focus = "Daten sichern"
+description = "Daten werden gesichert, damit der Betrieb nach einem Vorfall weiterläuft."
+[measures.M4.levels_desc]
+1 = "Regelmäßige Sicherung der wichtigsten Systeme"
+2 = "Getrennte Sicherungskopie, Wiederherstellung wird getestet"
+3 = "Ausgefeilte Wiederanlaufplanung mit geübtem Ablauf"
+[measures.M4.levels_simple]
+1 = "Wichtige Daten werden regelmäßig gesichert."
+2 = "Eine Kopie liegt getrennt, das Zurückspielen wird geübt."
+3 = "Der Wiederanlauf ist geplant und eingeübt."
+
+[measures.M6]
+focus = "Menschen schulen"
+description = "Mitarbeitende lernen, Gefahren zu erkennen und richtig zu reagieren."
+[measures.M6.levels_desc]
+1 = "Kurzes E-Learning"
+2 = "Regelmäßige Schulungen und Übungen"
+3 = "Rollenbezogene Trainings, klarer Meldeprozess"
+[measures.M6.levels_simple]
+1 = "Ein kurzes Online-Training für alle."
+2 = "Regelmäßige Schulungen und Übungen."
+3 = "Spezielle Trainings je nach Rolle, klarer Prozess zum Melden von Verdachtsfällen."
+
+[attacks.ransomware.revealed]
+name = "Ransomware"
+narrative = "Ein Mitarbeiter hat auf eine gefälschte E-Mail geklickt. Die Angreifer versuchen, Daten zu verschlüsseln."
+cia_rationale = "Bei Ransomware zählen Vertraulichkeit (C) und Integrität (I) stärker."
+case_1 = "Eure Maßnahmen reichen nicht aus, der Angriff setzt sich durch."
+case_2 = "Ihr wehrt den Angriff vollständig ab."
+case_3 = "Ihr mindert die Auswirkungen teilweise."
+[attacks.ransomware.revealed.bonus_reasons]
+M4 = "Backup ermöglicht schnelle Wiederherstellung"
+M6 = "Geschulte Mitarbeiter erkennen Phishing"
+
+[attacks.ot.revealed]
+name = "OT-Störung"
+narrative = "In eurer Produktionssteuerung wurde eine Schwachstelle ausgenutzt."
+cia_rationale = "Bei OT-Störungen ist Verfügbarkeit (A) entscheidend."
+case_1 = "Eure Maßnahmen reichen nicht aus, die Produktion fällt aus."
+case_2 = "Ihr verhindert den Ausfall vollständig."
+case_3 = "Ihr mindert die Auswirkungen teilweise."
+
+[attacks.exfil.revealed]
+name = "Datenexfiltration"
+narrative = "Über einen kompromittierten Lieferanten-Zugang wurden vertrauliche Konstruktionsdaten abgegriffen."
+cia_rationale = "Bei Exfiltration zählt Vertraulichkeit (C) am meisten."
+case_1 = "Eure Maßnahmen reichen nicht aus, der Datenabfluss gelingt."
+case_2 = "Ihr verhindert die Exfiltration vollständig."
+case_3 = "Ihr reduziert die Auswirkungen teilweise."
+[attacks.exfil.revealed.bonus_reasons]
+M1 = "IAM/PAM verhindert unbefugten Zugriff"
+M2 = "SIEM erkennt Datenabfluss"
+
+[events.kurswechsel]
+narrative = "Nach den neuesten Erkenntnissen entscheidet die Geschäftsführung: Eure Sicherheitsstrategie wird neu ausgerichtet."
+rule = """Die Geschäftsführung richtet die Sicherheitsstrategie neu aus. Im Change-Fenster nach dieser Welle führt jedes Team genau einen Maßnahmentausch durch: Eine in dieser Welle aktive Maßnahme fällt ganz weg, eine in dieser Welle nicht aktive Maßnahme kommt auf einem frei wählbaren Level hinzu. Der Kunde übernimmt die Init-Kosten der neuen Maßnahme bis zur Höhe der Init-Kosten der wegfallenden Maßnahme auf ihrem Level in dieser Welle; nur einen Mehrbetrag zahlt das Team, eine günstigere neue Maßnahme bringt keine Erstattung. Abhängige Maßnahmen der wegfallenden Maßnahme senkt das Team im selben Fenster passend ab. Ist in dieser Welle keine oder jede Maßnahme aktiv, entfällt der Tausch. Normale Levelwechsel im selben Change-Fenster bleiben erlaubt."""
+
+[events.operative_unterstuetzung]
+narrative = "Ihr bekommt operative Unterstützung: Ein zentraler Rahmenvertrag senkt kurzfristig die laufenden Betriebskosten."
+rule = "Zählt für jede bestehende Maßnahme in der kommenden Runde"
+
+[events.sparprogramm]
+narrative = "Der CFO verkündet ein konzernweites Sparprogramm. Das Budget wird gekürzt."
+rule = "Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet)."
+
+[events.oem_audit]
+narrative = "Der große Automobilkunde prüft die Sicherheitsstandards."
+checklist_heading = "Audit Checkliste"
+
+[events.kritische_schwachstelle]
+narrative = "Ihr werdet von einem Softwarehersteller informiert: In einem von euch genutzten System wurde eine kritische Schwachstelle entdeckt."
+[events.kritische_schwachstelle.tier_labels]
+0 = "Patch verzögert/chaotisch"
+1 = "Patch gelingt, aber mit Reibung"
+2 = "Patch planbar und zügig"
+3 = "Patch routiniert, mit Nachweis/Reporting"
+
+[events.exzellenz_bonus]
+narrative = "Maßnahmen, die nachweislich „enterprise-ready“ umgesetzt sind, erhöhen das Vertrauen."
+
+[events.nervige_authentifizierung]
+narrative = "Ihr zieht die Zugriffskontrollen an, aber die Belegschaft wurde nicht vorbereitet."
+
+[final_events.budget_review]
+narrative = "Nach Abschluss eurer Beauftragung macht der CFO den Kassensturz."
+rule = "Prüft euer Restbudget."
+
+[sheets.angriff]
+start_values_intro = "Euer Unternehmen startet je Schutzziel mit einem Basiswert. Eure gewählten Maßnahmen erhöhen diese Werte."
+cia_table_instruction = "Tragt die CIA-Werte eurer Maßnahmen ein und berechnet euren Gesamtschutz über alle Schutzziele."
+e_value_intro = "Als Nächstes berechnet ihr den Effektivitätswert (E-Wert). Er zeigt, wie gut ihr gegen diesen Angriffstyp geschützt seid:"
+bonus_intro = "Zusätzlich bekommt ihr einen Bonus, wenn ihr passende Maßnahmen für diesen Angriff mindestens auf dem richtigen Level habt. Der Bonus wird zur Gesamtreduktion addiert."
+case_3_hint = "Berechnet Schaden und KZ:"
+
+[sheets.budget]
+title = "Budget"
+intro = "Das Budget ist das Geld, das euch Beratern für die Umsetzung von Maßnahmen zur Verfügung steht. Mit dem Budget müsst ihr Maßnahmen initiieren und betreiben."
+init_what = "Einmalige Anschaffungskosten für eine Maßnahme (Hardware, Software, Einrichtung)"
+init_when = "Einmal zu Spielbeginn"
+opex_what = "Laufende Betriebskosten (Lizenzen, Personal, Wartung)"
+opex_when = "Jede Welle erneut"
+tier_intro = "Im Planspiel wählt ihr zu Beginn ein Budget-Tier. Je höher euer Budget, desto mehr bzw. stärkere Maßnahmen könnt ihr umsetzen. Gleichzeitig sind die Erwartungen höher, was sich in einem entsprechend angepassten Startwert der Kundenzufriedenheit (KZ) widerspiegelt. Legt daher zuerst euer Budget-Tier fest, bevor ihr eure Maßnahmen auswählt."
+anticipated_sum_intro = "In diesem Sheet plant und trackt ihr euer Budget über alle Wellen. Init-Kosten fallen nur einmalig an, wenn ihr eine Maßnahme einführt oder auf ein höheres Level upgraded. OPEX-Kosten fallen dagegen in jeder Welle an, in der die Maßnahme aktiv ist."
+status_tracker_intro = "Trackt hier nach jeder Welle euren aktuellen Stand: verbleibendes Budget, die aktuellen CIA-Werte (Summe aus Basisschutz + Maßnahmen, siehe jeweilige Angriffskarte) und die kumulierte Kundenzufriedenheit. So habt ihr den Überblick, ohne in den Angriffskarten zurückblättern zu müssen."
+
+[sheets.ros]
+title = "Return on Security"
+instruction = "Trag die folgenden Werte ein:"
+purpose = "Der RoS zeigt, ob sich eure Security-Investition finanziell gelohnt hat."
+
+[sheets.backup_recovery]
+title = "Backup & Recovery"
+subtitle = "Event: Nach jeder Welle mit Recovery-Option"
+narrative = "Nach einem Angriff mit entstandenem Schaden prüft ihr, ob Systeme wiederhergestellt werden müssen oder ob der Betrieb stabil geblieben ist. Falls überhaupt ein Schaden entstanden ist, entscheidet eure Backup- und Recovery-Fähigkeit darüber, wie stark ihr den finanziellen Impact senken könnt."
+
+[sheets.backup_recovery.level_labels]
+0 = "kein Recovery"
+1 = "Basis-Recovery"
+2 = "teilw. Recovery"
+3 = "starke Recovery"
+
+[sheets.labels]
+measure = "Maßnahme"
+level = "Level"
+base_protection = "Basisschutz"
+sum = "Summe"
+from_level = "Ab Level"
+bonus = "Bonus"
+fulfilled = "Erfüllt"
+total_bonus = "Gesamtbonus"
+total_reduction = "Gesamtreduktion"
+e_value = "E-Wert"
+damage = "Schaden"
+satisfaction = "Kundenzufriedenheit"
+case = "Fall"
+cost_type = "Kostenart"
+what = "Was ist das?"
+when = "Wann fällig?"
+tier = "Tier"
+available_budget = "Verfügbares Budget"
+period = "Zeitraum"
+init_costs = "Init-Kosten"
+opex = "OPEX"
+anticipated_sum = "Antizipierte Summe"
+status_tracker = "Status-Tracker"
+point_in_time = "Zeitpunkt"
+budget_remaining = "Budget verbleibend"
+kz_cumulative = "KZ (kumuliert)"
+damage_wave = "Schaden (Welle)"
+start = "Start"
+after_wave = "Nach Welle"
+events = "Events"
+metric = "Kennzahl"
+value = "Wert"
+total_init = "Gesamt Init-Kosten"
+total_opex = "Gesamt OPEX Kosten"
+total_costs = "Gesamtkosten"
+avoided_damage = "Vermiedener Schaden"
+event_after_wave = "Event: Nach Welle"
+condition_met = "Bedingung erfüllt"
+effect = "Auswirkung"
+no_implementation = "Keine Umsetzung"
+final_damage = "Endschaden"
+min_level = "mindestens auf Level"
+
+
+[story.steckbrief]
+doc_title = "MECHTECH GmbH: Unternehmenssteckbrief"
+[story.steckbrief.kurzprofil]
+heading = "Kurzprofil"
+text = "Die MECHTECH GmbH ist ein mittelständischer Präzisionsfertiger mit ca. 80 Mitarbeitenden."
+[story.steckbrief.produkte]
+heading = "Produkte & Leistungen"
+bullets = ["Präzisions-Getriebeteile", "Prototyping und Kleinserien"]
+
+[story.zeitungsartikel]
+doc_title = "AUTO TIMES"
+[story.zeitungsartikel.aufmacher]
+heading = "OEM verschärft Anforderungen"
+text = "Ein führender Hersteller kündigt Audits für alle Zulieferer an."
+
+[story.anfrage_mail]
+doc_title = "Anfrage: IT-Security-Beratung für MechTech GmbH"
+[story.anfrage_mail.anrede]
+heading = "Anrede"
+text = "Sehr geehrte Damen und Herren,"
+
+[story.audit_mail]
+doc_title = "Information Security Assessment - Supplier Audit"
+[story.audit_mail.einleitung]
+heading = "Einleitung"
+text = "Wir werden alle strategischen Zulieferer einem umfassenden IT-Security-Audit unterziehen."
