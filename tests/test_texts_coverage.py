@@ -46,6 +46,7 @@ def test_required_keys_follow_the_config_ids():
     assert "measures.M1.levels_simple.3" in keys
     assert "measures.M1.levels_desc.0" not in keys
     assert "attacks.ransomware.revealed.bonus_reasons.M4" in keys
+    assert {f"attacks.{attack_id}.veiled.title" for attack_id in ("ransomware", "ot", "exfil")} <= keys
     assert "attacks.ot.revealed.bonus_reasons.M4" not in keys
     assert "events.kritische_schwachstelle.tier_labels.2" in keys
     assert "events.oem_audit.checklist_heading" in keys
@@ -61,6 +62,18 @@ MUTATIONS = [
         "orphan attack",
         lambda d: _put(d, "attacks.foo.revealed.name", "x"),
         [("texts.orphan_key", "attacks.foo.revealed.name")],
+    ),
+    ("missing veiled title", lambda d: _delete(d, "attacks.ot.veiled.title"), [("texts.missing_key", "attacks.ot.veiled.title")]),
+    ("veiled teaser", lambda d: _put(d, "attacks.ot.veiled.teaser", "x"), [("texts.orphan_key", "attacks.ot.veiled.teaser")]),
+    (
+        "attack name outside revealed",
+        lambda d: _put(d, "attacks.ransomware.name", "x"),
+        [("texts.orphan_key", "attacks.ransomware.name")],
+    ),
+    (
+        "bonus reasons on a measure",
+        lambda d: _put(d, "measures.M3.bonus_reasons.x", "x"),
+        [("texts.orphan_key", "measures.M3.bonus_reasons.x")],
     ),
     ("missing event rule", lambda d: _delete(d, "events.sparprogramm.rule"), [("texts.missing_key", "events.sparprogramm.rule")]),
     (

@@ -49,6 +49,9 @@ description = "Mitarbeitende lernen, Gefahren zu erkennen und richtig zu reagier
 2 = "Regelmäßige Schulungen und Übungen."
 3 = "Spezielle Trainings je nach Rolle, klarer Prozess zum Melden von Verdachtsfällen."
 
+[attacks.ransomware.veiled]
+title = "Angriff"
+
 [attacks.ransomware.revealed]
 name = "Ransomware"
 narrative = "Ein Mitarbeiter hat auf eine gefälschte E-Mail geklickt. Die Angreifer versuchen, Daten zu verschlüsseln."
@@ -60,6 +63,9 @@ case_3 = "Ihr mindert die Auswirkungen teilweise."
 M4 = "Backup ermöglicht schnelle Wiederherstellung"
 M6 = "Geschulte Mitarbeiter erkennen Phishing"
 
+[attacks.ot.veiled]
+title = "Angriff"
+
 [attacks.ot.revealed]
 name = "OT-Störung"
 narrative = "In eurer Produktionssteuerung wurde eine Schwachstelle ausgenutzt."
@@ -67,6 +73,9 @@ cia_rationale = "Bei OT-Störungen ist Verfügbarkeit (A) entscheidend."
 case_1 = "Eure Maßnahmen reichen nicht aus, die Produktion fällt aus."
 case_2 = "Ihr verhindert den Ausfall vollständig."
 case_3 = "Ihr mindert die Auswirkungen teilweise."
+
+[attacks.exfil.veiled]
+title = "Angriff"
 
 [attacks.exfil.revealed]
 name = "Datenexfiltration"
