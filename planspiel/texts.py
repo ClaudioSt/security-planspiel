@@ -6,6 +6,7 @@ Zahlen stehen nie in der Prosa: Sie kommen aus der Config und werden im Code erz
 import copy
 import re
 import tomllib
+import unicodedata
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -16,6 +17,7 @@ from planspiel.validate import Issue
 CONTENT_DIR = Path(__file__).resolve().parents[1] / "content"
 TEXTE_FILE = "texte.toml"
 ALLOWLIST_FILE = "digit_allowlist.toml"
+GIVEAWAY_FILE = "giveaway_terms.toml"
 
 STORY_DOCS = ("steckbrief", "zeitungsartikel", "anfrage_mail", "audit_mail")
 PREWAVE_SHEETS = ("budget", "ros", "backup_recovery", "labels")
@@ -140,9 +142,21 @@ class AllowEntry:
 
 
 @dataclass(frozen=True)
+class GiveawayTerms:
+    """Verbotene Begriffe (D-13b) und die Ausnahmen für Story- und Event-Texte (D-20)."""
+
+    substrings: tuple[str, ...]
+    tokens: tuple[str, ...]
+    compounds: tuple[tuple[str, str], ...]
+    story_exception_tokens: tuple[str, ...]
+    story_exception_substrings: tuple[str, ...]
+
+
+@dataclass(frozen=True)
 class Content:
     texts: Texts
     allowlist: tuple[AllowEntry, ...]
+    terms: GiveawayTerms
 
 
 def load_texts(path: Path) -> Texts:
@@ -159,10 +173,24 @@ def load_allowlist(path: Path) -> tuple[AllowEntry, ...]:
     )
 
 
+def load_giveaway_terms(path: Path) -> GiveawayTerms:
+    with open(path, "rb") as handle:
+        data = tomllib.load(handle)
+    exceptions = data.get("story_exceptions", {})
+    return GiveawayTerms(
+        substrings=tuple(data.get("substrings", [])),
+        tokens=tuple(data.get("tokens", [])),
+        compounds=tuple((first, second) for first, second in data.get("compounds", [])),
+        story_exception_tokens=tuple(exceptions.get("tokens", [])),
+        story_exception_substrings=tuple(exceptions.get("substrings", [])),
+    )
+
+
 def load_content(content_dir: Path = CONTENT_DIR) -> Content:
     return Content(
         texts=load_texts(content_dir / TEXTE_FILE),
         allowlist=load_allowlist(content_dir / ALLOWLIST_FILE),
+        terms=load_giveaway_terms(content_dir / GIVEAWAY_FILE),
     )
 
 
@@ -276,11 +304,69 @@ def check_story_mechanics(cfg: Config, texts: Texts) -> list[Issue]:
     return issues
 
 
+_DASHES = {code: "-" for code in (*range(0x2010, 0x2016), 0x2212)}
+_INVISIBLE = {code: None for code in (0x00AD, 0x200B, 0x200C, 0x200D, 0xFEFF)}
+_WORD = r"[^\W\d_]"
+PROFILES = ("veiled", "story")
+
+
+def normalize_for_matching(text: str) -> str:
+    """NFC, Strichvarianten zu '-', unsichtbare Zeichen entfernt, klein geschrieben (lower, nicht casefold: ß bleibt)."""
+    normalised = unicodedata.normalize("NFC", text).translate(_DASHES).translate(_INVISIBLE)
+    return normalised.lower()
+
+
+def giveaway_hits(text: str, terms: GiveawayTerms, attack_ids, *, profile: str) -> list[str]:
+    """Verbotene Begriffe im Text. Profil 'veiled' hat keine Ausnahmen, 'story' zieht die D-20-Ausnahmen ab."""
+    if profile not in PROFILES:
+        raise ValueError(f"Unbekanntes Profil '{profile}', erlaubt sind {PROFILES}")
+    normalised = normalize_for_matching(text)
+    ids = [attack_id.lower() for attack_id in attack_ids]
+    substrings = {term.lower() for term in terms.substrings} | {name for name in ids if len(name) >= 5}
+    tokens = {term.lower() for term in terms.tokens} | {name for name in ids if len(name) < 5}
+    if profile == "story":
+        substrings -= {term.lower() for term in terms.story_exception_substrings}
+        tokens -= {term.lower() for term in terms.story_exception_tokens}
+    hits = {term for term in substrings if term in normalised}
+    hits |= tokens & set(re.findall(rf"{_WORD}+", normalised))
+    for first, second in terms.compounds:
+        pattern = rf"(?<!{_WORD}){re.escape(first.lower())}[\s-]*{re.escape(second.lower())}"
+        if re.search(pattern, normalised):
+            hits.add(f"{first.lower()}-{second.lower()}")
+    return sorted(hits)
+
+
+def _giveaway_issue(path: str, hits: list[str], profile: str) -> Issue:
+    scope = "verhülltem Angriffstext" if profile == "veiled" else "Event-Text"
+    return Issue("error", "texts.giveaway", path, f"Verbotener Begriff in {scope}: {', '.join(hits)}")
+
+
+def check_giveaway(cfg: Config, texts: Texts, terms: GiveawayTerms) -> list[Issue]:
+    """Verhüllte Angriffsschlüssel ohne Ausnahmen, Event-Texte und Event-Namen mit Story-Profil (D-13b, D-13c, D-20)."""
+    attack_ids = tuple(cfg.attacks)
+    issues: list[Issue] = []
+    scoped = [(f"attacks.{attack_id}.veiled", "veiled") for attack_id in cfg.attacks]
+    scoped += [("events", "story"), ("final_events", "story")]
+    for prefix, profile in scoped:
+        for key, text in texts.strings(prefix):
+            hits = giveaway_hits(text, terms, attack_ids, profile=profile)
+            if hits:
+                issues.append(_giveaway_issue(key, hits, profile))
+    named = [(f"events.{event.id}", event) for events in cfg.events.values() for event in events]
+    named += [(f"final_events.{event.id}", event) for event in cfg.final_events]
+    for prefix, event in named:
+        hits = giveaway_hits(event.name, terms, attack_ids, profile="story")
+        if hits:
+            issues.append(_giveaway_issue(f"{prefix}.name (config)", hits, "story"))
+    return issues
+
+
 def check_texts(cfg: Config, content: Content) -> list[Issue]:
     return [
         *check_coverage(cfg, content.texts),
         *check_digits(content.texts, content.allowlist),
         *check_story_mechanics(cfg, content.texts),
+        *check_giveaway(cfg, content.texts, content.terms),
     ]
 
 

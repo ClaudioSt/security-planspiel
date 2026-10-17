@@ -156,7 +156,7 @@ def main(argv: list[str] | None = None) -> int:
     texts_parser.add_argument(
         "--content-dir",
         default="content",
-        help="Verzeichnis mit texte.toml und digit_allowlist.toml.",
+        help="Verzeichnis mit texte.toml, digit_allowlist.toml und giveaway_terms.toml.",
     )
     args = parser.parse_args(argv)
     if args.command is None:
