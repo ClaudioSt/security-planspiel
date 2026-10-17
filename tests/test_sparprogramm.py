@@ -14,8 +14,9 @@ import pytest
 
 from planspiel import rules
 from planspiel.config import Event
+from planspiel.texts import load_texts
 from planspiel.validate import validate
-from tests.support import CONFIG_PATH, REPO_ROOT, harness
+from tests.support import CONFIG_PATH, CONTENT_DIR, MINI_CONTENT_DIR, REPO_ROOT, harness
 
 MINI = REPO_ROOT / "tests" / "fixtures" / "mini_config.json"
 
@@ -113,7 +114,6 @@ def test_negative_balance_in_the_middle_of_the_game_is_not_penalised(real):
     extra = Event(
         id="test_nachtragsbudget",
         name="Nachtragsbudget",
-        description="Test",
         type="flat_budget",
         params={"budget_delta": 60},
     )
@@ -181,10 +181,9 @@ def test_shipped_configs_have_exactly_the_known_slope_warning(path):
     assert [issue.code for issue in _warnings(issues)] == ["hand_calc.kz_slope"]
 
 
-def test_sparprogramm_description_states_the_end_check_and_the_window():
-    for path in (CONFIG_PATH, MINI):
-        events = _raw(path)["events"]["wave_2"]
-        text = [e for e in events if e["id"] == "sparprogramm"][0]["description"]
+def test_sparprogramm_rule_text_states_the_end_check_and_the_window():
+    for content_dir in (CONTENT_DIR, MINI_CONTENT_DIR):
+        text = load_texts(content_dir / "texte.toml").get("events.sparprogramm.rule")
         assert "Geprüft wird das Restbudget erst am Ende" in text
         assert "Change-Fenster" in text
 

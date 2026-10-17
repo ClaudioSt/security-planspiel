@@ -15,10 +15,10 @@ def test_legacy_generators_load_umlaut_config(monkeypatch):
         sys.modules.pop(name, None)
 
     calculator = importlib.import_module("generate_attack_calculator")
-    assert calculator.config["waves"][1]["name"] == "OT-Störung"
+    assert calculator.config["events"]["wave_1"][1]["name"] == "Operative Unterstützung"
 
     for name in ("generate_pptx_cards", "generate_from_template"):
         module = importlib.import_module(name)
-        assert module.load_config()["waves"][1]["name"] == "OT-Störung"
+        assert module.load_config()["events"]["wave_1"][1]["name"] == "Operative Unterstützung"
 
     assert XLSX.stat().st_mtime_ns == mtime_before

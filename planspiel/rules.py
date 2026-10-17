@@ -88,16 +88,14 @@ def clamp_kz(value: int) -> int:
 def compute_bonus_reduction(
     wave: Wave,
     selection: Dict[str, int],
-) -> Tuple[int, List[str]]:
+) -> int:
     """Bonus reduction from specific measures (per Angriffs-Arbeitsblatt: 'Gesamtbonus')."""
     bonus_reduction = 0
-    bonus_descriptions = []
     for bm in wave.bonus_measures:
         if selection.get(bm.measure, 0) >= bm.min_level:
             bonus_reduction += bm.bonus
-            bonus_descriptions.append(bm.description)
 
-    return bonus_reduction, bonus_descriptions
+    return bonus_reduction
 
 
 def kz_slope(kz_at_full_damage, kz_at_full_mitigation, mitigation_cap) -> Fraction:
@@ -143,7 +141,7 @@ def apply_attack(
     """
     e_scaled = e_value_scaled(cia, wave.weights, ws)
     e_value = Fraction(e_scaled, ws)
-    bonus_reduction, bonus_descriptions = compute_bonus_reduction(wave, selection)
+    bonus_reduction = compute_bonus_reduction(wave, selection)
 
     gesamtreduktion = e_value + bonus_reduction
     reduction_scaled = reduction_above_threshold_scaled(
@@ -168,7 +166,6 @@ def apply_attack(
     return {
         "e_value": e_value,
         "bonus_reduction": bonus_reduction,
-        "bonus_descriptions": bonus_descriptions,
         "gesamtreduktion": gesamtreduktion,
         "capped_reduction": reduktion_ueber_schwelle,
         "effective_base_severity": effective_base_severity,
@@ -295,7 +292,7 @@ def evaluate_event(
         return 0, 0, 0, "Kurswechsel: Pflicht-Maßnahmentausch im folgenden Change-Fenster (im Referenzplan ohne Change-Fenster-Züge nicht angewendet)"
 
     if event.type == "flat_budget":
-        return 0, 0, p["budget_delta"], event.description
+        return 0, 0, p["budget_delta"], f"Gesamtbudget {p['budget_delta']}k€"
 
     if event.type == "opex_discount_per_active_measure":
         active = count_measures_at_level(selection, 1)
@@ -427,12 +424,10 @@ def simulate_waves(
 
         per_wave.append({
             "wave_id": wave.wave_id,
-            "wave_name": wave.name,
             "attack": wave.attack_id,
             "cia": cia,
             "e_value": e_value,
             "bonus_reduction": attack_result["bonus_reduction"],
-            "bonus_descriptions": attack_result["bonus_descriptions"],
             "gesamtreduktion": attack_result["gesamtreduktion"],
             "capped_reduction": attack_result["capped_reduction"],
             "severity": attack_result["severity"],
@@ -738,7 +733,7 @@ class TierKernel:
             if e_scaled is None:
                 e_scaled = self._e_scaled[e_key] = e_value_scaled(cia, wave.weights, cfg.ws)
 
-            bonus, _ = compute_bonus_reduction(wave, selection)
+            bonus = compute_bonus_reduction(wave, selection)
             reduction = reduction_above_threshold_scaled(
                 e_scaled, bonus, wave.e_threshold, attack.mitigation_cap, cfg.ws
             )
@@ -851,7 +846,7 @@ class TierTables:
                 if e_scaled is None:
                     e_scaled = e_memo[e_key] = e_value_scaled(cia, wave.weights, cfg.ws)
 
-                bonus, _ = compute_bonus_reduction(wave, selection)
+                bonus = compute_bonus_reduction(wave, selection)
                 reduction = reduction_above_threshold_scaled(
                     e_scaled, bonus, wave.e_threshold, attack.mitigation_cap, cfg.ws
                 )

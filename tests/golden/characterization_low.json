@@ -38,7 +38,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 20,
@@ -47,7 +46,6 @@
             },
             "e_value": "21.8",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "21.8",
             "capped_reduction": 0,
             "severity": 8,
@@ -75,7 +73,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 20,
@@ -84,7 +81,6 @@
             },
             "e_value": "21.4",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "21.4",
             "capped_reduction": "1.4",
             "severity": "8.6",
@@ -94,7 +90,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -120,7 +116,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 20,
@@ -129,7 +124,6 @@
             },
             "e_value": "21.4",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "21.4",
             "capped_reduction": 0,
             "severity": 7,
@@ -208,7 +202,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 20,
@@ -217,9 +210,6 @@
             },
             "e_value": "21.6",
             "bonus_reduction": 6,
-            "bonus_descriptions": [
-              "EDR/XDR erkennt Ransomware früh"
-            ],
             "gesamtreduktion": "27.6",
             "capped_reduction": "4.6",
             "severity": "3.4",
@@ -247,7 +237,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 20,
@@ -256,7 +245,6 @@
             },
             "e_value": "19.8",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "19.8",
             "capped_reduction": 0,
             "severity": 10,
@@ -266,7 +254,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -292,7 +280,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 20,
@@ -301,7 +288,6 @@
             },
             "e_value": "21.1",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "21.1",
             "capped_reduction": 0,
             "severity": 7,
@@ -380,7 +366,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 18,
@@ -389,7 +374,6 @@
             },
             "e_value": "19.8",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "19.8",
             "capped_reduction": 0,
             "severity": 8,
@@ -417,7 +401,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 18,
@@ -426,7 +409,6 @@
             },
             "e_value": "18.4",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "18.4",
             "capped_reduction": 0,
             "severity": 10,
@@ -436,7 +418,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -462,7 +444,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 18,
@@ -471,7 +452,6 @@
             },
             "e_value": "19.3",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "19.3",
             "capped_reduction": 0,
             "severity": 7,
@@ -550,7 +530,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 22,
@@ -559,7 +538,6 @@
             },
             "e_value": 23,
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": 23,
             "capped_reduction": 0,
             "severity": 8,
@@ -587,7 +565,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 22,
@@ -596,7 +573,6 @@
             },
             "e_value": 22,
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": 22,
             "capped_reduction": 2,
             "severity": 8,
@@ -606,7 +582,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -632,7 +608,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 22,
@@ -641,7 +616,6 @@
             },
             "e_value": "22.7",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "22.7",
             "capped_reduction": 0,
             "severity": 7,
@@ -720,7 +694,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 20,
@@ -729,7 +702,6 @@
             },
             "e_value": "20.4",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "20.4",
             "capped_reduction": 0,
             "severity": 8,
@@ -757,7 +729,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 20,
@@ -766,7 +737,6 @@
             },
             "e_value": "19.2",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "19.2",
             "capped_reduction": 0,
             "severity": 10,
@@ -776,7 +746,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -802,7 +772,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 20,
@@ -811,7 +780,6 @@
             },
             "e_value": "20.2",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "20.2",
             "capped_reduction": 0,
             "severity": 7,
@@ -890,7 +858,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 11,
@@ -899,9 +866,6 @@
             },
             "e_value": "13.8",
             "bonus_reduction": 6,
-            "bonus_descriptions": [
-              "Backup ermöglicht schnelle Wiederherstellung"
-            ],
             "gesamtreduktion": "19.8",
             "capped_reduction": 0,
             "severity": 8,
@@ -929,7 +893,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 11,
@@ -938,7 +901,6 @@
             },
             "e_value": "14.4",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "14.4",
             "capped_reduction": 0,
             "severity": 10,
@@ -948,7 +910,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -974,7 +936,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 11,
@@ -983,7 +944,6 @@
             },
             "e_value": "13.3",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "13.3",
             "capped_reduction": 0,
             "severity": 7,
@@ -1062,7 +1022,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 18,
@@ -1071,7 +1030,6 @@
             },
             "e_value": "19.2",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "19.2",
             "capped_reduction": 0,
             "severity": 8,
@@ -1099,7 +1057,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 18,
@@ -1108,7 +1065,6 @@
             },
             "e_value": "19.6",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "19.6",
             "capped_reduction": 0,
             "severity": 10,
@@ -1118,7 +1074,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -1144,7 +1100,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 18,
@@ -1153,7 +1108,6 @@
             },
             "e_value": 19,
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": 19,
             "capped_reduction": 0,
             "severity": 7,
@@ -1232,7 +1186,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 23,
@@ -1241,7 +1194,6 @@
             },
             "e_value": "24.6",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "24.6",
             "capped_reduction": "1.6",
             "severity": "6.4",
@@ -1269,7 +1221,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 23,
@@ -1278,7 +1229,6 @@
             },
             "e_value": "23.8",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "23.8",
             "capped_reduction": "3.8",
             "severity": "6.2",
@@ -1288,7 +1238,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -1314,7 +1264,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 23,
@@ -1323,7 +1272,6 @@
             },
             "e_value": "24.2",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "24.2",
             "capped_reduction": 0,
             "severity": 7,
@@ -1402,7 +1350,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 21,
@@ -1411,7 +1358,6 @@
             },
             "e_value": 23,
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": 23,
             "capped_reduction": 0,
             "severity": 8,
@@ -1439,7 +1385,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 21,
@@ -1448,9 +1393,6 @@
             },
             "e_value": 23,
             "bonus_reduction": 9,
-            "bonus_descriptions": [
-              "OT/IT-Segmentierung isoliert Produktion"
-            ],
             "gesamtreduktion": 32,
             "capped_reduction": 10,
             "severity": 0,
@@ -1460,7 +1402,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -1486,7 +1428,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 21,
@@ -1495,7 +1436,6 @@
             },
             "e_value": "22.6",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "22.6",
             "capped_reduction": 0,
             "severity": 7,
@@ -1574,7 +1514,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 26,
@@ -1583,11 +1522,6 @@
             },
             "e_value": "28.4",
             "bonus_reduction": 15,
-            "bonus_descriptions": [
-              "EDR/XDR erkennt Ransomware früh",
-              "Backup ermöglicht schnelle Wiederherstellung",
-              "Geschulte Mitarbeiter erkennen Phishing"
-            ],
             "gesamtreduktion": "43.4",
             "capped_reduction": 8,
             "severity": 0,
@@ -1615,7 +1549,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 26,
@@ -1624,7 +1557,6 @@
             },
             "e_value": "26.2",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "26.2",
             "capped_reduction": "6.2",
             "severity": "3.8",
@@ -1634,7 +1566,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -1660,7 +1592,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 26,
@@ -1669,9 +1600,6 @@
             },
             "e_value": "27.7",
             "bonus_reduction": 6,
-            "bonus_descriptions": [
-              "SIEM erkennt Datenabfluss"
-            ],
             "gesamtreduktion": "33.7",
             "capped_reduction": 7,
             "severity": 0,
@@ -1750,7 +1678,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 25,
@@ -1759,11 +1686,6 @@
             },
             "e_value": "26.8",
             "bonus_reduction": 15,
-            "bonus_descriptions": [
-              "EDR/XDR erkennt Ransomware früh",
-              "Backup ermöglicht schnelle Wiederherstellung",
-              "Geschulte Mitarbeiter erkennen Phishing"
-            ],
             "gesamtreduktion": "41.8",
             "capped_reduction": 8,
             "severity": 0,
@@ -1791,7 +1713,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 25,
@@ -1800,7 +1721,6 @@
             },
             "e_value": "24.4",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "24.4",
             "capped_reduction": "4.4",
             "severity": "5.6",
@@ -1810,7 +1730,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -1836,7 +1756,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 25,
@@ -1845,9 +1764,6 @@
             },
             "e_value": "26.2",
             "bonus_reduction": 6,
-            "bonus_descriptions": [
-              "SIEM erkennt Datenabfluss"
-            ],
             "gesamtreduktion": "32.2",
             "capped_reduction": 7,
             "severity": 0,
@@ -1926,7 +1842,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 24,
@@ -1935,11 +1850,6 @@
             },
             "e_value": "27.2",
             "bonus_reduction": 15,
-            "bonus_descriptions": [
-              "EDR/XDR erkennt Ransomware früh",
-              "Backup ermöglicht schnelle Wiederherstellung",
-              "Geschulte Mitarbeiter erkennen Phishing"
-            ],
             "gesamtreduktion": "42.2",
             "capped_reduction": 8,
             "severity": 0,
@@ -1967,7 +1877,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 24,
@@ -1976,7 +1885,6 @@
             },
             "e_value": "25.6",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "25.6",
             "capped_reduction": "5.6",
             "severity": "4.4",
@@ -1986,7 +1894,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -2012,7 +1920,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 24,
@@ -2021,9 +1928,6 @@
             },
             "e_value": "26.4",
             "bonus_reduction": 6,
-            "bonus_descriptions": [
-              "SIEM erkennt Datenabfluss"
-            ],
             "gesamtreduktion": "32.4",
             "capped_reduction": 7,
             "severity": 0,
@@ -2102,7 +2006,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 25,
@@ -2111,7 +2014,6 @@
             },
             "e_value": "27.8",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "27.8",
             "capped_reduction": "4.8",
             "severity": "3.2",
@@ -2139,7 +2041,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 25,
@@ -2148,10 +2049,6 @@
             },
             "e_value": "27.4",
             "bonus_reduction": 15,
-            "bonus_descriptions": [
-              "OT/IT-Segmentierung isoliert Produktion",
-              "Patch Management schließt OT-Schwachstellen"
-            ],
             "gesamtreduktion": "42.4",
             "capped_reduction": 10,
             "severity": 0,
@@ -2161,7 +2058,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -2187,7 +2084,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 25,
@@ -2196,9 +2092,6 @@
             },
             "e_value": "27.2",
             "bonus_reduction": 6,
-            "bonus_descriptions": [
-              "SIEM erkennt Datenabfluss"
-            ],
             "gesamtreduktion": "33.2",
             "capped_reduction": 7,
             "severity": 0,
@@ -2277,7 +2170,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 27,
@@ -2286,7 +2178,6 @@
             },
             "e_value": "27.6",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "27.6",
             "capped_reduction": "4.6",
             "severity": "3.4",
@@ -2314,7 +2205,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 27,
@@ -2323,7 +2213,6 @@
             },
             "e_value": "25.8",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "25.8",
             "capped_reduction": "5.8",
             "severity": "4.2",
@@ -2333,7 +2222,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -2359,7 +2248,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 27,
@@ -2368,7 +2256,6 @@
             },
             "e_value": "27.3",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "27.3",
             "capped_reduction": "2.3",
             "severity": "4.7",
@@ -2447,7 +2334,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 25,
@@ -2456,7 +2342,6 @@
             },
             "e_value": "27.2",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "27.2",
             "capped_reduction": "4.2",
             "severity": "3.8",
@@ -2484,7 +2369,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 25,
@@ -2493,7 +2377,6 @@
             },
             "e_value": "24.6",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "24.6",
             "capped_reduction": "4.6",
             "severity": "5.4",
@@ -2503,7 +2386,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -2529,7 +2412,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 25,
@@ -2538,11 +2420,6 @@
             },
             "e_value": "26.5",
             "bonus_reduction": 23,
-            "bonus_descriptions": [
-              "IAM/PAM verhindert unbefugten Zugriff",
-              "SIEM erkennt Datenabfluss",
-              "Supply Chain Security schützt Schnittstellen"
-            ],
             "gesamtreduktion": "49.5",
             "capped_reduction": 7,
             "severity": 0,
@@ -2621,7 +2498,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 18,
@@ -2630,10 +2506,6 @@
             },
             "e_value": "20.8",
             "bonus_reduction": 12,
-            "bonus_descriptions": [
-              "EDR/XDR erkennt Ransomware früh",
-              "Backup ermöglicht schnelle Wiederherstellung"
-            ],
             "gesamtreduktion": "32.8",
             "capped_reduction": 8,
             "severity": 0,
@@ -2661,7 +2533,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 18,
@@ -2670,7 +2541,6 @@
             },
             "e_value": "19.4",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "19.4",
             "capped_reduction": 0,
             "severity": 10,
@@ -2680,7 +2550,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -2706,7 +2576,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 18,
@@ -2715,9 +2584,6 @@
             },
             "e_value": "20.1",
             "bonus_reduction": 6,
-            "bonus_descriptions": [
-              "SIEM erkennt Datenabfluss"
-            ],
             "gesamtreduktion": "26.1",
             "capped_reduction": "1.1",
             "severity": "5.9",
@@ -2796,7 +2662,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 24,
@@ -2805,9 +2670,6 @@
             },
             "e_value": "25.6",
             "bonus_reduction": 3,
-            "bonus_descriptions": [
-              "Geschulte Mitarbeiter erkennen Phishing"
-            ],
             "gesamtreduktion": "28.6",
             "capped_reduction": "5.6",
             "severity": "2.4",
@@ -2835,7 +2697,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 24,
@@ -2844,7 +2705,6 @@
             },
             "e_value": "24.8",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "24.8",
             "capped_reduction": "4.8",
             "severity": "5.2",
@@ -2854,7 +2714,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -2880,7 +2740,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 24,
@@ -2889,7 +2748,6 @@
             },
             "e_value": "25.2",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "25.2",
             "capped_reduction": "0.2",
             "severity": "6.8",
@@ -2969,7 +2827,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 32,
@@ -2978,11 +2835,6 @@
             },
             "e_value": "33.8",
             "bonus_reduction": 15,
-            "bonus_descriptions": [
-              "EDR/XDR erkennt Ransomware früh",
-              "Backup ermöglicht schnelle Wiederherstellung",
-              "Geschulte Mitarbeiter erkennen Phishing"
-            ],
             "gesamtreduktion": "48.8",
             "capped_reduction": 8,
             "severity": 0,
@@ -3010,7 +2862,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 32,
@@ -3019,9 +2870,6 @@
             },
             "e_value": "31.4",
             "bonus_reduction": 6,
-            "bonus_descriptions": [
-              "Patch Management schließt OT-Schwachstellen"
-            ],
             "gesamtreduktion": "37.4",
             "capped_reduction": 10,
             "severity": 0,
@@ -3031,7 +2879,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -3057,7 +2905,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 32,
@@ -3066,10 +2913,6 @@
             },
             "e_value": "33.2",
             "bonus_reduction": 14,
-            "bonus_descriptions": [
-              "IAM/PAM verhindert unbefugten Zugriff",
-              "SIEM erkennt Datenabfluss"
-            ],
             "gesamtreduktion": "47.2",
             "capped_reduction": 7,
             "severity": 0,
@@ -3148,7 +2991,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 31,
@@ -3157,11 +2999,6 @@
             },
             "e_value": "33.4",
             "bonus_reduction": 15,
-            "bonus_descriptions": [
-              "EDR/XDR erkennt Ransomware früh",
-              "Backup ermöglicht schnelle Wiederherstellung",
-              "Geschulte Mitarbeiter erkennen Phishing"
-            ],
             "gesamtreduktion": "48.4",
             "capped_reduction": 8,
             "severity": 0,
@@ -3189,7 +3026,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 31,
@@ -3198,10 +3034,6 @@
             },
             "e_value": "32.2",
             "bonus_reduction": 15,
-            "bonus_descriptions": [
-              "OT/IT-Segmentierung isoliert Produktion",
-              "Patch Management schließt OT-Schwachstellen"
-            ],
             "gesamtreduktion": "47.2",
             "capped_reduction": 10,
             "severity": 0,
@@ -3211,7 +3043,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -3237,7 +3069,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 31,
@@ -3246,9 +3077,6 @@
             },
             "e_value": "32.8",
             "bonus_reduction": 6,
-            "bonus_descriptions": [
-              "SIEM erkennt Datenabfluss"
-            ],
             "gesamtreduktion": "38.8",
             "capped_reduction": 7,
             "severity": 0,
@@ -3327,7 +3155,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 30,
@@ -3336,11 +3163,6 @@
             },
             "e_value": "31.8",
             "bonus_reduction": 15,
-            "bonus_descriptions": [
-              "EDR/XDR erkennt Ransomware früh",
-              "Backup ermöglicht schnelle Wiederherstellung",
-              "Geschulte Mitarbeiter erkennen Phishing"
-            ],
             "gesamtreduktion": "46.8",
             "capped_reduction": 8,
             "severity": 0,
@@ -3368,7 +3190,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 30,
@@ -3377,10 +3198,6 @@
             },
             "e_value": "30.4",
             "bonus_reduction": 15,
-            "bonus_descriptions": [
-              "OT/IT-Segmentierung isoliert Produktion",
-              "Patch Management schließt OT-Schwachstellen"
-            ],
             "gesamtreduktion": "45.4",
             "capped_reduction": 10,
             "severity": 0,
@@ -3390,7 +3207,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -3416,7 +3233,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 30,
@@ -3425,9 +3241,6 @@
             },
             "e_value": "31.3",
             "bonus_reduction": 6,
-            "bonus_descriptions": [
-              "SIEM erkennt Datenabfluss"
-            ],
             "gesamtreduktion": "37.3",
             "capped_reduction": 7,
             "severity": 0,
@@ -3506,7 +3319,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 30,
@@ -3515,11 +3327,6 @@
             },
             "e_value": 32,
             "bonus_reduction": 15,
-            "bonus_descriptions": [
-              "EDR/XDR erkennt Ransomware früh",
-              "Backup ermöglicht schnelle Wiederherstellung",
-              "Geschulte Mitarbeiter erkennen Phishing"
-            ],
             "gesamtreduktion": 47,
             "capped_reduction": 8,
             "severity": 0,
@@ -3547,7 +3354,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 30,
@@ -3556,7 +3362,6 @@
             },
             "e_value": 30,
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": 30,
             "capped_reduction": 10,
             "severity": 0,
@@ -3566,7 +3371,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -3592,7 +3397,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 30,
@@ -3601,10 +3405,6 @@
             },
             "e_value": "31.4",
             "bonus_reduction": 14,
-            "bonus_descriptions": [
-              "IAM/PAM verhindert unbefugten Zugriff",
-              "SIEM erkennt Datenabfluss"
-            ],
             "gesamtreduktion": "45.4",
             "capped_reduction": 7,
             "severity": 0,
@@ -3683,7 +3483,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 31,
@@ -3692,10 +3491,6 @@
             },
             "e_value": "32.4",
             "bonus_reduction": 12,
-            "bonus_descriptions": [
-              "EDR/XDR erkennt Ransomware früh",
-              "Backup ermöglicht schnelle Wiederherstellung"
-            ],
             "gesamtreduktion": "44.4",
             "capped_reduction": 8,
             "severity": 0,
@@ -3723,7 +3518,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 31,
@@ -3732,7 +3526,6 @@
             },
             "e_value": "30.2",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "30.2",
             "capped_reduction": 10,
             "severity": 0,
@@ -3742,7 +3535,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -3768,7 +3561,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 31,
@@ -3777,9 +3569,6 @@
             },
             "e_value": "31.9",
             "bonus_reduction": 6,
-            "bonus_descriptions": [
-              "SIEM erkennt Datenabfluss"
-            ],
             "gesamtreduktion": "37.9",
             "capped_reduction": 7,
             "severity": 0,
@@ -3859,7 +3648,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 26,
@@ -3868,7 +3656,6 @@
             },
             "e_value": "27.2",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "27.2",
             "capped_reduction": "4.2",
             "severity": "3.8",
@@ -3896,7 +3683,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 26,
@@ -3905,7 +3691,6 @@
             },
             "e_value": "25.6",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "25.6",
             "capped_reduction": "5.6",
             "severity": "4.4",
@@ -3915,7 +3700,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -3941,7 +3726,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 26,
@@ -3950,7 +3734,6 @@
             },
             "e_value": "26.8",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "26.8",
             "capped_reduction": "1.8",
             "severity": "5.2",
@@ -4029,7 +3812,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 30,
@@ -4038,10 +3820,6 @@
             },
             "e_value": 31,
             "bonus_reduction": 12,
-            "bonus_descriptions": [
-              "EDR/XDR erkennt Ransomware früh",
-              "Backup ermöglicht schnelle Wiederherstellung"
-            ],
             "gesamtreduktion": 43,
             "capped_reduction": 8,
             "severity": 0,
@@ -4069,7 +3847,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 30,
@@ -4078,7 +3855,6 @@
             },
             "e_value": 28,
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": 28,
             "capped_reduction": 8,
             "severity": 2,
@@ -4088,7 +3864,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -4114,7 +3890,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 30,
@@ -4123,7 +3898,6 @@
             },
             "e_value": "30.5",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "30.5",
             "capped_reduction": "5.5",
             "severity": "1.5",
@@ -4202,7 +3976,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 28,
@@ -4211,7 +3984,6 @@
             },
             "e_value": "30.8",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "30.8",
             "capped_reduction": "7.8",
             "severity": "0.2",
@@ -4239,7 +4011,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 28,
@@ -4248,7 +4019,6 @@
             },
             "e_value": "29.4",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "29.4",
             "capped_reduction": "9.4",
             "severity": "0.6",
@@ -4258,7 +4028,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -4284,7 +4054,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 28,
@@ -4293,11 +4062,6 @@
             },
             "e_value": "30.1",
             "bonus_reduction": 23,
-            "bonus_descriptions": [
-              "IAM/PAM verhindert unbefugten Zugriff",
-              "SIEM erkennt Datenabfluss",
-              "Supply Chain Security schützt Schnittstellen"
-            ],
             "gesamtreduktion": "53.1",
             "capped_reduction": 7,
             "severity": 0,
@@ -4376,7 +4140,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 26,
@@ -4385,9 +4148,6 @@
             },
             "e_value": "27.4",
             "bonus_reduction": 6,
-            "bonus_descriptions": [
-              "EDR/XDR erkennt Ransomware früh"
-            ],
             "gesamtreduktion": "33.4",
             "capped_reduction": 8,
             "severity": 0,
@@ -4415,7 +4175,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 26,
@@ -4424,7 +4183,6 @@
             },
             "e_value": "24.2",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "24.2",
             "capped_reduction": "4.2",
             "severity": "5.8",
@@ -4434,7 +4192,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -4460,7 +4218,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 26,
@@ -4469,9 +4226,6 @@
             },
             "e_value": "26.8",
             "bonus_reduction": 6,
-            "bonus_descriptions": [
-              "SIEM erkennt Datenabfluss"
-            ],
             "gesamtreduktion": "32.8",
             "capped_reduction": 7,
             "severity": 0,
@@ -4551,7 +4305,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 10,
@@ -4560,7 +4313,6 @@
             },
             "e_value": 10,
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": 10,
             "capped_reduction": 0,
             "severity": 8,
@@ -4588,7 +4340,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 10,
@@ -4597,7 +4348,6 @@
             },
             "e_value": 10,
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": 10,
             "capped_reduction": 0,
             "severity": 10,
@@ -4607,7 +4357,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -4633,7 +4383,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 10,
@@ -4642,7 +4391,6 @@
             },
             "e_value": 10,
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": 10,
             "capped_reduction": 0,
             "severity": 7,
@@ -4721,7 +4469,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 52,
@@ -4730,11 +4477,6 @@
             },
             "e_value": "55.4",
             "bonus_reduction": 15,
-            "bonus_descriptions": [
-              "EDR/XDR erkennt Ransomware früh",
-              "Backup ermöglicht schnelle Wiederherstellung",
-              "Geschulte Mitarbeiter erkennen Phishing"
-            ],
             "gesamtreduktion": "70.4",
             "capped_reduction": 8,
             "severity": 0,
@@ -4762,7 +4504,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 52,
@@ -4771,10 +4512,6 @@
             },
             "e_value": "52.2",
             "bonus_reduction": 15,
-            "bonus_descriptions": [
-              "OT/IT-Segmentierung isoliert Produktion",
-              "Patch Management schließt OT-Schwachstellen"
-            ],
             "gesamtreduktion": "67.2",
             "capped_reduction": 10,
             "severity": 0,
@@ -4784,7 +4521,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -4810,7 +4547,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 52,
@@ -4819,11 +4555,6 @@
             },
             "e_value": "54.4",
             "bonus_reduction": 23,
-            "bonus_descriptions": [
-              "IAM/PAM verhindert unbefugten Zugriff",
-              "SIEM erkennt Datenabfluss",
-              "Supply Chain Security schützt Schnittstellen"
-            ],
             "gesamtreduktion": "77.4",
             "capped_reduction": 7,
             "severity": 0,
@@ -4909,7 +4640,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 18,
@@ -4918,7 +4648,6 @@
             },
             "e_value": "17.6",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "17.6",
             "capped_reduction": 0,
             "severity": 8,
@@ -4946,7 +4675,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 18,
@@ -4955,7 +4683,6 @@
             },
             "e_value": "14.8",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "14.8",
             "capped_reduction": 0,
             "severity": 10,
@@ -4965,7 +4692,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -4991,7 +4718,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 18,
@@ -5000,10 +4726,6 @@
             },
             "e_value": "17.4",
             "bonus_reduction": 14,
-            "bonus_descriptions": [
-              "IAM/PAM verhindert unbefugten Zugriff",
-              "SIEM erkennt Datenabfluss"
-            ],
             "gesamtreduktion": "31.4",
             "capped_reduction": "6.4",
             "severity": "0.6",
@@ -5089,7 +4811,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 19,
@@ -5098,9 +4819,6 @@
             },
             "e_value": "18.8",
             "bonus_reduction": 6,
-            "bonus_descriptions": [
-              "EDR/XDR erkennt Ransomware früh"
-            ],
             "gesamtreduktion": "24.8",
             "capped_reduction": "1.8",
             "severity": "6.2",
@@ -5128,7 +4846,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 19,
@@ -5137,7 +4854,6 @@
             },
             "e_value": "16.4",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "16.4",
             "capped_reduction": 0,
             "severity": 10,
@@ -5147,7 +4863,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -5173,7 +4889,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 19,
@@ -5182,9 +4897,6 @@
             },
             "e_value": "18.6",
             "bonus_reduction": 6,
-            "bonus_descriptions": [
-              "SIEM erkennt Datenabfluss"
-            ],
             "gesamtreduktion": "24.6",
             "capped_reduction": 0,
             "severity": 7,
@@ -5270,7 +4982,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 17,
@@ -5279,7 +4990,6 @@
             },
             "e_value": "17.6",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "17.6",
             "capped_reduction": 0,
             "severity": 8,
@@ -5307,7 +5017,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 17,
@@ -5316,9 +5025,6 @@
             },
             "e_value": "15.8",
             "bonus_reduction": 6,
-            "bonus_descriptions": [
-              "Patch Management schließt OT-Schwachstellen"
-            ],
             "gesamtreduktion": "21.8",
             "capped_reduction": "1.8",
             "severity": "8.2",
@@ -5328,7 +5034,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -5354,7 +5060,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 17,
@@ -5363,7 +5068,6 @@
             },
             "e_value": "17.3",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "17.3",
             "capped_reduction": 0,
             "severity": 7,
@@ -5442,7 +5146,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 14,
@@ -5451,7 +5154,6 @@
             },
             "e_value": 15,
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": 15,
             "capped_reduction": 0,
             "severity": 8,
@@ -5479,7 +5181,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 14,
@@ -5488,7 +5189,6 @@
             },
             "e_value": 15,
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": 15,
             "capped_reduction": 0,
             "severity": 10,
@@ -5498,7 +5198,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -5524,7 +5224,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 14,
@@ -5533,9 +5232,6 @@
             },
             "e_value": "14.8",
             "bonus_reduction": 9,
-            "bonus_descriptions": [
-              "Supply Chain Security schützt Schnittstellen"
-            ],
             "gesamtreduktion": "23.8",
             "capped_reduction": 0,
             "severity": 7,
@@ -5614,7 +5310,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 16,
@@ -5623,7 +5318,6 @@
             },
             "e_value": 17,
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": 17,
             "capped_reduction": 0,
             "severity": 8,
@@ -5651,7 +5345,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 16,
@@ -5660,7 +5353,6 @@
             },
             "e_value": 17,
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": 17,
             "capped_reduction": 0,
             "severity": 10,
@@ -5670,7 +5362,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -5696,7 +5388,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 16,
@@ -5705,9 +5396,6 @@
             },
             "e_value": "16.8",
             "bonus_reduction": 9,
-            "bonus_descriptions": [
-              "Supply Chain Security schützt Schnittstellen"
-            ],
             "gesamtreduktion": "25.8",
             "capped_reduction": "0.8",
             "severity": "6.2",
@@ -5786,7 +5474,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 19,
@@ -5795,7 +5482,6 @@
             },
             "e_value": 19,
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": 19,
             "capped_reduction": 0,
             "severity": 8,
@@ -5823,7 +5509,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 19,
@@ -5832,7 +5517,6 @@
             },
             "e_value": 19,
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": 19,
             "capped_reduction": 0,
             "severity": 10,
@@ -5842,7 +5526,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -5868,7 +5552,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 19,
@@ -5877,7 +5560,6 @@
             },
             "e_value": 19,
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": 19,
             "capped_reduction": 0,
             "severity": 7,
@@ -5956,7 +5638,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 22,
@@ -5965,7 +5646,6 @@
             },
             "e_value": 23,
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": 23,
             "capped_reduction": 0,
             "severity": 8,
@@ -5993,7 +5673,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 22,
@@ -6002,9 +5681,6 @@
             },
             "e_value": 22,
             "bonus_reduction": 6,
-            "bonus_descriptions": [
-              "Patch Management schließt OT-Schwachstellen"
-            ],
             "gesamtreduktion": 28,
             "capped_reduction": 8,
             "severity": 2,
@@ -6014,7 +5690,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -6040,7 +5716,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 22,
@@ -6049,9 +5724,6 @@
             },
             "e_value": "22.7",
             "bonus_reduction": 9,
-            "bonus_descriptions": [
-              "Supply Chain Security schützt Schnittstellen"
-            ],
             "gesamtreduktion": "31.7",
             "capped_reduction": "6.7",
             "severity": "0.3",
@@ -6130,7 +5802,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 18,
@@ -6139,7 +5810,6 @@
             },
             "e_value": 20,
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": 20,
             "capped_reduction": 0,
             "severity": 8,
@@ -6167,7 +5837,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 18,
@@ -6176,7 +5845,6 @@
             },
             "e_value": 20,
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": 20,
             "capped_reduction": 0,
             "severity": 10,
@@ -6186,7 +5854,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -6212,7 +5880,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 18,
@@ -6221,9 +5888,6 @@
             },
             "e_value": "19.6",
             "bonus_reduction": 9,
-            "bonus_descriptions": [
-              "Supply Chain Security schützt Schnittstellen"
-            ],
             "gesamtreduktion": "28.6",
             "capped_reduction": "3.6",
             "severity": "3.4",
@@ -6302,7 +5966,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 15,
@@ -6311,7 +5974,6 @@
             },
             "e_value": "16.2",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "16.2",
             "capped_reduction": 0,
             "severity": 8,
@@ -6339,7 +6001,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 15,
@@ -6348,7 +6009,6 @@
             },
             "e_value": "16.6",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "16.6",
             "capped_reduction": 0,
             "severity": 10,
@@ -6358,7 +6018,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -6384,7 +6044,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 15,
@@ -6393,9 +6052,6 @@
             },
             "e_value": 16,
             "bonus_reduction": 9,
-            "bonus_descriptions": [
-              "Supply Chain Security schützt Schnittstellen"
-            ],
             "gesamtreduktion": 25,
             "capped_reduction": 0,
             "severity": 7,
@@ -6474,7 +6130,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 27,
@@ -6483,9 +6138,6 @@
             },
             "e_value": 28,
             "bonus_reduction": 3,
-            "bonus_descriptions": [
-              "Geschulte Mitarbeiter erkennen Phishing"
-            ],
             "gesamtreduktion": 31,
             "capped_reduction": 8,
             "severity": 0,
@@ -6513,7 +6165,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 27,
@@ -6522,9 +6173,6 @@
             },
             "e_value": 27,
             "bonus_reduction": 6,
-            "bonus_descriptions": [
-              "Patch Management schließt OT-Schwachstellen"
-            ],
             "gesamtreduktion": 33,
             "capped_reduction": 10,
             "severity": 0,
@@ -6534,7 +6182,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -6560,7 +6208,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 27,
@@ -6569,9 +6216,6 @@
             },
             "e_value": "27.7",
             "bonus_reduction": 9,
-            "bonus_descriptions": [
-              "Supply Chain Security schützt Schnittstellen"
-            ],
             "gesamtreduktion": "36.7",
             "capped_reduction": 7,
             "severity": 0,
@@ -6651,7 +6295,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 24,
@@ -6660,7 +6303,6 @@
             },
             "e_value": 25,
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": 25,
             "capped_reduction": 2,
             "severity": 6,
@@ -6688,7 +6330,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 24,
@@ -6697,9 +6338,6 @@
             },
             "e_value": 24,
             "bonus_reduction": 6,
-            "bonus_descriptions": [
-              "Patch Management schließt OT-Schwachstellen"
-            ],
             "gesamtreduktion": 30,
             "capped_reduction": 10,
             "severity": 0,
@@ -6709,7 +6347,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -6735,7 +6373,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 24,
@@ -6744,9 +6381,6 @@
             },
             "e_value": "24.7",
             "bonus_reduction": 9,
-            "bonus_descriptions": [
-              "Supply Chain Security schützt Schnittstellen"
-            ],
             "gesamtreduktion": "33.7",
             "capped_reduction": 7,
             "severity": 0,
@@ -6825,7 +6459,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 22,
@@ -6834,7 +6467,6 @@
             },
             "e_value": "23.2",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "23.2",
             "capped_reduction": "0.2",
             "severity": "7.8",
@@ -6862,7 +6494,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 22,
@@ -6871,7 +6502,6 @@
             },
             "e_value": "23.6",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "23.6",
             "capped_reduction": "3.6",
             "severity": "6.4",
@@ -6881,7 +6511,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -6907,7 +6537,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 22,
@@ -6916,9 +6545,6 @@
             },
             "e_value": 23,
             "bonus_reduction": 9,
-            "bonus_descriptions": [
-              "Supply Chain Security schützt Schnittstellen"
-            ],
             "gesamtreduktion": 32,
             "capped_reduction": 7,
             "severity": 0,
@@ -6997,7 +6623,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 24,
@@ -7006,7 +6631,6 @@
             },
             "e_value": "25.6",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "25.6",
             "capped_reduction": "2.6",
             "severity": "5.4",
@@ -7034,7 +6658,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 24,
@@ -7043,9 +6666,6 @@
             },
             "e_value": "24.8",
             "bonus_reduction": 6,
-            "bonus_descriptions": [
-              "Patch Management schließt OT-Schwachstellen"
-            ],
             "gesamtreduktion": "30.8",
             "capped_reduction": 10,
             "severity": 0,
@@ -7055,7 +6675,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -7081,7 +6701,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 24,
@@ -7090,9 +6709,6 @@
             },
             "e_value": "25.2",
             "bonus_reduction": 9,
-            "bonus_descriptions": [
-              "Supply Chain Security schützt Schnittstellen"
-            ],
             "gesamtreduktion": "34.2",
             "capped_reduction": 7,
             "severity": 0,
@@ -7171,7 +6787,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 25,
@@ -7180,9 +6795,6 @@
             },
             "e_value": "25.2",
             "bonus_reduction": 3,
-            "bonus_descriptions": [
-              "Geschulte Mitarbeiter erkennen Phishing"
-            ],
             "gesamtreduktion": "28.2",
             "capped_reduction": "5.2",
             "severity": "2.8",
@@ -7210,7 +6822,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 25,
@@ -7219,7 +6830,6 @@
             },
             "e_value": "25.6",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "25.6",
             "capped_reduction": "5.6",
             "severity": "4.4",
@@ -7229,7 +6839,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -7255,7 +6865,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 25,
@@ -7264,9 +6873,6 @@
             },
             "e_value": "25.2",
             "bonus_reduction": 9,
-            "bonus_descriptions": [
-              "Supply Chain Security schützt Schnittstellen"
-            ],
             "gesamtreduktion": "34.2",
             "capped_reduction": 7,
             "severity": 0,
@@ -7345,7 +6951,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 24,
@@ -7354,7 +6959,6 @@
             },
             "e_value": "25.2",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "25.2",
             "capped_reduction": "2.2",
             "severity": "5.8",
@@ -7382,7 +6986,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 24,
@@ -7391,7 +6994,6 @@
             },
             "e_value": "25.6",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "25.6",
             "capped_reduction": "5.6",
             "severity": "4.4",
@@ -7401,7 +7003,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -7427,7 +7029,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 24,
@@ -7436,9 +7037,6 @@
             },
             "e_value": 25,
             "bonus_reduction": 9,
-            "bonus_descriptions": [
-              "Supply Chain Security schützt Schnittstellen"
-            ],
             "gesamtreduktion": 34,
             "capped_reduction": 7,
             "severity": 0,
@@ -7517,7 +7115,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 23,
@@ -7526,7 +7123,6 @@
             },
             "e_value": "24.2",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "24.2",
             "capped_reduction": "1.2",
             "severity": "6.8",
@@ -7554,7 +7150,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 23,
@@ -7563,9 +7158,6 @@
             },
             "e_value": "23.6",
             "bonus_reduction": 6,
-            "bonus_descriptions": [
-              "Patch Management schließt OT-Schwachstellen"
-            ],
             "gesamtreduktion": "29.6",
             "capped_reduction": "9.6",
             "severity": "0.4",
@@ -7575,7 +7167,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -7601,7 +7193,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 23,
@@ -7610,9 +7201,6 @@
             },
             "e_value": "23.9",
             "bonus_reduction": 9,
-            "bonus_descriptions": [
-              "Supply Chain Security schützt Schnittstellen"
-            ],
             "gesamtreduktion": "32.9",
             "capped_reduction": 7,
             "severity": 0,
@@ -7691,7 +7279,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 24,
@@ -7700,7 +7287,6 @@
             },
             "e_value": 25,
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": 25,
             "capped_reduction": 2,
             "severity": 6,
@@ -7728,7 +7314,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 24,
@@ -7737,9 +7322,6 @@
             },
             "e_value": 25,
             "bonus_reduction": 6,
-            "bonus_descriptions": [
-              "Patch Management schließt OT-Schwachstellen"
-            ],
             "gesamtreduktion": 31,
             "capped_reduction": 10,
             "severity": 0,
@@ -7749,7 +7331,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -7775,7 +7357,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 24,
@@ -7784,9 +7365,6 @@
             },
             "e_value": "24.8",
             "bonus_reduction": 9,
-            "bonus_descriptions": [
-              "Supply Chain Security schützt Schnittstellen"
-            ],
             "gesamtreduktion": "33.8",
             "capped_reduction": 7,
             "severity": 0,
@@ -7865,7 +7443,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 21,
@@ -7874,7 +7451,6 @@
             },
             "e_value": "21.8",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "21.8",
             "capped_reduction": 0,
             "severity": 8,
@@ -7902,7 +7478,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 21,
@@ -7911,7 +7486,6 @@
             },
             "e_value": "21.4",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "21.4",
             "capped_reduction": "1.4",
             "severity": "8.6",
@@ -7921,7 +7495,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -7947,7 +7521,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 21,
@@ -7956,9 +7529,6 @@
             },
             "e_value": "21.6",
             "bonus_reduction": 9,
-            "bonus_descriptions": [
-              "Supply Chain Security schützt Schnittstellen"
-            ],
             "gesamtreduktion": "30.6",
             "capped_reduction": "5.6",
             "severity": "1.4",
@@ -8037,7 +7607,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 22,
@@ -8046,7 +7615,6 @@
             },
             "e_value": "22.4",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "22.4",
             "capped_reduction": 0,
             "severity": 8,
@@ -8074,7 +7642,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 22,
@@ -8083,9 +7650,6 @@
             },
             "e_value": "21.2",
             "bonus_reduction": 6,
-            "bonus_descriptions": [
-              "Patch Management schließt OT-Schwachstellen"
-            ],
             "gesamtreduktion": "27.2",
             "capped_reduction": "7.2",
             "severity": "2.8",
@@ -8095,7 +7659,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -8121,7 +7685,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 22,
@@ -8130,7 +7693,6 @@
             },
             "e_value": "22.2",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "22.2",
             "capped_reduction": 0,
             "severity": 7,
@@ -8209,7 +7771,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 19,
@@ -8218,7 +7779,6 @@
             },
             "e_value": 21,
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": 21,
             "capped_reduction": 0,
             "severity": 8,
@@ -8246,7 +7806,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 19,
@@ -8255,7 +7814,6 @@
             },
             "e_value": 21,
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": 21,
             "capped_reduction": 1,
             "severity": 9,
@@ -8265,7 +7823,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -8291,7 +7849,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 19,
@@ -8300,9 +7857,6 @@
             },
             "e_value": "20.6",
             "bonus_reduction": 9,
-            "bonus_descriptions": [
-              "Supply Chain Security schützt Schnittstellen"
-            ],
             "gesamtreduktion": "29.6",
             "capped_reduction": "4.6",
             "severity": "2.4",
@@ -8381,7 +7935,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 22,
@@ -8390,7 +7943,6 @@
             },
             "e_value": "23.2",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "23.2",
             "capped_reduction": "0.2",
             "severity": "7.8",
@@ -8418,7 +7970,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 22,
@@ -8427,9 +7978,6 @@
             },
             "e_value": "22.6",
             "bonus_reduction": 6,
-            "bonus_descriptions": [
-              "Patch Management schließt OT-Schwachstellen"
-            ],
             "gesamtreduktion": "28.6",
             "capped_reduction": "8.6",
             "severity": "1.4",
@@ -8439,7 +7987,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -8465,7 +8013,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 22,
@@ -8474,9 +8021,6 @@
             },
             "e_value": "22.9",
             "bonus_reduction": 9,
-            "bonus_descriptions": [
-              "Supply Chain Security schützt Schnittstellen"
-            ],
             "gesamtreduktion": "31.9",
             "capped_reduction": "6.9",
             "severity": "0.1",
@@ -8555,7 +8099,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 29,
@@ -8564,9 +8107,6 @@
             },
             "e_value": "28.4",
             "bonus_reduction": 3,
-            "bonus_descriptions": [
-              "Geschulte Mitarbeiter erkennen Phishing"
-            ],
             "gesamtreduktion": "31.4",
             "capped_reduction": 8,
             "severity": 0,
@@ -8594,7 +8134,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 29,
@@ -8603,10 +8142,6 @@
             },
             "e_value": "28.2",
             "bonus_reduction": 15,
-            "bonus_descriptions": [
-              "OT/IT-Segmentierung isoliert Produktion",
-              "Patch Management schließt OT-Schwachstellen"
-            ],
             "gesamtreduktion": "43.2",
             "capped_reduction": 10,
             "severity": 0,
@@ -8616,7 +8151,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -8642,7 +8177,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 29,
@@ -8651,7 +8185,6 @@
             },
             "e_value": "28.5",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "28.5",
             "capped_reduction": "3.5",
             "severity": "3.5",
@@ -8730,7 +8263,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 22,
@@ -8739,7 +8271,6 @@
             },
             "e_value": "22.8",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "22.8",
             "capped_reduction": 0,
             "severity": 8,
@@ -8767,7 +8298,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 22,
@@ -8776,9 +8306,6 @@
             },
             "e_value": "21.4",
             "bonus_reduction": 6,
-            "bonus_descriptions": [
-              "Patch Management schließt OT-Schwachstellen"
-            ],
             "gesamtreduktion": "27.4",
             "capped_reduction": "7.4",
             "severity": "2.6",
@@ -8788,7 +8315,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -8814,7 +8341,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 22,
@@ -8823,9 +8349,6 @@
             },
             "e_value": "22.5",
             "bonus_reduction": 6,
-            "bonus_descriptions": [
-              "SIEM erkennt Datenabfluss"
-            ],
             "gesamtreduktion": "28.5",
             "capped_reduction": "3.5",
             "severity": "3.5",
@@ -8904,7 +8427,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 21,
@@ -8913,7 +8435,6 @@
             },
             "e_value": "20.6",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "20.6",
             "capped_reduction": 0,
             "severity": 8,
@@ -8941,7 +8462,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 21,
@@ -8950,7 +8470,6 @@
             },
             "e_value": "18.8",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "18.8",
             "capped_reduction": 0,
             "severity": 10,
@@ -8960,7 +8479,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -8986,7 +8505,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 21,
@@ -8995,9 +8513,6 @@
             },
             "e_value": "20.5",
             "bonus_reduction": 8,
-            "bonus_descriptions": [
-              "IAM/PAM verhindert unbefugten Zugriff"
-            ],
             "gesamtreduktion": "28.5",
             "capped_reduction": "3.5",
             "severity": "3.5",
@@ -9076,7 +8591,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 17,
@@ -9085,7 +8599,6 @@
             },
             "e_value": 20,
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": 20,
             "capped_reduction": 0,
             "severity": 8,
@@ -9113,7 +8626,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 17,
@@ -9122,7 +8634,6 @@
             },
             "e_value": 21,
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": 21,
             "capped_reduction": 1,
             "severity": 9,
@@ -9132,7 +8643,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -9158,7 +8669,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 17,
@@ -9167,9 +8677,6 @@
             },
             "e_value": "19.5",
             "bonus_reduction": 9,
-            "bonus_descriptions": [
-              "Supply Chain Security schützt Schnittstellen"
-            ],
             "gesamtreduktion": "28.5",
             "capped_reduction": "3.5",
             "severity": "3.5",
@@ -9248,7 +8755,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 30,
@@ -9257,10 +8763,6 @@
             },
             "e_value": "32.8",
             "bonus_reduction": 9,
-            "bonus_descriptions": [
-              "Backup ermöglicht schnelle Wiederherstellung",
-              "Geschulte Mitarbeiter erkennen Phishing"
-            ],
             "gesamtreduktion": "41.8",
             "capped_reduction": 8,
             "severity": 0,
@@ -9288,7 +8790,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 30,
@@ -9297,9 +8798,6 @@
             },
             "e_value": "31.4",
             "bonus_reduction": 6,
-            "bonus_descriptions": [
-              "Patch Management schließt OT-Schwachstellen"
-            ],
             "gesamtreduktion": "37.4",
             "capped_reduction": 10,
             "severity": 0,
@@ -9309,7 +8807,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -9335,7 +8833,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 30,
@@ -9344,9 +8841,6 @@
             },
             "e_value": "32.1",
             "bonus_reduction": 8,
-            "bonus_descriptions": [
-              "IAM/PAM verhindert unbefugten Zugriff"
-            ],
             "gesamtreduktion": "40.1",
             "capped_reduction": 7,
             "severity": 0,
@@ -9425,7 +8919,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 39,
@@ -9434,9 +8927,6 @@
             },
             "e_value": "41.2",
             "bonus_reduction": 6,
-            "bonus_descriptions": [
-              "EDR/XDR erkennt Ransomware früh"
-            ],
             "gesamtreduktion": "47.2",
             "capped_reduction": 8,
             "severity": 0,
@@ -9464,7 +8954,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 39,
@@ -9473,10 +8962,6 @@
             },
             "e_value": "38.6",
             "bonus_reduction": 15,
-            "bonus_descriptions": [
-              "OT/IT-Segmentierung isoliert Produktion",
-              "Patch Management schließt OT-Schwachstellen"
-            ],
             "gesamtreduktion": "53.6",
             "capped_reduction": 10,
             "severity": 0,
@@ -9486,7 +8971,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -9512,7 +8997,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 39,
@@ -9521,9 +9005,6 @@
             },
             "e_value": "40.5",
             "bonus_reduction": 6,
-            "bonus_descriptions": [
-              "SIEM erkennt Datenabfluss"
-            ],
             "gesamtreduktion": "46.5",
             "capped_reduction": 7,
             "severity": 0,
@@ -9602,7 +9083,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 35,
@@ -9611,10 +9091,6 @@
             },
             "e_value": "37.8",
             "bonus_reduction": 9,
-            "bonus_descriptions": [
-              "Backup ermöglicht schnelle Wiederherstellung",
-              "Geschulte Mitarbeiter erkennen Phishing"
-            ],
             "gesamtreduktion": "46.8",
             "capped_reduction": 8,
             "severity": 0,
@@ -9642,7 +9118,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 35,
@@ -9651,9 +9126,6 @@
             },
             "e_value": "35.4",
             "bonus_reduction": 6,
-            "bonus_descriptions": [
-              "Patch Management schließt OT-Schwachstellen"
-            ],
             "gesamtreduktion": "41.4",
             "capped_reduction": 10,
             "severity": 0,
@@ -9663,7 +9135,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -9689,7 +9161,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 35,
@@ -9698,11 +9169,6 @@
             },
             "e_value": 37,
             "bonus_reduction": 23,
-            "bonus_descriptions": [
-              "IAM/PAM verhindert unbefugten Zugriff",
-              "SIEM erkennt Datenabfluss",
-              "Supply Chain Security schützt Schnittstellen"
-            ],
             "gesamtreduktion": 60,
             "capped_reduction": 7,
             "severity": 0,
@@ -9781,7 +9247,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 42,
@@ -9790,10 +9255,6 @@
             },
             "e_value": "46.8",
             "bonus_reduction": 12,
-            "bonus_descriptions": [
-              "EDR/XDR erkennt Ransomware früh",
-              "Backup ermöglicht schnelle Wiederherstellung"
-            ],
             "gesamtreduktion": "58.8",
             "capped_reduction": 8,
             "severity": 0,
@@ -9821,7 +9282,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 42,
@@ -9830,10 +9290,6 @@
             },
             "e_value": "44.4",
             "bonus_reduction": 15,
-            "bonus_descriptions": [
-              "OT/IT-Segmentierung isoliert Produktion",
-              "Patch Management schließt OT-Schwachstellen"
-            ],
             "gesamtreduktion": "59.4",
             "capped_reduction": 10,
             "severity": 0,
@@ -9843,7 +9299,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -9869,7 +9325,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 42,
@@ -9878,11 +9333,6 @@
             },
             "e_value": "45.6",
             "bonus_reduction": 23,
-            "bonus_descriptions": [
-              "IAM/PAM verhindert unbefugten Zugriff",
-              "SIEM erkennt Datenabfluss",
-              "Supply Chain Security schützt Schnittstellen"
-            ],
             "gesamtreduktion": "68.6",
             "capped_reduction": 7,
             "severity": 0,
@@ -9961,7 +9411,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 26,
@@ -9970,9 +9419,6 @@
             },
             "e_value": "26.8",
             "bonus_reduction": 3,
-            "bonus_descriptions": [
-              "Geschulte Mitarbeiter erkennen Phishing"
-            ],
             "gesamtreduktion": "29.8",
             "capped_reduction": "6.8",
             "severity": "1.2",
@@ -10000,7 +9446,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 26,
@@ -10009,7 +9454,6 @@
             },
             "e_value": "25.4",
             "bonus_reduction": 0,
-            "bonus_descriptions": [],
             "gesamtreduktion": "25.4",
             "capped_reduction": "5.4",
             "severity": "4.6",
@@ -10019,7 +9463,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -10045,7 +9489,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 26,
@@ -10054,9 +9497,6 @@
             },
             "e_value": "26.5",
             "bonus_reduction": 9,
-            "bonus_descriptions": [
-              "Supply Chain Security schützt Schnittstellen"
-            ],
             "gesamtreduktion": "35.5",
             "capped_reduction": 7,
             "severity": 0,
@@ -10135,7 +9575,6 @@
         "waves": [
           {
             "wave_id": 1,
-            "wave_name": "Ransomware",
             "attack": "ransomware",
             "cia": {
               "c": 33,
@@ -10144,9 +9583,6 @@
             },
             "e_value": "34.4",
             "bonus_reduction": 6,
-            "bonus_descriptions": [
-              "EDR/XDR erkennt Ransomware früh"
-            ],
             "gesamtreduktion": "40.4",
             "capped_reduction": 8,
             "severity": 0,
@@ -10174,7 +9610,6 @@
           },
           {
             "wave_id": 2,
-            "wave_name": "OT-Störung",
             "attack": "ot",
             "cia": {
               "c": 33,
@@ -10183,9 +9618,6 @@
             },
             "e_value": "32.2",
             "bonus_reduction": 9,
-            "bonus_descriptions": [
-              "OT/IT-Segmentierung isoliert Produktion"
-            ],
             "gesamtreduktion": "41.2",
             "capped_reduction": 10,
             "severity": 0,
@@ -10195,7 +9627,7 @@
               {
                 "id": "sparprogramm",
                 "name": "Sparprogramm",
-                "effect_description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
+                "effect_description": "Gesamtbudget -20k€",
                 "kz_delta": 0,
                 "budget_delta": -20,
                 "opex_delta": 0
@@ -10221,7 +9653,6 @@
           },
           {
             "wave_id": 3,
-            "wave_name": "Exfiltration",
             "attack": "exfil",
             "cia": {
               "c": 33,
@@ -10230,10 +9661,6 @@
             },
             "e_value": "33.9",
             "bonus_reduction": 14,
-            "bonus_descriptions": [
-              "IAM/PAM verhindert unbefugten Zugriff",
-              "SIEM erkennt Datenabfluss"
-            ],
             "gesamtreduktion": "47.9",
             "capped_reduction": 7,
             "severity": 0,

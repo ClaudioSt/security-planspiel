@@ -50,7 +50,7 @@ def test_load_config_returns_config_object():
     cfg = load_config(CONFIG_PATH)
     assert isinstance(cfg, Config)
     assert cfg.default_budget_tier == "medium"
-    assert cfg.waves[1].name == "OT-Störung"
+    assert cfg.waves[1].attack_id == "ot"
 
 
 def test_evaluate_plan_empty_selection_medium():

@@ -23,13 +23,11 @@ class BonusMeasure:
     measure: str
     min_level: int
     bonus: int
-    description: str
 
 
 @dataclass
 class Wave:
     wave_id: int
-    name: str
     attack_id: str
     weights: Dict[str, Fraction]
     e_threshold: int
@@ -64,7 +62,6 @@ class BudgetTier:
 class Event:
     id: str
     name: str
-    description: str
     type: str
     params: Dict
 
@@ -91,9 +88,8 @@ def _build_event(ev: Dict) -> Event:
     return Event(
         id=ev["id"],
         name=ev["name"],
-        description=ev["description"],
         type=ev["type"],
-        params={k: v for k, v in ev.items() if k not in ("id", "name", "description", "type")},
+        params={k: v for k, v in ev.items() if k not in ("id", "name", "type")},
     )
 
 
@@ -151,13 +147,11 @@ def load_config(path: Path) -> Config:
                 measure=bm["measure"],
                 min_level=bm["min_level"],
                 bonus=bm["bonus"],
-                description=bm["description"],
             )
             for bm in wave.get("bonus_measures", [])
         ]
         waves.append(Wave(
             wave_id=wave["id"],
-            name=wave["name"],
             attack_id=wave["attack_id"],
             weights=wave["weights"],
             e_threshold=wave.get("e_threshold", 18),

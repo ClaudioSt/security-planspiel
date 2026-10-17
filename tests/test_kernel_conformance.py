@@ -130,7 +130,6 @@ def test_kernel_equals_evaluate_plan_on_negative_tie_override(tier, tmp_path):
         {
             "id": "test_negative_tie",
             "name": "Test negative tie",
-            "description": "Test-only event forcing a negative .5 tie in wave 3.",
             "type": "and_condition",
             "clauses": [{"measure": "M6", "min_level": 0}],
             "kz_delta": -7,

@@ -10,8 +10,9 @@ import pytest
 
 from planspiel import rules
 from planspiel.config import Event, load_config
+from planspiel.texts import load_texts
 from planspiel.validate import validate
-from tests.support import CONFIG_PATH, REPO_ROOT
+from tests.support import CONFIG_PATH, CONTENT_DIR, MINI_CONTENT_DIR, REPO_ROOT
 
 MINI = REPO_ROOT / "tests" / "fixtures" / "mini_config.json"
 
@@ -173,7 +174,7 @@ def test_kurswechsel_wave_is_wave_1(cfg_name, request):
 
 
 def test_kurswechsel_wave_is_none_without_the_event():
-    other = Event("x", "X", "text", "flat_budget", {"budget_delta": 1})
+    other = Event("x", "X", "flat_budget", {"budget_delta": 1})
     assert rules.kurswechsel_wave({1: [other], 2: []}) is None
     assert rules.kurswechsel_wave({}) is None
 
@@ -254,13 +255,13 @@ def test_second_kurswechsel_is_reported_at_its_own_path():
     assert paths == [f"events.wave_2[{len(raw['events']['wave_2']) - 1}]"]
 
 
-@pytest.mark.parametrize("path", [CONFIG_PATH, MINI], ids=["real", "mini"])
-def test_kurswechsel_description_uses_the_one_vocabulary(path):
-    description = _raw(path)["events"]["wave_1"][0]["description"]
-    assert "Maßnahmentausch" in description
-    assert "Levelwechsel" in description
-    assert "Maßnahmenwechsel" not in description
-    assert not any(char.isdigit() for char in description)
+@pytest.mark.parametrize("content_dir", [CONTENT_DIR, MINI_CONTENT_DIR], ids=["real", "mini"])
+def test_kurswechsel_rule_text_uses_the_one_vocabulary(content_dir):
+    rule = load_texts(content_dir / "texte.toml").get("events.kurswechsel.rule")
+    assert "Maßnahmentausch" in rule
+    assert "Levelwechsel" in rule
+    assert "Maßnahmenwechsel" not in rule
+    assert not any(char.isdigit() for char in rule)
 
 
 def test_readme_uses_the_one_vocabulary():
@@ -272,13 +273,13 @@ def test_readme_uses_the_one_vocabulary():
     assert readme.count("Maßnahmenwechsel") == 1
 
 
-@pytest.mark.parametrize("path", [CONFIG_PATH, MINI], ids=["real", "mini"])
-def test_no_display_string_uses_the_retired_term(path):
+@pytest.mark.parametrize(
+    ("path", "content_dir"), [(CONFIG_PATH, CONTENT_DIR), (MINI, MINI_CONTENT_DIR)], ids=["real", "mini"]
+)
+def test_no_display_string_uses_the_retired_term(path, content_dir):
     cfg = load_config(path)
     strings = [measure.name for measure in cfg.measures.values()]
     for wave_events in (*cfg.events.values(), cfg.final_events):
-        for event in wave_events:
-            strings += [event.name, event.description]
-    for wave in cfg.waves:
-        strings += [wave.name] + [bonus.description for bonus in wave.bonus_measures]
+        strings += [event.name for event in wave_events]
+    strings += [text for _, text in load_texts(content_dir / "texte.toml").strings()]
     assert [text for text in strings if "Maßnahmenwechsel" in text] == []

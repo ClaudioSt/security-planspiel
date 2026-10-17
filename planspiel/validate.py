@@ -118,6 +118,13 @@ class _Validator:
             f"Schlüssel '{key}' wird nicht mehr verwendet (E-Ziel-Bonus/Malus entfernt) und ignoriert",
         )
 
+    def prose_key(self, key: str, path: str) -> None:
+        self.error(
+            "schema.prose_in_config",
+            path,
+            f"Prosa gehört nach content/texte.toml; Schlüssel '{key}' entfernen",
+        )
+
     def int_value(self, value: Any, path: str, lo: Optional[int] = None, hi: Optional[int] = None) -> Optional[int]:
         if isinstance(value, bool) or not isinstance(value, int):
             self.error("schema.type", path, f"Ganzzahl erwartet, gefunden {value!r}")
@@ -297,6 +304,8 @@ class _Validator:
             path = f"attacks.{attack_id}"
             if not self.container(info, dict, path):
                 continue
+            if "description" in info:
+                self.prose_key("description", f"{path}.description")
             self.int_field(info, "base_severity", path, lo=0)
             self.int_field(info, "s_unit", path, lo=0)
             self.int_field(info, "kz_at_full_damage", path)
@@ -320,7 +329,8 @@ class _Validator:
             wave_id = self.int_field(wave, "id", path)
             if wave_id is not None:
                 ids.append(wave_id)
-            self.text_value(self.field(wave, "name", path), f"{path}.name")
+            if "name" in wave:
+                self.prose_key("name", f"{path}.name")
             attack_id = self.field(wave, "attack_id", path)
             if attack_id is not None and (not isinstance(attack_id, str) or attack_id not in attacks):
                 self.error("ref.unknown_attack", f"{path}.attack_id", f"Unbekannter Angriff {attack_id!r}")
@@ -346,7 +356,8 @@ class _Validator:
                     self.check_measure_ref(bm.get("measure"), f"{bm_path}.measure", measures)
                     self.int_field(bm, "min_level", bm_path, lo=1, hi=3)
                     self.int_field(bm, "bonus", bm_path, lo=0)
-                    self.text_value(self.field(bm, "description", bm_path), f"{bm_path}.description")
+                    if "description" in bm:
+                        self.prose_key("description", f"{bm_path}.description")
         if ids != list(range(1, len(waves) + 1)):
             self.error("schema.wave_ids", "waves", f"Wellen-IDs müssen 1..{len(waves)} fortlaufend und eindeutig sein, gefunden {ids}")
         else:
@@ -427,7 +438,8 @@ class _Validator:
             else:
                 self.event_ids[event_id] = path
         self.text_value(self.field(event, "name", path), f"{path}.name")
-        self.text_value(self.field(event, "description", path), f"{path}.description")
+        if "description" in event:
+            self.prose_key("description", f"{path}.description")
         event_type = self.field(event, "type", path)
         if event_type is None:
             return

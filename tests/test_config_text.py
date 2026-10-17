@@ -4,30 +4,26 @@ import subprocess
 import sys
 
 from planspiel.config import load_config
-from tests.support import CONFIG_PATH, REPO_ROOT
+from planspiel.texts import load_texts
+from tests.support import CONFIG_PATH, CONTENT_DIR, REPO_ROOT
 
 MOJIBAKE_MARKERS = ("Ã", "Â", "â€")
 
 
 def _display_strings(config):
-    for wave in config.waves:
-        yield wave.name
-        for bonus in wave.bonus_measures:
-            yield bonus.description
     for measure in config.measures.values():
         yield measure.name
     for wave_events in config.events.values():
         for event in wave_events:
             yield event.name
-            yield event.description
     for event in config.final_events:
         yield event.name
-        yield event.description
+    for _, text in load_texts(CONTENT_DIR / "texte.toml").strings():
+        yield text
 
 
 def test_loader_decodes_config_as_utf8():
-    waves = load_config(CONFIG_PATH).waves
-    assert waves[0].bonus_measures[0].description == "EDR/XDR erkennt Ransomware früh"
+    assert load_config(CONFIG_PATH).events[1][1].name == "Operative Unterstützung"
 
 
 def test_no_mojibake_in_loaded_config():
@@ -114,8 +110,8 @@ def _walk_ascii_targets(node, path="$", under_id_key=False):
         yield path, node
 
 
-def test_wave_names_use_umlauts():
-    assert _load_raw()["waves"][1]["name"] == "OT-Störung"
+def test_revealed_attack_name_uses_umlauts():
+    assert load_texts(CONTENT_DIR / "texte.toml").get("attacks.ot.revealed.name") == "OT-Störung"
 
 
 def test_display_strings_have_no_transliterations():
@@ -134,9 +130,6 @@ def test_ids_and_keys_stay_ascii():
 
 
 def _texte_strings():
-    from planspiel.texts import load_texts
-    from tests.support import CONTENT_DIR
-
     return load_texts(CONTENT_DIR / "texte.toml").strings()
 
 
@@ -158,9 +151,6 @@ def test_texte_toml_has_no_transliterations():
 
 
 def test_texte_toml_keys_are_ascii():
-    from planspiel.texts import load_texts
-    from tests.support import CONTENT_DIR
-
     keys = [key for key, _ in load_texts(CONTENT_DIR / "texte.toml").leaves()]
     assert keys
     assert [key for key in keys if not key.isascii()] == []

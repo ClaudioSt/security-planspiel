@@ -114,7 +114,6 @@ def test_real_and_mini_config_tiers_start_at_zero():
     for path in (CONFIG_PATH, MINI):
         event = _raw(path)["final_events"][0]
         assert event["tiers"] == REAL_TIERS
-        assert not any(ch.isdigit() for ch in event["description"])
 
 
 def test_real_config_text_is_the_printed_card_text():

@@ -21,7 +21,6 @@
   "waves": [
     {
       "id": 1,
-      "name": "Ransomware",
       "attack_id": "ransomware",
       "weights": {
         "c": 0.4,
@@ -30,14 +29,13 @@
       },
       "e_threshold": 23,
       "bonus_measures": [
-        {"measure": "M3", "min_level": 2, "bonus": 6, "description": "EDR/XDR erkennt Ransomware früh"},
-        {"measure": "M4", "min_level": 2, "bonus": 6, "description": "Backup ermöglicht schnelle Wiederherstellung"},
-        {"measure": "M6", "min_level": 2, "bonus": 3, "description": "Geschulte Mitarbeiter erkennen Phishing"}
+        {"measure": "M3", "min_level": 2, "bonus": 6},
+        {"measure": "M4", "min_level": 2, "bonus": 6},
+        {"measure": "M6", "min_level": 2, "bonus": 3}
       ]
     },
     {
       "id": 2,
-      "name": "OT-Störung",
       "attack_id": "ot",
       "weights": {
         "c": 0.2,
@@ -46,13 +44,12 @@
       },
       "e_threshold": 20,
       "bonus_measures": [
-        {"measure": "M5", "min_level": 2, "bonus": 9, "description": "OT/IT-Segmentierung isoliert Produktion"},
-        {"measure": "M7", "min_level": 2, "bonus": 6, "description": "Patch Management schließt OT-Schwachstellen"}
+        {"measure": "M5", "min_level": 2, "bonus": 9},
+        {"measure": "M7", "min_level": 2, "bonus": 6}
       ]
     },
     {
       "id": 3,
-      "name": "Exfiltration",
       "attack_id": "exfil",
       "weights": {
         "c": 0.5,
@@ -61,15 +58,14 @@
       },
       "e_threshold": 25,
       "bonus_measures": [
-        {"measure": "M1", "min_level": 2, "bonus": 8, "description": "IAM/PAM verhindert unbefugten Zugriff"},
-        {"measure": "M2", "min_level": 2, "bonus": 6, "description": "SIEM erkennt Datenabfluss"},
-        {"measure": "M8", "min_level": 2, "bonus": 9, "description": "Supply Chain Security schützt Schnittstellen"}
+        {"measure": "M1", "min_level": 2, "bonus": 8},
+        {"measure": "M2", "min_level": 2, "bonus": 6},
+        {"measure": "M8", "min_level": 2, "bonus": 9}
       ]
     }
   ],
   "attacks": {
     "ransomware": {
-      "description": "Ein Mitarbeiter hat auf eine gefälschte E-Mail geklickt - die Angreifer versuchen, Ransomware zu platzieren, die Daten verschlüsselt und ggf. exfiltriert, um anschließend Lösegeld zu erpressen.",
       "base_severity": 8,
       "s_unit": 20,
       "kz_at_full_damage": -6,
@@ -79,7 +75,6 @@
       "allow_recovery": true
     },
     "ot": {
-      "description": "In eurer Produktionssteuerung wurde eine Schwachstelle ausgenutzt - die Angreifer zielen darauf, die Fertigung zu stören bzw. stillzulegen.",
       "base_severity": 10,
       "s_unit": 32,
       "kz_at_full_damage": -5,
@@ -89,7 +84,6 @@
       "allow_recovery": true
     },
     "exfil": {
-      "description": "Über einen kompromittierten Lieferanten-Zugang wurden über Wochen hinweg vertrauliche Konstruktionsdaten abgegriffen. Das BSI informiert euch: Eure Daten werden im Darknet angeboten.",
       "base_severity": 7,
       "s_unit": 20,
       "kz_at_full_damage": -7,
@@ -213,13 +207,11 @@
       {
         "id": "kurswechsel",
         "name": "Kurswechsel",
-        "description": "Die Geschäftsführung richtet die Sicherheitsstrategie neu aus. Im Change-Fenster nach dieser Welle führt jedes Team genau einen Maßnahmentausch durch: Eine in dieser Welle aktive Maßnahme fällt ganz weg, eine in dieser Welle nicht aktive Maßnahme kommt auf einem frei wählbaren Level hinzu. Der Kunde übernimmt die Init-Kosten der neuen Maßnahme bis zur Höhe der Init-Kosten der wegfallenden Maßnahme auf ihrem Level in dieser Welle; nur einen Mehrbetrag zahlt das Team, eine günstigere neue Maßnahme bringt keine Erstattung. Abhängige Maßnahmen der wegfallenden Maßnahme senkt das Team im selben Fenster passend ab. Ist in dieser Welle keine oder jede Maßnahme aktiv, entfällt der Tausch. Normale Levelwechsel im selben Change-Fenster bleiben erlaubt.",
         "type": "kurswechsel"
       },
       {
         "id": "operative_unterstuetzung",
         "name": "Operative Unterstützung",
-        "description": "Ein zentraler Rahmenvertrag senkt die laufenden Betriebskosten: OPEX -2.000 EUR pro aktiver Maßnahme in der kommenden Welle.",
         "type": "opex_discount_per_active_measure",
         "opex_per_measure": -2
       }
@@ -228,14 +220,12 @@
       {
         "id": "sparprogramm",
         "name": "Sparprogramm",
-        "description": "Der CFO verkündet ein konzernweites Sparprogramm: Gesamtbudget -20.000 EUR. Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet).",
         "type": "flat_budget",
         "budget_delta": -20
       },
       {
         "id": "oem_audit",
         "name": "OEM-Audit",
-        "description": "Der Automobilkunde prüft die Grundkontrollen: M1 IAM/PAM, M2 Logging & SIEM/MDR, M4 Backup & Disaster Recovery, M5 OT/IT-Netz-Segmentierung, M7 Vulnerability & Patch Management, jeweils mindestens Level 1.",
         "type": "checklist_tier",
         "measures": ["M1", "M2", "M4", "M5", "M7"],
         "min_level": 1,
@@ -244,7 +234,6 @@
       {
         "id": "kritische_schwachstelle",
         "name": "Kritische Schwachstelle im System",
-        "description": "Eine aktiv ausgenutzte Schwachstelle wird gemeldet - die Reaktion hängt vom Niveau des Patch Managements (M7) ab.",
         "type": "measure_level_tier",
         "measure": "M7",
         "tiers": {"0": -5, "1": 0, "2": 3, "3": 7}
@@ -254,7 +243,6 @@
       {
         "id": "exzellenz_bonus",
         "name": "Exzellenz-Bonus",
-        "description": "Für jede Maßnahme auf höchstem Niveau (Level 3) gibt es +5 KZ.",
         "type": "level_bonus_per_measure",
         "level": 3,
         "kz_per_measure": 5
@@ -262,7 +250,6 @@
       {
         "id": "nervige_authentifizierung",
         "name": "Nervige Authentifizierung",
-        "description": "Verschärfte Zugriffskontrollen (M1 >= Level 2) ohne begleitende Schulung (M6 = Level 0) erzeugen Frust: KZ -10.",
         "type": "and_condition",
         "clauses": [
           {"measure": "M1", "min_level": 2},
@@ -276,7 +263,6 @@
     {
       "id": "budget_review",
       "name": "Budget Review",
-      "description": "Nach Abschluss wird das Restbudget geprüft.",
       "type": "final_budget_tier",
       "tiers": [[0, 0], [25, 5], [50, 10], [75, 15]],
       "overspend_penalty": {"kz_per_step": 9, "step": 10}
