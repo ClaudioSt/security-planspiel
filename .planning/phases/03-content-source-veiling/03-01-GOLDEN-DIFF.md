@@ -1,7 +1,10 @@
 # Plan 03-01: text-only golden change (D-08, D-25)
 
-Status: awaiting the user's decision at the Task 6 checkpoint. No golden file has been rewritten; the Task 4
-changes (prose-free config and code) are in the working tree, uncommitted.
+Status: approved by the user at the Task 6 checkpoint ("approve"). The goldens were then rewritten with
+`uv run pytest --update-golden -q` and committed together with the Task 4 changes (e36f24d). The counts below are the
+pre-rewrite classifier run; after the rewrite the classifier prints `differences: 0` for all three tiers, and
+`git diff --stat tests/golden` listed exactly the three characterization files. The slow digest check was re-run after
+the commit: 3 passed.
 
 ## Classifier (`tools/golden_text_diff.py`)
 
