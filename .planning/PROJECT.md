@@ -120,6 +120,7 @@ Every balance decision is checked against these (measurable via full enumeration
 | Replayability via scenario draw (v4), not outcome dice; web app v3 | Keeps fairness between teams and hand-calculability | ✓ Decided 2026-09-29 |
 | Historical root docs archived in `archive/historical_docs/` | Declutter; they are out of sync with config | ✓ Done (63ffac0) |
 | Paper rounding: KZ change per wave rounded once, half away from zero, then clamped 0–100; all else exact | Sim must match what facilitators compute by hand | ✓ Approved 2026-10-01 (commit 0d342f6, 01-EXACT-SWITCH-DIFF.md) |
+| Prose lives in content/texte.toml; config holds numbers, ids and short labels; prose in config is a validator error | One edit point for wording; printed numbers come from config, never from typed prose | ✓ Phase 3, D-01/D-02/A3 (03-01, commit e36f24d) |
 
 ## Evolution
 
