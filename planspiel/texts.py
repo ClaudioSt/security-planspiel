@@ -3,12 +3,13 @@
 Alle deutschen Texte für Druckmaterial stehen einmal in content/texte.toml, geordnet nach Config-ID.
 Zahlen stehen nie in der Prosa: Sie kommen aus der Config und werden im Code erzeugt (D-03).
 """
+import copy
 import re
 import tomllib
 from dataclasses import dataclass
 from pathlib import Path
 
-from planspiel.config import Config
+from planspiel.config import Config, Wave
 from planspiel.review_text import format_eur
 from planspiel.validate import Issue
 
@@ -17,6 +18,7 @@ TEXTE_FILE = "texte.toml"
 ALLOWLIST_FILE = "digit_allowlist.toml"
 
 STORY_DOCS = ("steckbrief", "zeitungsartikel", "anfrage_mail", "audit_mail")
+PREWAVE_SHEETS = ("budget", "ros", "backup_recovery", "labels")
 CASE_KEYS = ("case_1", "case_2", "case_3")
 
 _SHEET_LABELS = (
@@ -182,6 +184,7 @@ def required_keys(cfg: Config) -> set[str]:
                 keys.add(f"{base}.levels_desc.{level_id}")
                 keys.add(f"{base}.levels_simple.{level_id}")
     for attack_id in cfg.attacks:
+        keys.add(f"attacks.{attack_id}.veiled.title")
         base = f"attacks.{attack_id}.revealed"
         keys.update(f"{base}.{name}" for name in ("name", "narrative", "cia_rationale", *CASE_KEYS))
     for wave in cfg.waves:
@@ -279,3 +282,96 @@ def check_texts(cfg: Config, content: Content) -> list[Issue]:
         *check_digits(content.texts, content.allowlist),
         *check_story_mechanics(cfg, content.texts),
     ]
+
+
+def attack_title(texts: Texts, attack_id: str, position: int, *, revealed: bool = False) -> str:
+    """Titel eines Angriffs; die Nummer ist die Wellenposition aus dem Code, nie ein Wert aus dem TOML (D-23)."""
+    title = f"{texts.get(f'attacks.{attack_id}.veiled.title')} {position}"
+    if revealed:
+        return f"{title}: {texts.get(f'attacks.{attack_id}.revealed.name')}"
+    return title
+
+
+def _levels(node: dict) -> dict[int, str]:
+    return {int(level): text for level, text in node.items()}
+
+
+class PreAttackView:
+    """Sicht für alles, was vor einer Welle gedruckt wird: nur verhüllte Titel, Maßnahmen, Events, Vorab-Blätter.
+
+    Die Sicht liest keinen Schlüssel unterhalb von attacks.<id>.revealed und bietet keinen Zugriff darauf (D-13).
+    """
+
+    def __init__(self, cfg: Config, texts: Texts) -> None:
+        self._cfg = cfg
+        self._texts = texts
+
+    def attack_title(self, wave: Wave) -> str:
+        return attack_title(self._texts, wave.attack_id, wave.wave_id)
+
+    def measure(self, measure_id: str) -> dict:
+        if measure_id not in self._cfg.measures:
+            raise KeyError(f"Maßnahme '{measure_id}' gibt es in der Config nicht")
+        base = f"measures.{measure_id}"
+        return {
+            "focus": self._texts.get(f"{base}.focus"),
+            "description": self._texts.get(f"{base}.description"),
+            "levels_desc": _levels(self._texts.subtree(f"{base}.levels_desc")),
+            "levels_simple": _levels(self._texts.subtree(f"{base}.levels_simple")),
+        }
+
+    def _event_prefix(self, event_id: str) -> str:
+        if any(event.id == event_id for events in self._cfg.events.values() for event in events):
+            return f"events.{event_id}"
+        if any(event.id == event_id for event in self._cfg.final_events):
+            return f"final_events.{event_id}"
+        raise KeyError(f"Event '{event_id}' gibt es in der Config nicht")
+
+    def event(self, event_id: str) -> dict:
+        return copy.deepcopy(self._texts.subtree(self._event_prefix(event_id)))
+
+    def sheet(self, name: str) -> dict:
+        if name not in PREWAVE_SHEETS:
+            raise KeyError(f"Blatt '{name}' ist vor der Welle nicht zugänglich")
+        return copy.deepcopy(self._texts.subtree(f"sheets.{name}"))
+
+    def strings(self) -> list[str]:
+        """Jeder Text, den diese Sicht liefern kann (Grundlage des Leak-Tests)."""
+        found = [self.attack_title(wave) for wave in self._cfg.waves]
+        for measure_id in self._cfg.measures:
+            found.extend(text for _, text in self._texts.strings(f"measures.{measure_id}"))
+        for events in self._cfg.events.values():
+            for event in events:
+                found.extend(text for _, text in self._texts.strings(self._event_prefix(event.id)))
+        for event in self._cfg.final_events:
+            found.extend(text for _, text in self._texts.strings(self._event_prefix(event.id)))
+        for name in PREWAVE_SHEETS:
+            found.extend(text for _, text in self._texts.strings(f"sheets.{name}"))
+        return found
+
+
+class RevealView:
+    """Sicht für den Moment der Welle: enthüllte Titel, Angriffstexte und alle Blätter."""
+
+    def __init__(self, cfg: Config, texts: Texts) -> None:
+        self._cfg = cfg
+        self._texts = texts
+
+    def attack_title(self, wave: Wave) -> str:
+        return attack_title(self._texts, wave.attack_id, wave.wave_id, revealed=True)
+
+    def attack(self, attack_id: str) -> dict:
+        if attack_id not in self._cfg.attacks:
+            raise KeyError(f"Angriff '{attack_id}' gibt es in der Config nicht")
+        base = f"attacks.{attack_id}.revealed"
+        reasons = f"{base}.bonus_reasons"
+        return {
+            "name": self._texts.get(f"{base}.name"),
+            "narrative": self._texts.get(f"{base}.narrative"),
+            "cia_rationale": self._texts.get(f"{base}.cia_rationale"),
+            "cases": [self._texts.get(f"{base}.{case}") for case in CASE_KEYS],
+            "bonus_reasons": dict(self._texts.subtree(reasons)) if self._texts.has(reasons) else {},
+        }
+
+    def sheet(self, name: str) -> dict:
+        return copy.deepcopy(self._texts.subtree(f"sheets.{name}"))

@@ -20,13 +20,13 @@ from tests.support import CONFIG_PATH, CONTENT_DIR, MINI_CONTENT_DIR, REPO_ROOT
 
 MINI = REPO_ROOT / "tests" / "fixtures" / "mini_config.json"
 SETUPS = [
-    pytest.param(MINI, MINI_CONTENT_DIR, id="mini"),
-    pytest.param(CONFIG_PATH, CONTENT_DIR, id="real"),
+    pytest.param((MINI, MINI_CONTENT_DIR), id="mini"),
+    pytest.param((CONFIG_PATH, CONTENT_DIR), id="real"),
 ]
 
 
 @pytest.fixture(params=SETUPS)
-def setup(request):
+def loaded(request):
     config_path, content_dir = request.param
     return load_config(config_path), load_texts(content_dir / "texte.toml")
 
@@ -40,8 +40,8 @@ def _reversed_waves(cfg):
     return dataclasses.replace(cfg, waves=waves)
 
 
-def test_required_keys_contain_a_veiled_title_for_every_attack(setup):
-    cfg, _ = setup
+def test_required_keys_contain_a_veiled_title_for_every_attack(loaded):
+    cfg, _ = loaded
     keys = required_keys(cfg)
     for attack_id in cfg.attacks:
         assert f"attacks.{attack_id}.veiled.title" in keys
@@ -54,8 +54,8 @@ def test_real_veiled_titles_are_the_bare_word_without_a_digit():
         assert texts.get(f"attacks.{attack_id}.veiled.title") == "Angriff"
 
 
-def test_real_and_mini_content_are_fully_covered(setup):
-    cfg, texts = setup
+def test_real_and_mini_content_are_fully_covered(loaded):
+    cfg, texts = loaded
     assert check_coverage(cfg, texts) == []
 
 
@@ -67,8 +67,8 @@ def test_attack_titles_are_generated_from_the_position():
     assert attack_title(texts, "exfil", 2, revealed=True) == "Angriff 2: Datenexfiltration"
 
 
-def test_a_reordered_wave_list_changes_the_titles_without_a_text_edit(setup):
-    cfg, texts = setup
+def test_a_reordered_wave_list_changes_the_titles_without_a_text_edit(loaded):
+    cfg, texts = loaded
     reordered = _reversed_waves(cfg)
     assert [wave.attack_id for wave in reordered.waves][0] == "exfil"
     pre, reveal = PreAttackView(reordered, texts), RevealView(reordered, texts)
@@ -79,14 +79,14 @@ def test_a_reordered_wave_list_changes_the_titles_without_a_text_edit(setup):
     assert reveal.attack_title(last) == f"Angriff {len(reordered.waves)}: Ransomware"
 
 
-def test_pre_attack_view_serves_veiled_titles_by_wave_position(setup):
-    cfg, texts = setup
+def test_pre_attack_view_serves_veiled_titles_by_wave_position(loaded):
+    cfg, texts = loaded
     view = PreAttackView(cfg, texts)
     assert [view.attack_title(wave) for wave in cfg.waves] == [f"Angriff {wave.wave_id}" for wave in cfg.waves]
 
 
-def test_reveal_view_serves_revealed_titles_and_attack_texts(setup):
-    cfg, texts = setup
+def test_reveal_view_serves_revealed_titles_and_attack_texts(loaded):
+    cfg, texts = loaded
     view = RevealView(cfg, texts)
     names = {"ransomware": "Ransomware", "ot": "OT-Störung", "exfil": "Datenexfiltration"}
     for wave in cfg.waves:
@@ -104,8 +104,8 @@ def test_reveal_view_serves_revealed_titles_and_attack_texts(setup):
     assert set(view.attack("ot")) == {"name", "narrative", "cia_rationale", "cases", "bonus_reasons"}
 
 
-def test_pre_attack_view_serves_measures_events_and_prewave_sheets(setup):
-    cfg, texts = setup
+def test_pre_attack_view_serves_measures_events_and_prewave_sheets(loaded):
+    cfg, texts = loaded
     view = PreAttackView(cfg, texts)
     measure = view.measure("M1")
     assert measure["focus"] == texts.get("measures.M1.focus")
@@ -119,21 +119,21 @@ def test_pre_attack_view_serves_measures_events_and_prewave_sheets(setup):
     assert view.sheet("labels")["measure"] == "Maßnahme"
 
 
-def test_pre_attack_view_refuses_the_attack_worksheet(setup):
-    cfg, texts = setup
+def test_pre_attack_view_refuses_the_attack_worksheet(loaded):
+    cfg, texts = loaded
     with pytest.raises(KeyError):
         PreAttackView(cfg, texts).sheet("angriff")
 
 
-def test_reveal_view_serves_every_sheet(setup):
-    cfg, texts = setup
+def test_reveal_view_serves_every_sheet(loaded):
+    cfg, texts = loaded
     view = RevealView(cfg, texts)
     assert view.sheet("angriff")["case_3_hint"] == texts.get("sheets.angriff.case_3_hint")
     assert view.sheet("budget")["title"] == "Budget"
 
 
-def test_pre_attack_view_has_no_reveal_member(setup):
-    cfg, texts = setup
+def test_pre_attack_view_has_no_reveal_member(loaded):
+    cfg, texts = loaded
     view = PreAttackView(cfg, texts)
     assert [name for name in dir(view) if "reveal" in name.lower()] == []
 
@@ -163,8 +163,8 @@ def _leaks(cfg, texts):
 # letters or a bonus reason, so a later measure edit that names an attack fails here by design. The id
 # "exfil" is substring-matched on purpose (the same rule giveaway_hits applies to ids of five or more
 # letters), which is stricter than a whole-token match.
-def test_pre_attack_view_cannot_reach_a_revealed_name_or_bonus_reason(setup):
-    cfg, texts = setup
+def test_pre_attack_view_cannot_reach_a_revealed_name_or_bonus_reason(loaded):
+    cfg, texts = loaded
     assert _leaks(cfg, texts) == []
 
 
@@ -178,16 +178,16 @@ def test_pre_attack_view_cannot_reach_a_revealed_name_or_bonus_reason(setup):
         ("Backup ermöglicht schnelle Wiederherstellung", "backup ermöglicht schnelle wiederherstellung"),
     ],
 )
-def test_leak_test_catches_a_revealed_term_in_a_measure_text(setup, focus, term):
-    cfg, texts = setup
+def test_leak_test_catches_a_revealed_term_in_a_measure_text(loaded, focus, term):
+    cfg, texts = loaded
     measures = {key: dict(value) for key, value in texts.data["measures"].items()}
     measures["M1"]["focus"] = focus
     mutated = Texts({**texts.data, "measures": measures})
     assert (term, _nfc_lower(focus)) in _leaks(cfg, mutated)
 
 
-def test_pre_attack_strings_cover_every_text_family(setup):
-    cfg, texts = setup
+def test_pre_attack_strings_cover_every_text_family(loaded):
+    cfg, texts = loaded
     strings = PreAttackView(cfg, texts).strings()
     assert str(texts.get("measures.M1.focus")) in strings
     assert str(texts.get("events.kurswechsel.narrative")) in strings
@@ -199,8 +199,8 @@ def test_pre_attack_strings_cover_every_text_family(setup):
     assert str(texts.get("sheets.angriff.case_3_hint")) not in strings
 
 
-def test_leak_test_catches_a_name_in_a_measure_text(setup):
-    cfg, texts = setup
+def test_leak_test_catches_a_name_in_a_measure_text(loaded):
+    cfg, texts = loaded
     data = {key: value for key, value in texts.data.items()}
     measures = {key: dict(value) for key, value in data["measures"].items()}
     measures["M1"]["focus"] = "Schutz vor Datenexfiltration"

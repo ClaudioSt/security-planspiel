@@ -78,9 +78,9 @@ def test_revealed_attack_names_are_the_worksheet_names():
     assert names == {"ransomware": "Ransomware", "ot": "OT-Störung", "exfil": "Datenexfiltration"}
 
 
-def test_attack_tables_hold_only_the_revealed_part():
+def test_attack_tables_hold_only_the_veiled_and_the_revealed_part():
     for attack in ("ransomware", "ot", "exfil"):
-        assert set(TEXTS.subtree(f"attacks.{attack}")) == {"revealed"}
+        assert set(TEXTS.subtree(f"attacks.{attack}")) == {"veiled", "revealed"}
 
 
 def test_bonus_reasons_are_carried_as_revealed_only_keys():

@@ -148,6 +148,9 @@ description = "Schützt mobile Geräte der Mitarbeiter. Verhindert Datenverlust 
 2 = "Zentrale Verwaltung aller Mobilgeräte, nur zugelassene Apps können installiert werden."
 3 = "Einheitliche Verwaltung aller Endgeräte, aktiver Schutz vor mobilen Bedrohungen."
 
+[attacks.ransomware.veiled]
+title = "Angriff"
+
 [attacks.ransomware.revealed]
 name = "Ransomware"
 narrative = "Ein Mitarbeiter hat auf eine gefälschte E-Mail geklickt. Die Angreifer versuchen, Ransomware zu platzieren, die Daten verschlüsselt und ggf. exfiltriert, um anschließend Lösegeld zu erpressen. Ob die Verschlüsselung tatsächlich gelingt und wie stark die Auswirkungen sind, wird im Folgenden anhand Ihrer Sicherheitsmaßnahmen berechnet."
@@ -161,6 +164,9 @@ M3 = "EDR/XDR erkennt Ransomware früh"
 M4 = "Backup ermöglicht schnelle Wiederherstellung"
 M6 = "Geschulte Mitarbeiter erkennen Phishing"
 
+[attacks.ot.veiled]
+title = "Angriff"
+
 [attacks.ot.revealed]
 name = "OT-Störung"
 narrative = "In eurer Produktionssteuerung wurde eine Schwachstelle ausgenutzt. Die Angreifer zielen darauf, die Fertigung zu stören bzw. stillzulegen. Ob die Produktion wirklich ausfällt und wie stark die Auswirkungen sind, ermittelt ihr im nächsten Schritt anhand eurer Sicherheitsmaßnahmen."
@@ -172,6 +178,9 @@ case_3 = "Ihr mindert die Auswirkungen teilweise."
 [attacks.ot.revealed.bonus_reasons]
 M5 = "OT/IT-Segmentierung isoliert Produktion"
 M7 = "Patch Management schließt OT-Schwachstellen"
+
+[attacks.exfil.veiled]
+title = "Angriff"
 
 [attacks.exfil.revealed]
 name = "Datenexfiltration"
