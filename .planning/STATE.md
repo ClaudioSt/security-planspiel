@@ -2,18 +2,18 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_phase: 3
-current_phase_name: Content Source & Veiling
-status: ready-to-execute
+current_phase: 03
+current_phase_name: content-source-veiling
+status: executing
 stopped_at: Phase 3 planned (3 plans)
-last_updated: "2026-10-06T20:48:40.996Z"
+last_updated: "2026-10-17T00:32:03.522Z"
 last_activity: 2026-10-10
-last_activity_desc: Phase 3 planned
+last_activity_desc: Phase 03 execution started
 progress:
   total_phases: 7
   completed_phases: 2
-  total_plans: 15
-  completed_plans: 15
+  total_plans: 18
+  completed_plans: 16
   percent: 29
 ---
 
@@ -24,14 +24,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-09-29)
 
 **Core value:** Facilitators and players can run the game by hand without ambiguity: every rule is unambiguous, every printed number matches `simulation_config.json`, and no strategy exploits a rule loophole.
-**Current focus:** Phase 3 — Content Source & Veiling
+**Current focus:** Phase 03 — content-source-veiling
 
 ## Current Position
 
-Phase: 3 — Content Source & Veiling
-Plan: 0 of 3 (03-01 PRINT-02, 03-02 VEIL-01, 03-03 VEIL-03)
+Phase: 03 (content-source-veiling) — EXECUTING
+Plan: 2 of 3
 Status: Ready to execute
-Last activity: 2026-10-10 — Phase 3 planned (3 plans, 3 waves)
+Last activity: 2026-10-10 — Phase 03 execution started
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -71,6 +71,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 02 P06 | 31min | 3 tasks | 11 files |
 | Phase 02 P07 | ~1h | 2 tasks | 10 files |
 | Phase 02 P08 | 2h | 3 tasks | 12 files |
+| Phase 03 P01 | multi-session | 6 tasks | 31 files |
 
 ## Accumulated Context
 
@@ -101,6 +102,8 @@ Recent decisions affecting current work:
 - [Phase 02]: 02-06 D-24: the swap layer (every valid wave-1 plan x every legal Kurswechsel swap with minimal repair; exempt plans static) is the legal minimum and is labelled; 37,300,736 swap paths per tier, about 4 min and 62 MB per tier; low-tier legal best in budget KZ 100 vs static reference 98
 - [Phase 02]: [02-07] RULE-05/D-14: event-induced overruns need no rules change (single end check); Sparprogramm description carries the end-check sentence, characterization goldens regenerated text-only (user decision, option 1); budget cut in last wave warns via rules.event_without_window
 - [Phase 02-08]: RULE-04 gate measured strict min X 9/5/3 (weak 8/4/3) on static reference; config X=9 passes, zero headroom in low; Phase 6 softens step rewards (D-18); move-path gate deferred (D-25)
+- [Phase 03]: Phase 3 (03-01): prose lives in content/texte.toml; config holds numbers, ids and short labels; prose in config is a validator error (schema.prose_in_config)
+- [Phase 03]: Phase 3 (03-01): digit allowlist pinned at seven reviewed entries; golden rewrite proven text-only by classifier
 
 ### Pending Todos
 
@@ -123,6 +126,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-10-06T20:48:40.987Z
+Last session: 2026-10-17T00:31:53.687Z
 Stopped at: Phase 3 context gathered
 Resume file: .planning/phases/03-content-source-veiling/03-01-PLAN.md
