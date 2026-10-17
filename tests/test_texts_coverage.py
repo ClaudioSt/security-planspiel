@@ -141,9 +141,8 @@ def test_cli_texts_reports_a_missing_key(tmp_path, capsys):
     broken = source.replace('focus = "Zugriffe regeln"\n', "", 1)
     assert broken != source
     (tmp_path / "texte.toml").write_text(broken, encoding="utf-8", newline="\n")
-    (tmp_path / "digit_allowlist.toml").write_text(
-        (MINI_CONTENT_DIR / "digit_allowlist.toml").read_text(encoding="utf-8"), encoding="utf-8", newline="\n"
-    )
+    for name in ("digit_allowlist.toml", "giveaway_terms.toml"):
+        (tmp_path / name).write_text((MINI_CONTENT_DIR / name).read_text(encoding="utf-8"), encoding="utf-8", newline="\n")
     code = main(["texts", "--config", str(MINI), "--content-dir", str(tmp_path)])
     out = capsys.readouterr().out
     assert code == 1
@@ -154,6 +153,7 @@ def test_cli_texts_reports_a_missing_key(tmp_path, capsys):
 def test_cli_texts_reports_invalid_toml(tmp_path, capsys):
     (tmp_path / "texte.toml").write_text("das = = ist kein toml\n", encoding="utf-8", newline="\n")
     (tmp_path / "digit_allowlist.toml").write_text("", encoding="utf-8", newline="\n")
+    (tmp_path / "giveaway_terms.toml").write_text("", encoding="utf-8", newline="\n")
     code = main(["texts", "--config", str(MINI), "--content-dir", str(tmp_path)])
     out = capsys.readouterr().out
     assert code == 1
