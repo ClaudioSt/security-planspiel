@@ -28,7 +28,7 @@
 
 ### Veiling (VEIL)
 
-- [ ] **VEIL-01**: Config/content hold separate veiled (pre-attack) and revealed (at-wave) texts per attack
+- [x] **VEIL-01**: Config/content hold separate veiled (pre-attack) and revealed (at-wave) texts per attack
 - [ ] **VEIL-02**: Material players see before a wave (company profile, newspaper article, measure cards, planning sheets, file names, PDF metadata) contains no attack names and no wave CIA weights — verified by an automated scan
 - [ ] **VEIL-03**: A facilitator clue matrix shows every attack is inferable from at least two clues in the pre-wave material
 - [ ] **VEIL-04**: Measure cards show CIA values, costs and dependencies only; the measure→attack bonus link and wave weights appear on the attack worksheet when the wave is revealed
@@ -135,7 +135,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RULE-06 | Phase 2 | Complete |
 | RULE-07 | Phase 2 | Complete |
 | RULE-08 | Phase 2 | Complete |
-| VEIL-01 | Phase 3 | Pending |
+| VEIL-01 | Phase 3 | Complete |
 | VEIL-02 | Phase 5 | Pending |
 | VEIL-03 | Phase 3 | Pending |
 | VEIL-04 | Phase 5 | Pending |

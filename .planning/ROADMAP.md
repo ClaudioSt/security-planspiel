@@ -111,7 +111,7 @@ Plans:
   4. A facilitator clue matrix shows, per attack, at least two clues and where each appears in the pre-wave material. A check fails if any attack has fewer than two.
   5. An inventory of the current hand-maintained docx/pptx (wording, colours, branding) shows every item either carried into the content source or deliberately dropped.
 
-**Plans**: 1/3 plans executed
+**Plans**: 2/3 plans executed
 
 Plans:
 **Wave 1**
@@ -120,7 +120,7 @@ Plans:
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 03-02-PLAN.md — VEIL-01: veiled title "Angriff N" vs revealed texts, audience views with leak test, giveaway lint on veiled keys and events, revealed-text review (SC3) (Wave 2)
+- [x] 03-02-PLAN.md — VEIL-01: veiled title "Angriff N" vs revealed texts, audience views with leak test, giveaway lint on veiled keys and events, revealed-text review (SC3) (Wave 2)
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
@@ -197,7 +197,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 3 
 |-------|----------------|--------|-----------|
 | 1. Simulation Foundation | 7/7 | Complete    | 2026-10-01 |
 | 2. Rule Changes | 8/8 | Complete    | 2026-10-05 |
-| 3. Content Source & Veiling | 1/3 | In Progress|  |
+| 3. Content Source & Veiling | 2/3 | In Progress|  |
 | 4. Print Pipeline & Attack Worksheets | 0/TBD | Not started | - |
 | 5. Player & Facilitator Print Material | 0/TBD | Not started | - |
 | 6. Rebalance | 0/TBD | Not started | - |
