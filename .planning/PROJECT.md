@@ -33,6 +33,7 @@ Every balance decision is checked against these (measurable via full enumeration
 - ✓ Wave calculation is learnable: waves 2 and 3 fit the planned 20 min once teams knew the procedure — MHP workshop
 - ✓ Safe-to-change simulation foundation: uv env (`uv sync`), golden characterization tests + full digests, every formula once in `planspiel/` with thin root wrappers, UTF-8 config with real umlauts, exact arithmetic with paper rounding, config validator, bounded full enumeration incl. over-budget plans (FOUND-01..07) — Validated in Phase 1: Simulation Foundation
 - ✓ Settled rule set (RULE-01..08): "Levelwechsel" vs "Maßnahmentausch" defined, Kurswechsel forces exactly one swap; change-window moves modelled exactly (downgrade keeps Init sunk, OPEX drops next wave); linear overspend penalty −X per started 10k (X = 9 provisional) with a trim-back overspend gate (min X 9/5/3); event-induced overrun penalized only if still over budget at the end; RoS from own security spend only; Budget Review boundaries generated from the tier list; E-target bonus/malus removed — Validated in Phase 2: Rule Changes
+- ✓ Single content source (PRINT-02, VEIL-01, VEIL-03): all German print prose in `content/texte.toml` keyed by config id, prose in config is a validator error; `planspiel texts` checks coverage, digits (reviewed allowlist), story mechanics and giveaway terms; attacks have a veiled title ("Angriff N") and a separate revealed set, read only through `PreAttackView`/`RevealView` (leak-tested); story documents veiled and a 14-clue facilitator matrix (`planspiel clues`, ≥2 clues from ≥2 documents per attack); SC5 inventory of the hand-maintained documents — Validated in Phase 3: Content Source & Veiling (printing the veiled material is Phase 5)
 
 ### Active
 
@@ -140,4 +141,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-10-05 after Phase 2 (Rule Changes)*
+*Last updated: 2026-10-19 after Phase 3 (Content Source & Veiling)*
