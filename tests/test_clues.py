@@ -256,6 +256,14 @@ def test_the_section_falls_back_to_the_source_key_without_a_heading():
     assert rows[0].section == "story.steckbrief.betrieb.bullets"
 
 
+def test_a_headline_serves_as_the_section_when_there_is_no_heading():
+    data = copy.deepcopy(TEXTS.data)
+    del data["story"]["steckbrief"]["betrieb"]["heading"]
+    data["story"]["steckbrief"]["betrieb"]["headline"] = "SCHLAGZEILE"
+    rows = FacilitatorView(CFG, Texts(data), CLUES).clue_matrix()
+    assert rows[0].section == "SCHLAGZEILE"
+
+
 def test_the_table_has_the_header_and_one_line_per_clue():
     rows = FacilitatorView(CFG, TEXTS, CLUES).clue_matrix()
     table = format_clue_matrix(rows).splitlines()

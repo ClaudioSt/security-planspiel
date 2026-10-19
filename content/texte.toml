@@ -350,7 +350,7 @@ bullets = [
     "Betriebsmodell: 24/5 (Mo. bis Fr., 3 Schichten)",
     "Anlagenpark: 12 CNC-Maschinen, 3 Fertigungslinien",
     "Produktionssteuerung: MES Siemens Opcenter; SCADA/HMI zur Visualisierung",
-    "CNC-Steuerungen u. a.: Siemens Sinumerik, Heidenhain",
+    "CNC-Steuerungen u. a.: Siemens, Heidenhain",
     "Liefermodell: Just-in-Time an OEM, Liefertermintreue > 98 %",
     "Operative Prämisse: Unterbrechungen > 4 Stunden wirken sich unmittelbar auf Auslieferungen aus und sind in Vertragskontexten relevant",
 ]
@@ -372,7 +372,7 @@ heading = "OT / Produktion"
 bullets = [
     "MES (Siemens, Windows-Server)",
     "SCADA/HMI-Systeme",
-    "12 CNC-Steuerungen (Sinumerik/Heidenhain)",
+    "12 CNC-Steuerungen (Siemens/Heidenhain)",
     "Office-IT und OT/Produktion nutzen dasselbe LAN (kein separates OT-Netz)",
 ]
 
@@ -415,7 +415,7 @@ kopfzeile = [
     "Nürnberg",
 ]
 ticker = [
-    "Phishing stoppt Fertigung",
+    "Verdächtige E-Mail stoppt Fertigung",
     "Backup? Fehlanzeige!",
     "MES im Lockdown",
 ]
@@ -429,28 +429,28 @@ headline = "OEM VERSCHÄRFT SECURITY-ANFORDERUNGEN"
 paragraphs = [
     "Stuttgart. Ein führender deutscher Automobilhersteller kündigte an, alle Tier-1- und Tier-2-Zulieferer ab Q2/2026 einem IT-Security-Audit zu unterziehen.",
     "Erwartet werden belastbare Nachweise, dass Zulieferer nicht nur reagieren, sondern strukturiert vorsorgen: von der Fähigkeit, nach einem Vorfall schnell wieder anlaufen zu können, bis zur sauberen Trennung von Büro- und Fertigungsnetzen.",
-    "„Supply Chain Security ist geschäftskritisch\", so ein Sprecher. Bei gravierenden Lücken behalte man sich vor, Aufträge zurückzustellen.",
+    "„Supply Chain Security ist geschäftskritisch“, so ein Sprecher. Bei gravierenden Lücken behalte man sich vor, Aufträge zurückzustellen.",
 ]
 caption = "Symbolbild: Verschärfte Audits für Zulieferer."
 
 [story.zeitungsartikel.bericht_vorfall]
-headline = "Ransomware legt Zulieferer tagelang lahm"
+headline = "Erpresser legen Zulieferer tagelang lahm"
 dateline = "Kassel, 10.01.2026"
-lead = "Ein mittelständischer Automotive Zulieferer aus Nordhessen wurde Opfer eines schweren Ransomware-Angriffs. Die Produktion stand für 72 Stunden still, der Schaden wird auf über 500.000 Euro geschätzt."
+lead = "Ein mittelständischer Automotive Zulieferer aus Nordhessen wurde Opfer eines schweren Cyberangriffs. Die Produktion stand für 72 Stunden still, der Schaden wird auf über 500.000 Euro geschätzt."
 caption = "Symbolbild: Stillstand in der Fertigung nach Cyberangriff."
 
 [story.zeitungsartikel.bericht_vorfall.ablauf]
 heading = "DER ANGRIFF"
 paragraphs = [
-    "Laut Informationen des Unternehmens erfolgte der Einbruch über eine Phishing-Mail, die ein Mitarbeiter in der Buchhaltung öffnete. Der klassische Virenschutz des Unternehmens schlug nicht rechtzeitig Alarm. Die Erpresser-Software verschlüsselte innerhalb von 2 Stunden nicht nur Office-Daten, sondern auch das produktionssteuernde MES-System. Erst nach Stunden bemerkte die IT ungewöhnliche Aktivitäten im Netz. Zentrale Systeme waren zudem seit Monaten nicht mehr aktualisiert worden.",
-    "„Wir hatten kein funktionierendes Backup-Konzept\", so der Geschäftsführer unter der Bedingung der Anonymität. Die Angreifer forderten ein Lösegeld von 250.000 Euro in Bitcoin.",
+    "Laut Informationen des Unternehmens erfolgte der Einbruch über eine gefälschte E-Mail, die ein Mitarbeiter in der Buchhaltung öffnete. Der klassische Virenschutz des Unternehmens schlug nicht rechtzeitig Alarm. Die Erpresser-Software sperrte innerhalb von 2 Stunden nicht nur Office-Daten, sondern auch das produktionssteuernde MES-System. Erst nach Stunden bemerkte die IT ungewöhnliche Aktivitäten im Netz. Zentrale Systeme waren zudem seit Monaten nicht mehr aktualisiert worden.",
+    "„Wir hatten kein funktionierendes Backup-Konzept“, so der Geschäftsführer unter der Bedingung der Anonymität. Die Angreifer forderten 250.000 Euro in Bitcoin.",
 ]
 
 [story.zeitungsartikel.bericht_vorfall.folgen]
 heading = "FOLGEN"
 paragraphs = [
     "Das Unternehmen entschied sich gegen die Zahlung und setzte die Systeme mit Unterstützung externer Forensiker neu auf. Drei Fertigungslinien standen still, Liefertermine konnten nicht eingehalten werden. Ein OEM-Kunde verhängte Vertragsstrafen wegen Lieferverzugs.",
-    "„Auch kleine Zulieferer sind Ziele\", warnt Dr. Sabine Müller vom BSI. „Angreifer wissen: Produktionsausfälle erzeugen Zahlungsbereitschaft.\"",
+    "„Auch kleine Zulieferer sind Ziele“, warnt Dr. Sabine Müller vom BSI. „Angreifer wissen: Produktionsausfälle erzeugen Zahlungsbereitschaft.“",
 ]
 
 [story.anfrage_mail]
@@ -468,14 +468,14 @@ paragraphs = ["ich wende mich an Sie im Namen der MechTech GmbH. Wir sind ein mi
 
 [story.anfrage_mail.lage]
 paragraphs = [
-    "Täglich lesen wir von Ransomware-Angriffen auf Unternehmen unserer Größe und Branche.",
+    "Täglich lesen wir von Cyberangriffen auf Unternehmen unserer Größe und Branche.",
     "Ehrlich gesagt sind wir mit dem Thema IT-Sicherheit bisher eher reaktiv umgegangen. Wir haben einen Virenscanner und Backups, aber keine strukturierte Security-Strategie. Ehrlich gesagt wissen wir auch nicht genau, wer aktuell überall administrativen Zugriff auf unsere Systeme hat.",
     "Wir möchten das ändern, wissen aber nicht, wo wir anfangen sollen.",
 ]
 
 [story.anfrage_mail.aufgabe]
 heading = "IHRE AUFGABE:"
-text = "Können Sie uns dabei unterstützen, ein sinnvolles Security-Konzept zu entwickeln? Wir hätten Budget für ein Beratungs-projekt und möchten verstehen:"
+text = "Können Sie uns dabei unterstützen, ein sinnvolles Security-Konzept zu entwickeln? Wir hätten Budget für ein Beratungsprojekt und möchten verstehen:"
 bullets = [
     "Wo sind unsere größten Risiken?",
     "Welche Maßnahmen sind sinnvoll und umsetzbar?",
@@ -508,7 +508,7 @@ text = "Sehr geehrter Herr Dr. Weber,"
 [story.audit_mail.einleitung]
 paragraphs = [
     "im Rahmen unserer Supplier Security Initiative werden wir alle strategischen Zulieferer in Q2/2026 einem umfassenden IT-Security-Audit unterziehen.",
-    "Angesichts steigender Cyberbedrohungen (insb. Ransomware, Supply-Chain-Angriffe) stellen wir sicher, dass unsere Lieferkette angemessen abgesichert ist.",
+    "Angesichts steigender Cyberbedrohungen (insb. Datenverlust, Supply-Chain-Angriffe) stellen wir sicher, dass unsere Lieferkette angemessen abgesichert ist.",
 ]
 
 [story.audit_mail.nachweise]

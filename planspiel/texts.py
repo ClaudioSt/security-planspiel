@@ -340,16 +340,16 @@ def giveaway_hits(text: str, terms: GiveawayTerms, attack_ids, *, profile: str) 
 
 
 def _giveaway_issue(path: str, hits: list[str], profile: str) -> Issue:
-    scope = "verhülltem Angriffstext" if profile == "veiled" else "Event-Text"
+    scope = "verhülltem Angriffstext" if profile == "veiled" else "Story- oder Event-Text"
     return Issue("error", "texts.giveaway", path, f"Verbotener Begriff in {scope}: {', '.join(hits)}")
 
 
 def check_giveaway(cfg: Config, texts: Texts, terms: GiveawayTerms) -> list[Issue]:
-    """Verhüllte Angriffsschlüssel ohne Ausnahmen, Event-Texte und Event-Namen mit Story-Profil (D-13b, D-13c, D-20)."""
+    """Verhüllte Angriffsschlüssel ohne Ausnahmen; Story-Dokumente, Event-Texte und Event-Namen mit Story-Profil (D-13b, D-13c, D-16, D-20)."""
     attack_ids = tuple(cfg.attacks)
     issues: list[Issue] = []
     scoped = [(f"attacks.{attack_id}.veiled", "veiled") for attack_id in cfg.attacks]
-    scoped += [("events", "story"), ("final_events", "story")]
+    scoped += [("events", "story"), ("final_events", "story"), ("story", "story")]
     for prefix, profile in scoped:
         for key, text in texts.strings(prefix):
             hits = giveaway_hits(text, terms, attack_ids, profile=profile)
@@ -386,7 +386,7 @@ def _levels(node: dict) -> dict[int, str]:
 
 
 class PreAttackView:
-    """Sicht für alles, was vor einer Welle gedruckt wird: nur verhüllte Titel, Maßnahmen, Events, Vorab-Blätter.
+    """Sicht für alles, was vor einer Welle gedruckt wird: nur verhüllte Titel, Maßnahmen, Events, Vorab-Blätter, Story.
 
     Die Sicht liest keinen Schlüssel unterhalb von attacks.<id>.revealed und bietet keinen Zugriff darauf (D-13).
     """
@@ -419,6 +419,11 @@ class PreAttackView:
     def event(self, event_id: str) -> dict:
         return copy.deepcopy(self._texts.subtree(self._event_prefix(event_id)))
 
+    def story(self, doc: str) -> dict:
+        if doc not in STORY_DOCS:
+            raise KeyError(f"Story-Dokument '{doc}' gibt es nicht")
+        return copy.deepcopy(self._texts.subtree(f"story.{doc}"))
+
     def sheet(self, name: str) -> dict:
         if name not in PREWAVE_SHEETS:
             raise KeyError(f"Blatt '{name}' ist vor der Welle nicht zugänglich")
@@ -436,6 +441,7 @@ class PreAttackView:
             found.extend(text for _, text in self._texts.strings(self._event_prefix(event.id)))
         for name in PREWAVE_SHEETS:
             found.extend(text for _, text in self._texts.strings(f"sheets.{name}"))
+        found.extend(text for _, text in self._texts.strings("story"))
         return found
 
 
@@ -545,12 +551,13 @@ def check_clues(cfg: Config, texts: Texts, clues: tuple[Clue, ...]) -> list[Issu
 
 
 def _clue_section(texts: Texts, source: str) -> str:
-    """Nächste Überschrift entlang des Quellpfads, sonst der Quellschlüssel selbst."""
+    """Nächste Überschrift (`heading`, sonst `headline`) entlang des Quellpfads, sonst der Quellschlüssel selbst."""
     parts = source.split(".")[:-1]
     while parts:
-        key = ".".join([*parts, "heading"])
-        if texts.has(key) and isinstance(texts.get(key), str):
-            return str(texts.get(key))
+        for name in ("heading", "headline"):
+            key = ".".join([*parts, name])
+            if texts.has(key) and isinstance(texts.get(key), str):
+                return str(texts.get(key))
         parts.pop()
     return source
 
