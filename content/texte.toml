@@ -153,7 +153,7 @@ title = "Angriff"
 
 [attacks.ransomware.revealed]
 name = "Ransomware"
-narrative = "Ein Mitarbeiter hat auf eine gefälschte E-Mail geklickt. Die Angreifer versuchen, Ransomware zu platzieren, die Daten verschlüsselt und ggf. exfiltriert, um anschließend Lösegeld zu erpressen. Ob die Verschlüsselung tatsächlich gelingt und wie stark die Auswirkungen sind, wird im Folgenden anhand Ihrer Sicherheitsmaßnahmen berechnet."
+narrative = "Ein Mitarbeiter hat auf eine gefälschte E-Mail geklickt. Die Angreifer versuchen, Ransomware zu platzieren, die Daten verschlüsselt und ggf. exfiltriert, um anschließend Lösegeld zu erpressen. Ob die Verschlüsselung tatsächlich gelingt und wie stark die Auswirkungen sind, wird im Folgenden anhand eurer Sicherheitsmaßnahmen berechnet."
 cia_rationale = "Bei Ransomware zählen Vertraulichkeit (C) und Integrität (I) stärker (Datendiebstahl + Verschlüsselung), Verfügbarkeit (A) ist häufig die Folge daraus."
 case_1 = "Eure Maßnahmen reichen nicht aus, der Angriff setzt sich durch."
 case_2 = "Ihr wehrt den Angriff vollständig ab."
