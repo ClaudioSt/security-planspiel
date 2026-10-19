@@ -18,6 +18,9 @@ CONTENT_DIR = Path(__file__).resolve().parents[1] / "content"
 TEXTE_FILE = "texte.toml"
 ALLOWLIST_FILE = "digit_allowlist.toml"
 GIVEAWAY_FILE = "giveaway_terms.toml"
+CLUES_FILE = "clues.toml"
+PREWAVE_PREFIXES = ("story.", "measures.")
+MIN_QUOTE_LENGTH = 15
 
 STORY_DOCS = ("steckbrief", "zeitungsartikel", "anfrage_mail", "audit_mail")
 PREWAVE_SHEETS = ("budget", "ros", "backup_recovery", "labels")
@@ -434,6 +437,175 @@ class PreAttackView:
         for name in PREWAVE_SHEETS:
             found.extend(text for _, text in self._texts.strings(f"sheets.{name}"))
         return found
+
+
+@dataclass(frozen=True)
+class Clue:
+    """Ein Hinweis auf einen Angriff in einem Vorab-Dokument: Quelle, wörtliches Zitat, Begründung (D-17)."""
+
+    attack: str
+    source: str
+    quote: str
+    why: str
+
+
+@dataclass(frozen=True)
+class ClueRow:
+    title: str
+    number: int
+    document: str
+    section: str
+    quote: str
+    why: str
+
+
+def load_clues(path: Path) -> tuple[Clue, ...]:
+    with open(path, "rb") as handle:
+        data = tomllib.load(handle)
+    return tuple(
+        Clue(
+            attack=str(entry.get("attack", "")),
+            source=str(entry.get("source", "")),
+            quote=str(entry.get("quote", "")),
+            why=str(entry.get("why", "")),
+        )
+        for entry in data.get("clue", [])
+    )
+
+
+def _clue_document(source: str) -> str | None:
+    """Dokument-Kennung einer Quelle: 'story.<doc>' für Story-Texte, 'measures' für Maßnahmentexte (D-18)."""
+    parts = source.split(".")
+    if parts[0] == "story" and len(parts) > 1:
+        return f"story.{parts[1]}"
+    if parts[0] == "measures":
+        return "measures"
+    return None
+
+
+def _source_strings(texts: Texts, source: str) -> list[str] | None:
+    if not texts.has(source):
+        return None
+    value = texts.get(source)
+    if isinstance(value, str):
+        return [value]
+    if isinstance(value, list) and all(isinstance(item, str) for item in value):
+        return list(value)
+    return None
+
+
+def check_clues(cfg: Config, texts: Texts, clues: tuple[Clue, ...]) -> list[Issue]:
+    """Mindestens zwei wörtliche Hinweise aus zwei Vorab-Dokumenten je Angriff der Wellen (VEIL-03, D-17, D-18)."""
+    attack_ids = list(dict.fromkeys(wave.attack_id for wave in cfg.waves))
+    issues: list[Issue] = []
+    documents: dict[str, set[str]] = {attack_id: set() for attack_id in attack_ids}
+    counts = {attack_id: 0 for attack_id in attack_ids}
+    for number, clue in enumerate(clues, start=1):
+        path = f"clues[{number}]"
+        if clue.attack not in counts:
+            issues.append(
+                Issue("error", "clues.unknown_attack", path, f"Angriff '{clue.attack}' kommt in den Wellen der Config nicht vor")
+            )
+            continue
+        counts[clue.attack] += 1
+        document = _clue_document(clue.source)
+        if document is not None:
+            documents[clue.attack].add(document)
+        if not clue.source.startswith(PREWAVE_PREFIXES):
+            issues.append(
+                Issue("error", "clues.not_prewave", path, f"Quelle '{clue.source}' ist kein Vorab-Material (erlaubt: story.*, measures.*)")
+            )
+            continue
+        if not clue.why.strip():
+            issues.append(Issue("error", "clues.empty_why", path, "Die Begründung des Hinweises darf nicht leer sein"))
+        strings = _source_strings(texts, clue.source)
+        quote = unicodedata.normalize("NFC", clue.quote)
+        if strings is None:
+            issues.append(
+                Issue("error", "clues.unknown_source", path, f"Quelle '{clue.source}' ist kein Text in content/texte.toml")
+            )
+        elif len(quote) < MIN_QUOTE_LENGTH:
+            issues.append(
+                Issue("error", "clues.quote_too_short", path, f"Das Zitat braucht mindestens {MIN_QUOTE_LENGTH} Zeichen")
+            )
+        elif not any(quote in unicodedata.normalize("NFC", text) for text in strings):
+            issues.append(
+                Issue("error", "clues.quote_not_found", path, f"Das Zitat steht nicht wörtlich in '{clue.source}'")
+            )
+    for attack_id in attack_ids:
+        if counts[attack_id] < 2:
+            issues.append(
+                Issue("error", "clues.too_few", f"clues.{attack_id}", f"Angriff '{attack_id}' hat {counts[attack_id]} Hinweis(e), nötig sind mindestens zwei")
+            )
+        elif len(documents[attack_id]) < 2:
+            issues.append(
+                Issue("error", "clues.single_source", f"clues.{attack_id}", f"Die Hinweise zu '{attack_id}' stammen aus weniger als zwei verschiedenen Dokumenten")
+            )
+    return issues
+
+
+def _clue_section(texts: Texts, source: str) -> str:
+    """Nächste Überschrift entlang des Quellpfads, sonst der Quellschlüssel selbst."""
+    parts = source.split(".")[:-1]
+    while parts:
+        key = ".".join([*parts, "heading"])
+        if texts.has(key) and isinstance(texts.get(key), str):
+            return str(texts.get(key))
+        parts.pop()
+    return source
+
+
+class FacilitatorView:
+    """Sicht für die Spielleitung: die Hinweis-Matrix mit enthüllten Angriffsnamen. Nie Teil von PreAttackView."""
+
+    def __init__(self, cfg: Config, texts: Texts, clues: tuple[Clue, ...]) -> None:
+        self._cfg = cfg
+        self._texts = texts
+        self._clues = clues
+
+    def _document_title(self, source: str) -> str:
+        document = _clue_document(source)
+        if document is None:
+            return source
+        if document == "measures":
+            measure_id = source.split(".")[1] if source.count(".") >= 1 else ""
+            measure = self._cfg.measures.get(measure_id)
+            return measure.name if measure is not None else document
+        title_key = f"{document}.doc_title"
+        return str(self._texts.get(title_key)) if self._texts.has(title_key) else document
+
+    def clue_matrix(self) -> list[ClueRow]:
+        rows: list[ClueRow] = []
+        for wave in self._cfg.waves:
+            title = attack_title(self._texts, wave.attack_id, wave.wave_id, revealed=True)
+            wanted = [clue for clue in self._clues if clue.attack == wave.attack_id]
+            for number, clue in enumerate(wanted, start=1):
+                rows.append(
+                    ClueRow(
+                        title=title,
+                        number=number,
+                        document=self._document_title(clue.source),
+                        section=_clue_section(self._texts, clue.source),
+                        quote=clue.quote,
+                        why=clue.why,
+                    )
+                )
+        return rows
+
+
+def _cell(text: str) -> str:
+    return " ".join(text.split()).replace("|", "\\|")
+
+
+def format_clue_matrix(rows: list[ClueRow]) -> str:
+    lines = [
+        "| Angriff | Nr. | Dokument | Abschnitt | Zitat | Warum |",
+        "|---|---|---|---|---|---|",
+    ]
+    for row in rows:
+        cells = (row.title, str(row.number), row.document, row.section, row.quote, row.why)
+        lines.append("| " + " | ".join(_cell(cell) for cell in cells) + " |")
+    return "\n".join(lines)
 
 
 class RevealView:

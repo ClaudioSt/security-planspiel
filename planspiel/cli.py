@@ -50,6 +50,41 @@ def _texts_command(config: str, content_dir: str) -> int:
     return 1 if errors else 0
 
 
+def _clues_command(config: str, content_dir: str) -> int:
+    import tomllib
+
+    from planspiel.config import load_config
+    from planspiel.texts import (
+        CLUES_FILE,
+        TEXTE_FILE,
+        FacilitatorView,
+        check_clues,
+        format_clue_matrix,
+        load_clues,
+        load_texts,
+    )
+
+    clues_path = Path(content_dir) / CLUES_FILE
+    try:
+        cfg = load_config(Path(config))
+        texts = load_texts(Path(content_dir) / TEXTE_FILE)
+        clues = load_clues(clues_path)
+    except (OSError, tomllib.TOMLDecodeError) as error:
+        print(f"ERROR clues.toml {clues_path}: {error}")
+        print("1 Fehler, 0 Warnung(en)")
+        return 1
+    print(format_clue_matrix(FacilitatorView(cfg, texts, clues).clue_matrix()))
+    print()
+    issues = check_clues(cfg, texts, clues)
+    errors = [issue for issue in issues if issue.level == "error"]
+    warnings = [issue for issue in issues if issue.level == "warning"]
+    for issue in issues:
+        label = "ERROR" if issue.level == "error" else "WARN"
+        print(f"{label} {issue.code} {issue.path}: {issue.message}")
+    print(f"{len(errors)} Fehler, {len(warnings)} Warnung(en)")
+    return 1 if errors else 0
+
+
 def _tausch_command(parser: argparse.ArgumentParser, config: str, tiers: list[str] | None, summary_dir: str) -> int:
     import time
 
@@ -158,12 +193,26 @@ def main(argv: list[str] | None = None) -> int:
         default="content",
         help="Verzeichnis mit texte.toml, digit_allowlist.toml und giveaway_terms.toml.",
     )
+    clues_parser = subparsers.add_parser(
+        "clues",
+        help="Zeigt die Hinweis-Matrix für die Spielleitung und prüft sie: mindestens zwei Hinweise aus zwei Dokumenten je Angriff.",
+    )
+    clues_parser.add_argument(
+        "--config", default="simulation_config.json", help="Pfad zur Konfigurationsdatei."
+    )
+    clues_parser.add_argument(
+        "--content-dir",
+        default="content",
+        help="Verzeichnis mit texte.toml und clues.toml.",
+    )
     args = parser.parse_args(argv)
     if args.command is None:
         parser.print_help()
         return 0
     if args.command == "texts":
         return _texts_command(args.config, args.content_dir)
+    if args.command == "clues":
+        return _clues_command(args.config, args.content_dir)
     if args.command == "tausch":
         return _tausch_command(parser, args.config, args.tier, args.summary_dir)
     if args.command == "gate":
