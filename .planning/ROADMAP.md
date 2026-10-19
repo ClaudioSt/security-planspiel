@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Simulation Foundation** - Reproducible env, characterization tests, shared `planspiel/` rules module, exact arithmetic, streaming enumeration incl. over-budget plans, config validator (completed 2026-10-01)
 - [x] **Phase 2: Rule Changes** - Settle Levelwechsel/Maßnahmentausch, downgrade, linear overspend penalty + gate, Sparprogramm window, RoS ledger, Budget Review boundaries, E-target mechanic (TDD) (completed 2026-10-05)
-- [ ] **Phase 3: Content Source & Veiling** - All German prose in one content source keyed by config id, veiled vs revealed attack texts, clue matrix
+- [x] **Phase 3: Content Source & Veiling** - All German prose in one content source keyed by config id, veiled vs revealed attack texts, clue matrix (completed 2026-10-19)
 - [ ] **Phase 4: Print Pipeline & Attack Worksheets** - Non-interactive, reproducible LaTeX → PDF build; generated Angriff 1–3 worksheets proven equal to the simulation
 - [ ] **Phase 5: Player & Facilitator Print Material** - Measure/event/Budget Review cards, budget + RoS sheets, tracking sheet, "So funktioniert eine Welle", Welle 0, facilitator master sheet, veiling scan
 - [ ] **Phase 6: Rebalance** - Calibrate X and all values by full enumeration against design principles 1–4, then regenerate all print material
@@ -111,7 +111,7 @@ Plans:
   4. A facilitator clue matrix shows, per attack, at least two clues and where each appears in the pre-wave material. A check fails if any attack has fewer than two.
   5. An inventory of the current hand-maintained docx/pptx (wording, colours, branding) shows every item either carried into the content source or deliberately dropped.
 
-**Plans**: 2/3 plans executed
+**Plans**: 3/3 plans complete
 
 Plans:
 **Wave 1**
@@ -124,7 +124,7 @@ Plans:
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
-- [ ] 03-03-PLAN.md — VEIL-03: veiled story documents, `content/clues.toml` + `planspiel clues` (≥ 2 clues from ≥ 2 documents per attack), rewrite and matrix review (SC4) (Wave 3)
+- [x] 03-03-PLAN.md — VEIL-03: veiled story documents, `content/clues.toml` + `planspiel clues` (≥ 2 clues from ≥ 2 documents per attack), rewrite and matrix review (SC4) (Wave 3)
 
 ### Phase 4: Print Pipeline & Attack Worksheets
 
@@ -197,7 +197,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 3 
 |-------|----------------|--------|-----------|
 | 1. Simulation Foundation | 7/7 | Complete    | 2026-10-01 |
 | 2. Rule Changes | 8/8 | Complete    | 2026-10-05 |
-| 3. Content Source & Veiling | 2/3 | In Progress|  |
+| 3. Content Source & Veiling | 3/3 | Complete   | 2026-10-19 |
 | 4. Print Pipeline & Attack Worksheets | 0/TBD | Not started | - |
 | 5. Player & Facilitator Print Material | 0/TBD | Not started | - |
 | 6. Rebalance | 0/TBD | Not started | - |
