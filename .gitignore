@@ -18,3 +18,4 @@ simulation_summary*.json
 simulation_full*.jsonl
 
 .planning/phases/02-rule-changes/golden-diff/
+build/

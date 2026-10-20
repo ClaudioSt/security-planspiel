@@ -25,8 +25,11 @@ python-preference = "only-managed"
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
-addopts = "-m 'not slow' --strict-markers"
-markers = ["slow: full-enumeration checks over all 782,336 dependency-valid combinations per tier; run with `uv run pytest -m slow`"]
+addopts = "-m 'not slow and not pdf' --strict-markers"
+markers = [
+    "slow: full-enumeration checks over all 782,336 dependency-valid combinations per tier; run with `uv run pytest -m slow`",
+    "pdf: builds PDFs with LuaLaTeX via MiKTeX; run with `uv run pytest -m pdf`; skipped when no TeX engine or a required package is missing",
+]
 
 [dependency-groups]
 dev = [
