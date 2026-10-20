@@ -2,18 +2,18 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_phase: 4
+current_phase: 04
 current_phase_name: Print Pipeline & Attack Worksheets
 status: executing
-stopped_at: Phase 4 context gathered
-last_updated: "2026-10-20T12:41:40.850Z"
-last_activity: 2026-10-19
-last_activity_desc: Phase 03 complete, transitioned to Phase 4
+stopped_at: Completed 04-02-PLAN.md
+last_updated: "2026-10-20T13:39:10.588Z"
+last_activity: 2026-10-20
+last_activity_desc: Phase 04 execution started
 progress:
   total_phases: 7
   completed_phases: 3
-  total_plans: 18
-  completed_plans: 18
+  total_plans: 24
+  completed_plans: 19
   percent: 43
 ---
 
@@ -24,14 +24,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-09-29)
 
 **Core value:** Facilitators and players can run the game by hand without ambiguity: every rule is unambiguous, every printed number matches `simulation_config.json`, and no strategy exploits a rule loophole.
-**Current focus:** Phase 03 — content-source-veiling
+**Current focus:** Phase 04 — Print Pipeline & Attack Worksheets
 
 ## Current Position
 
-Phase: 4 — Print Pipeline & Attack Worksheets
-Plan: Not started
-Status: Ready to execute
-Last activity: 2026-10-19 — Phase 03 complete, transitioned to Phase 4
+Phase: 04 (Print Pipeline & Attack Worksheets) — EXECUTING
+Plan: 1 of 6
+Status: Executing Phase 04
+Last activity: 2026-10-20 — Phase 04 execution started
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -74,6 +74,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 02 P08 | 2h | 3 tasks | 12 files |
 | Phase 03 P01 | multi-session | 6 tasks | 31 files |
 | Phase 03 P03-03 | multi-session | 3 tasks | 4 files |
+| Phase 04 P02 | 40min | 3 tasks | 13 files |
 
 ## Accumulated Context
 
@@ -107,6 +108,7 @@ Recent decisions affecting current work:
 - [Phase 03]: Phase 3 (03-01): prose lives in content/texte.toml; config holds numbers, ids and short labels; prose in config is a validator error (schema.prose_in_config)
 - [Phase 03]: Phase 3 (03-01): digit allowlist pinned at seven reviewed entries; golden rewrite proven text-only by classifier
 - [Phase 03]: 03-03: Audit-Mail wording 'insb. Datenverlust, Supply-Chain-Angriffe' replaces 'Erpressung' to avoid stacked Erpress* pointers at Wave 1; clue matrix has 14 clues
+- [Phase 04-02]: D-05: CIA table gets one blank row per measure (10 today); cap printed as its own number (Kappung) via reduction_cap; rounding token ,5 allowlisted (eight entries)
 
 ### Pending Todos
 
@@ -129,6 +131,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-10-19T21:38:36.567Z
-Stopped at: Phase 4 context gathered
-Resume file: .planning/phases/04-print-pipeline-attack-worksheets/04-CONTEXT.md
+Last session: 2026-10-20T13:39:10.575Z
+Stopped at: Completed 04-02-PLAN.md
+Resume file: None
