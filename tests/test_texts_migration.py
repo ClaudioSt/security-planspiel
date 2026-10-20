@@ -29,6 +29,7 @@ ALLOWLIST_PINNED = {
     ("measures.M4.levels_desc.2", "3-2-1"),
     ("measures.M4.levels_desc.3", "<4h"),
     ("measures.M6.levels_desc.1", "30 Min"),
+    ("sheets.angriff.wave_kz_rounding", ",5"),
 }
 
 
