@@ -138,8 +138,27 @@ Plans:
   3. An equivalence test replays the printed hand-calculation steps over a dense input grid and matches the simulation for every input. The test fails if the simulation applies a mechanic the worksheet does not print.
   4. Every generated page carries a version stamp (config hash and date) in its footer.
 
-**Plans**: TBD
+**Plans**: 6 plans
 **Research flag**: yes. Topics: non-interactive MiKTeX build (update 23.10 → current, `--disable-installer`, subprocess timeout) as the first-plan smoke gate, then worksheet/card layout (tcolorbox raster, print scaling, cut lines). Spike-compile only, no full card sheet.
+
+Plans:
+**Wave 1**
+
+- [ ] 04-01-PLAN.md — PRINT-01: non-interactive TeX smoke gate: bounded driver, `kpsewhich --miktex-disable-installer` preflight, aux-stable pass loop, shared `planspiel.sty` (byte-identical PDFs), `pdf` marker; user checkpoint for the MiKTeX update and colortbl/tikzfill (SC1 mechanism) (Wave 1)
+- [ ] 04-02-PLAN.md — PRINT-03: worksheet print model: `rules.worksheet_constants`, German print formatting, `[sheets.angriff]` wording, `AttackSheet` with the D-06/D-08/D-09 guards (Wave 1)
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [ ] 04-03-PLAN.md — PRINT-01: Jinja render stage and `uv run planspiel print` (preflight → render → build → publish); supply-chain checkpoint for jinja2/pypdf; whole-set byte-identity test (SC1) (Wave 2)
+- [ ] 04-04-PLAN.md — PRINT-04: independent replay of the printed steps vs the simulation over the D-12 grid, `apply_attack` key guard, negative controls, two-decimal brute force, slow replay of every plan (SC3) (Wave 2)
+
+**Wave 3** *(blocked on Wave 2 completion)*
+
+- [ ] 04-05-PLAN.md — PRINT-11: content-hash version stamp on every page, UTC input commit date, scoped "+lokal", manifest and `planspiel print --check` (SC4) (Wave 3)
+
+**Wave 4** *(blocked on Wave 3 completion)*
+
+- [ ] 04-06-PLAN.md — PRINT-03: worksheet template and layout macros, two-page A4 sheets, fragment and layout PDF tests, first stamped build committed in the D-19 order (SC2) (Wave 4)
 
 ### Phase 5: Player & Facilitator Print Material
 
