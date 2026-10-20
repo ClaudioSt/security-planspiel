@@ -1,10 +1,13 @@
 """Preflight tests for the TeX driver: fake kpsewhich only, no TeX installation needed."""
+import re
+import shutil
 import subprocess
 
 import pytest
 
 from planspiel import texbuild
 from planspiel.texbuild import MissingTex, TexBuildError
+from tests.support.tex import PRINT_DIR, tex_skip_reason
 
 
 class FakeRun:
@@ -139,3 +142,45 @@ def test_run_bounded_kills_the_process_tree_on_timeout():
         )
     assert killed == [4242]
     assert proc.killed
+
+
+# --- style drift (fast, no TeX) -------------------------------------------------------------
+
+PACKAGE_LINE = re.compile(r"\\(?:RequirePackage|usepackage)(?:\[[^\]]*\])?\{([^}]*)\}")
+OPTION_IMPLIED = ("colortbl.sty", "ngerman.ldf")
+
+
+def _loaded_packages():
+    sources = [PRINT_DIR / "planspiel.sty", *sorted((PRINT_DIR / "templates").glob("*.j2"))]
+    names = set()
+    for source in sources:
+        for match in PACKAGE_LINE.finditer(source.read_text(encoding="utf-8")):
+            names.update(part.strip() for part in match.group(1).split(",") if part.strip())
+    return names
+
+
+def test_every_loaded_package_is_a_probe():
+    packages = _loaded_packages()
+    assert packages, "print/planspiel.sty loads no packages?"
+    missing = sorted(f"{name}.sty" for name in packages if f"{name}.sty" not in texbuild.TEX_PROBES)
+    assert not missing, f"not covered by TEX_PROBES: {missing}"
+
+
+def test_option_implied_files_are_probes():
+    for name in OPTION_IMPLIED:
+        assert name in texbuild.TEX_PROBES
+
+
+def test_miktex_package_list_covers_the_probes_and_is_sorted():
+    lines = (PRINT_DIR / "miktex-packages.txt").read_text(encoding="utf-8").splitlines()
+    assert lines == sorted(set(lines))
+    assert not any(line.startswith("#") or not line.strip() for line in lines)
+    expected = set(texbuild.TEX_PROBES.values()) | {"tikzfill"}
+    assert set(lines) == expected
+
+
+def test_skip_reason_without_packages_only_checks_the_engine():
+    if shutil.which("lualatex") is None:
+        assert tex_skip_reason(require_packages=False) is not None
+    else:
+        assert tex_skip_reason(require_packages=False) is None
