@@ -1,0 +1,42 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{planspiel}[2026/10/20 Shared style of the Planspiel print material]
+
+% No creation date, producer or trailer ID: identical inputs give byte-identical PDFs.
+\pdfvariable suppressoptionalinfo 1023
+
+% A4 with the margins of the Word worksheets (punch margin on the left).
+\RequirePackage[a4paper,left=3cm,right=1.5cm,top=2cm,bottom=2cm,nohead,footskip=9mm]{geometry}
+
+% System Arial, selected by name and never by path: a different selection mode changes the bytes.
+\RequirePackage{fontspec}
+\setmainfont{Arial}
+
+\RequirePackage[ngerman]{babel}
+\RequirePackage[table]{xcolor}
+\RequirePackage{array,tabularx}
+
+% MHP theme colours and the level badge colours.
+\definecolor{mhpblue}{HTML}{000099}
+\definecolor{mhpaccent}{HTML}{1612FF}
+\definecolor{mhplight}{HTML}{CDD6FF}
+\definecolor{mhpgrey}{HTML}{575757}
+\definecolor{mhpdark}{HTML}{262626}
+\definecolor{levelone}{HTML}{00CC67}
+\definecolor{leveltwo}{HTML}{DDEF03}
+\definecolor{levelthree}{HTML}{575757}
+
+% Footer: thin rule and "Seite x von y". The LastPage label is written into the aux file at the
+% end of the document and read back in the next pass (no lastpage or fancyhdr package needed).
+\makeatletter
+\def\ps@planspiel{%
+  \let\@oddhead\@empty
+  \let\@evenhead\@empty
+  \def\@oddfoot{\parbox[t]{\textwidth}{%
+    \color{mhpgrey}\rule{\textwidth}{0.4pt}\par\vspace{-2pt}%
+    {\small\hfill Seite \thepage\ von \pageref{LastPage}}}}%
+  \let\@evenfoot\@oddfoot}
+\AtEndDocument{\immediate\write\@auxout{\string\newlabel{LastPage}{{}{\thepage}}}}
+\makeatother
+\pagestyle{planspiel}
+
+\endinput

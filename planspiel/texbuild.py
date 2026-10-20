@@ -9,6 +9,7 @@ import re
 import shutil
 import subprocess
 import sys
+import time
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable, Dict, List, Optional, Tuple
@@ -38,6 +39,7 @@ LUALATEX = [
 ]
 
 KPSEWHICH_TIMEOUT_S = 30
+KILL_SETTLE_S = 1.0
 JOB_NAME = re.compile(r"^[a-z0-9][a-z0-9_-]*$")
 _LOG_FILE_LINE = re.compile(r"^\S+:\d+: ")
 
@@ -67,6 +69,7 @@ def _kill_tree(pid: int) -> None:
             )
         except (subprocess.TimeoutExpired, OSError):
             pass
+        time.sleep(KILL_SETTLE_S)  # taskkill returns before the killed processes released their file handles
     else:
         try:
             os.kill(pid, 9)
