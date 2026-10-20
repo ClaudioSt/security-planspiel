@@ -37,3 +37,8 @@ why = "Wiederanlaufziel (RTO) als Fachbegriff, kein Spielparameter"
 key = "measures.M6.levels_desc.1"
 token = "30 Min"
 why = "Dauer des E-Learnings, kein Spielparameter"
+
+[[allow]]
+key = "sheets.angriff.wave_kz_rounding"
+token = ",5"
+why = "Name der festen Rundungsregel (ab ,5 vom Betrag aufrunden, rounding.round_half_away), kein Config-Parameter"
