@@ -37,7 +37,7 @@
 
 - [ ] **PRINT-01**: One command rebuilds all print material from `simulation_config.json` via LaTeX → PDF, non-interactively (no MiKTeX install prompts) and reproducibly (identical inputs → identical PDFs)
 - [x] **PRINT-02**: All German prose lives in one content source keyed by config id; printed numbers are never typed into prose
-- [x] **PRINT-03**: Attack worksheets (Angriff 1–3) are generated, including thresholds, caps, bonus tables and case 1/2/3 calculation steps
+- [ ] **PRINT-03**: Attack worksheets (Angriff 1–3) are generated, including thresholds, caps, bonus tables and case 1/2/3 calculation steps
 - [ ] **PRINT-04**: An equivalence test proves the printed hand-calculation steps give the same results as the simulation over a dense input grid
 - [ ] **PRINT-05**: Measure cards (10 measures × 3 levels) are generated with a legend explaining how to read a card and how a measure affects CIA and the E-value
 - [ ] **PRINT-06**: Event cards and the Budget Review card are generated, with effect lines derived from event type and parameters
@@ -141,7 +141,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | VEIL-04 | Phase 5 | Pending |
 | PRINT-01 | Phase 4 | Pending |
 | PRINT-02 | Phase 3 | Complete |
-| PRINT-03 | Phase 4 | Complete |
+| PRINT-03 | Phase 4 | Pending |
 | PRINT-04 | Phase 4 | Pending |
 | PRINT-05 | Phase 5 | Pending |
 | PRINT-06 | Phase 5 | Pending |
