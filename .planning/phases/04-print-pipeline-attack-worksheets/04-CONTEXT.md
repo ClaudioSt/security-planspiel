@@ -1,6 +1,7 @@
 # Phase 4: Print Pipeline & Attack Worksheets - Context
 
 **Gathered:** 2026-10-19
+**Updated:** 2026-10-20 (plan-phase requirement review: D-19 to D-21)
 **Status:** Ready for planning
 
 <domain>
@@ -49,10 +50,15 @@ Requirements: PRINT-01, PRINT-03, PRINT-04, PRINT-11 (ROADMAP Phase 4 success cr
 ### Build, output and stamp (PRINT-01, PRINT-11)
 - **D-13:** **Command: `uv run planspiel print`**, a new subcommand of the existing CLI next to `validate`, `gate`, `texts` and `clues`. Phase 4 builds the three worksheets; Phase 5 adds its documents to the same command (PRINT-01: one command for all print material).
 - **D-14:** **Output:** rendered `.tex`, aux files and logs go to a gitignored build directory. The final PDFs are **committed to `final_documents/generated/`**. Rebuilds are byte-identical, so git shows a PDF diff only when the content changed. Never hand-edit these files.
-- **D-15:** **Stamp = input hash + commit date** in every page footer, e.g. "Stand 2026-10-19 · a1b2c3d". The hash covers all inputs (config, `texte.toml`, templates/sty and any other file the build reads). The date is the last commit date of those inputs, never the wall clock, so builds stay reproducible. A dirty working tree adds a marker such as "+lokal". This is broader than SC4's "config hash": a wording change also changes the stamp.
+- **D-15:** **Stamp = input hash + commit date** in every page footer, e.g. "Stand 2026-10-19 · a1b2c3d". The hash covers all inputs (config, `texte.toml`, templates/sty and any other file the build reads). The date is the last commit date of those inputs, never the wall clock, so builds stay reproducible. A dirty working tree adds a marker such as "+lokal". This is broader than SC4's "config hash": a wording change also changes the stamp. The hash scope is refined by D-19.
 - **D-16:** **Font: system Arial** (as on the MHP Word worksheets; user decision). Consequence: byte-identical rebuilds are guaranteed only on machines with the same Arial version. The SC1 reproducibility test runs on the build machine (two builds, same inputs, identical bytes). Accept this; do not commit a substitute font.
 - **D-17:** **MiKTeX: one-time update plus a pinned package list plus a preflight.** The user updates MiKTeX once (23.10 → current) and installs a documented package list (research: `tikzfill`, `tabularray`, `ninecolors`, `siunitx` and whatever the templates need). `planspiel print` first runs a fast preflight (e.g. `kpsewhich` per required `.sty`) and fails with the missing package names. LuaLaTeX always runs with `--disable-installer` and a subprocess timeout, so a missing package fails fast and never hangs. The first plan is this smoke gate. The MiKTeX update itself is a user action (checkpoint), not something the executor does silently.
 - **D-18:** **Colour style like the MHP decks:** use the MHP theme colours from `content/assets/GUIDELINES.md` (accent1 `000099` for headings, level colours L1 `00CC67` / L2 `DDEF03` / L3 `575757` where levels appear, etc.). The worksheets are designed for colour printing. Layout facts such as A4 and the margins left 3.0 / right 1.5 / top 2.0 / bottom 2.0 cm come from the Word worksheets in GUIDELINES.md, as a starting point rather than a hard rule.
+
+### Resolved in the plan-phase requirement review (2026-10-20)
+- **D-19:** **Stamp hash = rendered content (refines D-15).** One hash per build over the generated `.tex` sources of the whole print set (the stamp text itself excluded, e.g. fed in through a separate macro or file) plus `planspiel.sty` and every asset file TeX reads. It changes exactly when printed content changes, whether the change came from config, `texte.toml`, templates or Python code (e.g. a formula change in `rules.py`); a pure code refactor leaves the PDFs byte-identical (D-14). One stamp for the whole set, so mixed old/new printouts are visible at the table. The date stays the last commit date of the data inputs (config, `texte.toml`, templates/sty/assets), not of Python code. "+lokal" marks a build where any build input, including `planspiel/`, differs from HEAD or is untracked; the output directories never count, so a rebuild cannot make itself dirty.
+- **D-20:** **Manifest plus a manual freshness check.** `planspiel print` writes `final_documents/generated/manifest.json` (stamp hash, date, and per document the `.tex` and PDF SHA-256). `uv run planspiel print --check` renders the `.tex` without running TeX, recomputes the stamp hash and reports stale PDFs with a non-zero exit. It is not part of the test suite; the suite stays independent of MiKTeX rebuilds.
+- **D-21:** **CIA-Mali stays off the worksheet.** The sim's per-wave `cia_delta` (severity × `cia_impact`) feeds no score (KZ, damage, RoS, final index), and the MHP sheets never printed it. The equivalence test covers every scored output (the rounded wave KZ change and the damage incl. recovery) and names `cia_delta` explicitly as an unprinted, unscored sim output. The test also fails when `apply_attack` returns a key that is neither replayed nor on that explicit list, so D-11/SC3 keep their bite.
 
 ### Claude's Discretion
 - Number of CIA table rows (D-05) and the exact step numbering and wording of new step labels. New wording goes into `[sheets.angriff]` / `[sheets.labels]`, digit-free, and passes `planspiel texts`.
@@ -61,6 +67,7 @@ Requirements: PRINT-01, PRINT-03, PRINT-04, PRINT-11 (ROADMAP Phase 4 success cr
 - German number formatting rules (thousands dot, decimal comma, real minus sign "−") and whether `format_eur` from `review_text.py` is reused or moved.
 - Whether the PDF tests use a new `pdf` marker or the existing `slow` marker, and that they skip when no TeX engine is present.
 - File names under `final_documents/generated/` (they may name the attack: these are revealed sheets).
+- The fast grid's GR step (D-12 says 0,1) is derived from config so it is never coarser than the reachable GR lattice, e.g. 1/lcm(10, weight denominators). With today's weights this is 0,1.
 
 </decisions>
 
@@ -133,6 +140,7 @@ Requirements: PRINT-01, PRINT-03, PRINT-04, PRINT-11 (ROADMAP Phase 4 success cr
 - Clamping KZ to 0..100 on the running total: Phase 5 tracking sheet (PRINT-08).
 - Hand-friendly wave-3 slope (replacing 17/7): Phase 6 (BAL-02).
 - Archiving `final_documents/Angriff-*.docx` once the generated sheets replace them: Phase 7 (LEG-01).
+- CIA-Mali (D-21): decide whether to drop `cia_impact`/`cia_delta` from the sim or make it count toward a score. `README.md` lines 117–118 still say recovery reduces temporary CIA-Mali, while the code applies recovery to the damage; fix that wording together with the decision (Phase 6 or Phase 7, LEG-02).
 
 ### Reviewed Todos (not folded)
 - "Angriffe und Aktionen nur indirekt vermitteln, nie explizit benennen" (`.planning/todos/pending/2026-06-23-angriffe-und-aktionen-nur-indirekt-vermitteln-nie-explizit-b.md`): already covered by Phase 3 and closed out by Phase 5 (VEIL-02, VEIL-04). The attack worksheets are revealed material, so the todo does not constrain this phase.
