@@ -15,6 +15,7 @@ CONFIG = "planspiel/config.py"
 ROUNDING = "planspiel/rounding.py"
 REVIEW_TEXT = "planspiel/review_text.py"
 GATE = "planspiel/gate.py"
+FMT = "planspiel/fmt.py"
 
 FORMULA_FUNCTIONS = {
     name: RULES
@@ -58,6 +59,7 @@ FORMULA_FUNCTIONS = {
         "evaluate_path",
         "path_outcome",
         "swap_paths",
+        "worksheet_constants",
     )
 }
 FORMULA_FUNCTIONS.update(
@@ -65,6 +67,9 @@ FORMULA_FUNCTIONS.update(
 )
 FORMULA_FUNCTIONS.update({name: REVIEW_TEXT for name in ("format_eur", "penalty_rows", "boundary_text")})
 FORMULA_FUNCTIONS.update({name: GATE for name in ("lowering_closure", "required_penalty_x")})
+FORMULA_FUNCTIONS.update(
+    {name: FMT for name in ("format_number", "format_signed", "format_money", "format_factor", "format_percent", "terminates")}
+)
 
 RETIRED_FUNCTIONS = {
     "e_target_check",
