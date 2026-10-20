@@ -22,7 +22,7 @@ def format_kz(value) -> str:
     return str(int(value)) if value.denominator == 1 else f"{value:.1f}"
 
 
-def format_percent(value: float) -> str:
+def format_ros_percent(value: float) -> str:
     return f"{value:.2f}%".replace(".", ",")
 
 
@@ -67,7 +67,7 @@ def print_ros_and_final_index(item: Dict, base_losses: Optional[float], weight_k
     if ros is None:
         print("  RoS: n/a")
     else:
-        print(f"  RoS: {format_percent(ros * 100)}")
+        print(f"  RoS: {format_ros_percent(ros * 100)}")
     final_index = rules.final_index(item["kz_final"], ros, weight_kz, weight_ros)
     print(f"  Final-Index: {format_currency(final_index)}")
 
@@ -98,7 +98,7 @@ def compute_summary(data: Dict, top_n: int, base_losses: Optional[float], weight
     print(f"Schaden: min {format_currency(min(damage_values))}, max {format_currency(max(damage_values))}")
     print(f"Kosten: min {format_currency(min(cost_values))}, max {format_currency(max(cost_values))}")
     if ros_values:
-        print(f"RoS: min {format_percent(min(ros_values) * 100)}, max {format_percent(max(ros_values) * 100)}")
+        print(f"RoS: min {format_ros_percent(min(ros_values) * 100)}, max {format_ros_percent(max(ros_values) * 100)}")
         print(f"RoS >= 0: {ros_positive} | RoS < 0: {ros_negative}")
     print(f"Final-Index: min {format_currency(min(final_index_values))}, max {format_currency(max(final_index_values))}")
 

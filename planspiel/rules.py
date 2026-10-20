@@ -102,6 +102,103 @@ def kz_slope(kz_at_full_damage, kz_at_full_mitigation, mitigation_cap) -> Fracti
     return (Fraction(kz_at_full_mitigation) - Fraction(kz_at_full_damage)) / mitigation_cap
 
 
+class BonusRow(NamedTuple):
+    measure: str
+    min_level: int
+    points: int
+
+
+class RecoveryRow(NamedTuple):
+    level: int
+    factor: Fraction
+
+
+class WorksheetConstants(NamedTuple):
+    """Every number an attack worksheet prints besides the team's own entries (PRINT-03)."""
+
+    w_c: Fraction
+    w_i: Fraction
+    w_a: Fraction
+    lower: int
+    reduction_cap: int
+    upper: int
+    unit_eur: int
+    case_1_damage_eur: int
+    case_2_damage_eur: int
+    kz_case_1: Fraction
+    kz_case_2: Fraction
+    slope: Fraction
+    bonus_rows: Tuple[BonusRow, ...]
+    with_recovery: bool
+    recovery_measure: Optional[str]
+    recovery_rows: Tuple[RecoveryRow, ...]
+
+
+class WorksheetInvariantError(ValueError):
+    """The printed hand-calculation shape no longer matches the config (D-06, D-03)."""
+
+
+def worksheet_constants(cfg: Config, wave: Wave) -> WorksheetConstants:
+    """Derive the printed worksheet numbers of one wave from the config, through the simulation primitives.
+
+    Raises WorksheetInvariantError when the rearranged Fall-3 damage formula "(Obergrenze - GR) x euros per
+    point" would not equal the simulation (base severity unequal to the cap, or a tier with a multiplier) or
+    when the sheet's single recovery table cannot represent the config (two recovery measures).
+    """
+    attack = cfg.attacks[wave.attack_id]
+    if attack.base_severity != attack.mitigation_cap:
+        raise WorksheetInvariantError(
+            f"Angriff '{attack.attack_id}': Basis-Schweregrad {attack.base_severity} und Kappung "
+            f"{attack.mitigation_cap} müssen gleich sein, sonst stimmt die gedruckte Schadensformel nicht (D-06)."
+        )
+    for tier in cfg.budget_tiers.values():
+        if tier.severity_multiplier != 1:
+            raise WorksheetInvariantError(
+                f"Budget-Tier '{tier.name}': Schweregrad-Multiplikator {tier.severity_multiplier} muss 1 sein, "
+                "sonst stimmt die gedruckte Schadensformel nicht (D-06)."
+            )
+    carriers = [
+        measure_id
+        for measure_id, measure in cfg.measures.items()
+        if any(level.recovery != 0 for level in measure.levels.values())
+    ]
+    if attack.allow_recovery and len(carriers) > 1:
+        raise WorksheetInvariantError(
+            f"Angriff '{attack.attack_id}': Recovery kommt von mehreren Maßnahmen ({', '.join(carriers)}), "
+            "das Blatt druckt nur eine Recovery-Tabelle (D-03)."
+        )
+    with_recovery = attack.allow_recovery and len(carriers) == 1
+    recovery_measure = carriers[0] if with_recovery else None
+    recovery_rows: Tuple[RecoveryRow, ...] = ()
+    if recovery_measure is not None:
+        levels = cfg.measures[recovery_measure].levels
+        recovery_rows = tuple(RecoveryRow(level, Fraction(levels[level].recovery)) for level in sorted(levels))
+
+    ws, rs = cfg.ws, cfg.rs
+    unit_eur = damage_euros(ws, attack.s_unit, 0, ws, rs)
+    full_severity = severity_scaled(attack.base_severity, Fraction(1), 0, ws)
+    capped_severity = severity_scaled(attack.base_severity, Fraction(1), attack.mitigation_cap * ws, ws)
+    slope = kz_slope(attack.kz_at_full_damage, attack.kz_at_full_mitigation, attack.mitigation_cap)
+    return WorksheetConstants(
+        w_c=Fraction(wave.weights["c"]),
+        w_i=Fraction(wave.weights["i"]),
+        w_a=Fraction(wave.weights["a"]),
+        lower=wave.e_threshold,
+        reduction_cap=attack.mitigation_cap,
+        upper=wave.e_threshold + attack.mitigation_cap,
+        unit_eur=unit_eur,
+        case_1_damage_eur=damage_euros(full_severity, attack.s_unit, 0, ws, rs),
+        case_2_damage_eur=damage_euros(capped_severity, attack.s_unit, 0, ws, rs),
+        kz_case_1=Fraction(attack.kz_at_full_damage),
+        kz_case_2=Fraction(attack.kz_at_full_mitigation),
+        slope=slope,
+        bonus_rows=tuple(BonusRow(bm.measure, bm.min_level, bm.bonus) for bm in wave.bonus_measures),
+        with_recovery=with_recovery,
+        recovery_measure=recovery_measure,
+        recovery_rows=recovery_rows,
+    )
+
+
 def attack_kz_delta(kz_at_full_damage, slope: Fraction, reduction_scaled: int, ws: int) -> Fraction:
     # KZ-Delta linear zwischen den auf dem Arbeitsblatt festgelegten Endpunkten
     # interpoliert (Fall 1: redu=0 -> kz_at_full_damage, Fall 2: redu=cap ->
