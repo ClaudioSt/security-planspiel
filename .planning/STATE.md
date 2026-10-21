@@ -5,15 +5,15 @@ milestone_name: milestone
 current_phase: 04
 current_phase_name: Print Pipeline & Attack Worksheets
 status: executing
-stopped_at: Completed 04-02-PLAN.md
-last_updated: "2026-10-20T13:39:10.588Z"
+stopped_at: Completed 04-01-PLAN.md
+last_updated: "2026-10-21T21:30:57.478Z"
 last_activity: 2026-10-20
 last_activity_desc: Phase 04 execution started
 progress:
   total_phases: 7
   completed_phases: 3
   total_plans: 24
-  completed_plans: 19
+  completed_plans: 20
   percent: 43
 ---
 
@@ -29,8 +29,8 @@ See: .planning/PROJECT.md (updated 2026-09-29)
 ## Current Position
 
 Phase: 04 (Print Pipeline & Attack Worksheets) — EXECUTING
-Plan: 1 of 6
-Status: Executing Phase 04
+Plan: 2 of 6
+Status: Ready to execute
 Last activity: 2026-10-20 — Phase 04 execution started
 
 Progress: [░░░░░░░░░░] 0%
@@ -75,6 +75,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 03 P01 | multi-session | 6 tasks | 31 files |
 | Phase 03 P03-03 | multi-session | 3 tasks | 4 files |
 | Phase 04 P02 | 40min | 3 tasks | 13 files |
+| Phase 04 P01 | 35min | 3 tasks | 11 files |
 
 ## Accumulated Context
 
@@ -109,6 +110,8 @@ Recent decisions affecting current work:
 - [Phase 03]: Phase 3 (03-01): digit allowlist pinned at seven reviewed entries; golden rewrite proven text-only by classifier
 - [Phase 03]: 03-03: Audit-Mail wording 'insb. Datenverlust, Supply-Chain-Angriffe' replaces 'Erpressung' to avoid stacked Erpress* pointers at Wave 1; clue matrix has 14 clues
 - [Phase 04-02]: D-05: CIA table gets one blank row per measure (10 today); cap printed as its own number (Kappung) via reduction_cap; rounding token ,5 allowlisted (eight entries)
+- [Phase 04-01]: kpsewhich always runs with --miktex-disable-installer and lualatex with --disable-installer, stdin closed, timeout with process-tree kill
+- [Phase 04-01]: PDF byte identity comes from planspiel.sty (suppressoptionalinfo 1023) plus an aux-stable pass loop; Arial set by name, never by Path=
 
 ### Pending Todos
 
@@ -131,6 +134,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-10-20T13:39:10.575Z
-Stopped at: Completed 04-02-PLAN.md
+Last session: 2026-10-21T21:30:57.466Z
+Stopped at: Completed 04-01-PLAN.md
 Resume file: None

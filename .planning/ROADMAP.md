@@ -138,13 +138,13 @@ Plans:
   3. An equivalence test replays the printed hand-calculation steps over a dense input grid and matches the simulation for every input. The test fails if the simulation applies a mechanic the worksheet does not print.
   4. Every generated page carries a version stamp (config hash and date) in its footer.
 
-**Plans**: 1/6 plans executed
+**Plans**: 2/6 plans executed
 **Research flag**: yes. Topics: non-interactive MiKTeX build (update 23.10 → current, `--disable-installer`, subprocess timeout) as the first-plan smoke gate, then worksheet/card layout (tcolorbox raster, print scaling, cut lines). Spike-compile only, no full card sheet.
 
 Plans:
 **Wave 1**
 
-- [ ] 04-01-PLAN.md — PRINT-01: non-interactive TeX smoke gate: bounded driver, `kpsewhich --miktex-disable-installer` preflight, aux-stable pass loop, shared `planspiel.sty` (byte-identical PDFs), `pdf` marker; user checkpoint for the MiKTeX update and colortbl/tikzfill (SC1 mechanism) (Wave 1)
+- [x] 04-01-PLAN.md — PRINT-01: non-interactive TeX smoke gate: bounded driver, `kpsewhich --miktex-disable-installer` preflight, aux-stable pass loop, shared `planspiel.sty` (byte-identical PDFs), `pdf` marker; user checkpoint for the MiKTeX update and colortbl/tikzfill (SC1 mechanism) (Wave 1)
 - [x] 04-02-PLAN.md — PRINT-03: worksheet print model: `rules.worksheet_constants`, German print formatting, `[sheets.angriff]` wording, `AttackSheet` with the D-06/D-08/D-09 guards (Wave 1)
 
 **Wave 2** *(blocked on Wave 1 completion)*
@@ -217,7 +217,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 3 
 | 1. Simulation Foundation | 7/7 | Complete    | 2026-10-01 |
 | 2. Rule Changes | 8/8 | Complete    | 2026-10-05 |
 | 3. Content Source & Veiling | 3/3 | Complete    | 2026-10-19 |
-| 4. Print Pipeline & Attack Worksheets | 1/6 | In Progress|  |
+| 4. Print Pipeline & Attack Worksheets | 2/6 | In Progress|  |
 | 5. Player & Facilitator Print Material | 0/TBD | Not started | - |
 | 6. Rebalance | 0/TBD | Not started | - |
 | 7. Session Flow & Handoff | 0/TBD | Not started | - |
