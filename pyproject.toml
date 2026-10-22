@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "Shared rules and tooling for the CIA-Planspiel simulation."
 requires-python = ">=3.12"
 dependencies = [
+    "jinja2==3.1.6",
     "openpyxl==3.1.5",
     "python-pptx==1.0.2",
 ]
@@ -33,5 +34,6 @@ markers = [
 
 [dependency-groups]
 dev = [
+    "pypdf==6.19.0",
     "pytest==9.1.1",
 ]
