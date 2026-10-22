@@ -133,3 +133,29 @@ def test_help_lists_the_options(capsys):
     out = capsys.readouterr().out
     for option in ("--config", "--content-dir", "--print-dir", "--out-dir", "--build-dir"):
         assert option in out
+
+
+def test_print_model_error_exits_one_with_its_own_code(monkeypatch, tmp_path, capsys):
+    from planspiel.printmodel import PrintModelError
+
+    monkeypatch.setattr(texbuild, "preflight", lambda **kwargs: [])
+
+    def broken(*args, **kwargs):
+        raise PrintModelError("Welle 1: Fall 3 ist nicht handrechenbar")
+
+    monkeypatch.setattr(render, "render_all", broken)
+    assert main(_argv(tmp_path)) == 1
+    out = capsys.readouterr().out
+    assert "ERROR print.model Welle 1: Fall 3 ist nicht handrechenbar" in out
+    assert not (tmp_path / "out").exists()
+
+
+def test_print_model_error_makes_check_fail_with_two(monkeypatch, tmp_path, capsys):
+    from planspiel.printmodel import PrintModelError
+
+    def broken(*args, **kwargs):
+        raise PrintModelError("Welle 1: Fall 3 ist nicht handrechenbar")
+
+    monkeypatch.setattr(render, "render_all", broken)
+    assert main([*_argv(tmp_path), "--check"]) == 2
+    assert "ERROR print.model" in capsys.readouterr().out
