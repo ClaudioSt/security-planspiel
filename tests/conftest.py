@@ -1,3 +1,6 @@
+from pathlib import Path
+from typing import List, NamedTuple
+
 import pytest
 
 _REPORT: list[str] = []
@@ -31,3 +34,54 @@ def pytest_terminal_summary(terminalreporter):
         terminalreporter.write_line(line)
     if len(_REPORT) > _MAX_REPORT_LINES:
         terminalreporter.write_line(f"... {len(_REPORT) - _MAX_REPORT_LINES} more lines")
+
+
+SMOKE_TITLE = "Backup & Disaster Recovery – 100 % € −6 × ÷ ≤ ≥ _#$"
+
+
+class PrintedSet(NamedTuple):
+    out_a: Path
+    out_b: Path
+    build_a: Path
+    build_b: Path
+    jobs: List[str]
+
+
+@pytest.fixture(scope="session")
+def printed_set(tmp_path_factory):
+    """Two real `planspiel print` runs over the whole print set plus an injected Jinja smoke document."""
+    from planspiel import render
+    from planspiel.cli import main
+    from tests.support import CONFIG_PATH, CONTENT_DIR, REPO_ROOT
+    from tests.support.tex import PRINT_DIR, tex_skip_reason
+
+    reason = tex_skip_reason()
+    if reason is not None:
+        pytest.skip(reason)
+    original = render.render_all
+    smoke_dir = REPO_ROOT / "tests" / "fixtures" / "print"
+
+    def with_smoke(cfg, texts, template_dir):
+        documents = dict(original(cfg, texts, template_dir))
+        template = render.make_env(smoke_dir).get_template("smoke.tex.j2")
+        documents["smoke"] = template.render(title=SMOKE_TITLE)
+        return {job: documents[job] for job in sorted(documents)}
+
+    root = tmp_path_factory.mktemp("printed_set")
+    paths = {name: root / name for name in ("out_a", "out_b", "build_a", "build_b")}
+    with pytest.MonkeyPatch.context() as patch:
+        patch.setattr(render, "render_all", with_smoke)
+        for suffix in ("a", "b"):
+            code = main(
+                [
+                    "print",
+                    "--config", str(CONFIG_PATH),
+                    "--content-dir", str(CONTENT_DIR),
+                    "--print-dir", str(PRINT_DIR),
+                    "--out-dir", str(paths[f"out_{suffix}"]),
+                    "--build-dir", str(paths[f"build_{suffix}"]),
+                ]
+            )
+            assert code == 0, f"planspiel print (Lauf {suffix}) endete mit Exit-Code {code}"
+    jobs = sorted(path.stem for path in paths["out_a"].glob("*.pdf"))
+    return PrintedSet(paths["out_a"], paths["out_b"], paths["build_a"], paths["build_b"], jobs)
