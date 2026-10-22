@@ -37,3 +37,10 @@ def test_smoke_pdf_has_page_numbers_and_escaped_specials(printed_set):
     assert "Seite2von2" in second
     assert "Backup&DisasterRecovery" in first
     assert "_#$" in first
+
+
+def test_smoke_pdf_prints_quotes_and_ligature_characters_verbatim(printed_set):
+    # babel-ngerman's `"` shorthand and fontspec's TeX ligatures must not alter the source text.
+    reader = PdfReader(printed_set.out_a / "smoke.pdf")
+    first = _squashed(reader.pages[0])
+    assert '"aktiv""Auch"a--b<<c>>,,d\'\'0,5' in first

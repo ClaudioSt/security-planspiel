@@ -21,6 +21,9 @@ from planspiel import render
         ("\\", r"\textbackslash{}"),
         (r"\input{x}", r"\textbackslash{}input\{x\}"),
         ("Größe Ä Ö Ü ß € − × ÷ ≤ ≥ ▢", "Größe Ä Ö Ü ß € − × ÷ ≤ ≥ ▢"),
+        # babel-ngerman shorthand: an active `"` would swallow the quote and turn `"a` into `ä`
+        ('"aktiv" "Auch"', r"\textquotedbl{}aktiv\textquotedbl{} \textquotedbl{}Auch\textquotedbl{}"),
+        ('"-5" "0,5"', r"\textquotedbl{}-5\textquotedbl{} \textquotedbl{}0,5\textquotedbl{}"),
     ],
 )
 def test_tex_escape_translates_specials_in_one_pass(raw, expected):

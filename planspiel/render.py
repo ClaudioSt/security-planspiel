@@ -23,13 +23,17 @@ _TEX_SPECIALS = str.maketrans(
         "}": r"\}",
         "~": r"\textasciitilde{}",
         "^": r"\textasciicircum{}",
+        # babel-ngerman makes `"` an active shorthand (`"a` would print `ä`, the quote vanishes).
+        # The TeX input ligatures (-- << >> '' ,, ...) are switched off in planspiel.sty: an empty
+        # group does not interrupt them in LuaTeX.
+        '"': r"\textquotedbl{}",
     }
 )
 _CONTROL_CHARACTERS = re.compile(r"[\x00-\x08\x0b-\x1f]")
 
 
 def tex_escape(value: object) -> str:
-    """Escape the ten LaTeX specials in one pass; reject non-strings and control characters."""
+    """Escape the LaTeX specials and babel's `"` shorthand in one pass; reject non-strings and control characters."""
     if isinstance(value, jinja2.Undefined):
         str(value)  # StrictUndefined raises UndefinedError here, naming the missing variable
     if not isinstance(value, str):

@@ -9,7 +9,8 @@
 
 % System Arial, selected by name and never by path: a different selection mode changes the bytes.
 \RequirePackage{fontspec}
-\setmainfont{Arial}
+% Without the TeX input ligatures (tlig): `--` `<<` `>>` `''` `,,` stay as typed in the source text.
+\setmainfont{Arial}[RawFeature={-tlig}]
 
 \RequirePackage[ngerman]{babel}
 \RequirePackage[table]{xcolor}

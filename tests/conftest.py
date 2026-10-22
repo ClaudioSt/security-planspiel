@@ -36,7 +36,7 @@ def pytest_terminal_summary(terminalreporter):
         terminalreporter.write_line(f"... {len(_REPORT) - _MAX_REPORT_LINES} more lines")
 
 
-SMOKE_TITLE = "Backup & Disaster Recovery – 100 % € −6 × ÷ ≤ ≥ _#$"
+SMOKE_TITLE = "Backup & Disaster Recovery – 100 % € −6 × ÷ ≤ ≥ _#$ \"aktiv\" \"Auch\" a--b <<c>> ,,d'' 0,5"
 
 
 class PrintedSet(NamedTuple):
