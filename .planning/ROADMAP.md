@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Simulation Foundation** - Reproducible env, characterization tests, shared `planspiel/` rules module, exact arithmetic, streaming enumeration incl. over-budget plans, config validator (completed 2026-10-01)
 - [x] **Phase 2: Rule Changes** - Settle Levelwechsel/Maßnahmentausch, downgrade, linear overspend penalty + gate, Sparprogramm window, RoS ledger, Budget Review boundaries, E-target mechanic (TDD) (completed 2026-10-05)
 - [x] **Phase 3: Content Source & Veiling** - All German prose in one content source keyed by config id, veiled vs revealed attack texts, clue matrix (completed 2026-10-19)
-- [ ] **Phase 4: Print Pipeline & Attack Worksheets** - Non-interactive, reproducible LaTeX → PDF build; generated Angriff 1–3 worksheets proven equal to the simulation
+- [x] **Phase 4: Print Pipeline & Attack Worksheets** - Non-interactive, reproducible LaTeX → PDF build; generated Angriff 1–3 worksheets proven equal to the simulation (completed 2026-10-22)
 - [ ] **Phase 5: Player & Facilitator Print Material** - Measure/event/Budget Review cards, budget + RoS sheets, tracking sheet, "So funktioniert eine Welle", Welle 0, facilitator master sheet, veiling scan
 - [ ] **Phase 6: Rebalance** - Calibrate X and all values by full enumeration against design principles 1–4, then regenerate all print material
 - [ ] **Phase 7: Session Flow & Handoff** - Revised schedule with debrief, "Was ist neu", legacy files archived, docs updated, timed dry run
@@ -138,7 +138,7 @@ Plans:
   3. An equivalence test replays the printed hand-calculation steps over a dense input grid and matches the simulation for every input. The test fails if the simulation applies a mechanic the worksheet does not print.
   4. Every generated page carries a version stamp (config hash and date) in its footer.
 
-**Plans**: 5/6 plans executed
+**Plans**: 6/6 plans complete
 **Research flag**: yes. Topics: non-interactive MiKTeX build (update 23.10 → current, `--disable-installer`, subprocess timeout) as the first-plan smoke gate, then worksheet/card layout (tcolorbox raster, print scaling, cut lines). Spike-compile only, no full card sheet.
 
 Plans:
@@ -158,7 +158,7 @@ Plans:
 
 **Wave 4** *(blocked on Wave 3 completion)*
 
-- [ ] 04-06-PLAN.md — PRINT-03: worksheet template and layout macros, two-page A4 sheets, fragment and layout PDF tests, first stamped build committed in the D-19 order (SC2) (Wave 4)
+- [x] 04-06-PLAN.md — PRINT-03: worksheet template and layout macros, two-page A4 sheets, fragment and layout PDF tests, first stamped build committed in the D-19 order (SC2) (Wave 4)
 
 ### Phase 5: Player & Facilitator Print Material
 
@@ -217,7 +217,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 3 
 | 1. Simulation Foundation | 7/7 | Complete    | 2026-10-01 |
 | 2. Rule Changes | 8/8 | Complete    | 2026-10-05 |
 | 3. Content Source & Veiling | 3/3 | Complete    | 2026-10-19 |
-| 4. Print Pipeline & Attack Worksheets | 5/6 | In Progress|  |
+| 4. Print Pipeline & Attack Worksheets | 6/6 | Complete   | 2026-10-22 |
 | 5. Player & Facilitator Print Material | 0/TBD | Not started | - |
 | 6. Rebalance | 0/TBD | Not started | - |
 | 7. Session Flow & Handoff | 0/TBD | Not started | - |

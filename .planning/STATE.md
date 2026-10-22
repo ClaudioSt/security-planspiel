@@ -4,17 +4,17 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: 04
 current_phase_name: Print Pipeline & Attack Worksheets
-status: executing
-stopped_at: Completed 04-05-PLAN.md
-last_updated: "2026-10-22T15:08:50.226Z"
+status: verifying
+stopped_at: Completed 04-06-PLAN.md
+last_updated: "2026-10-22T15:40:53.372Z"
 last_activity: 2026-10-20
 last_activity_desc: Phase 04 execution started
 progress:
   total_phases: 7
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 24
-  completed_plans: 23
-  percent: 43
+  completed_plans: 24
+  percent: 57
 ---
 
 # Project State
@@ -29,11 +29,11 @@ See: .planning/PROJECT.md (updated 2026-09-29)
 ## Current Position
 
 Phase: 04 (Print Pipeline & Attack Worksheets) — EXECUTING
-Plan: 6 of 6 (04-01 to 04-05 complete; next 04-06)
-Status: Ready to execute
-Last activity: 2026-10-20 — Phase 04 execution started
+Plan: 6 of 6 (04-01 to 04-06 complete)
+Status: Phase complete — ready for verification
+Last activity: 2026-10-22 — Completed 04-06 (attack worksheets generated, PRINT-03)
 
-Progress: [██████████] 96%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
@@ -79,6 +79,7 @@ Progress: [██████████] 96%
 | Phase 04 P03 | 35min | 3 tasks | 9 files |
 | Phase 04 P04 | 40min | 3 tasks | 4 files |
 | Phase 04 P05 | 30min | 3 tasks | 12 files |
+| Phase 04 P06 | 75min | 3 tasks | 12 files |
 
 ## Accumulated Context
 
@@ -118,6 +119,7 @@ Recent decisions affecting current work:
 - [Phase 04-03]: tex_escape raises UndefinedError for StrictUndefined; render failures report as ERROR print.render
 - [Phase 04-04]: worksheet replay is an independent encoding reading only AttackSheet exact fields; equivalence proven on 36,467 grid comparisons and all 782,336 plans per tier, with negative controls
 - [Phase 04-05]: version stamp = UTC date of last data-input commit + 7 hex of content hash over rendered .tex and planspiel.sty; +lokal only for build inputs; planspiel print --check compares manifest, rendered content and PDF SHA-256 without TeX
+- [Phase 04]: 04-06: result line at the end of the worksheet after the wave-KZ step; layout page 1 = steps 1-4, page 2 from the Fall step, only spacing fallback (a) needed
 
 ### Pending Todos
 
@@ -140,6 +142,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-10-22T15:08:42.917Z
-Stopped at: Completed 04-05-PLAN.md
+Last session: 2026-10-22T15:40:53.360Z
+Stopped at: Completed 04-06-PLAN.md
 Resume file: None
