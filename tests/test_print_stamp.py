@@ -198,7 +198,7 @@ def test_default_inputs_are_official(repo):
     ],
 )
 def test_inputs_off_the_defaults_are_named(repo, option, config, content, print_dir):
-    (repo / "experiment.json").write_text("{}")
+    (repo / "experiment.json").write_text("{}", encoding="utf-8")
     (repo / "other").mkdir()
     (repo / "elsewhere").mkdir()
     found = stamp.nondefault_inputs(repo, repo / config, repo / content, repo / print_dir)
@@ -225,7 +225,7 @@ def test_repo_follows_the_config_path_not_the_working_directory(repo, tmp_path, 
 def test_repo_falls_back_to_the_working_directory_for_a_loose_config(repo, tmp_path, monkeypatch):
     loose = tmp_path / "loose"
     loose.mkdir()
-    (loose / "c.json").write_text("{}")
+    (loose / "c.json").write_text("{}", encoding="utf-8")
     monkeypatch.chdir(repo)
     assert stamp.repo_for_inputs(loose / "c.json").resolve() == repo.resolve()
 
