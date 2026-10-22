@@ -212,3 +212,33 @@ def test_locked_pdf_names_the_file_and_exits_one(monkeypatch, calls, tmp_path, c
     out = capsys.readouterr().out
     assert "ERROR print.publish" in out
     assert "smoke.pdf" in out
+
+
+def _content_with_number_in_prose(tmp_path):
+    import shutil
+
+    content = tmp_path / "content"
+    shutil.copytree(MINI_CONTENT_DIR, content)
+    texte = content / "texte.toml"
+    text = texte.read_text(encoding="utf-8")
+    assert 'focus = "Zugriffe regeln"' in text
+    texte.write_text(text.replace('focus = "Zugriffe regeln"', 'focus = "Zugriffe regeln, Schwelle 23"'), encoding="utf-8")
+    return content
+
+
+def test_number_in_prose_stops_the_build_before_render(monkeypatch, calls, tmp_path, capsys):
+    monkeypatch.setattr(texbuild, "preflight", lambda **kwargs: [])
+    content = _content_with_number_in_prose(tmp_path)
+    assert main(_argv(tmp_path, **{"--content-dir": str(content)})) == 1
+    out = capsys.readouterr().out
+    assert "ERROR print.texts" in out
+    assert "measures.M1.focus" in out
+    assert calls == []
+    assert not (tmp_path / "out").exists()
+
+
+def test_number_in_prose_makes_check_fail_with_two(monkeypatch, calls, tmp_path, capsys):
+    content = _content_with_number_in_prose(tmp_path)
+    assert main([*_argv(tmp_path, **{"--content-dir": str(content)}), "--check"]) == 2
+    assert "ERROR print.texts" in capsys.readouterr().out
+    assert calls == []

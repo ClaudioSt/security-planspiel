@@ -144,7 +144,7 @@ def _print_command(
     from planspiel import render, stamp, texbuild
     from planspiel.config import load_config
     from planspiel.printmodel import PrintModelError
-    from planspiel.texts import TEXTE_FILE, load_texts
+    from planspiel.texts import check_texts, load_content
 
     failure = 2 if check else 1  # --check: 1 means stale, 2 means the check itself could not run
     if not check:
@@ -158,13 +158,20 @@ def _print_command(
             print("Installieren (MiKTeX Console oder Terminal): miktex packages install --package-id-file print/miktex-packages.txt")
             print(f"{len(problems)} Fehler")
             return 1
-    texte_path = Path(content_dir) / TEXTE_FILE
     try:
         cfg = load_config(Path(config))
-        texts = load_texts(texte_path)
+        content = load_content(Path(content_dir))
     except (OSError, json.JSONDecodeError, tomllib.TOMLDecodeError, ValueError) as error:
-        print(f"ERROR print.input {config} / {texte_path}: {error}")
+        print(f"ERROR print.input {config} / {content_dir}: {error}")
         print("1 Fehler")
+        return failure
+    texts = content.texts
+    # The checks of `planspiel texts` (no numbers in prose, veil, required keys) hold at print time too.
+    text_errors = [issue for issue in check_texts(cfg, content) if issue.level == "error"]
+    if text_errors:
+        for issue in text_errors:
+            print(f"ERROR print.texts {issue.code} {issue.path}: {issue.message}")
+        print(f"{len(text_errors)} Fehler")
         return failure
     try:
         documents = render.render_all(cfg, texts, Path(print_dir) / "templates")
