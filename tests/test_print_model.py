@@ -266,3 +266,12 @@ def test_guard_refuses_two_decimals_that_could_flip_the_rounding(real):
 def test_model_carries_no_cia_mali():
     names = {field.name for field in dataclasses.fields(AttackSheet)}
     assert not [name for name in names if "cia_delta" in name or "cia_impact" in name or "mali" in name]
+
+
+def test_recovery_table_names_the_measure_whose_level_sets_r(real):
+    cfg, _, sheets = real
+    sheet = sheets[0]
+    measure = sheet.recovery_measure
+    assert measure == "M4"
+    assert sheet.recovery_header == ("Level", f"{measure} – {cfg.measures[measure].name}", "Recovery-Faktor r")
+    assert sheet.recovery_header[1] in sheet.printed_fragments()

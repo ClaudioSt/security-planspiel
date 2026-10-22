@@ -136,6 +136,8 @@ class AttackSheet:
             for line in block.lines:
                 take_line(line)
         take_line(self.result_line)
+        for cell in self.recovery_header:
+            take(cell)
         for row in self.recovery_table:
             for cell in row:
                 take(cell)
@@ -272,7 +274,8 @@ def build_attack_sheet(cfg: Config, texts: Texts, wave: Wave) -> AttackSheet:
     recovery_table: tuple[tuple[str, str, str], ...] = ()
     recovery_line: Optional[Line] = None
     if with_recovery:
-        recovery_header = (labels["level"], "", labels["recovery_factor"])
+        # The middle header names the measure whose level sets r: the team must know which card to read.
+        recovery_header = (labels["level"], _measure_name(cfg, constants.recovery_measure), labels["recovery_factor"])
         recovery_table = tuple(
             (str(row.level), level_labels[str(row.level)], fmt.format_percent(row.factor))
             for row in constants.recovery_rows

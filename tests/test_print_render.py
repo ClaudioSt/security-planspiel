@@ -92,6 +92,7 @@ def test_recovery_step_only_for_waves_with_recovery(loaded):
         source = documents[sheet.job]
         if sheet.with_recovery:
             assert render.tex_escape(sheet.step_headings["recovery"]) in source, sheet.job
+            assert render.tex_escape(sheet.recovery_header[1]) in source, sheet.job
             assert render.tex_escape(sheet.recovery_header[2]) in source, sheet.job
             for line_part in sheet.recovery_line:
                 if isinstance(line_part, str):
