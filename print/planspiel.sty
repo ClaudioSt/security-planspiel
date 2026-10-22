@@ -47,8 +47,11 @@
 \pagestyle{planspiel}
 
 % ---- Worksheet layout (attack worksheets) -------------------------------------------------------
+\makeatletter
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{1.2mm}
+\setlength{\parskip}{0.8mm}
 \setlength{\emergencystretch}{3em}
 \arrayrulecolor{mhpblue}
 \setlength{\arrayrulewidth}{0.5pt}
@@ -58,8 +61,8 @@
 \newcommand{\attacktitle}[1]{{\color{mhpblue}\bfseries\fontsize{12}{15}\selectfont #1\par}\vspace{1mm}}
 
 % Step bar: full-width blue bar with white bold text.
-\newcommand{\step}[1]{\par\vspace{2mm}\noindent
-  \colorbox{mhpblue}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\color{white}\bfseries\strut #1\strut}}\par\vspace{1mm}}
+\newcommand{\step}[1]{\par\vspace{1.2mm}\noindent
+  \colorbox{mhpblue}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\color{white}\bfseries\strut #1\strut}}\par\vspace{0.5mm}}
 
 % Small grey italic hint.
 \newcommand{\hint}[1]{{\footnotesize\itshape\color{mhpgrey}#1\par}}
@@ -68,12 +71,12 @@
 \newcommand{\refline}[1]{\par\noindent
   \colorbox{mhplight}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\bfseries\strut #1\strut}}\par}
 
-% Fill-in boxes: 7 mm high, centred on the text line. Sizes: short (an entry), long (a result).
+% Fill-in boxes: 7 mm high, centred on the text line (7 mm = declared height plus depth). Sizes: short (an entry), long (a result).
 \newcommand{\planspiel@framebox}[1]{%
-  \raisebox{-2.3mm}[5mm][2mm]{{\setlength{\fboxsep}{0pt}\setlength{\fboxrule}{0.5pt}%
+  \raisebox{0pt}[4.4mm][2.6mm]{{\setlength{\fboxsep}{0pt}\setlength{\fboxrule}{0.5pt}%
     \fcolorbox{mhpblue}{white}{\parbox[c][7mm][c]{#1}{\hfill}}}}}
-\newcommand{\planspiel@ibox@short}{\planspiel@framebox{14mm}}
-\newcommand{\planspiel@ibox@long}{\planspiel@framebox{30mm}}
+\newcommand{\planspiel@ibox@short}{\planspiel@framebox{13mm}}
+\newcommand{\planspiel@ibox@long}{\planspiel@framebox{28mm}}
 \newcommand{\ibox}[1]{\csname planspiel@ibox@#1\endcsname}
 
 % One fill-in line: the line height leaves room for the 7 mm boxes.
@@ -94,6 +97,10 @@
 
 % Table rows: data rows are 7 mm high (writable), header rows 6 mm.
 \newcommand{\rowstrut}{\rule[-2.3mm]{0pt}{7mm}}
-\newcommand{\hdr}[1]{\color{white}\bfseries\rule[-1.8mm]{0pt}{6mm}#1}
+\newcommand{\hdr}[1]{\color{white}\bfseries\rule[-1.5mm]{0pt}{5mm}#1}
+
+% Page fill report (log only, no change to the PDF): used height and text height of the page just filled.
+\newcommand{\fillreport}[1]{\par\typeout{PLANSPIEL-FILL page=#1 used=\the\pagetotal\space text=\the\textheight}}
+\makeatother
 
 \endinput

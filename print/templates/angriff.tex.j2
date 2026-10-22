@@ -19,13 +19,13 @@
 \hline
 \rowcolor{mhpblue}\BLOCK{for cell in sheet.cia_header}\hdr{\VAR{cell}}\BLOCK{if not loop.last} & \BLOCK{endif}\BLOCK{endfor} \\
 \hline
-\rowcolor{mhplight}\rowstrut\BLOCK{for cell in sheet.cia_base_row}\VAR{cell}\BLOCK{if not loop.last} & \BLOCK{endif}\BLOCK{endfor} \\
+\rowcolor{mhplight}\rowstrut{}\BLOCK{for cell in sheet.cia_base_row}\VAR{cell}\BLOCK{if not loop.last} & \BLOCK{endif}\BLOCK{endfor} \\
 \hline
 \BLOCK{for row in range(sheet.cia_rows)}
-\rowstrut & {\footnotesize\color{mhpgrey}\VAR{sheet.level_hint}} & & & \\
+\rowstrut{} & \textcolor{mhpgrey}{\footnotesize \VAR{sheet.level_hint}} & & & \\
 \hline
 \BLOCK{endfor}
-\rowcolor{mhplight}\rowstrut\textbf{\VAR{sheet.labels.sum}} & & & & \\
+\rowcolor{mhplight}\rowstrut{}\textbf{\VAR{sheet.labels.sum}} & & & & \\
 \hline
 \end{tabularx}
 
@@ -42,7 +42,7 @@
 \rowcolor{mhpblue}\hdr{\VAR{sheet.bonus_header[0]}} & \hdr{\VAR{sheet.bonus_header[1]}} & \hdr{\VAR{sheet.bonus_header[2]}} & \hdr{\VAR{sheet.labels.fulfilled}} \\
 \hline
 \BLOCK{for row in sheet.bonus_table}
-\rowstrut\VAR{row[0]}\newline{\footnotesize\color{mhpgrey}\VAR{row[3]}} & \levelbadge{\VAR{row[1]}} & \VAR{row[2]} & \tickbox \\
+\rowstrut{}\VAR{row[0]}\newline\textcolor{mhpgrey}{\footnotesize \VAR{row[3]}} & \levelbadge{\VAR{row[1]}} & \VAR{row[2]} & \tickbox \\
 \hline
 \BLOCK{endfor}
 \end{tabularx}
@@ -51,6 +51,7 @@
 \step{\VAR{sheet.step_headings.reduction}}
 \BLOCK{call fillline(sheet.reduction_line)}\BLOCK{endcall}
 
+\fillreport{1}
 \clearpage
 \step{\VAR{sheet.step_headings.cases}}
 \hint{\VAR{sheet.intro.cap_intro}}
@@ -59,7 +60,7 @@
 \par\vspace{1mm}\textbf{\VAR{case.heading}}\par
 \VAR{case.text}\par
 \BLOCK{if case.outcome}
-{\bfseries\VAR{case.outcome}}\par
+\textbf{\VAR{case.outcome}}\par
 \BLOCK{endif}
 \BLOCK{if case.lines}
 \hint{\VAR{sheet.intro.case_3_hint}}
@@ -79,7 +80,7 @@
 \rowcolor{mhpblue}\hdr{\VAR{sheet.recovery_header[0]}} & \hdr{\VAR{sheet.recovery_header[1]}} & \hdr{\VAR{sheet.recovery_header[2]}} \\
 \hline
 \BLOCK{for row in sheet.recovery_table}
-\rowstrut\levelbadge{\VAR{row[0]}} & \VAR{row[1]} & \VAR{row[2]} \\
+\rowstrut{}\levelbadge{\VAR{row[0]}} & \VAR{row[1]} & \VAR{row[2]} \\
 \hline
 \BLOCK{endfor}
 \end{tabularx}
@@ -91,4 +92,5 @@
 \hint{\VAR{sheet.intro.events_hint}}
 \vspace{2mm}
 \BLOCK{call fillline(sheet.result_line)}\BLOCK{endcall}
+\fillreport{2}
 \end{document}
