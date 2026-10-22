@@ -52,6 +52,14 @@ def replay_bonus(sheet: AttackSheet, levels: Mapping[str, int]) -> int:
     return sum(row.points for row in sheet.bonus_rows if levels.get(row.measure, 0) >= row.min_level)
 
 
+def replay_recovery_factor(sheet: AttackSheet, levels: Mapping[str, int]) -> Fraction:
+    """Step 6 lookup: r from the printed recovery table at the team's level of the recovery measure."""
+    if not sheet.with_recovery:
+        return Fraction(0)
+    table = {row.level: row.factor for row in sheet.recovery_rows}
+    return Fraction(table[levels.get(sheet.recovery_measure, 0)])
+
+
 def replay_steps(sheet: AttackSheet, e_value: Fraction, levels: Mapping[str, int], event_kz) -> SheetResult:
     """Steps 3 to 7 in printed order for a given E-value, measure levels and event KZ."""
     assert sheet.lower + sheet.reduction_cap == sheet.upper, (
@@ -73,11 +81,7 @@ def replay_steps(sheet: AttackSheet, e_value: Fraction, levels: Mapping[str, int
         damage_before = (sheet.upper - gr) * sheet.unit_eur
         kz_attack = Fraction(sheet.kz_case_1) + (gr - sheet.lower) * sheet.slope
 
-    factor = Fraction(0)
-    if sheet.with_recovery:
-        table = {row.level: row.factor for row in sheet.recovery_rows}
-        factor = Fraction(table[levels.get(sheet.recovery_measure, 0)])
-    damage = damage_before * (1 - factor)
+    damage = damage_before * (1 - replay_recovery_factor(sheet, levels))
 
     change = paper_round(kz_attack + Fraction(event_kz))
     return SheetResult(Fraction(e_value), total_bonus, gr, case, damage_before, damage, kz_attack, change)
