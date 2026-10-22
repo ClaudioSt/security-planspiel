@@ -1,7 +1,7 @@
 ---
 phase: 04-print-pipeline-attack-worksheets
 verified: 2026-10-22T18:40:00Z
-status: human_needed
+status: passed
 score: 4/4 must-haves verified
 behavior_unverified: 0
 overrides_applied: 0
@@ -20,7 +20,7 @@ deferred: []
 
 **Phase Goal:** The Angriff 1-3 worksheets are generated from config through a proven, non-interactive LaTeX pipeline and provably compute the same results as the simulation.
 **Verified:** 2026-10-22
-**Status:** human_needed (all automated checks pass; two human items remain)
+**Status:** passed (all automated checks pass; both human items confirmed by the user on 2026-10-22, see 04-UAT.md)
 **Re-verification:** No, initial verification
 
 ## Goal Achievement
