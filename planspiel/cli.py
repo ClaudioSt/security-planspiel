@@ -139,7 +139,7 @@ def _print_command(config: str, content_dir: str, print_dir: str, out_dir: str, 
 
     import jinja2
 
-    from planspiel import render, texbuild
+    from planspiel import render, stamp, texbuild
     from planspiel.config import load_config
     from planspiel.texts import TEXTE_FILE, load_texts
 
@@ -168,7 +168,16 @@ def _print_command(config: str, content_dir: str, print_dir: str, out_dir: str, 
         print("1 Fehler")
         return 1
     try:
-        pdfs = texbuild.build_documents(documents, Path(print_dir), Path(build_dir))
+        version = stamp.compute_stamp(documents, Path(print_dir), stamp.repo_root())
+    except stamp.StampError as error:
+        print(f"ERROR print.stamp {error}")
+        print("1 Fehler")
+        return 1
+    print(f"Stand: {version.text}")
+    try:
+        pdfs = texbuild.build_documents(
+            documents, Path(print_dir), Path(build_dir), stamp_tex=stamp.stamp_tex(version.text)
+        )
     except texbuild.TexBuildError as error:
         print(f"ERROR print.tex {error}")
         print("1 Fehler")

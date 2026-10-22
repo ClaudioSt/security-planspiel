@@ -25,15 +25,22 @@
 \definecolor{leveltwo}{HTML}{DDEF03}
 \definecolor{levelthree}{HTML}{575757}
 
-% Footer: thin rule and "Seite x von y". The LastPage label is written into the aux file at the
-% end of the document and read back in the next pass (no lastpage or fancyhdr package needed).
+% Version stamp "Stand <date> · <hash>": `planspiel print` writes it to stamp.tex (outside the
+% hashed content). Without it the build stops, so no page can be printed unstamped.
+\InputIfFileExists{stamp.tex}{}{%
+  \PackageError{planspiel}{stamp.tex fehlt im Build-Verzeichnis}%
+    {Der Stempel wird von `planspiel print` erzeugt; ohne ihn darf keine Seite gebaut werden.}}
+
+% Footer: thin rule, stamp on the left and "Seite x von y" on the right. The LastPage label is
+% written into the aux file at the end of the document and read back in the next pass (no lastpage
+% or fancyhdr package needed).
 \makeatletter
 \def\ps@planspiel{%
   \let\@oddhead\@empty
   \let\@evenhead\@empty
   \def\@oddfoot{\parbox[t]{\textwidth}{%
     \color{mhpgrey}\rule{\textwidth}{0.4pt}\par\vspace{-2pt}%
-    {\small\hfill Seite \thepage\ von \pageref{LastPage}}}}%
+    {\small\footerstamp\hfill Seite \thepage\ von \pageref{LastPage}}}}%
   \let\@evenfoot\@oddfoot}
 \AtEndDocument{\immediate\write\@auxout{\string\newlabel{LastPage}{{}{\thepage}}}}
 \makeatother

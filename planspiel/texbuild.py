@@ -28,6 +28,8 @@ TEX_PROBES: Dict[str, str] = {
 
 # Files copied from the print directory into every build directory.
 STATIC_FILES = ("planspiel.sty",)
+# Written by build_documents after hashing; never part of the content hash.
+STAMP_FILE = "stamp.tex"
 
 LUALATEX = [
     "lualatex",
@@ -206,10 +208,14 @@ def build_documents(
     print_dir: Path,
     build_dir: Path,
     *,
+    stamp_tex: str,
     timeout_s: int = 300,
     run: Optional[Callable[..., Path]] = None,
 ) -> Dict[str, Path]:
-    """Write each document as `<job>.tex` into `build_dir` and build it; return `{job: pdf}`."""
+    """Write each document as `<job>.tex` into `build_dir` and build it; return `{job: pdf}`.
+
+    `stamp_tex` is written to `stamp.tex` before TeX runs; the style stops the build without it.
+    """
     for job in documents:
         if not JOB_NAME.match(job):
             raise ValueError(f"Ungültiger Jobname {job!r}: erlaubt sind a-z, 0-9, _ und - (nicht am Anfang)")
@@ -218,6 +224,7 @@ def build_documents(
     build_dir.mkdir(parents=True, exist_ok=True)
     for name in STATIC_FILES:
         shutil.copyfile(Path(print_dir) / name, build_dir / name)
+    (build_dir / STAMP_FILE).write_text(stamp_tex, encoding="utf-8", newline="\n")
     pdfs = {}
     for job in sorted(documents):
         (build_dir / f"{job}.tex").write_text(documents[job], encoding="utf-8", newline="\n")
