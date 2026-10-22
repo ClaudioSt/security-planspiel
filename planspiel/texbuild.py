@@ -7,6 +7,7 @@ installer dialog.
 import os
 import re
 import shutil
+import signal
 import subprocess
 import sys
 import time
@@ -78,8 +79,8 @@ def _kill_tree(pid: int) -> None:
             pass
         time.sleep(KILL_SETTLE_S)  # taskkill returns before the killed processes released their file handles
     else:
-        try:
-            os.kill(pid, 9)
+        try:  # the child leads its own session (see _run_bounded), so its pid is the group id
+            os.killpg(pid, signal.SIGKILL)
         except OSError:
             pass
 
@@ -93,6 +94,7 @@ def _run_bounded(
     popen=subprocess.Popen,
     kill_tree: Callable[[int], None] = _kill_tree,
 ) -> Tuple[int, str, str]:
+    session = {} if sys.platform == "win32" else {"start_new_session": True}  # own group: killpg reaches grandchildren
     proc = popen(
         cmd,
         cwd=cwd,
@@ -102,6 +104,7 @@ def _run_bounded(
         stderr=subprocess.PIPE,
         encoding="utf-8",
         errors="replace",
+        **session,
     )
     try:
         out, err = proc.communicate(timeout=timeout_s)

@@ -144,6 +144,49 @@ def test_run_bounded_kills_the_process_tree_on_timeout():
     assert proc.killed
 
 
+def test_run_bounded_starts_its_own_session_on_posix(monkeypatch):
+    seen = {}
+
+    def popen(cmd, **kwargs):
+        seen.update(kwargs)
+        return FakeProc(hang=False)
+
+    monkeypatch.setattr(texbuild.sys, "platform", "linux")
+    texbuild._run_bounded(["lualatex", "x.tex"], cwd=None, timeout_s=7, popen=popen)
+    assert seen["start_new_session"] is True
+
+
+def test_run_bounded_leaves_the_session_alone_on_windows(monkeypatch):
+    seen = {}
+
+    def popen(cmd, **kwargs):
+        seen.update(kwargs)
+        return FakeProc(hang=False)
+
+    monkeypatch.setattr(texbuild.sys, "platform", "win32")
+    texbuild._run_bounded(["lualatex", "x.tex"], cwd=None, timeout_s=7, popen=popen)
+    assert "start_new_session" not in seen
+
+
+def test_kill_tree_signals_the_whole_process_group_on_posix(monkeypatch):
+    signalled = []
+    monkeypatch.setattr(texbuild.sys, "platform", "linux")
+    monkeypatch.setattr(texbuild.os, "killpg", lambda pgid, sig: signalled.append((pgid, sig)), raising=False)
+    monkeypatch.setattr(texbuild.signal, "SIGKILL", 9, raising=False)
+    texbuild._kill_tree(4242)
+    assert signalled == [(4242, 9)]
+
+
+def test_kill_tree_ignores_a_group_that_is_already_gone(monkeypatch):
+    def gone(pgid, sig):
+        raise ProcessLookupError(pgid)
+
+    monkeypatch.setattr(texbuild.sys, "platform", "linux")
+    monkeypatch.setattr(texbuild.os, "killpg", gone, raising=False)
+    monkeypatch.setattr(texbuild.signal, "SIGKILL", 9, raising=False)
+    texbuild._kill_tree(4242)
+
+
 # --- style drift (fast, no TeX) -------------------------------------------------------------
 
 PACKAGE_LINE = re.compile(r"\\(?:RequirePackage|usepackage)(?:\[[^\]]*\])?\{([^}]*)\}")
