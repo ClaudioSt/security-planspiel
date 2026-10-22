@@ -46,4 +46,54 @@
 \makeatother
 \pagestyle{planspiel}
 
+% ---- Worksheet layout (attack worksheets) -------------------------------------------------------
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1.2mm}
+\setlength{\emergencystretch}{3em}
+\arrayrulecolor{mhpblue}
+\setlength{\arrayrulewidth}{0.5pt}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+% Title as on the Word worksheets: 12 pt, bold, blue.
+\newcommand{\attacktitle}[1]{{\color{mhpblue}\bfseries\fontsize{12}{15}\selectfont #1\par}\vspace{1mm}}
+
+% Step bar: full-width blue bar with white bold text.
+\newcommand{\step}[1]{\par\vspace{2mm}\noindent
+  \colorbox{mhpblue}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\color{white}\bfseries\strut #1\strut}}\par\vspace{1mm}}
+
+% Small grey italic hint.
+\newcommand{\hint}[1]{{\footnotesize\itshape\color{mhpgrey}#1\par}}
+
+% Reference line (cap line): bold text on a light blue bar.
+\newcommand{\refline}[1]{\par\noindent
+  \colorbox{mhplight}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\bfseries\strut #1\strut}}\par}
+
+% Fill-in boxes: 7 mm high, centred on the text line. Sizes: short (an entry), long (a result).
+\newcommand{\planspiel@framebox}[1]{%
+  \raisebox{-2.3mm}[5mm][2mm]{{\setlength{\fboxsep}{0pt}\setlength{\fboxrule}{0.5pt}%
+    \fcolorbox{mhpblue}{white}{\parbox[c][7mm][c]{#1}{\hfill}}}}}
+\newcommand{\planspiel@ibox@short}{\planspiel@framebox{14mm}}
+\newcommand{\planspiel@ibox@long}{\planspiel@framebox{30mm}}
+\newcommand{\ibox}[1]{\csname planspiel@ibox@#1\endcsname}
+
+% One fill-in line: the line height leaves room for the 7 mm boxes.
+\newcommand{\fillline}[1]{\begingroup\setlength{\baselineskip}{9.5mm}\noindent #1\par\endgroup}
+
+% Empty square for the "Erfuellt" column (no tick glyphs: Arial lacks them).
+\newcommand{\tickbox}{\raisebox{-1.2mm}[3mm][1mm]{{\setlength{\fboxsep}{0pt}\setlength{\fboxrule}{0.5pt}%
+  \fcolorbox{mhpblue}{white}{\rule{0pt}{4mm}\rule{4mm}{0pt}}}}}
+
+% Level badge: filled box in the level colour (white text, dark on the light yellow of level 2).
+\newcommand{\planspiel@badge}[3]{%
+  \colorbox{#1}{\parbox[c][4.5mm][c]{4.5mm}{\centering\color{#2}\bfseries #3}}}
+\newcommand{\levelbadge}[1]{%
+  \ifcase#1\relax #1\or
+    \planspiel@badge{levelone}{white}{1}\or
+    \planspiel@badge{leveltwo}{mhpdark}{2}\or
+    \planspiel@badge{levelthree}{white}{3}\fi}
+
+% Table rows: data rows are 7 mm high (writable), header rows 6 mm.
+\newcommand{\rowstrut}{\rule[-2.3mm]{0pt}{7mm}}
+\newcommand{\hdr}[1]{\color{white}\bfseries\rule[-1.8mm]{0pt}{6mm}#1}
+
 \endinput

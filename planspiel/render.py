@@ -9,6 +9,8 @@ from typing import Callable, Dict, Tuple
 
 import jinja2
 
+from planspiel.printmodel import build_attack_sheets
+
 _TEX_SPECIALS = str.maketrans(
     {
         "\\": r"\textbackslash{}",
@@ -57,9 +59,15 @@ def make_env(template_dir: Path) -> jinja2.Environment:
     )
 
 
+def attack_worksheets(cfg, texts, env: jinja2.Environment) -> Dict[str, str]:
+    """One attack worksheet per wave, rendered from the print model with angriff.tex.j2."""
+    template = env.get_template("angriff.tex.j2")
+    return {sheet.job: template.render(sheet=sheet) for sheet in build_attack_sheets(cfg, texts)}
+
+
 # Each builder takes (cfg, texts, env) and returns {job name: .tex source}.
 DocumentBuilder = Callable[..., Dict[str, str]]
-DOCUMENT_BUILDERS: Tuple[DocumentBuilder, ...] = ()
+DOCUMENT_BUILDERS: Tuple[DocumentBuilder, ...] = (attack_worksheets,)
 
 
 def render_all(cfg, texts, template_dir: Path) -> Dict[str, str]:

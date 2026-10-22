@@ -143,6 +143,7 @@ def _print_command(
 
     from planspiel import render, stamp, texbuild
     from planspiel.config import load_config
+    from planspiel.printmodel import PrintModelError
     from planspiel.texts import TEXTE_FILE, load_texts
 
     failure = 2 if check else 1  # --check: 1 means stale, 2 means the check itself could not run
@@ -167,6 +168,10 @@ def _print_command(
         return failure
     try:
         documents = render.render_all(cfg, texts, Path(print_dir) / "templates")
+    except PrintModelError as error:
+        print(f"ERROR print.model {error}")
+        print("1 Fehler")
+        return failure
     except (jinja2.TemplateError, TypeError, ValueError) as error:
         print(f"ERROR print.render {error}")
         print("1 Fehler")

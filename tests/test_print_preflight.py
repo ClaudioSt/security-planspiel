@@ -148,6 +148,7 @@ def test_run_bounded_kills_the_process_tree_on_timeout():
 
 PACKAGE_LINE = re.compile(r"\\(?:RequirePackage|usepackage)(?:\[[^\]]*\])?\{([^}]*)\}")
 OPTION_IMPLIED = ("colortbl.sty", "ngerman.ldf")
+LOCAL_PACKAGES = {"planspiel"}  # the shared style, loaded by every template
 
 
 def _loaded_packages():
@@ -155,7 +156,8 @@ def _loaded_packages():
     names = set()
     for source in sources:
         for match in PACKAGE_LINE.finditer(source.read_text(encoding="utf-8")):
-            names.update(part.strip() for part in match.group(1).split(",") if part.strip())
+            parts = (part.strip() for part in match.group(1).split(","))
+            names.update(part for part in parts if part and part not in LOCAL_PACKAGES)
     return names
 
 
