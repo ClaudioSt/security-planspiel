@@ -2,6 +2,7 @@
 
 Run with `uv run pytest -m pdf tests/test_print_stamp_pdf.py -v`.
 """
+import json
 import re
 
 import pytest
@@ -52,3 +53,16 @@ def test_tex_read_nothing_outside_the_hashed_set(printed_set):
         allowed = {f"{job}.tex", f"{job}.aux", "stamp.tex", *texbuild.STATIC_FILES}
         extra = stamp.recorded_local_inputs(fls, printed_set.build_a) - allowed
         assert not extra, f"{job}: TeX las Dateien außerhalb des gehashten Satzes: {sorted(extra)}"
+
+
+def test_manifest_stamp_equals_the_stamp_on_the_pages(printed_set):
+    manifest = json.loads((printed_set.out_a / "manifest.json").read_text(encoding="utf-8"))
+    (found,) = {s for job in printed_set.jobs for s in _stamps_of(printed_set.out_a / f"{job}.pdf")}
+    assert re.sub(r"\s+", "", manifest["stamp"]) == found
+    assert set(manifest["documents"]) == set(printed_set.jobs)
+
+
+def test_manifests_of_two_runs_are_byte_identical(printed_set):
+    first = (printed_set.out_a / "manifest.json").read_bytes()
+    second = (printed_set.out_b / "manifest.json").read_bytes()
+    assert first == second
