@@ -133,7 +133,9 @@ def _gate_command(parser: argparse.ArgumentParser, config: str, tiers: list[str]
     return 0 if all_passed else 1
 
 
-def _print_command(config: str, content_dir: str, print_dir: str, out_dir: str, build_dir: str) -> int:
+def _print_command(
+    config: str, content_dir: str, print_dir: str, out_dir: str, build_dir: str, check: bool = False
+) -> int:
     import shutil
     import tomllib
 
@@ -143,16 +145,18 @@ def _print_command(config: str, content_dir: str, print_dir: str, out_dir: str, 
     from planspiel.config import load_config
     from planspiel.texts import TEXTE_FILE, load_texts
 
-    try:
-        problems = texbuild.preflight()
-    except texbuild.TexBuildError as error:
-        problems = [str(error)]
-    if problems:
-        for problem in problems:
-            print(f"ERROR print.preflight {problem}")
-        print("Installieren (MiKTeX Console oder Terminal): miktex packages install --package-id-file print/miktex-packages.txt")
-        print(f"{len(problems)} Fehler")
-        return 1
+    failure = 2 if check else 1  # --check: 1 means stale, 2 means the check itself could not run
+    if not check:
+        try:
+            problems = texbuild.preflight()
+        except texbuild.TexBuildError as error:
+            problems = [str(error)]
+        if problems:
+            for problem in problems:
+                print(f"ERROR print.preflight {problem}")
+            print("Installieren (MiKTeX Console oder Terminal): miktex packages install --package-id-file print/miktex-packages.txt")
+            print(f"{len(problems)} Fehler")
+            return 1
     texte_path = Path(content_dir) / TEXTE_FILE
     try:
         cfg = load_config(Path(config))
@@ -160,18 +164,28 @@ def _print_command(config: str, content_dir: str, print_dir: str, out_dir: str, 
     except (OSError, json.JSONDecodeError, tomllib.TOMLDecodeError, ValueError) as error:
         print(f"ERROR print.input {config} / {texte_path}: {error}")
         print("1 Fehler")
-        return 1
+        return failure
     try:
         documents = render.render_all(cfg, texts, Path(print_dir) / "templates")
     except (jinja2.TemplateError, TypeError, ValueError) as error:
         print(f"ERROR print.render {error}")
         print("1 Fehler")
-        return 1
+        return failure
     try:
         version = stamp.compute_stamp(documents, Path(print_dir), stamp.repo_root())
     except stamp.StampError as error:
         print(f"ERROR print.stamp {error}")
         print("1 Fehler")
+        return failure
+    if check:
+        findings = stamp.check_freshness(documents, version, Path(out_dir))
+        if not findings:
+            print(f"Druckmaterial aktuell: {version.text} ({len(documents)} Dokument(e) in {out_dir})")
+            return 0
+        for finding in findings:
+            print(f"STALE {finding}")
+        print(f"{len(findings)} veraltet.")
+        print("Reihenfolge: Eingaben committen, `uv run planspiel print` ausführen, final_documents/generated/ committen.")
         return 1
     print(f"Stand: {version.text}")
     try:
@@ -184,9 +198,17 @@ def _print_command(config: str, content_dir: str, print_dir: str, out_dir: str, 
         return 1
     target = Path(out_dir)
     target.mkdir(parents=True, exist_ok=True)
+    published = {}
     for job in sorted(pdfs):
-        shutil.copyfile(pdfs[job], target / f"{job}.pdf")
-        print(f"{target / f'{job}.pdf'}")
+        published[job] = target / f"{job}.pdf"
+        shutil.copyfile(pdfs[job], published[job])
+        print(f"{published[job]}")
+    keep = {path.name for path in published.values()}
+    for old in sorted(target.glob("*.pdf")):
+        if old.name not in keep:
+            old.unlink()
+            print(f"Entfernt (nicht mehr im Druckumfang): {old}")
+    stamp.write_manifest(target, version, documents, published)
     print(f"{len(pdfs)} Dokument(e) gebaut: {target}")
     return 0
 
@@ -281,12 +303,20 @@ def main(argv: list[str] | None = None) -> int:
     print_parser.add_argument(
         "--build-dir", default="build/print", help="Arbeitsverzeichnis für TeX-Quellen und Hilfsdateien."
     )
+    print_parser.add_argument(
+        "--check",
+        action="store_true",
+        help="prüft ohne TeX, ob die PDFs in --out-dir zum aktuellen Stand passen "
+        "(Exit 0 aktuell, 1 veraltet, 2 Umgebungsfehler).",
+    )
     args = parser.parse_args(argv)
     if args.command is None:
         parser.print_help()
         return 0
     if args.command == "print":
-        return _print_command(args.config, args.content_dir, args.print_dir, args.out_dir, args.build_dir)
+        return _print_command(
+            args.config, args.content_dir, args.print_dir, args.out_dir, args.build_dir, args.check
+        )
     if args.command == "texts":
         return _texts_command(args.config, args.content_dir)
     if args.command == "clues":

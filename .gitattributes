@@ -5,3 +5,4 @@ tests/golden/*.json text eol=lf
 content/*.toml text eol=lf
 print/** text eol=lf
 final_documents/generated/*.pdf binary
+final_documents/generated/manifest.json text eol=lf
