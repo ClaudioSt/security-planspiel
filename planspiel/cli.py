@@ -133,6 +133,55 @@ def _gate_command(parser: argparse.ArgumentParser, config: str, tiers: list[str]
     return 0 if all_passed else 1
 
 
+def _print_command(config: str, content_dir: str, print_dir: str, out_dir: str, build_dir: str) -> int:
+    import shutil
+    import tomllib
+
+    import jinja2
+
+    from planspiel import render, texbuild
+    from planspiel.config import load_config
+    from planspiel.texts import TEXTE_FILE, load_texts
+
+    try:
+        problems = texbuild.preflight()
+    except texbuild.TexBuildError as error:
+        problems = [str(error)]
+    if problems:
+        for problem in problems:
+            print(f"ERROR print.preflight {problem}")
+        print("Installieren (MiKTeX Console oder Terminal): miktex packages install --package-id-file print/miktex-packages.txt")
+        print(f"{len(problems)} Fehler")
+        return 1
+    texte_path = Path(content_dir) / TEXTE_FILE
+    try:
+        cfg = load_config(Path(config))
+        texts = load_texts(texte_path)
+    except (OSError, json.JSONDecodeError, tomllib.TOMLDecodeError, ValueError) as error:
+        print(f"ERROR print.input {config} / {texte_path}: {error}")
+        print("1 Fehler")
+        return 1
+    try:
+        documents = render.render_all(cfg, texts, Path(print_dir) / "templates")
+    except (jinja2.TemplateError, TypeError, ValueError) as error:
+        print(f"ERROR print.render {error}")
+        print("1 Fehler")
+        return 1
+    try:
+        pdfs = texbuild.build_documents(documents, Path(print_dir), Path(build_dir))
+    except texbuild.TexBuildError as error:
+        print(f"ERROR print.tex {error}")
+        print("1 Fehler")
+        return 1
+    target = Path(out_dir)
+    target.mkdir(parents=True, exist_ok=True)
+    for job in sorted(pdfs):
+        shutil.copyfile(pdfs[job], target / f"{job}.pdf")
+        print(f"{target / f'{job}.pdf'}")
+    print(f"{len(pdfs)} Dokument(e) gebaut: {target}")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     configure_utf8_stdio()
     parser = argparse.ArgumentParser(
@@ -205,10 +254,30 @@ def main(argv: list[str] | None = None) -> int:
         default="content",
         help="Verzeichnis mit texte.toml und clues.toml.",
     )
+    print_parser = subparsers.add_parser(
+        "print", help="Baut alle Druckmaterialien (LaTeX → PDF) aus Konfiguration und Texten."
+    )
+    print_parser.add_argument(
+        "--config", default="simulation_config.json", help="Pfad zur Konfigurationsdatei."
+    )
+    print_parser.add_argument(
+        "--content-dir", default="content", help="Verzeichnis mit texte.toml."
+    )
+    print_parser.add_argument(
+        "--print-dir", default="print", help="Verzeichnis mit planspiel.sty und templates/."
+    )
+    print_parser.add_argument(
+        "--out-dir", default="final_documents/generated", help="Zielverzeichnis für die fertigen PDFs."
+    )
+    print_parser.add_argument(
+        "--build-dir", default="build/print", help="Arbeitsverzeichnis für TeX-Quellen und Hilfsdateien."
+    )
     args = parser.parse_args(argv)
     if args.command is None:
         parser.print_help()
         return 0
+    if args.command == "print":
+        return _print_command(args.config, args.content_dir, args.print_dir, args.out_dir, args.build_dir)
     if args.command == "texts":
         return _texts_command(args.config, args.content_dir)
     if args.command == "clues":
