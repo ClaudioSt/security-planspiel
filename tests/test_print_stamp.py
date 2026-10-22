@@ -180,6 +180,56 @@ def test_digest_ignores_the_dirty_flag(repo):
     assert dirty.text == clean.text + "+lokal"
 
 
+# --- inputs outside the repository defaults (WR-07) -----------------------------------------------
+
+
+def test_default_inputs_are_official(repo):
+    assert stamp.nondefault_inputs(repo, repo / "simulation_config.json", repo / "content", repo / "print") == []
+    roundabout = repo / "print" / ".." / "print"
+    assert stamp.nondefault_inputs(repo, repo / "simulation_config.json", repo / "content", roundabout) == []
+
+
+@pytest.mark.parametrize(
+    ("option", "config", "content", "print_dir"),
+    [
+        ("--config", "experiment.json", "content", "print"),
+        ("--content-dir", "simulation_config.json", "other", "print"),
+        ("--print-dir", "simulation_config.json", "content", "elsewhere"),
+    ],
+)
+def test_inputs_off_the_defaults_are_named(repo, option, config, content, print_dir):
+    (repo / "experiment.json").write_text("{}")
+    (repo / "other").mkdir()
+    (repo / "elsewhere").mkdir()
+    found = stamp.nondefault_inputs(repo, repo / config, repo / content, repo / print_dir)
+    assert found == [option]
+
+
+def test_missing_inputs_count_as_off_the_defaults(repo):
+    assert stamp.nondefault_inputs(repo, repo / "nope.json", repo / "content", repo / "print") == ["--config"]
+
+
+def test_unofficial_inputs_mark_the_stamp_lokal(repo):
+    docs = {"a": "x"}
+    official = stamp.compute_stamp(docs, repo / "print", repo)
+    marked = stamp.compute_stamp(docs, repo / "print", repo, unofficial=True)
+    assert marked.dirty is True and marked.digest == official.digest
+    assert marked.text == official.text + "+lokal"
+
+
+def test_repo_follows_the_config_path_not_the_working_directory(repo, tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)  # not a git repository
+    assert stamp.repo_for_inputs(repo / "simulation_config.json").resolve() == repo.resolve()
+
+
+def test_repo_falls_back_to_the_working_directory_for_a_loose_config(repo, tmp_path, monkeypatch):
+    loose = tmp_path / "loose"
+    loose.mkdir()
+    (loose / "c.json").write_text("{}")
+    monkeypatch.chdir(repo)
+    assert stamp.repo_for_inputs(loose / "c.json").resolve() == repo.resolve()
+
+
 # --- recorder -----------------------------------------------------------------------------------
 
 FLS = """PWD C:/work/build

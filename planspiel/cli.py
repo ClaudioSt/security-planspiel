@@ -188,11 +188,15 @@ def _print_command(
         print("1 Fehler")
         return failure
     try:
-        version = stamp.compute_stamp(documents, Path(print_dir), stamp.repo_root())
+        repo = stamp.repo_for_inputs(Path(config))
+        off_default = stamp.nondefault_inputs(repo, Path(config), Path(content_dir), Path(print_dir))
+        version = stamp.compute_stamp(documents, Path(print_dir), repo, unofficial=bool(off_default))
     except (stamp.StampError, OSError) as error:
         print(f"ERROR print.stamp {error}")
         print("1 Fehler")
         return failure
+    if off_default:
+        print(f"Hinweis: {', '.join(off_default)} weicht vom Repository-Standard ab, der Stand gilt als +lokal.")
     if check:
         findings = stamp.check_freshness(documents, version, Path(out_dir))
         if not findings:

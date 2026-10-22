@@ -16,6 +16,7 @@ def fixed_git(monkeypatch):
     monkeypatch.setattr(stamp, "repo_root", lambda *args, **kwargs: Path("."))
     monkeypatch.setattr(stamp, "input_date_utc", lambda repo: "2026-10-19")
     monkeypatch.setattr(stamp, "is_dirty", lambda repo: False)
+    monkeypatch.setattr(stamp, "nondefault_inputs", lambda *args, **kwargs: [])
 
 
 def _argv(tmp_path, **overrides):
@@ -242,3 +243,12 @@ def test_number_in_prose_makes_check_fail_with_two(monkeypatch, calls, tmp_path,
     assert main([*_argv(tmp_path, **{"--content-dir": str(content)}), "--check"]) == 2
     assert "ERROR print.texts" in capsys.readouterr().out
     assert calls == []
+
+
+def test_inputs_off_the_defaults_mark_the_stamp_and_are_named(monkeypatch, calls, tmp_path, capsys):
+    monkeypatch.setattr(texbuild, "preflight", lambda **kwargs: [])
+    monkeypatch.setattr(stamp, "nondefault_inputs", lambda *args, **kwargs: ["--config"])
+    assert main(_argv(tmp_path)) == 0
+    out = capsys.readouterr().out
+    assert "+lokal" in out
+    assert "--config" in out

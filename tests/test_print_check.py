@@ -46,6 +46,7 @@ def world(monkeypatch):
     monkeypatch.setattr(stamp, "repo_root", lambda *args, **kwargs: Path("."))
     monkeypatch.setattr(stamp, "input_date_utc", lambda repo: "2026-10-19")
     monkeypatch.setattr(stamp, "is_dirty", lambda repo: state["dirty"])
+    monkeypatch.setattr(stamp, "nondefault_inputs", lambda *args, **kwargs: [])
     return state
 
 

@@ -8,6 +8,7 @@ separate `stamp.tex` written after hashing and never feeds back into the hash.
 """
 import hashlib
 import json
+import os
 import re
 import subprocess
 from datetime import datetime, timezone
@@ -99,11 +100,38 @@ def stamp_text(digest: str, date: str, dirty: bool) -> str:
     return f"Stand {date} · {digest[:7]}{'+lokal' if dirty else ''}"
 
 
-def compute_stamp(documents: Dict[str, str], print_dir: Path, repo: Path) -> Stamp:
+def repo_for_inputs(config: Path) -> Path:
+    """The repository holding `config`; a loose config elsewhere falls back to the working directory."""
+    try:
+        return repo_root(Path(config).resolve().parent)
+    except StampError:
+        return repo_root()
+
+
+def _same_path(given: Path, default: Path) -> bool:
+    try:
+        return os.path.samefile(given, default)
+    except OSError:
+        return False
+
+
+def nondefault_inputs(repo: Path, config: Path, content_dir: Path, print_dir: Path) -> List[str]:
+    """CLI options whose path is not the repository default. The date and dirty check only describe the
+    default inputs (DATA_INPUTS, BUILD_INPUTS), so a build from other paths must count as unofficial."""
+    repo = Path(repo)
+    expected = (
+        ("--config", config, repo / "simulation_config.json"),
+        ("--content-dir", content_dir, repo / "content"),
+        ("--print-dir", print_dir, repo / "print"),
+    )
+    return [option for option, given, default in expected if not _same_path(Path(given), default)]
+
+
+def compute_stamp(documents: Dict[str, str], print_dir: Path, repo: Path, *, unofficial: bool = False) -> Stamp:
     static_files = {name: (Path(print_dir) / name).read_bytes() for name in texbuild.STATIC_FILES}
     digest = content_hash(documents, static_files)
     date = input_date_utc(repo)
-    dirty = is_dirty(repo)
+    dirty = is_dirty(repo) or unofficial
     return Stamp(stamp_text(digest, date, dirty), digest, date, dirty)
 
 
