@@ -59,6 +59,11 @@ class MissingTex:
     package: str
 
 
+def check_job_name(job: str) -> None:
+    if not JOB_NAME.match(job):
+        raise ValueError(f"Ungültiger Jobname {job!r}: erlaubt sind a-z, 0-9, _ und - (nicht am Anfang)")
+
+
 def _kill_tree(pid: int) -> None:
     if sys.platform == "win32":
         try:
@@ -179,7 +184,11 @@ def run_lualatex(
     job_dir = Path(job_dir)
     stem = Path(tex_name).stem
     for suffix in ("aux", "pdf", "log", "fls"):
-        (job_dir / f"{stem}.{suffix}").unlink(missing_ok=True)
+        stale = job_dir / f"{stem}.{suffix}"
+        try:
+            stale.unlink(missing_ok=True)
+        except OSError as exc:  # e.g. a PDF still open in a viewer on Windows
+            raise TexBuildError(f"{stale.name} lässt sich nicht löschen (in einem Programm geöffnet?): {exc}") from exc
     env = {**os.environ, "SOURCE_DATE_EPOCH": "0", "FORCE_SOURCE_DATE": "1"}  # belt and braces only
     aux_path = job_dir / f"{stem}.aux"
     previous = None
@@ -217,8 +226,7 @@ def build_documents(
     `stamp_tex` is written to `stamp.tex` before TeX runs; the style stops the build without it.
     """
     for job in documents:
-        if not JOB_NAME.match(job):
-            raise ValueError(f"Ungültiger Jobname {job!r}: erlaubt sind a-z, 0-9, _ und - (nicht am Anfang)")
+        check_job_name(job)
     run = run or run_lualatex
     build_dir = Path(build_dir)
     build_dir.mkdir(parents=True, exist_ok=True)

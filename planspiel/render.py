@@ -9,6 +9,7 @@ from typing import Callable, Dict, Tuple
 
 import jinja2
 
+from planspiel import texbuild
 from planspiel.printmodel import build_attack_sheets
 
 _TEX_SPECIALS = str.maketrans(
@@ -79,6 +80,7 @@ def render_all(cfg, texts, template_dir: Path) -> Dict[str, str]:
     documents: Dict[str, str] = {}
     for builder in DOCUMENT_BUILDERS:
         for job, source in builder(cfg, texts, env).items():
+            texbuild.check_job_name(job)
             if job in documents:
                 raise ValueError(f"Dokument {job!r} wird von mehreren Erzeugern geliefert")
             documents[job] = source

@@ -107,3 +107,11 @@ def test_render_all_rejects_duplicate_jobs(monkeypatch, tmp_path):
     )
     with pytest.raises(ValueError, match="same"):
         render.render_all(None, None, tmp_path)
+
+
+def test_render_all_rejects_an_invalid_job_name(tmp_path):
+    from unittest import mock
+
+    with mock.patch.object(render, "DOCUMENT_BUILDERS", (lambda cfg, texts, env: {"Angriff-X": "x"},)):
+        with pytest.raises(ValueError, match="Angriff-X"):
+            render.render_all(None, None, tmp_path)

@@ -159,3 +159,56 @@ def test_print_model_error_makes_check_fail_with_two(monkeypatch, tmp_path, caps
     monkeypatch.setattr(render, "render_all", broken)
     assert main([*_argv(tmp_path), "--check"]) == 2
     assert "ERROR print.model" in capsys.readouterr().out
+
+
+def test_check_without_style_file_exits_two_not_with_a_traceback(monkeypatch, tmp_path, capsys):
+    monkeypatch.setattr(render, "render_all", lambda *args, **kwargs: {"smoke": "x"})
+    empty_print_dir = tmp_path / "print"
+    (empty_print_dir / "templates").mkdir(parents=True)
+    argv = [*_argv(tmp_path, **{"--print-dir": str(empty_print_dir)}), "--check"]
+    assert main(argv) == 2
+    out = capsys.readouterr().out
+    assert "ERROR print.stamp" in out
+    assert "planspiel.sty" in out
+
+
+def test_build_without_style_file_exits_one_with_a_message(monkeypatch, tmp_path, capsys):
+    monkeypatch.setattr(texbuild, "preflight", lambda **kwargs: [])
+    monkeypatch.setattr(render, "render_all", lambda *args, **kwargs: {"smoke": "x"})
+    argv = _argv(tmp_path, **{"--print-dir": str(tmp_path / "no_print_dir")})
+    assert main(argv) == 1
+    assert "ERROR print.stamp" in capsys.readouterr().out
+
+
+def test_missing_text_key_exits_two_under_check(monkeypatch, tmp_path, capsys):
+    def broken(*args, **kwargs):
+        raise KeyError("Schlüssel 'sheets.labels.kz' fehlt in der Inhaltsquelle")
+
+    monkeypatch.setattr(render, "render_all", broken)
+    assert main([*_argv(tmp_path), "--check"]) == 2
+    out = capsys.readouterr().out
+    assert "ERROR print.model" in out
+    assert "sheets.labels.kz" in out
+
+
+def test_invalid_job_name_is_reported_by_check(monkeypatch, tmp_path, capsys):
+    monkeypatch.setattr(render, "DOCUMENT_BUILDERS", (lambda cfg, texts, env: {"Angriff-X": "x"},))
+    assert main([*_argv(tmp_path), "--check"]) == 2
+    out = capsys.readouterr().out
+    assert "ERROR print.render" in out
+    assert "Angriff-X" in out
+
+
+def test_locked_pdf_names_the_file_and_exits_one(monkeypatch, calls, tmp_path, capsys):
+    import shutil
+
+    monkeypatch.setattr(texbuild, "preflight", lambda **kwargs: [])
+
+    def locked(source, target, *args, **kwargs):
+        raise PermissionError(13, "Der Prozess kann nicht auf die Datei zugreifen", str(target))
+
+    monkeypatch.setattr(shutil, "copyfile", locked)
+    assert main(_argv(tmp_path)) == 1
+    out = capsys.readouterr().out
+    assert "ERROR print.publish" in out
+    assert "smoke.pdf" in out

@@ -176,3 +176,17 @@ def test_build_documents_requires_a_stamp(tmp_path):
     print_dir = make_print_dir(tmp_path)
     with pytest.raises(TypeError):
         texbuild.build_documents({"a": "x\n"}, print_dir, tmp_path / "build", run=lambda *a, **k: None)
+
+
+def test_locked_stale_output_becomes_a_tex_build_error(monkeypatch, tmp_path):
+    (tmp_path / "smoke.pdf").write_bytes(b"%PDF-open-in-a-viewer")
+    original = Path.unlink
+
+    def locked(self, *args, **kwargs):
+        if self.name == "smoke.pdf":
+            raise PermissionError(13, "Der Prozess kann nicht auf die Datei zugreifen", str(self))
+        return original(self, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "unlink", locked)
+    with pytest.raises(TexBuildError, match="smoke.pdf"):
+        texbuild.run_lualatex(tmp_path, "smoke.tex", runner=FakeLualatex([b"A", b"A"]))

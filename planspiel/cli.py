@@ -172,13 +172,17 @@ def _print_command(
         print(f"ERROR print.model {error}")
         print("1 Fehler")
         return failure
+    except KeyError as error:  # a text key the content source does not carry
+        print(f"ERROR print.model {error.args[0] if error.args else error}")
+        print("1 Fehler")
+        return failure
     except (jinja2.TemplateError, TypeError, ValueError) as error:
         print(f"ERROR print.render {error}")
         print("1 Fehler")
         return failure
     try:
         version = stamp.compute_stamp(documents, Path(print_dir), stamp.repo_root())
-    except stamp.StampError as error:
+    except (stamp.StampError, OSError) as error:
         print(f"ERROR print.stamp {error}")
         print("1 Fehler")
         return failure
@@ -197,7 +201,7 @@ def _print_command(
         pdfs = texbuild.build_documents(
             documents, Path(print_dir), Path(build_dir), stamp_tex=stamp.stamp_tex(version.text)
         )
-    except texbuild.TexBuildError as error:
+    except (texbuild.TexBuildError, ValueError, OSError) as error:
         print(f"ERROR print.tex {error}")
         print("1 Fehler")
         return 1
@@ -206,7 +210,12 @@ def _print_command(
     published = {}
     for job in sorted(pdfs):
         published[job] = target / f"{job}.pdf"
-        shutil.copyfile(pdfs[job], published[job])
+        try:
+            shutil.copyfile(pdfs[job], published[job])
+        except OSError as error:  # e.g. the PDF is open in a viewer on Windows
+            print(f"ERROR print.publish {published[job]} lässt sich nicht schreiben (in einem Programm geöffnet?): {error}")
+            print("1 Fehler")
+            return 1
         print(f"{published[job]}")
     keep = {path.name for path in published.values()}
     for old in sorted(target.glob("*.pdf")):
