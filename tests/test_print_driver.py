@@ -112,6 +112,9 @@ def test_timeout_from_the_runner_propagates(tmp_path):
         texbuild.run_lualatex(tmp_path, "smoke.tex", timeout_s=5, runner=runner)
 
 
+STAMP_TEX = "\\def\\footerstamp{Stand 2000-01-01 · test000}\n"
+
+
 def make_print_dir(tmp_path):
     print_dir = tmp_path / "print"
     print_dir.mkdir()
@@ -129,7 +132,7 @@ def test_build_documents_writes_lf_utf8_and_builds_in_sorted_order(tmp_path):
         return Path(job_dir) / (Path(tex_name).stem + ".pdf")
 
     result = texbuild.build_documents(
-        {"b-doc": "zeile eins\nzeile ä\n", "a_doc": "x\n"}, print_dir, build_dir, run=run
+        {"b-doc": "zeile eins\nzeile ä\n", "a_doc": "x\n"}, print_dir, build_dir, stamp_tex=STAMP_TEX, run=run
     )
     assert order == ["a_doc.tex", "b-doc.tex"]
     assert result == {"a_doc": build_dir / "a_doc.pdf", "b-doc": build_dir / "b-doc.pdf"}
@@ -145,9 +148,31 @@ def test_build_documents_rejects_unsafe_job_names_before_writing(tmp_path, bad):
     print_dir = make_print_dir(tmp_path)
     build_dir = tmp_path / "build"
     with pytest.raises(ValueError):
-        texbuild.build_documents({"ok": "x", bad: "y"}, print_dir, build_dir, run=lambda *a, **k: None)
+        texbuild.build_documents(
+            {"ok": "x", bad: "y"}, print_dir, build_dir, stamp_tex=STAMP_TEX, run=lambda *a, **k: None
+        )
     assert not build_dir.exists()
 
 
 def test_static_files_lists_the_style():
     assert texbuild.STATIC_FILES == ("planspiel.sty",)
+
+
+def test_build_documents_writes_stamp_tex_before_running_tex(tmp_path):
+    print_dir = make_print_dir(tmp_path)
+    build_dir = tmp_path / "build"
+    seen = []
+
+    def run(job_dir, tex_name, *, timeout_s):
+        seen.append((Path(job_dir) / "stamp.tex").read_bytes())
+        return Path(job_dir) / (Path(tex_name).stem + ".pdf")
+
+    texbuild.build_documents({"a": "x\n"}, print_dir, build_dir, stamp_tex=STAMP_TEX, run=run)
+    assert seen == [STAMP_TEX.encode("utf-8")]
+    assert b"\r" not in (build_dir / "stamp.tex").read_bytes()
+
+
+def test_build_documents_requires_a_stamp(tmp_path):
+    print_dir = make_print_dir(tmp_path)
+    with pytest.raises(TypeError):
+        texbuild.build_documents({"a": "x\n"}, print_dir, tmp_path / "build", run=lambda *a, **k: None)

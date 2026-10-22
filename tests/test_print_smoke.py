@@ -9,10 +9,13 @@ import time
 import pytest
 
 from planspiel import texbuild
+from planspiel.stamp import stamp_tex
 from planspiel.texbuild import TexBuildError
 from tests.support.tex import PRINT_DIR, SMOKE_TEX, tex_skip_reason
 
 pytestmark = pytest.mark.pdf
+
+TEST_STAMP_TEX = stamp_tex("Stand 2000-01-01 · test000")
 
 
 @pytest.fixture(scope="module")
@@ -37,9 +40,10 @@ def _smoke_document() -> dict:
 def smoke_builds(toolchain, tmp_path_factory):
     """Warm-up build (font indexing), then two builds in separate directories."""
     root = tmp_path_factory.mktemp("smoke")
-    texbuild.build_documents(_smoke_document(), PRINT_DIR, root / "warmup")
-    first = texbuild.build_documents(_smoke_document(), PRINT_DIR, root / "one")["smoke"]
-    second = texbuild.build_documents(_smoke_document(), PRINT_DIR, root / "two")["smoke"]
+    kwargs = {"stamp_tex": TEST_STAMP_TEX}
+    texbuild.build_documents(_smoke_document(), PRINT_DIR, root / "warmup", **kwargs)
+    first = texbuild.build_documents(_smoke_document(), PRINT_DIR, root / "one", **kwargs)["smoke"]
+    second = texbuild.build_documents(_smoke_document(), PRINT_DIR, root / "two", **kwargs)["smoke"]
     return first, second
 
 
@@ -61,6 +65,15 @@ def test_pdf_carries_no_dates_producer_or_trailer_id(smoke_builds):
     for key in (b"/CreationDate", b"/ModDate", b"/Producer"):
         assert key not in data
     assert not re.search(rb"/ID\s*\[", data)
+
+
+def test_build_without_stamp_tex_fails_naming_the_file(toolchain, tmp_path):
+    shutil.copyfile(PRINT_DIR / "planspiel.sty", tmp_path / "planspiel.sty")
+    shutil.copyfile(SMOKE_TEX, tmp_path / "smoke.tex")
+    assert not (tmp_path / "stamp.tex").exists()
+    with pytest.raises(TexBuildError, match="stamp.tex"):
+        texbuild.run_lualatex(tmp_path, "smoke.tex", timeout_s=120)
+    assert not (tmp_path / "smoke.pdf").exists()
 
 
 def test_missing_package_fails_fast_and_names_the_file(engine, tmp_path):

@@ -1,12 +1,21 @@
 """`planspiel print`: preflight first, then render, build and publish (PRINT-01, D-13, D-14, D-17)."""
+from pathlib import Path
+
 import pytest
 
-from planspiel import render, texbuild
+from planspiel import render, stamp, texbuild
 from planspiel.cli import main
 from tests.support import MINI_CONTENT_DIR, REPO_ROOT
 
 MINI = REPO_ROOT / "tests" / "fixtures" / "mini_config.json"
 PROBLEM = "colortbl.sty fehlt (MiKTeX-Paket colortbl)"
+
+
+@pytest.fixture(autouse=True)
+def fixed_git(monkeypatch):
+    monkeypatch.setattr(stamp, "repo_root", lambda *args, **kwargs: Path("."))
+    monkeypatch.setattr(stamp, "input_date_utc", lambda repo: "2026-10-19")
+    monkeypatch.setattr(stamp, "is_dirty", lambda repo: False)
 
 
 def _argv(tmp_path, **overrides):
@@ -26,8 +35,9 @@ def calls(monkeypatch):
     seen = []
     monkeypatch.setattr(render, "render_all", lambda *args, **kwargs: seen.append("render") or {"smoke": "x"})
 
-    def fake_build(documents, print_dir, build_dir, **kwargs):
+    def fake_build(documents, print_dir, build_dir, *, stamp_tex, **kwargs):
         seen.append("build")
+        assert stamp_tex.startswith("\\def\\footerstamp{Stand 2026-10-19 · ")
         build_dir.mkdir(parents=True, exist_ok=True)
         pdfs = {}
         for job in documents:
@@ -59,6 +69,33 @@ def test_success_publishes_pdfs(monkeypatch, calls, tmp_path, capsys):
     assert "smoke.pdf" in out
     assert "1 Dokument(e) gebaut" in out
     assert calls == ["render", "build"]
+
+
+def test_success_prints_the_stamp(monkeypatch, calls, tmp_path, capsys):
+    monkeypatch.setattr(texbuild, "preflight", lambda **kwargs: [])
+    assert main(_argv(tmp_path)) == 0
+    assert "Stand: Stand 2026-10-19 · " in capsys.readouterr().out
+
+
+def test_dirty_tree_marks_the_stamp(monkeypatch, calls, tmp_path, capsys):
+    monkeypatch.setattr(texbuild, "preflight", lambda **kwargs: [])
+    monkeypatch.setattr(stamp, "is_dirty", lambda repo: True)
+    assert main(_argv(tmp_path)) == 0
+    assert "+lokal" in capsys.readouterr().out
+
+
+def test_stamp_error_stops_before_the_build(monkeypatch, calls, tmp_path, capsys):
+    monkeypatch.setattr(texbuild, "preflight", lambda **kwargs: [])
+
+    def outside(*args, **kwargs):
+        raise stamp.StampError("Git-Aufruf fehlgeschlagen (rev-parse): not a git repository")
+
+    monkeypatch.setattr(stamp, "repo_root", outside)
+    assert main(_argv(tmp_path)) == 1
+    out = capsys.readouterr().out
+    assert "ERROR print.stamp Git-Aufruf fehlgeschlagen" in out
+    assert calls == ["render"]
+    assert not (tmp_path / "out").exists()
 
 
 def test_no_registered_document_builds_nothing(monkeypatch, tmp_path, capsys):
