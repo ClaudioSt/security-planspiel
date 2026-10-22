@@ -5,15 +5,15 @@ milestone_name: milestone
 current_phase: 04
 current_phase_name: Print Pipeline & Attack Worksheets
 status: executing
-stopped_at: Completed 04-04-PLAN.md
-last_updated: "2026-10-22T14:51:08.088Z"
+stopped_at: Completed 04-05-PLAN.md
+last_updated: "2026-10-22T15:08:50.226Z"
 last_activity: 2026-10-20
 last_activity_desc: Phase 04 execution started
 progress:
   total_phases: 7
   completed_phases: 3
   total_plans: 24
-  completed_plans: 22
+  completed_plans: 23
   percent: 43
 ---
 
@@ -29,11 +29,11 @@ See: .planning/PROJECT.md (updated 2026-09-29)
 ## Current Position
 
 Phase: 04 (Print Pipeline & Attack Worksheets) — EXECUTING
-Plan: 5 of 6 (04-01 to 04-04 complete; next 04-05)
+Plan: 6 of 6 (04-01 to 04-05 complete; next 04-06)
 Status: Ready to execute
 Last activity: 2026-10-20 — Phase 04 execution started
 
-Progress: [███████░░░] 67%
+Progress: [██████████] 96%
 
 ## Performance Metrics
 
@@ -78,6 +78,7 @@ Progress: [███████░░░] 67%
 | Phase 04 P01 | 35min | 3 tasks | 11 files |
 | Phase 04 P03 | 35min | 3 tasks | 9 files |
 | Phase 04 P04 | 40min | 3 tasks | 4 files |
+| Phase 04 P05 | 30min | 3 tasks | 12 files |
 
 ## Accumulated Context
 
@@ -116,6 +117,7 @@ Recent decisions affecting current work:
 - [Phase 04-01]: PDF byte identity comes from planspiel.sty (suppressoptionalinfo 1023) plus an aux-stable pass loop; Arial set by name, never by Path=
 - [Phase 04-03]: tex_escape raises UndefinedError for StrictUndefined; render failures report as ERROR print.render
 - [Phase 04-04]: worksheet replay is an independent encoding reading only AttackSheet exact fields; equivalence proven on 36,467 grid comparisons and all 782,336 plans per tier, with negative controls
+- [Phase 04-05]: version stamp = UTC date of last data-input commit + 7 hex of content hash over rendered .tex and planspiel.sty; +lokal only for build inputs; planspiel print --check compares manifest, rendered content and PDF SHA-256 without TeX
 
 ### Pending Todos
 
@@ -138,6 +140,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-10-22T14:50:58.231Z
-Stopped at: Completed 04-04-PLAN.md
+Last session: 2026-10-22T15:08:42.917Z
+Stopped at: Completed 04-05-PLAN.md
 Resume file: None

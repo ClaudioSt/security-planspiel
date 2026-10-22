@@ -45,7 +45,7 @@
 - [ ] **PRINT-08**: A printed team tracking sheet in calculation order (incl. separate rows for own costs vs external effects) replaces the whiteboard write-up
 - [ ] **PRINT-09**: A one-page "So funktioniert eine Welle" explains the wave calculation and what attacks and events affect
 - [ ] **PRINT-10**: A facilitator master sheet lists per-wave thresholds, caps, bonus tables, event effects, check rows and answer keys for reference selections
-- [ ] **PRINT-11**: Every generated page carries a version stamp (config hash/date)
+- [x] **PRINT-11**: Every generated page carries a version stamp (config hash/date)
 - [ ] **PRINT-12**: The pre-wave story documents (Unternehmenssteckbrief, Zeitungsartikel, Anfrage-Mail, Audit-Mail) are generated from the content source via LaTeX; their veiled prose and clues live in `content/texte.toml` (added 2026-10-06, Phase 3 D-14)
 
 ### Session Flow (FLOW)
@@ -149,7 +149,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PRINT-08 | Phase 5 | Pending |
 | PRINT-09 | Phase 5 | Pending |
 | PRINT-10 | Phase 5 | Pending |
-| PRINT-11 | Phase 4 | Pending |
+| PRINT-11 | Phase 4 | Complete |
 | PRINT-12 | Phase 5 | Pending |
 | FLOW-01 | Phase 5 | Pending |
 | FLOW-02 | Phase 7 | Pending |

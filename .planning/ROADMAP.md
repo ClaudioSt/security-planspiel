@@ -138,7 +138,7 @@ Plans:
   3. An equivalence test replays the printed hand-calculation steps over a dense input grid and matches the simulation for every input. The test fails if the simulation applies a mechanic the worksheet does not print.
   4. Every generated page carries a version stamp (config hash and date) in its footer.
 
-**Plans**: 4/6 plans executed
+**Plans**: 5/6 plans executed
 **Research flag**: yes. Topics: non-interactive MiKTeX build (update 23.10 → current, `--disable-installer`, subprocess timeout) as the first-plan smoke gate, then worksheet/card layout (tcolorbox raster, print scaling, cut lines). Spike-compile only, no full card sheet.
 
 Plans:
@@ -154,7 +154,7 @@ Plans:
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
-- [ ] 04-05-PLAN.md — PRINT-11: content-hash version stamp on every page, UTC input commit date, scoped "+lokal", manifest and `planspiel print --check` (SC4) (Wave 3)
+- [x] 04-05-PLAN.md — PRINT-11: content-hash version stamp on every page, UTC input commit date, scoped "+lokal", manifest and `planspiel print --check` (SC4) (Wave 3)
 
 **Wave 4** *(blocked on Wave 3 completion)*
 
@@ -217,7 +217,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 3 
 | 1. Simulation Foundation | 7/7 | Complete    | 2026-10-01 |
 | 2. Rule Changes | 8/8 | Complete    | 2026-10-05 |
 | 3. Content Source & Veiling | 3/3 | Complete    | 2026-10-19 |
-| 4. Print Pipeline & Attack Worksheets | 4/6 | In Progress|  |
+| 4. Print Pipeline & Attack Worksheets | 5/6 | In Progress|  |
 | 5. Player & Facilitator Print Material | 0/TBD | Not started | - |
 | 6. Rebalance | 0/TBD | Not started | - |
 | 7. Session Flow & Handoff | 0/TBD | Not started | - |
