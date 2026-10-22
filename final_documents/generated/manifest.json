@@ -1,0 +1,23 @@
+{
+  "date": "2026-10-22",
+  "dirty": false,
+  "documents": {
+    "angriff-1_ransomware": {
+      "pdf": "angriff-1_ransomware.pdf",
+      "pdf_sha256": "21c015c05d7d3e7c5c75ea17e684cb31753a1d47357c55d906087f328ac19a80",
+      "tex_sha256": "1f10b58bccd7b3a2ed0a8145a6dde80a04a71562996292247f045ef2189acc0b"
+    },
+    "angriff-2_ot": {
+      "pdf": "angriff-2_ot.pdf",
+      "pdf_sha256": "9db87052a3fe3cfbcdebb01e53e2ac9a0559511463772b7aa53b32fcbd1f4321",
+      "tex_sha256": "f1dd3d832f1f9fc7262b5419706efc9af03fc0e3a30503378d4ee7077c712b1f"
+    },
+    "angriff-3_exfil": {
+      "pdf": "angriff-3_exfil.pdf",
+      "pdf_sha256": "a60c64806924f10bf6fcf5916fe2c0b37de962d0969ae48feda06ad92d557358",
+      "tex_sha256": "72b69e32555f0f06bc3bdbd4e0a9fa440564258cb8d26283693d4cdbc867d289"
+    }
+  },
+  "hash": "202d6c890cd16f2b8b2340e440e5b06b44347001b1e5e2b06492e5ebb686e2d6",
+  "stamp": "Stand 2026-10-22 · 202d6c8"
+}
