@@ -97,15 +97,48 @@ def test_dirty_tree_is_recorded_in_the_manifest(world, tmp_path):
     assert manifest["dirty"] is True and manifest["stamp"].endswith("+lokal")
 
 
-def test_build_removes_orphan_pdfs_and_keeps_other_files(world, tmp_path):
+def test_build_removes_pdfs_the_previous_manifest_listed_and_keeps_other_files(world, tmp_path):
+    out = tmp_path / "out"
+    _build(tmp_path)
+    (out / "notes.txt").write_text("keep", encoding="utf-8")
+    world["docs"] = {"alpha": "eins\n"}
+    _build(tmp_path)
+    assert not (out / "beta.pdf").exists()
+    assert (out / "notes.txt").read_text(encoding="utf-8") == "keep"
+    assert (out / "alpha.pdf").exists()
+
+
+def test_build_never_deletes_pdfs_the_pipeline_did_not_write(world, tmp_path):
     out = tmp_path / "out"
     out.mkdir()
-    (out / "old.pdf").write_bytes(b"%PDF-old")
-    (out / "notes.txt").write_text("keep", encoding="utf-8")
+    (out / "Anfrage-Mail.pdf").write_bytes(b"%PDF-by-hand")
     _build(tmp_path)
-    assert not (out / "old.pdf").exists()
-    assert (out / "notes.txt").read_text(encoding="utf-8") == "keep"
-    assert (out / "alpha.pdf").exists() and (out / "beta.pdf").exists()
+    assert (out / "Anfrage-Mail.pdf").read_bytes() == b"%PDF-by-hand"
+    world["docs"] = {"alpha": "eins\n"}
+    _build(tmp_path)
+    assert (out / "Anfrage-Mail.pdf").exists()
+    assert not (out / "beta.pdf").exists()
+
+
+def test_build_ignores_a_manifest_entry_that_points_outside_the_out_dir(world, tmp_path):
+    out = tmp_path / "out"
+    _build(tmp_path)
+    outside = tmp_path / "outside.pdf"
+    outside.write_bytes(b"%PDF-outside")
+    manifest = _manifest(tmp_path)
+    manifest["documents"]["gamma"] = {"pdf": "../outside.pdf", "tex_sha256": "x", "pdf_sha256": "x"}
+    (out / "manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
+    _build(tmp_path)
+    assert outside.exists()
+
+
+def test_build_survives_an_unreadable_previous_manifest(world, tmp_path):
+    out = tmp_path / "out"
+    out.mkdir()
+    (out / "manifest.json").write_text("not json", encoding="utf-8")
+    (out / "Zeitungsartikel.pdf").write_bytes(b"%PDF-by-hand")
+    _build(tmp_path)
+    assert (out / "Zeitungsartikel.pdf").exists()
 
 
 # --- --check ------------------------------------------------------------------------------------

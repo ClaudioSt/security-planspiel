@@ -141,6 +141,22 @@ def write_manifest(out_dir: Path, version: Stamp, documents: Dict[str, str], pdf
     return path
 
 
+def previous_pdf_names(out_dir: Path) -> Set[str]:
+    """PDF file names the manifest in `out_dir` lists, i.e. the files an earlier build wrote itself.
+
+    Unreadable manifests and names that are not plain file names yield nothing: cleanup may only
+    ever touch files this pipeline published into `out_dir`.
+    """
+    try:
+        manifest = json.loads((Path(out_dir) / MANIFEST_NAME).read_text(encoding="utf-8"))
+        names = {
+            entry.get("pdf", f"{job}.pdf") for job, entry in manifest["documents"].items()
+        }
+    except (OSError, ValueError, KeyError, TypeError, AttributeError):
+        return set()
+    return {name for name in names if isinstance(name, str) and name.endswith(".pdf") and Path(name).name == name}
+
+
 def check_freshness(documents: Dict[str, str], version: Stamp, out_dir: Path) -> List[str]:
     """Why the PDFs in `out_dir` do not match the current inputs; an empty list means fresh."""
     out_dir = Path(out_dir)

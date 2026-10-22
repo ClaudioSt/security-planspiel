@@ -207,6 +207,7 @@ def _print_command(
         return 1
     target = Path(out_dir)
     target.mkdir(parents=True, exist_ok=True)
+    previously_published = stamp.previous_pdf_names(target)
     published = {}
     for job in sorted(pdfs):
         published[job] = target / f"{job}.pdf"
@@ -218,9 +219,15 @@ def _print_command(
             return 1
         print(f"{published[job]}")
     keep = {path.name for path in published.values()}
-    for old in sorted(target.glob("*.pdf")):
-        if old.name not in keep:
-            old.unlink()
+    for name in sorted(previously_published - keep):  # only files this pipeline wrote earlier
+        old = target / name
+        if old.is_file():
+            try:
+                old.unlink()
+            except OSError as error:
+                print(f"ERROR print.publish {old} lässt sich nicht entfernen (in einem Programm geöffnet?): {error}")
+                print("1 Fehler")
+                return 1
             print(f"Entfernt (nicht mehr im Druckumfang): {old}")
     stamp.write_manifest(target, version, documents, published)
     print(f"{len(pdfs)} Dokument(e) gebaut: {target}")
