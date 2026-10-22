@@ -138,7 +138,7 @@ Plans:
   3. An equivalence test replays the printed hand-calculation steps over a dense input grid and matches the simulation for every input. The test fails if the simulation applies a mechanic the worksheet does not print.
   4. Every generated page carries a version stamp (config hash and date) in its footer.
 
-**Plans**: 3/6 plans executed
+**Plans**: 4/6 plans executed
 **Research flag**: yes. Topics: non-interactive MiKTeX build (update 23.10 → current, `--disable-installer`, subprocess timeout) as the first-plan smoke gate, then worksheet/card layout (tcolorbox raster, print scaling, cut lines). Spike-compile only, no full card sheet.
 
 Plans:
@@ -150,7 +150,7 @@ Plans:
 **Wave 2** *(blocked on Wave 1 completion)*
 
 - [x] 04-03-PLAN.md — PRINT-01: Jinja render stage and `uv run planspiel print` (preflight → render → build → publish); supply-chain checkpoint for jinja2/pypdf; whole-set byte-identity test (SC1) (Wave 2)
-- [ ] 04-04-PLAN.md — PRINT-04: independent replay of the printed steps vs the simulation over the D-12 grid, `apply_attack` key guard, negative controls, two-decimal brute force, slow replay of every plan (SC3) (Wave 2)
+- [x] 04-04-PLAN.md — PRINT-04: independent replay of the printed steps vs the simulation over the D-12 grid, `apply_attack` key guard, negative controls, two-decimal brute force, slow replay of every plan (SC3) (Wave 2)
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
@@ -217,7 +217,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 3 
 | 1. Simulation Foundation | 7/7 | Complete    | 2026-10-01 |
 | 2. Rule Changes | 8/8 | Complete    | 2026-10-05 |
 | 3. Content Source & Veiling | 3/3 | Complete    | 2026-10-19 |
-| 4. Print Pipeline & Attack Worksheets | 3/6 | In Progress|  |
+| 4. Print Pipeline & Attack Worksheets | 4/6 | In Progress|  |
 | 5. Player & Facilitator Print Material | 0/TBD | Not started | - |
 | 6. Rebalance | 0/TBD | Not started | - |
 | 7. Session Flow & Handoff | 0/TBD | Not started | - |

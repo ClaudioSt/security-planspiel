@@ -5,15 +5,15 @@ milestone_name: milestone
 current_phase: 04
 current_phase_name: Print Pipeline & Attack Worksheets
 status: executing
-stopped_at: Completed 04-03-PLAN.md
-last_updated: "2026-10-22T14:33:11.262Z"
+stopped_at: Completed 04-04-PLAN.md
+last_updated: "2026-10-22T14:51:08.088Z"
 last_activity: 2026-10-20
 last_activity_desc: Phase 04 execution started
 progress:
   total_phases: 7
   completed_phases: 3
   total_plans: 24
-  completed_plans: 21
+  completed_plans: 22
   percent: 43
 ---
 
@@ -29,11 +29,11 @@ See: .planning/PROJECT.md (updated 2026-09-29)
 ## Current Position
 
 Phase: 04 (Print Pipeline & Attack Worksheets) — EXECUTING
-Plan: 4 of 6 (04-01, 04-02, 04-03 complete; next 04-04)
+Plan: 5 of 6 (04-01 to 04-04 complete; next 04-05)
 Status: Ready to execute
 Last activity: 2026-10-20 — Phase 04 execution started
 
-Progress: [█████░░░░░] 50%
+Progress: [███████░░░] 67%
 
 ## Performance Metrics
 
@@ -77,6 +77,7 @@ Progress: [█████░░░░░] 50%
 | Phase 04 P02 | 40min | 3 tasks | 13 files |
 | Phase 04 P01 | 35min | 3 tasks | 11 files |
 | Phase 04 P03 | 35min | 3 tasks | 9 files |
+| Phase 04 P04 | 40min | 3 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -114,6 +115,7 @@ Recent decisions affecting current work:
 - [Phase 04-01]: kpsewhich always runs with --miktex-disable-installer and lualatex with --disable-installer, stdin closed, timeout with process-tree kill
 - [Phase 04-01]: PDF byte identity comes from planspiel.sty (suppressoptionalinfo 1023) plus an aux-stable pass loop; Arial set by name, never by Path=
 - [Phase 04-03]: tex_escape raises UndefinedError for StrictUndefined; render failures report as ERROR print.render
+- [Phase 04-04]: worksheet replay is an independent encoding reading only AttackSheet exact fields; equivalence proven on 36,467 grid comparisons and all 782,336 plans per tier, with negative controls
 
 ### Pending Todos
 
@@ -136,6 +138,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-10-22T14:33:11.252Z
-Stopped at: Completed 04-03-PLAN.md
+Last session: 2026-10-22T14:50:58.231Z
+Stopped at: Completed 04-04-PLAN.md
 Resume file: None
