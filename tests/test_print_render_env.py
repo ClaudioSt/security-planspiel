@@ -55,7 +55,7 @@ def test_variable_is_escaped(tmp_path):
 
 def test_block_loop_works(tmp_path):
     template = _env(tmp_path, "t.tex.j2", "\\BLOCK{for x in items}\\VAR{x}\\BLOCK{endfor}\n")
-    assert template.render(items=["a", "b", "c"]) == "abc\n"
+    assert template.render(items=["a", "b", "c"]) == "abc"  # trim_blocks eats the newline after endfor
 
 
 def test_undefined_variable_raises(tmp_path):
