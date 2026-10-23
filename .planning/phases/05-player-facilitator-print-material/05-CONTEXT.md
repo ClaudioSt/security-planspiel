@@ -134,6 +134,16 @@ The game rules stay as they are: the Kurswechsel event forces exactly one swap a
   The base path is chosen from the enumeration's swap layer (`planspiel tausch`: in budget, near the median). The extra moves are picked by hand, and every number comes from `rules.evaluate_path`. The three paths live in config, and the user approves them at the D-18 checkpoint.
 - **D-23:** **The final-index weights move into `simulation_config.json`**, unchanged at 1 and 1. Every caller of `rules.final_index` (report, balance, analyze, the master sheet) reads them from config, and simulation outputs stay identical. The master sheet prints the final index marked "vorläufig" until the Phase 6 rescale (BAL-03).
 
+### Open questions from research, resolved (2026-10-23)
+- **D-24:** **"Phishing" stays on the M6 card.** The veil scan checks the measure deck with a names-only profile: it flags the real attack names, not defence terms from D-06.
+- **D-25:** **Money is printed in euros with a thousands dot everywhere** (e.g. 30.000 €), on cards and sheets alike, with no k€.
+- **D-26:** **Smaller defaults accepted:**
+  - one checkpoint covers all three reference paths, with per-tier candidates and numbers per wave (Q2);
+  - the version stamp appears once per A4 sheet in the bottom strip, not on each card (Q4);
+  - `[sheets.backup_recovery]` becomes a section of the wave explainer with the generated M4 table, not a ninth card (Q5);
+  - values with the 17/7 slope appear as "≈" with two decimals on the facilitator sheet only, until Phase 6 (Q6);
+  - the newspaper uses Georgia, everything else Arial (Q7).
+
 ### Claude's Discretion
 - **Story documents (PRINT-12):** layout follows `content/assets/GUIDELINES.md`.
   - Zeitungsartikel: "AUTO TIMES" masthead, two columns, the two images from `content/assets/images`.
