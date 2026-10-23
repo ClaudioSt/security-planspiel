@@ -141,7 +141,7 @@ def _print_command(
 
     import jinja2
 
-    from planspiel import render, stamp, texbuild
+    from planspiel import render, stamp, texbuild, veil
     from planspiel.config import load_config
     from planspiel.printmodel import PrintModelError
     from planspiel.texts import check_texts, load_content
@@ -186,6 +186,12 @@ def _print_command(
     except (jinja2.TemplateError, TypeError, ValueError) as error:
         print(f"ERROR print.render {error}")
         print("1 Fehler")
+        return failure
+    veil_issues = veil.scan_documents(cfg, texts, content.terms, documents)
+    if veil_issues:
+        for issue in veil_issues:
+            print(f"ERROR print.veil {issue.code} {issue.path}: {issue.message}")
+        print(f"{len(veil_issues)} Fehler")
         return failure
     try:
         repo = stamp.repo_for_inputs(Path(config))

@@ -30,7 +30,7 @@ def _sha(data: bytes) -> str:
 @pytest.fixture
 def world(monkeypatch):
     """Fake renderer, TeX and git: `state` is what the next run sees."""
-    state = {"docs": {"alpha": "eins\n", "beta": "zwei ä\n"}, "dirty": False}
+    state = {"docs": {"spieler-alpha": "eins\n", "spieler-beta": "zwei ä\n"}, "dirty": False}
     monkeypatch.setattr(texbuild, "preflight", lambda **kwargs: [])
     monkeypatch.setattr(render, "render_all", lambda *args, **kwargs: dict(state["docs"]))
 
@@ -67,12 +67,12 @@ def test_manifest_records_stamp_hash_and_every_document(world, tmp_path):
     assert set(manifest) == {"stamp", "hash", "date", "dirty", "documents"}
     assert manifest["date"] == "2026-10-19" and manifest["dirty"] is False
     assert len(manifest["hash"]) == 64 and manifest["stamp"].startswith("Stand 2026-10-19 · " + manifest["hash"][:7])
-    assert set(manifest["documents"]) == {"alpha", "beta"}
-    alpha = manifest["documents"]["alpha"]
+    assert set(manifest["documents"]) == {"spieler-alpha", "spieler-beta"}
+    alpha = manifest["documents"]["spieler-alpha"]
     assert alpha == {
-        "pdf": "alpha.pdf",
+        "pdf": "spieler-alpha.pdf",
         "tex_sha256": _sha("eins\n".encode("utf-8")),
-        "pdf_sha256": _sha((tmp_path / "out" / "alpha.pdf").read_bytes()),
+        "pdf_sha256": _sha((tmp_path / "out" / "spieler-alpha.pdf").read_bytes()),
     }
 
 
@@ -102,11 +102,11 @@ def test_build_removes_pdfs_the_previous_manifest_listed_and_keeps_other_files(w
     out = tmp_path / "out"
     _build(tmp_path)
     (out / "notes.txt").write_text("keep", encoding="utf-8")
-    world["docs"] = {"alpha": "eins\n"}
+    world["docs"] = {"spieler-alpha": "eins\n"}
     _build(tmp_path)
-    assert not (out / "beta.pdf").exists()
+    assert not (out / "spieler-beta.pdf").exists()
     assert (out / "notes.txt").read_text(encoding="utf-8") == "keep"
-    assert (out / "alpha.pdf").exists()
+    assert (out / "spieler-alpha.pdf").exists()
 
 
 def test_build_never_deletes_pdfs_the_pipeline_did_not_write(world, tmp_path):
@@ -115,10 +115,10 @@ def test_build_never_deletes_pdfs_the_pipeline_did_not_write(world, tmp_path):
     (out / "Anfrage-Mail.pdf").write_bytes(b"%PDF-by-hand")
     _build(tmp_path)
     assert (out / "Anfrage-Mail.pdf").read_bytes() == b"%PDF-by-hand"
-    world["docs"] = {"alpha": "eins\n"}
+    world["docs"] = {"spieler-alpha": "eins\n"}
     _build(tmp_path)
     assert (out / "Anfrage-Mail.pdf").exists()
-    assert not (out / "beta.pdf").exists()
+    assert not (out / "spieler-beta.pdf").exists()
 
 
 def test_build_ignores_a_manifest_entry_that_points_outside_the_out_dir(world, tmp_path):
@@ -127,7 +127,7 @@ def test_build_ignores_a_manifest_entry_that_points_outside_the_out_dir(world, t
     outside = tmp_path / "outside.pdf"
     outside.write_bytes(b"%PDF-outside")
     manifest = _manifest(tmp_path)
-    manifest["documents"]["gamma"] = {"pdf": "../outside.pdf", "tex_sha256": "x", "pdf_sha256": "x"}
+    manifest["documents"]["spieler-gamma"] = {"pdf": "../outside.pdf", "tex_sha256": "x", "pdf_sha256": "x"}
     (out / "manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
     _build(tmp_path)
     assert outside.exists()
@@ -178,11 +178,11 @@ def _assert_order_hint(out):
 def test_check_names_a_changed_document(world, tmp_path, capsys):
     _build(tmp_path)
     capsys.readouterr()
-    world["docs"]["beta"] = "zwei geaendert\n"
+    world["docs"]["spieler-beta"] = "zwei geaendert\n"
     assert main(_argv(tmp_path, "--check")) == 1
     out, lines = _stale_lines(capsys)
-    assert any(line.startswith("STALE beta") and "Inhalt" in line for line in lines)
-    assert not any(line.startswith("STALE alpha") for line in lines)
+    assert any(line.startswith("STALE spieler-beta") and "Inhalt" in line for line in lines)
+    assert not any(line.startswith("STALE spieler-alpha") for line in lines)
     _assert_order_hint(out)
 
 
@@ -201,20 +201,20 @@ def test_check_reports_a_dirty_tree_with_old_and_new_stamp(world, tmp_path, caps
 def test_check_reports_a_missing_pdf(world, tmp_path, capsys):
     _build(tmp_path)
     capsys.readouterr()
-    (tmp_path / "out" / "alpha.pdf").unlink()
+    (tmp_path / "out" / "spieler-alpha.pdf").unlink()
     assert main(_argv(tmp_path, "--check")) == 1
     out, lines = _stale_lines(capsys)
-    assert len(lines) == 1 and "alpha.pdf" in lines[0] and "fehlt" in lines[0]
+    assert len(lines) == 1 and "spieler-alpha.pdf" in lines[0] and "fehlt" in lines[0]
     _assert_order_hint(out)
 
 
 def test_check_reports_a_hand_edited_pdf(world, tmp_path, capsys):
     _build(tmp_path)
     capsys.readouterr()
-    (tmp_path / "out" / "beta.pdf").write_bytes(b"%PDF-edited")
+    (tmp_path / "out" / "spieler-beta.pdf").write_bytes(b"%PDF-edited")
     assert main(_argv(tmp_path, "--check")) == 1
     out, lines = _stale_lines(capsys)
-    assert len(lines) == 1 and "beta.pdf" in lines[0] and "SHA-256" in lines[0]
+    assert len(lines) == 1 and "spieler-beta.pdf" in lines[0] and "SHA-256" in lines[0]
     _assert_order_hint(out)
 
 
@@ -241,19 +241,19 @@ def test_check_reports_a_missing_manifest(world, tmp_path, capsys):
 def test_check_reports_a_document_added_to_the_print_set(world, tmp_path, capsys):
     _build(tmp_path)
     capsys.readouterr()
-    world["docs"]["gamma"] = "drei\n"
+    world["docs"]["spieler-gamma"] = "drei\n"
     assert main(_argv(tmp_path, "--check")) == 1
     _, lines = _stale_lines(capsys)
-    assert any(line.startswith("STALE gamma") for line in lines)
+    assert any(line.startswith("STALE spieler-gamma") for line in lines)
 
 
 def test_check_reports_a_document_removed_from_the_print_set(world, tmp_path, capsys):
     _build(tmp_path)
     capsys.readouterr()
-    del world["docs"]["beta"]
+    del world["docs"]["spieler-beta"]
     assert main(_argv(tmp_path, "--check")) == 1
     _, lines = _stale_lines(capsys)
-    assert any("beta" in line for line in lines)
+    assert any("spieler-beta" in line for line in lines)
 
 
 def test_check_without_any_output_dir_is_stale(world, tmp_path, capsys):

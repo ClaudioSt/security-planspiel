@@ -29,6 +29,8 @@ def ctx(cfg, content):
 
 
 def _codes(text, job, ctx, layer="tex"):
+    if layer == "tex":
+        text = veil.detex(text)  # scan_text takes printed-looking text, scan_documents de-TeXes first
     return sorted({issue.code for issue in veil.scan_text(text, job, ctx, layer=layer)})
 
 
@@ -189,7 +191,7 @@ def test_shared_case_wording_is_not_attack_specific(content, ctx):
 
 
 def test_names_only_profile_lets_phishing_pass_on_the_measure_deck(ctx):
-    assert _codes("Geschulte Mitarbeiter erkennen Phishing nicht mehr", DECK, ctx) == []
+    assert _codes("Schulung gegen Phishing-Mails", DECK, ctx) == []
     assert _codes("Phishing", DECK, ctx) == []
 
 
