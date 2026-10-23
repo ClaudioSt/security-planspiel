@@ -2,18 +2,18 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_phase: 5
+current_phase: 05
 current_phase_name: Player & Facilitator Print Material
-status: ready_to_execute
+status: executing
 stopped_at: Phase 5 planned (16 plans)
-last_updated: "2026-10-22T22:00:00.424Z"
-last_activity: 2026-10-22
-last_activity_desc: Phase 4 complete, transitioned to Phase 5
+last_updated: "2026-10-23T11:56:40.205Z"
+last_activity: 2026-10-23
+last_activity_desc: Phase 05 execution started
 progress:
   total_phases: 7
   completed_phases: 4
   total_plans: 40
-  completed_plans: 24
+  completed_plans: 25
   percent: 57
 ---
 
@@ -24,14 +24,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-09-29)
 
 **Core value:** Facilitators and players can run the game by hand without ambiguity: every rule is unambiguous, every printed number matches `simulation_config.json`, and no strategy exploits a rule loophole.
-**Current focus:** Phase 04 — Print Pipeline & Attack Worksheets
+**Current focus:** Phase 05 — Player & Facilitator Print Material
 
 ## Current Position
 
-Phase: 5 — Player & Facilitator Print Material
-Plan: 0 of 16 (05-01 next)
-Status: Ready to execute Phase 5
-Last activity: 2026-10-23 — Phase 5 planned: 16 plans in 16 sequential waves, verified
+Phase: 05 (Player & Facilitator Print Material) — EXECUTING
+Plan: 2 of 16
+Status: Ready to execute
+Last activity: 2026-10-23 — Phase 05 execution started
 
 Progress: [██████░░░░] 57% (4 of 7 phases)
 
@@ -81,6 +81,7 @@ Progress: [██████░░░░] 57% (4 of 7 phases)
 | Phase 04 P04 | 40min | 3 tasks | 4 files |
 | Phase 04 P05 | 30min | 3 tasks | 12 files |
 | Phase 04 P06 | 75min | 3 tasks | 12 files |
+| Phase 05 P01 | 90min | 3 tasks | 16 files |
 
 ## Accumulated Context
 
@@ -121,6 +122,8 @@ Recent decisions affecting current work:
 - [Phase 04-04]: worksheet replay is an independent encoding reading only AttackSheet exact fields; equivalence proven on 36,467 grid comparisons and all 782,336 plans per tier, with negative controls
 - [Phase 04-05]: version stamp = UTC date of last data-input commit + 7 hex of content hash over rendered .tex and planspiel.sty; +lokal only for build inputs; planspiel print --check compares manifest, rendered content and PDF SHA-256 without TeX
 - [Phase 04]: 04-06: result line at the end of the worksheet after the wave-KZ step; layout page 1 = steps 1-4, page 2 from the Fall step, only spacing fallback (a) needed
+- [Phase 05]: 05-01: PDF-layer veil scan squashes whitespace and hyphens on both sides so line-end hyphenation cannot hide a leaked name
+- [Phase 05]: 05-01: Job-name prefix (spieler-, uebung-, angriff-, spielleitung-) is the single audience classification; render_all raises for unclassified jobs
 
 ### Pending Todos
 
@@ -143,6 +146,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-10-22T22:00:00.413Z
+Last session: 2026-10-23T11:56:31.417Z
 Stopped at: Phase 5 context gathered
 Resume file: .planning/phases/05-player-facilitator-print-material/05-CONTEXT.md
