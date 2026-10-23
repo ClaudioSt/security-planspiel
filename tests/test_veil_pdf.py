@@ -79,9 +79,8 @@ def test_revealed_pdfs_name_no_other_attack_and_print_only_their_own_weights(pri
         job = worksheet_job(wave)
         text = pdf_text(_pdf(printed_set, job))
         squashed = "".join(squashed_pages(_pdf(printed_set, job)))
-        for other_id in ctx.names:
-            if other_id != wave.attack_id:
-                assert veil.name_hits(squashed, ctx, audience.PROFILE_OTHER_ATTACKS, exclude_attack=wave.attack_id, squashed=True) == [], job
+        hits = veil.name_hits(squashed, ctx, audience.PROFILE_OTHER_ATTACKS, exclude_attack=wave.attack_id, squashed=True)
+        assert hits == [], job
         assert set(veil.weight_hits(text, ctx.signatures)) == {wave.wave_id}, job
         assert veil.scan_text(text, job, ctx, layer="pdf") == [], job
 
