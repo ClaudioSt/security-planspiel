@@ -289,6 +289,17 @@ narrative = "Nach einem Angriff mit entstandenem Schaden prüft ihr, ob Systeme 
 2 = "teilw. Recovery"
 3 = "starke Recovery"
 
+[sheets.karten]
+legend_title = "So liest du eine Maßnahmenkarte"
+legend_intro = "Jede Karte zeigt eine Maßnahme auf einem Level. Die Nummern auf der Beispielkarte gehören zu den Erklärungen darunter."
+legend_cia = "Der CIA-Beitrag wird zu eurem Basisschutz addiert und geht in euren E-Wert ein. C steht für Vertraulichkeit, I für Integrität, A für Verfügbarkeit."
+legend_formula = "E-Wert = C · wC + I · wI + A · wA"
+legend_costs = "Init zahlt ihr einmal, wenn ihr die Maßnahme einführt oder auf ein höheres Level hebt. OPEX zahlt ihr in jeder Welle, in der die Maßnahme aktiv ist."
+legend_dependency = "Das Schloss bedeutet: Dieses Level gibt es nur mit der genannten Voraussetzung. Karten ohne Schloss haben keine Voraussetzung."
+legend_levels = "Die Farbe des Abzeichens zeigt das Level: grün für das niedrigste, gelb für das mittlere, grau für das höchste."
+per_wave = "je Welle"
+requires = "Voraussetzung"
+
 [sheets.labels]
 measure = "Maßnahme"
 level = "Level"

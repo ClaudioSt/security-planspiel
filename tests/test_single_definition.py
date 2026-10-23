@@ -60,6 +60,8 @@ FORMULA_FUNCTIONS = {
         "path_outcome",
         "swap_paths",
         "worksheet_constants",
+        "card_facts",
+        "level_requirements",
     )
 }
 FORMULA_FUNCTIONS.update(

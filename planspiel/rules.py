@@ -7,13 +7,33 @@ from planspiel.config import Attack, BudgetTier, Config, Event, Measure, Wave
 from planspiel.rounding import round_half_away_frac, started_steps
 
 
+def level_requirements(measure: Measure, level: int) -> Tuple[Tuple[str, int], ...]:
+    """Voraussetzungen (Maßnahme, Mindest-Level), die für diese Maßnahme auf diesem Level gelten, in Config-Reihenfolge."""
+    return tuple(
+        (req["measure"], req["min_level"])
+        for dependency in measure.dependencies
+        if level >= dependency["level"]
+        for req in dependency["requires"]
+    )
+
+
 def _requirements_met(measure: Measure, level: int, selection: Dict[str, int]) -> bool:
-    for dependency in measure.dependencies:
-        if level >= dependency["level"]:
-            for req in dependency["requires"]:
-                if selection.get(req["measure"], 0) < req["min_level"]:
-                    return False
-    return True
+    return all(
+        selection.get(required, 0) >= min_level for required, min_level in level_requirements(measure, level)
+    )
+
+
+class CardFacts(NamedTuple):
+    """CIA-Beitrag und Kosten (in k€) einer Maßnahme auf einem Level, wie sie auf der Maßnahmenkarte stehen."""
+
+    cia: Dict[str, int]
+    init_k: int
+    opex_k: int
+
+
+def card_facts(measures: Dict[str, Measure], measure_id: str, level: int) -> CardFacts:
+    level_data = measures[measure_id].levels[level]
+    return CardFacts(cia=dict(level_data.cia), init_k=level_data.init, opex_k=level_data.opex)
 
 
 def dependencies_satisfied(selection: Dict[str, int], measures: Dict[str, Measure]) -> bool:

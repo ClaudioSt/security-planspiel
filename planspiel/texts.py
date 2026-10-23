@@ -23,7 +23,7 @@ PREWAVE_PREFIXES = ("story.", "measures.")
 MIN_QUOTE_LENGTH = 15
 
 STORY_DOCS = ("steckbrief", "zeitungsartikel", "anfrage_mail", "audit_mail")
-PREWAVE_SHEETS = ("budget", "ros", "backup_recovery", "labels")
+PREWAVE_SHEETS = ("budget", "ros", "backup_recovery", "labels", "karten")
 CASE_KEYS = ("case_1", "case_2", "case_3")
 
 _SHEET_LABELS = (
@@ -33,6 +33,11 @@ _SHEET_LABELS = (
     "point_in_time", "budget_remaining", "kz_cumulative", "damage_wave", "start", "after_wave", "events",
     "metric", "value", "total_init", "total_opex", "total_costs", "avoided_damage", "event_after_wave",
     "condition_met", "effect", "no_implementation", "final_damage", "min_level",
+)
+
+_KARTEN_KEYS = (
+    "legend_title", "legend_intro", "legend_cia", "legend_formula", "legend_costs", "legend_dependency",
+    "legend_levels", "per_wave", "requires",
 )
 
 SHEET_KEYS = (
@@ -82,6 +87,7 @@ SHEET_KEYS = (
     "sheets.backup_recovery.subtitle",
     "sheets.backup_recovery.narrative",
     *(f"sheets.backup_recovery.level_labels.{level}" for level in range(4)),
+    *(f"sheets.karten.{name}" for name in _KARTEN_KEYS),
     *(f"sheets.labels.{name}" for name in _SHEET_LABELS),
 )
 

@@ -98,7 +98,7 @@ def test_requirements_met_keeps_its_truth_table(real):
                     measure, level, selection
                 ), (measure.measure_id, level, selection)
                 checked += 1
-    assert checked > 100
+    assert checked == 76  # 10 measures x 4 levels, times the 4 levels of the one required measure for M1, M3, M7
 
 
 def test_the_real_deck_has_31_cards_on_8_sheets(real):
