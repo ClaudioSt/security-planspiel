@@ -64,7 +64,7 @@ def printed_set(tmp_path_factory):
     def with_smoke(cfg, texts, template_dir):
         documents = dict(original(cfg, texts, template_dir))
         template = render.make_env(smoke_dir).get_template("smoke.tex.j2")
-        documents["smoke"] = template.render(title=SMOKE_TITLE)
+        documents["spieler-smoke"] = template.render(title=SMOKE_TITLE)
         return {job: documents[job] for job in sorted(documents)}
 
     root = tmp_path_factory.mktemp("printed_set")

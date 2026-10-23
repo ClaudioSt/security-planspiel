@@ -18,7 +18,7 @@ def test_both_runs_produce_the_same_files(printed_set):
     names_a = sorted(path.name for path in printed_set.out_a.glob("*.pdf"))
     names_b = sorted(path.name for path in printed_set.out_b.glob("*.pdf"))
     assert names_a == names_b
-    assert "smoke.pdf" in names_a
+    assert "spieler-smoke.pdf" in names_a
     assert sorted(printed_set.jobs) == [name[:-4] for name in names_a]
 
 
@@ -30,7 +30,7 @@ def test_pdfs_are_byte_identical(printed_set):
 
 
 def test_smoke_pdf_has_page_numbers_and_escaped_specials(printed_set):
-    reader = PdfReader(printed_set.out_a / "smoke.pdf")
+    reader = PdfReader(printed_set.out_a / "spieler-smoke.pdf")
     assert len(reader.pages) == 2
     first, second = (_squashed(page) for page in reader.pages)
     assert "Seite1von2" in first
@@ -41,6 +41,6 @@ def test_smoke_pdf_has_page_numbers_and_escaped_specials(printed_set):
 
 def test_smoke_pdf_prints_quotes_and_ligature_characters_verbatim(printed_set):
     # babel-ngerman's `"` shorthand and fontspec's TeX ligatures must not alter the source text.
-    reader = PdfReader(printed_set.out_a / "smoke.pdf")
+    reader = PdfReader(printed_set.out_a / "spieler-smoke.pdf")
     first = _squashed(reader.pages[0])
     assert '"aktiv""Auch"a--b<<c>>,,d\'\'0,5' in first

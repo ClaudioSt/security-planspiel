@@ -34,7 +34,7 @@ def _argv(tmp_path, **overrides):
 @pytest.fixture
 def calls(monkeypatch):
     seen = []
-    monkeypatch.setattr(render, "render_all", lambda *args, **kwargs: seen.append("render") or {"smoke": "x"})
+    monkeypatch.setattr(render, "render_all", lambda *args, **kwargs: seen.append("render") or {"spieler-smoke": "x"})
 
     def fake_build(documents, print_dir, build_dir, *, stamp_tex, **kwargs):
         seen.append("build")
@@ -66,8 +66,8 @@ def test_success_publishes_pdfs(monkeypatch, calls, tmp_path, capsys):
     monkeypatch.setattr(texbuild, "preflight", lambda **kwargs: [])
     assert main(_argv(tmp_path)) == 0
     out = capsys.readouterr().out
-    assert (tmp_path / "out" / "smoke.pdf").read_bytes() == b"%PDF-fake"
-    assert "smoke.pdf" in out
+    assert (tmp_path / "out" / "spieler-smoke.pdf").read_bytes() == b"%PDF-fake"
+    assert "spieler-smoke.pdf" in out
     assert "1 Dokument(e) gebaut" in out
     assert calls == ["render", "build"]
 
@@ -108,15 +108,15 @@ def test_no_registered_document_builds_nothing(monkeypatch, tmp_path, capsys):
 
 def test_tex_failure_returns_one(monkeypatch, tmp_path, capsys):
     monkeypatch.setattr(texbuild, "preflight", lambda **kwargs: [])
-    monkeypatch.setattr(render, "render_all", lambda *args, **kwargs: {"smoke": "x"})
+    monkeypatch.setattr(render, "render_all", lambda *args, **kwargs: {"spieler-smoke": "x"})
 
     def broken(*args, **kwargs):
-        raise texbuild.TexBuildError("smoke: lualatex endete mit Exit-Code 1")
+        raise texbuild.TexBuildError("spieler-smoke: lualatex endete mit Exit-Code 1")
 
     monkeypatch.setattr(texbuild, "build_documents", broken)
     assert main(_argv(tmp_path)) == 1
     out = capsys.readouterr().out
-    assert "ERROR print.tex smoke: lualatex endete mit Exit-Code 1" in out
+    assert "ERROR print.tex spieler-smoke: lualatex endete mit Exit-Code 1" in out
     assert not (tmp_path / "out").exists()
 
 
@@ -163,7 +163,7 @@ def test_print_model_error_makes_check_fail_with_two(monkeypatch, tmp_path, caps
 
 
 def test_check_without_style_file_exits_two_not_with_a_traceback(monkeypatch, tmp_path, capsys):
-    monkeypatch.setattr(render, "render_all", lambda *args, **kwargs: {"smoke": "x"})
+    monkeypatch.setattr(render, "render_all", lambda *args, **kwargs: {"spieler-smoke": "x"})
     empty_print_dir = tmp_path / "print"
     (empty_print_dir / "templates").mkdir(parents=True)
     argv = [*_argv(tmp_path, **{"--print-dir": str(empty_print_dir)}), "--check"]
@@ -175,7 +175,7 @@ def test_check_without_style_file_exits_two_not_with_a_traceback(monkeypatch, tm
 
 def test_build_without_style_file_exits_one_with_a_message(monkeypatch, tmp_path, capsys):
     monkeypatch.setattr(texbuild, "preflight", lambda **kwargs: [])
-    monkeypatch.setattr(render, "render_all", lambda *args, **kwargs: {"smoke": "x"})
+    monkeypatch.setattr(render, "render_all", lambda *args, **kwargs: {"spieler-smoke": "x"})
     argv = _argv(tmp_path, **{"--print-dir": str(tmp_path / "no_print_dir")})
     assert main(argv) == 1
     assert "ERROR print.stamp" in capsys.readouterr().out
@@ -212,7 +212,7 @@ def test_locked_pdf_names_the_file_and_exits_one(monkeypatch, calls, tmp_path, c
     assert main(_argv(tmp_path)) == 1
     out = capsys.readouterr().out
     assert "ERROR print.publish" in out
-    assert "smoke.pdf" in out
+    assert "spieler-smoke.pdf" in out
 
 
 def _content_with_number_in_prose(tmp_path):

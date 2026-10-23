@@ -180,6 +180,10 @@ def _level_hint(cfg: Config) -> str:
     return "(" + " / ".join(str(level) for level in levels) + ")"
 
 
+def worksheet_job(wave: Wave) -> str:
+    return f"angriff-{wave.wave_id}_{wave.attack_id}"
+
+
 def build_attack_sheet(cfg: Config, texts: Texts, wave: Wave) -> AttackSheet:
     view = RevealView(cfg, texts)
     try:
@@ -300,7 +304,7 @@ def build_attack_sheet(cfg: Config, texts: Texts, wave: Wave) -> AttackSheet:
     return AttackSheet(
         wave_id=wave.wave_id,
         attack_id=wave.attack_id,
-        job=f"angriff-{wave.wave_id}_{wave.attack_id}",
+        job=worksheet_job(wave),
         title=view.attack_title(wave),
         narrative=attack["narrative"],
         cia_rationale=attack["cia_rationale"],
