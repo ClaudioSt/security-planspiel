@@ -5,15 +5,15 @@ milestone_name: milestone
 current_phase: 05
 current_phase_name: Player & Facilitator Print Material
 status: executing
-stopped_at: Phase 5 planned (16 plans)
-last_updated: "2026-10-23T11:56:40.205Z"
+stopped_at: Completed 05-02-PLAN.md
+last_updated: "2026-10-23T12:18:12.704Z"
 last_activity: 2026-10-23
 last_activity_desc: Phase 05 execution started
 progress:
   total_phases: 7
   completed_phases: 4
   total_plans: 40
-  completed_plans: 25
+  completed_plans: 26
   percent: 57
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-09-29)
 ## Current Position
 
 Phase: 05 (Player & Facilitator Print Material) — EXECUTING
-Plan: 2 of 16
+Plan: 3 of 16
 Status: Ready to execute
 Last activity: 2026-10-23 — Phase 05 execution started
 
@@ -82,6 +82,7 @@ Progress: [██████░░░░] 57% (4 of 7 phases)
 | Phase 04 P05 | 30min | 3 tasks | 12 files |
 | Phase 04 P06 | 75min | 3 tasks | 12 files |
 | Phase 05 P01 | 90min | 3 tasks | 16 files |
+| Phase 05 P02 | 85min | 2 tasks | 17 files |
 
 ## Accumulated Context
 
@@ -124,6 +125,7 @@ Recent decisions affecting current work:
 - [Phase 04]: 04-06: result line at the end of the worksheet after the wave-KZ step; layout page 1 = steps 1-4, page 2 from the Fall step, only spacing fallback (a) needed
 - [Phase 05]: 05-01: PDF-layer veil scan squashes whitespace and hyphens on both sides so line-end hyphenation cannot hide a leaked name
 - [Phase 05]: 05-01: Job-name prefix (spieler-, uebung-, angriff-, spielleitung-) is the single audience classification; render_all raises for unclassified jobs
+- [Phase 05]: 05-02: CardDeck carries CardLabels so the 13-field MeasureCard stays pinned; legend formula is the last legend line (a digit after wA trips the weight-symbol veil rule); cardsheet starts a new page except for the first so LastPage equals the sheet count — see 05-02-SUMMARY.md key-decisions
 
 ### Pending Todos
 
@@ -146,6 +148,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-10-23T11:56:31.417Z
-Stopped at: Phase 5 context gathered
-Resume file: .planning/phases/05-player-facilitator-print-material/05-CONTEXT.md
+Last session: 2026-10-23T12:18:12.691Z
+Stopped at: Completed 05-02-PLAN.md
+Resume file: None
