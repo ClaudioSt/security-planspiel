@@ -252,3 +252,27 @@ def test_inputs_off_the_defaults_mark_the_stamp_and_are_named(monkeypatch, calls
     out = capsys.readouterr().out
     assert "+lokal" in out
     assert "--config" in out
+
+
+LEAK = "\documentclass{article}\begin{document}Ransomware\end{document}"
+
+
+def test_a_veil_leak_stops_the_build_before_the_stamp_and_tex(monkeypatch, calls, tmp_path, capsys):
+    monkeypatch.setattr(texbuild, "preflight", lambda **kwargs: [])
+    monkeypatch.setattr(render, "render_all", lambda *args, **kwargs: {"spieler-smoke": LEAK})
+    monkeypatch.setattr(stamp, "compute_stamp", lambda *args, **kwargs: pytest.fail("stamp must not run"))
+    assert main(_argv(tmp_path)) == 1
+    out = capsys.readouterr().out
+    assert "ERROR print.veil veil.name spieler-smoke:" in out
+    assert "1 Fehler" in out
+    assert calls == []
+    assert not (tmp_path / "out").exists()
+
+
+def test_a_veil_leak_makes_check_fail_with_two(monkeypatch, calls, tmp_path, capsys):
+    monkeypatch.setattr(render, "render_all", lambda *args, **kwargs: {"spieler-smoke": LEAK})
+    monkeypatch.setattr(stamp, "compute_stamp", lambda *args, **kwargs: pytest.fail("stamp must not run"))
+    assert main([*_argv(tmp_path), "--check"]) == 2
+    out = capsys.readouterr().out
+    assert "ERROR print.veil" in out
+    assert calls == []
