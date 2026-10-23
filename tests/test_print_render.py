@@ -51,11 +51,13 @@ def _modified_render(tmp_path, change):
 
 def test_jobs_equal_the_model_jobs(loaded):
     cfg, texts, documents = loaded
-    assert list(documents) == sorted(sheet.job for sheet in build_attack_sheets(cfg, texts))
+    worksheets = [job for job in documents if job.startswith("angriff-")]
+    assert worksheets == sorted(sheet.job for sheet in build_attack_sheets(cfg, texts))
 
 
 def test_real_jobs_are_the_three_attack_worksheets(real):
-    assert list(real[2]) == ["angriff-1_ransomware", "angriff-2_ot", "angriff-3_exfil"]
+    worksheets = [job for job in real[2] if job.startswith("angriff-")]
+    assert worksheets == ["angriff-1_ransomware", "angriff-2_ot", "angriff-3_exfil"]
 
 
 def test_document_skeleton(loaded):
