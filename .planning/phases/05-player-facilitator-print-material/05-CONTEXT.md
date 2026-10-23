@@ -126,6 +126,14 @@ The session schedule, debrief questions, "Was ist neu" sheet and dry run (FLOW-0
   - per-wave thresholds, caps and bonus tables.
 - **D-21:** **Form: one booklet** with an overview page, then one section (about a double page) per wave with parameters, check rows, events and answer keys, and finally the Budget Review and the clues. Multi-page is fine. It is facilitator-only, so it may name attacks; it is excluded from the pre-wave veil scan but must never be handed to players.
 
+### Requirement review before planning (2026-10-23)
+The game rules stay as they are: the Kurswechsel event forces exactly one swap after wave 1, and otherwise teams may make any number of changes after each wave within their own budget. The two decisions below only concern the facilitator answer keys (PRINT-10).
+- **D-22:** **The answer keys follow a legal game path with change-window moves** (refines D-17 and D-18). Per tier the example team:
+  - makes the mandatory Kurswechsel swap after wave 1 (`rules.swap_credit`);
+  - makes one or two voluntary changes on top, e.g. a downgrade after the Sparprogramm in wave 2. The answer keys are the only fully worked example of the change-window rows on the tracking sheet, because Welle 0 has no change window (D-15).
+  The base path is chosen from the enumeration's swap layer (`planspiel tausch`: in budget, near the median). The extra moves are picked by hand, and every number comes from `rules.evaluate_path`. The three paths live in config, and the user approves them at the D-18 checkpoint.
+- **D-23:** **The final-index weights move into `simulation_config.json`**, unchanged at 1 and 1. Every caller of `rules.final_index` (report, balance, analyze, the master sheet) reads them from config, and simulation outputs stay identical. The master sheet prints the final index marked "vorläufig" until the Phase 6 rescale (BAL-03).
+
 ### Claude's Discretion
 - **Story documents (PRINT-12):** layout follows `content/assets/GUIDELINES.md`.
   - Zeitungsartikel: "AUTO TIMES" masthead, two columns, the two images from `content/assets/images`.
@@ -225,7 +233,8 @@ The session schedule, debrief questions, "Was ist neu" sheet and dry run (FLOW-0
 <deferred>
 ## Deferred Ideas
 
-- Re-choose the typical tier reference plans and re-pin their answer keys after the Phase 6 rebalance (D-18).
+- Re-choose the typical tier reference paths and re-pin their answer keys after the Phase 6 rebalance (D-18, D-22).
+- Rescale the final-index weights in config during the Phase 6 rebalance and drop the "vorläufig" mark (D-23, BAL-03).
 - Session schedule, debrief questions, "Was ist neu" and the timed dry run: Phase 7 (FLOW-02..05).
 - Archiving the hand-maintained docx/pptx/pdf in `final_documents/` once generated replacements exist: Phase 7 (LEG-01).
 
