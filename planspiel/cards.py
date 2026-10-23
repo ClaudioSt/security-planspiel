@@ -67,19 +67,29 @@ class CardDeck:
         """Every digit-bearing string a card prints, de-duplicated (the pdf test finds each in the PDF text)."""
         found: dict[str, None] = {}
         for card in self.cards:
-            for text in _strings(card):
+            for text in printed_strings(card):
                 if any(char.isdigit() for char in text):
                     found[text] = None
         return tuple(found)
 
 
-def _strings(value: object) -> list[str]:
+# Fields that identify a card in the model and the build log but are never printed on it.
+_NOT_PRINTED = frozenset({"kind", "card_id", "measure_id"})
+
+
+def printed_strings(value: object) -> list[str]:
+    """Every string of a card (or part of one) that ends up on the paper."""
     if isinstance(value, str):
         return [value]
     if isinstance(value, tuple):
-        return [text for part in value for text in _strings(part)]
+        return [text for part in value for text in printed_strings(part)]
     if dataclasses.is_dataclass(value):
-        return [text for field in dataclasses.fields(value) for text in _strings(getattr(value, field.name))]
+        return [
+            text
+            for field in dataclasses.fields(value)
+            if field.name not in _NOT_PRINTED
+            for text in printed_strings(getattr(value, field.name))
+        ]
     return []
 
 

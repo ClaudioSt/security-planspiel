@@ -2,12 +2,11 @@
 
 Run with `uv run pytest -m pdf tests/test_cards_pdf.py -v`.
 """
-import dataclasses
 import re
 
 import pytest
 
-from planspiel.cards import CARDS_PER_SHEET, build_measure_deck
+from planspiel.cards import CARDS_PER_SHEET, build_measure_deck, printed_strings
 from planspiel.config import load_config
 from planspiel.texts import load_texts
 from tests.support import CONFIG_PATH, CONTENT_DIR
@@ -29,18 +28,8 @@ def pages(printed_set):
     return squashed_pages(printed_set.out_a / f"{DECK_JOB}.pdf")
 
 
-def _strings(value):
-    if isinstance(value, str):
-        return [value]
-    if isinstance(value, tuple):
-        return [text for part in value for text in _strings(part)]
-    if dataclasses.is_dataclass(value):
-        return [text for field in dataclasses.fields(value) for text in _strings(getattr(value, field.name))]
-    return []
-
-
 def _digit_strings(card):
-    return {text for text in _strings(card) if any(char.isdigit() for char in text)}
+    return {text for text in printed_strings(card) if any(char.isdigit() for char in text)}
 
 
 def _page_of(deck, card_id):

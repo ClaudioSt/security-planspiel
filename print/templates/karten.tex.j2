@@ -2,6 +2,7 @@
 \BLOCK{macro card_body(card, labels, legend)}
 \#{ Called as a statement (call ... endcall): Jinja then applies no escaping to the macro output. The next line only lets the macro accept the call block. }
 \BLOCK{if caller}\BLOCK{endif}
+\BLOCK{set cia_shrink = "2.5mm" if legend else "1pt"}
 \noindent\colorbox{mhpblue}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\color{white}\bfseries\strut \VAR{card.title}\hfill\levelbadge{\VAR{card.level}}\BLOCK{if legend} \callout{\VAR{legend.callouts[3][0]}}\BLOCK{endif}\strut}}
 \levelstrip{\VAR{card.level}}
 \BLOCK{if not legend}
@@ -12,7 +13,7 @@
 \noindent\colorbox{mhplight}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\raggedright\bfseries\strut \VAR{card.simple}\strut}}\par
 {\cardsmall\color{mhpgrey}\VAR{card.technical}\par}
 \vspace{0.6mm}
-\noindent\colorbox{mhplight}{\parbox{\dimexpr(\linewidth-6\fboxsep)/3-1pt\relax}{\centering\strut\textbf{C}\enspace \VAR{card.cia_values[0]}\strut}}\hfill\colorbox{mhplight}{\parbox{\dimexpr(\linewidth-6\fboxsep)/3-1pt\relax}{\centering\strut\textbf{I}\enspace \VAR{card.cia_values[1]}\strut}}\hfill\colorbox{mhplight}{\parbox{\dimexpr(\linewidth-6\fboxsep)/3-1pt\relax}{\centering\strut\textbf{A}\enspace \VAR{card.cia_values[2]}\strut}}\BLOCK{if legend} \callout{\VAR{legend.callouts[0][0]}}\BLOCK{endif}\par
+\noindent\colorbox{mhplight}{\parbox{\dimexpr(\linewidth-6\fboxsep)/3-\VAR{cia_shrink}\relax}{\centering\strut\textbf{C}\enspace \VAR{card.cia_values[0]}\strut}}\hfill\colorbox{mhplight}{\parbox{\dimexpr(\linewidth-6\fboxsep)/3-\VAR{cia_shrink}\relax}{\centering\strut\textbf{I}\enspace \VAR{card.cia_values[1]}\strut}}\hfill\colorbox{mhplight}{\parbox{\dimexpr(\linewidth-6\fboxsep)/3-\VAR{cia_shrink}\relax}{\centering\strut\textbf{A}\enspace \VAR{card.cia_values[2]}\strut}}\BLOCK{if legend} \callout{\VAR{legend.callouts[0][0]}}\BLOCK{endif}\par
 \vspace{0.6mm}
 \noindent\textbf{\VAR{labels.init}}\hfill\VAR{card.init_text}\par
 \noindent\textbf{\VAR{labels.opex}}\hfill\VAR{card.opex_text}\BLOCK{if legend} \callout{\VAR{legend.callouts[1][0]}}\BLOCK{endif}\par
