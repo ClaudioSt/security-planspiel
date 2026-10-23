@@ -94,7 +94,7 @@
   \ifcase#1\relax #1\or
     \planspiel@badge{levelone}{white}{1}\or
     \planspiel@badge{leveltwo}{mhpdark}{2}\or
-    \planspiel@badge{levelthree}{white}{3}\fi}
+    \planspiel@badge{levelthree}{white}{3}\else\PackageError{planspiel}{Unbekanntes Level #1}{}\fi}
 
 % Table rows: data rows are 7 mm high (writable), header rows 6 mm.
 \newcommand{\rowstrut}{\rule[-2.3mm]{0pt}{7mm}}
@@ -102,6 +102,94 @@
 
 % Page fill report (log only, no change to the PDF): used height and text height of the page just filled.
 \newcommand{\fillreport}[1]{\par\typeout{PLANSPIEL-FILL page=#1 used=\the\pagetotal\space text=\the\textheight}}
+\makeatother
+
+% ---- Card sheets (measure and event decks) ------------------------------------------------------
+% Needs TikZ (loaded by the card template, not here). One A4 sheet holds four A6 cells of 105 x 148 mm,
+% placed from the page's top-left corner by overlays: 0 1 / 2 3. The page has zero margins; the outer
+% edge of each card is the paper edge. Text keeps a 7 mm safe margin, and the two lower cells reserve
+% an 8 mm strip at the bottom for the sheet footer (stamp and page counter, drawn once per sheet).
+\makeatletter
+\newcounter{cardcell}
+\newsavebox{\planspiel@cardbox}
+\newdimen\planspiel@cardlimit
+\newdimen\planspiel@cellx
+\newdimen\planspiel@celly
+\newcommand{\planspiel@cardtextwidth}{91mm}
+
+% Card text: 9 pt body on an 11 pt line, ragged right (hyphenation is off for the whole package).
+\newcommand{\cardfont}{\fontsize{9}{11}\selectfont\raggedright}
+\newcommand{\cardsmall}{\fontsize{7.5}{9}\selectfont}
+
+% One sheet = one page: the guides first, then the cells. The counter gives each cell its position. A sheet
+% starts a new page unless it is the first, so the last page is never flushed early (LastPage stays right).
+\newcounter{cardsheets}
+\newenvironment{cardsheet}{%
+  \ifnum\value{cardsheets}>0 \clearpage\fi\stepcounter{cardsheets}%
+  \setcounter{cardcell}{0}\thispagestyle{empty}\mbox{}%
+  \begin{tikzpicture}[remember picture,overlay,line width=0.4pt,color=mhpgrey]
+    \draw[dash pattern=on 2pt off 2pt] ([xshift=105mm]current page.north west) -- ([xshift=105mm]current page.south west);
+    \draw[dash pattern=on 2pt off 2pt] ([yshift=-148mm]current page.north west) -- ([yshift=-148mm]current page.north east);
+    \draw ([xshift=105mm]current page.north west) -- ++(0,-4mm);
+    \draw ([xshift=105mm]current page.south west) -- ++(0,4mm);
+    \draw ([yshift=-148mm]current page.north west) -- ++(4mm,0);
+    \draw ([yshift=-148mm]current page.north east) -- ++(-4mm,0);
+  \end{tikzpicture}%
+}{}
+
+% Set the limit and the origin of the next cell; more than four cells on a sheet is a build error.
+\newcommand{\planspiel@cellgeometry}{%
+  \ifnum\value{cardcell}>3
+    \PackageError{planspiel}{Mehr als vier Karten auf einem Blatt}{}%
+  \fi
+  \ifodd\value{cardcell}\planspiel@cellx=112mm \else\planspiel@cellx=7mm \fi
+  \ifnum\value{cardcell}>1
+    \planspiel@celly=-155mm \global\planspiel@cardlimit=126mm
+  \else
+    \planspiel@celly=-7mm \global\planspiel@cardlimit=134mm
+  \fi}
+
+% A card cell: the body is set in a global box first (it must outlive the environment), so \cardreport can
+% measure it, then placed on the sheet.
+\newenvironment{cardcell}{%
+  \global\setbox\planspiel@cardbox\hbox\bgroup\begin{minipage}[t]{\planspiel@cardtextwidth}\cardfont
+}{%
+  \end{minipage}\egroup%
+  \planspiel@cellgeometry
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=north west,inner sep=0pt] at ([xshift=\planspiel@cellx,yshift=\planspiel@celly]current page.north west)
+      {\usebox{\planspiel@cardbox}};
+  \end{tikzpicture}%
+  \stepcounter{cardcell}%
+}
+
+% Directly after \end{cardcell}: height of the card just placed against the room it had (log only).
+\newcommand{\cardreport}[1]{\typeout{PLANSPIEL-CARD id=#1 used=\the\dimexpr\ht\planspiel@cardbox+\dp\planspiel@cardbox\relax\space limit=\the\planspiel@cardlimit}}
+
+% Sheet footer, once per sheet in the bottom strip: stamp left, page counter right. Added to every
+% shipped page by the template with \AddToHook{shipout/foreground}.
+\newcommand{\cardsheetfooter}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=south west,inner sep=0pt,font=\scriptsize,text=mhpgrey] at ([xshift=7mm,yshift=3.5mm]current page.south west)
+      {\footerstamp};
+    \node[anchor=south east,inner sep=0pt,font=\scriptsize,text=mhpgrey] at ([xshift=-7mm,yshift=3.5mm]current page.south east)
+      {Seite \thepage\ von \pageref{LastPage}};
+  \end{tikzpicture}}
+
+% Padlock icon (Arial has no lock glyph): shackle and body, about the height of a text line.
+\newcommand{\lockicon}{\raisebox{-0.4mm}{\begin{tikzpicture}[baseline=0pt,line cap=round]
+  \draw[line width=0.6pt,color=mhpdark] (0.7mm,2.6mm) -- (0.7mm,3.4mm) arc (180:0:1.1mm) -- (2.9mm,2.6mm);
+  \fill[color=mhpdark,rounded corners=0.3mm] (0,0) rectangle (3.6mm,2.9mm);
+\end{tikzpicture}}}
+
+% Numbered callout dot of the legend card.
+\newcommand{\callout}[1]{\tikz[baseline=(planspiel@dot.base)]\node[circle,fill=mhpaccent,text=white,inner sep=0.7pt,%
+  font=\bfseries\fontsize{6.5}{7}\selectfont] (planspiel@dot) {#1};}
+
+% Thin strip in the level colour under the card header.
+\newcommand{\levelstrip}[1]{\par\noindent\ifcase#1\relax\or\planspiel@strip{levelone}\or\planspiel@strip{leveltwo}\or
+  \planspiel@strip{levelthree}\else\PackageError{planspiel}{Unbekanntes Level #1}{}\fi}
+\newcommand{\planspiel@strip}[1]{\textcolor{#1}{\rule{\linewidth}{1.6mm}}\par}
 \makeatother
 
 \endinput

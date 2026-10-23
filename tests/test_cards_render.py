@@ -116,8 +116,8 @@ def test_the_lock_icon_sits_exactly_on_the_cards_with_a_dependency(loaded):
 
 
 def test_the_real_deck_shows_the_lock_on_three_cards(real):
-    _, _, deck, source = real
-    blocks = _card_blocks(source, deck)
+    _, _, deck, documents = real
+    blocks = _card_blocks(documents[DECK_JOB], deck)
     assert [card_id for card_id, block in blocks.items() if card_id != "LEGEND" and "\\lockicon" in block] == [
         "M1-L3", "M3-L3", "M7-L3"
     ]

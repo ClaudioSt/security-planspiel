@@ -10,6 +10,7 @@ from typing import Callable, Dict, Tuple
 import jinja2
 
 from planspiel import audience, texbuild
+from planspiel.cards import build_measure_deck
 from planspiel.printmodel import build_attack_sheets
 
 _TEX_SPECIALS = str.maketrans(
@@ -70,9 +71,15 @@ def attack_worksheets(cfg, texts, env: jinja2.Environment) -> Dict[str, str]:
     return {sheet.job: template.render(sheet=sheet) for sheet in build_attack_sheets(cfg, texts)}
 
 
+def measure_cards(cfg, texts, env: jinja2.Environment) -> Dict[str, str]:
+    """The measure deck (legend card plus one card per measure level), rendered with karten.tex.j2."""
+    deck = build_measure_deck(cfg, texts)
+    return {deck.job: env.get_template("karten.tex.j2").render(deck=deck)}
+
+
 # Each builder takes (cfg, texts, env) and returns {job name: .tex source}.
 DocumentBuilder = Callable[..., Dict[str, str]]
-DOCUMENT_BUILDERS: Tuple[DocumentBuilder, ...] = (attack_worksheets,)
+DOCUMENT_BUILDERS: Tuple[DocumentBuilder, ...] = (attack_worksheets, measure_cards)
 
 
 def render_all(cfg, texts, template_dir: Path) -> Dict[str, str]:

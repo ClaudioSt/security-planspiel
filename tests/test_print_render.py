@@ -124,7 +124,7 @@ def test_mini_config_renders_the_wave_without_bonus_measures():
     sheets = build_attack_sheets(cfg, texts)
     assert any(not sheet.bonus_table for sheet in sheets)
     documents = render.render_all(cfg, texts, TEMPLATES)
-    assert len(documents) == len(cfg.waves)
+    assert len([job for job in documents if job.startswith("angriff-")]) == len(cfg.waves)
 
 
 def test_template_variables_are_plain_names():

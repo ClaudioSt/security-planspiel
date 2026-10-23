@@ -1,7 +1,7 @@
 """Layer-1 veil scan on the rendered .tex (VEIL-02, ROADMAP SC5, Phase 3 D-13/D-20, Phase 5 D-12/D-14/D-24)."""
 import pytest
 
-from planspiel import render, rules, veil
+from planspiel import audience, render, rules, veil
 from planspiel.config import load_config
 from planspiel.fmt import format_number
 from planspiel.texts import load_content
@@ -309,14 +309,19 @@ def test_an_attack_in_a_non_revealed_job_name_is_a_file_name_finding(cfg, conten
 
 
 def test_a_revealed_job_name_may_name_its_attack(cfg, content):
-    documents = render.render_all(cfg, content.texts, TEMPLATES)
-    assert all(job.startswith("angriff-") for job in documents)
+    documents = {
+        job: source
+        for job, source in render.render_all(cfg, content.texts, TEMPLATES).items()
+        if job.startswith("angriff-")
+    }
+    assert len(documents) == len(cfg.waves)
     assert veil.scan_documents(cfg, content.texts, content.terms, documents) == []
 
 
 def test_scan_documents_returns_nothing_for_todays_print_set(cfg, content):
     documents = render.render_all(cfg, content.texts, TEMPLATES)
-    assert len(documents) == len(cfg.waves)
+    assert len([job for job in documents if job.startswith("angriff-")]) == len(cfg.waves)
+    assert audience.MEASURE_DECK_JOB in documents
     assert veil.scan_documents(cfg, content.texts, content.terms, documents) == []
 
 

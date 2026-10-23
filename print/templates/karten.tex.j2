@@ -1,0 +1,56 @@
+\#{ Card deck template: loops and inserts only. Every number arrives as a finished string from the deck model. Cards dispatch on card.kind (legend, measure; event cards follow). }
+\BLOCK{macro card_body(card, labels, legend)}
+\#{ Called as a statement (call ... endcall): Jinja then applies no escaping to the macro output. The next line only lets the macro accept the call block. }
+\BLOCK{if caller}\BLOCK{endif}
+\noindent\colorbox{mhpblue}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\color{white}\bfseries\strut \VAR{card.title}\hfill\levelbadge{\VAR{card.level}}\BLOCK{if legend} \callout{\VAR{legend.callouts[3][0]}}\BLOCK{endif}\strut}}
+\levelstrip{\VAR{card.level}}
+\BLOCK{if not legend}
+{\bfseries\color{mhpblue}\VAR{card.focus}\par}
+\VAR{card.description}\par
+\BLOCK{endif}
+\vspace{0.6mm}
+\noindent\colorbox{mhplight}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\raggedright\bfseries\strut \VAR{card.simple}\strut}}\par
+{\cardsmall\color{mhpgrey}\VAR{card.technical}\par}
+\vspace{0.6mm}
+\noindent\colorbox{mhplight}{\parbox{\dimexpr(\linewidth-6\fboxsep)/3-1pt\relax}{\centering\strut\textbf{C}\enspace \VAR{card.cia_values[0]}\strut}}\hfill\colorbox{mhplight}{\parbox{\dimexpr(\linewidth-6\fboxsep)/3-1pt\relax}{\centering\strut\textbf{I}\enspace \VAR{card.cia_values[1]}\strut}}\hfill\colorbox{mhplight}{\parbox{\dimexpr(\linewidth-6\fboxsep)/3-1pt\relax}{\centering\strut\textbf{A}\enspace \VAR{card.cia_values[2]}\strut}}\BLOCK{if legend} \callout{\VAR{legend.callouts[0][0]}}\BLOCK{endif}\par
+\vspace{0.6mm}
+\noindent\textbf{\VAR{labels.init}}\hfill\VAR{card.init_text}\par
+\noindent\textbf{\VAR{labels.opex}}\hfill\VAR{card.opex_text}\BLOCK{if legend} \callout{\VAR{legend.callouts[1][0]}}\BLOCK{endif}\par
+\BLOCK{if card.dependency}
+\vspace{0.6mm}
+\noindent\lockicon\ \textbf{\VAR{labels.requires}:} \VAR{card.dependency}\BLOCK{if legend} \callout{\VAR{legend.callouts[2][0]}}\BLOCK{endif}\par
+\BLOCK{endif}
+\BLOCK{endmacro}
+\documentclass[a4paper,10pt]{article}
+\usepackage{planspiel}
+\usepackage{tikz}
+\newgeometry{left=0pt,right=0pt,top=0pt,bottom=0pt,nohead,nofoot}
+\pagestyle{empty}
+\AddToHook{shipout/foreground}{\cardsheetfooter}
+\begin{document}
+\BLOCK{for sheet in deck.sheets}
+\begin{cardsheet}
+\BLOCK{for card in sheet}
+\begin{cardcell}
+\BLOCK{if card.kind == "legend"}
+{\bfseries\color{mhpblue}\fontsize{11}{13}\selectfont \VAR{card.title}\par}
+{\cardsmall{}\VAR{card.intro}\par}
+\vspace{1mm}
+\noindent\fbox{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{\cardsmall
+\BLOCK{call card_body(card.sample, deck.labels, card)}\BLOCK{endcall}
+}}\par
+\vspace{1mm}
+\BLOCK{for callout in card.callouts}
+\noindent\callout{\VAR{callout[0]}} {\cardsmall{}\BLOCK{if loop.index == 3}\lockicon\ \BLOCK{endif}\VAR{callout[1]}\par}
+\BLOCK{endfor}
+\#{ The formula comes last: a digit right after a weight symbol would trip the veil scan (wC = 4). }
+\vspace{0.5mm}
+\noindent{\cardsmall\bfseries{}\VAR{card.formula}\par}
+\BLOCK{elif card.kind == "measure"}
+\BLOCK{call card_body(card, deck.labels, false)}\BLOCK{endcall}
+\BLOCK{endif}
+\end{cardcell}\cardreport{\VAR{card.card_id}}
+\BLOCK{endfor}
+\end{cardsheet}
+\BLOCK{endfor}
+\end{document}

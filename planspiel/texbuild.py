@@ -25,6 +25,7 @@ TEX_PROBES: Dict[str, str] = {
     "colortbl.sty": "colortbl",
     "array.sty": "tools",
     "tabularx.sty": "tools",
+    "tikz.sty": "pgf",
 }
 
 # Files copied from the print directory into every build directory.

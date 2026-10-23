@@ -82,8 +82,11 @@ def test_the_three_real_jobs_are_revealed():
     cfg = load_config(CONFIG_PATH)
     texts = load_texts(CONTENT_DIR / "texte.toml")
     documents = render.render_all(cfg, texts, TEMPLATES)
-    assert [job for job in documents if job.startswith("angriff-")] == list(documents)
-    assert {audience.audience_of(job) for job in documents} == {audience.REVEALED}
+    revealed = [job for job in documents if job.startswith("angriff-")]
+    assert len(revealed) == len(cfg.waves)
+    assert {audience.audience_of(job) for job in revealed} == {audience.REVEALED}
+    assert audience.MEASURE_DECK_JOB in documents
+    assert audience.audience_of(audience.MEASURE_DECK_JOB) == audience.PREWAVE
 
 
 def test_render_all_rejects_a_job_without_a_known_prefix(monkeypatch):
