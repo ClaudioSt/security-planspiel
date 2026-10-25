@@ -5,6 +5,7 @@ Run with `uv run pytest -m pdf tests/test_cards_pdf.py -v`.
 import re
 
 import pytest
+from pypdf import PdfReader
 
 from planspiel.cards import CARDS_PER_SHEET, build_measure_deck, printed_strings
 from planspiel.config import load_config
@@ -40,6 +41,13 @@ def _page_of(deck, card_id):
 def test_the_deck_is_eight_a4_sheets(deck, pages):
     assert len(deck.cards) == 31
     assert len(pages) == 8
+
+
+def test_the_sheets_are_a4_landscape_so_every_card_is_a6_landscape(printed_set):
+    mm_per_pt = 25.4 / 72
+    for number, page in enumerate(PdfReader(printed_set.out_a / f"{DECK_JOB}.pdf").pages, start=1):
+        width, height = float(page.mediabox.width) * mm_per_pt, float(page.mediabox.height) * mm_per_pt
+        assert (round(width), round(height)) == (297, 210), f"Blatt {number}: {width:.1f} x {height:.1f} mm"
 
 
 def test_each_sheet_carries_the_stamp_and_the_page_counter_once(pages):

@@ -105,21 +105,29 @@
 \makeatother
 
 % ---- Card sheets (measure and event decks) ------------------------------------------------------
-% Needs TikZ (loaded by the card template, not here). One A4 sheet holds four A6 cells of 105 x 148 mm,
-% placed from the page's top-left corner by overlays: 0 1 / 2 3. The page has zero margins; the outer
-% edge of each card is the paper edge. Text keeps a 7 mm safe margin, and the two lower cells reserve
-% an 8 mm strip at the bottom for the sheet footer (stamp and page counter, drawn once per sheet).
+% Needs TikZ (loaded by the card template, not here). One A4 sheet in landscape holds four A6 cells of
+% 148.5 x 105 mm, placed from the page's top-left corner by overlays: 0 1 / 2 3. The page has zero margins;
+% the outer edge of each card is the paper edge. Text keeps a 7 mm safe margin, and the two lower cells
+% reserve an 8 mm strip at the bottom for the sheet footer (stamp and page counter, drawn once per sheet).
 \makeatletter
 \newcounter{cardcell}
 \newsavebox{\planspiel@cardbox}
 \newdimen\planspiel@cardlimit
 \newdimen\planspiel@cellx
 \newdimen\planspiel@celly
-\newcommand{\planspiel@cardtextwidth}{91mm}
+\newcommand{\planspiel@cardtextwidth}{134mm}
 
-% Card text: 9 pt body on an 11 pt line, ragged right (hyphenation is off for the whole package).
-\newcommand{\cardfont}{\fontsize{9}{11}\selectfont\raggedright}
-\newcommand{\cardsmall}{\fontsize{7.5}{9}\selectfont}
+% Two-column body of a card: text on the left, figures on the right, 4 mm gap in between.
+\newcommand{\cardleftwidth}{80mm}
+\newcommand{\cardrightwidth}{50mm}
+% Legend card: the annotated sample on the left, the numbered explanations on the right.
+\newcommand{\cardlegendleft}{62mm}
+\newcommand{\cardlegendright}{68mm}
+
+% Card text: 11 pt body on a 13 pt line, ragged right (hyphenation is off for the whole package).
+\newcommand{\cardfont}{\fontsize{11}{13}\selectfont\raggedright}
+\newcommand{\cardsmall}{\fontsize{9}{10.5}\selectfont}
+\newcommand{\cardtitlefont}{\fontsize{13}{15}\selectfont}
 
 % One sheet = one page: the guides first, then the cells. The counter gives each cell its position. A sheet
 % starts a new page unless it is the first, so the last page is never flushed early (LastPage stays right).
@@ -128,12 +136,12 @@
   \ifnum\value{cardsheets}>0 \clearpage\fi\stepcounter{cardsheets}%
   \setcounter{cardcell}{0}\thispagestyle{empty}\mbox{}%
   \begin{tikzpicture}[remember picture,overlay,line width=0.4pt,color=mhpgrey]
-    \draw[dash pattern=on 2pt off 2pt] ([xshift=105mm]current page.north west) -- ([xshift=105mm]current page.south west);
-    \draw[dash pattern=on 2pt off 2pt] ([yshift=-148mm]current page.north west) -- ([yshift=-148mm]current page.north east);
-    \draw ([xshift=105mm]current page.north west) -- ++(0,-4mm);
-    \draw ([xshift=105mm]current page.south west) -- ++(0,4mm);
-    \draw ([yshift=-148mm]current page.north west) -- ++(4mm,0);
-    \draw ([yshift=-148mm]current page.north east) -- ++(-4mm,0);
+    \draw[dash pattern=on 2pt off 2pt] ([xshift=148.5mm]current page.north west) -- ([xshift=148.5mm]current page.south west);
+    \draw[dash pattern=on 2pt off 2pt] ([yshift=-105mm]current page.north west) -- ([yshift=-105mm]current page.north east);
+    \draw ([xshift=148.5mm]current page.north west) -- ++(0,-4mm);
+    \draw ([xshift=148.5mm]current page.south west) -- ++(0,4mm);
+    \draw ([yshift=-105mm]current page.north west) -- ++(4mm,0);
+    \draw ([yshift=-105mm]current page.north east) -- ++(-4mm,0);
   \end{tikzpicture}%
 }{}
 
@@ -142,11 +150,11 @@
   \ifnum\value{cardcell}>3
     \PackageError{planspiel}{Mehr als vier Karten auf einem Blatt}{}%
   \fi
-  \ifodd\value{cardcell}\planspiel@cellx=112mm \else\planspiel@cellx=7mm \fi
+  \ifodd\value{cardcell}\planspiel@cellx=155.5mm \else\planspiel@cellx=7mm \fi
   \ifnum\value{cardcell}>1
-    \planspiel@celly=-155mm \global\planspiel@cardlimit=126mm
+    \planspiel@celly=-112mm \global\planspiel@cardlimit=83mm
   \else
-    \planspiel@celly=-7mm \global\planspiel@cardlimit=134mm
+    \planspiel@celly=-7mm \global\planspiel@cardlimit=91mm
   \fi}
 
 % A card cell: the body is set in a global box first (it must outlive the environment), so \cardreport can
@@ -184,7 +192,7 @@
 
 % Numbered callout dot of the legend card.
 \newcommand{\callout}[1]{\tikz[baseline=(planspiel@dot.base)]\node[circle,fill=mhpaccent,text=white,inner sep=0.7pt,%
-  font=\bfseries\fontsize{6.5}{7}\selectfont] (planspiel@dot) {#1};}
+  font=\bfseries\fontsize{7.5}{8}\selectfont] (planspiel@dot) {#1};}
 
 % Thin strip in the level colour under the card header.
 \newcommand{\levelstrip}[1]{\par\noindent\ifcase#1\relax\or\planspiel@strip{levelone}\or\planspiel@strip{leveltwo}\or
