@@ -11,14 +11,16 @@
 {\bfseries\color{mhpblue}\VAR{card.focus}\par}
 \VAR{card.description}\par
 \BLOCK{endif}
-\vspace{0.6mm}
-\noindent\colorbox{mhplight}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\raggedright\bfseries\strut \VAR{card.simple}\strut}}\par
+\vspace{1.6mm}
+\cardplain{\VAR{card.simple}}
+\vspace{\cardtechgap}
 {\cardtech\color{mhpgrey}\VAR{card.technical}\par}
 \BLOCK{endmacro}
 \BLOCK{macro card_facts(card, labels, legend)}
 \BLOCK{if caller}\BLOCK{endif}
 \BLOCK{set cia_shrink = "2.5mm" if legend else "1pt"}
-\vspace{0.6mm}
+\BLOCK{set cia_top = "1.6mm" if legend else "0.6mm"}
+\vspace{\VAR{cia_top}}
 \noindent\colorbox{mhplight}{\parbox{\dimexpr(\linewidth-6\fboxsep)/3-\VAR{cia_shrink}\relax}{\centering\strut\textbf{C}\enspace \VAR{card.cia_values[0]}\strut}}\hfill\colorbox{mhplight}{\parbox{\dimexpr(\linewidth-6\fboxsep)/3-\VAR{cia_shrink}\relax}{\centering\strut\textbf{I}\enspace \VAR{card.cia_values[1]}\strut}}\hfill\colorbox{mhplight}{\parbox{\dimexpr(\linewidth-6\fboxsep)/3-\VAR{cia_shrink}\relax}{\centering\strut\textbf{A}\enspace \VAR{card.cia_values[2]}\strut}}\BLOCK{if legend} \callout{\VAR{legend.callouts[0][0]}}\BLOCK{endif}\par
 \vspace{\cardgap}
 \factbox{\VAR{labels.init}}{\VAR{card.init_text}}\par
@@ -56,13 +58,13 @@
 \BLOCK{for card in sheet}
 \begin{cardcell}
 \BLOCK{if card.kind == "legend"}
-{\bfseries\color{mhpblue}\cardtitlefont \VAR{card.title}\par}
+{\bfseries\color{mhpblue}\cardlegendtitle \VAR{card.title}\par}
 {\cardlegendfont{}\VAR{card.intro}\par}
-\vspace{1mm}
+\vspace{0.6mm}
 \noindent\begin{minipage}[t]{\cardlegendleft}
-\noindent\fbox{\parbox[t]{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{\cardlegendsample\raggedright
+\setlength{\fboxsep}{2pt}\noindent\fbox{\hspace{0.9mm}\parbox[t]{\dimexpr\linewidth-2\fboxsep-2\fboxrule-1.8mm\relax}{\cardlegendsample\raggedright
 \BLOCK{call card_body(card.sample, deck.labels, card)}\BLOCK{endcall}
-}}
+}\hspace{0.9mm}}
 \end{minipage}\hfill\begin{minipage}[t]{\cardlegendright}\cardlegendfont\raggedright
 \BLOCK{for callout in card.callouts}
 \noindent\hangindent=4.5mm\hangafter=1 \callout{\VAR{callout[0]}}\hspace{1.2mm}\BLOCK{if loop.index == 3}\lockicon\ \BLOCK{endif}\VAR{callout[1]}\par
