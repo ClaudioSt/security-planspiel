@@ -31,7 +31,7 @@
 - [x] **VEIL-01**: Config/content hold separate veiled (pre-attack) and revealed (at-wave) texts per attack
 - [x] **VEIL-02**: Material players see before a wave (company profile, newspaper article, measure cards, planning sheets, file names, PDF metadata) contains no attack names and no wave CIA weights — verified by an automated scan
 - [x] **VEIL-03**: A facilitator clue matrix shows every attack is inferable from at least two clues in the pre-wave material
-- [ ] **VEIL-04**: Measure cards show CIA values, costs and dependencies only; the measure→attack bonus link and wave weights appear on the attack worksheet when the wave is revealed
+- [x] **VEIL-04**: Measure cards show CIA values, costs and dependencies only; the measure→attack bonus link and wave weights appear on the attack worksheet when the wave is revealed
 
 ### Print Material (PRINT)
 
@@ -138,7 +138,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | VEIL-01 | Phase 3 | Complete |
 | VEIL-02 | Phase 5 | Complete |
 | VEIL-03 | Phase 3 | Complete |
-| VEIL-04 | Phase 5 | Pending |
+| VEIL-04 | Phase 5 | Complete |
 | PRINT-01 | Phase 4 | Complete |
 | PRINT-02 | Phase 3 | Complete |
 | PRINT-03 | Phase 4 | Complete |
