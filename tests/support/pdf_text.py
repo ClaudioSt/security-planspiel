@@ -9,6 +9,7 @@ from pypdf import PdfReader
 
 FILL = re.compile(r"PLANSPIEL-FILL page=(\d+) used=([0-9.]+)pt text=([0-9.]+)pt")
 CARD = re.compile(r"PLANSPIEL-CARD id=(\S+) used=([0-9.]+)pt limit=([0-9.]+)pt")
+CARDTITLE = re.compile(r"PLANSPIEL-CARDTITLE id=(\S+) width=([0-9.]+)pt avail=([0-9.]+)pt")
 
 
 def squash(text: str) -> str:

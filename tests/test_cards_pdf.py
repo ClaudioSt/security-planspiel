@@ -11,7 +11,7 @@ from planspiel.cards import CARDS_PER_SHEET, build_measure_deck, printed_strings
 from planspiel.config import load_config
 from planspiel.texts import load_texts
 from tests.support import CONFIG_PATH, CONTENT_DIR
-from tests.support.pdf_text import CARD, squash, squashed_pages
+from tests.support.pdf_text import CARD, CARDTITLE, squash, squashed_pages
 
 pytestmark = pytest.mark.pdf
 
@@ -83,3 +83,13 @@ def test_every_card_fits_its_cell_as_logged(printed_set, deck):
     assert len(reports) == 31
     for card_id, used, limit in reports:
         assert float(used) <= float(limit), f"{card_id}: {used}pt > {limit}pt"
+
+
+def test_every_card_title_is_set_on_one_line_with_room_to_spare(printed_set, deck):
+    log = (printed_set.build_a / f"{DECK_JOB}.log").read_text(encoding="utf-8", errors="replace")
+    reports = CARDTITLE.findall(log)
+    logged = {card_id for card_id, _, _ in reports}
+    assert {card.card_id for card in deck.cards if card.kind == "measure"} <= logged
+    assert len(reports) == 31  # 30 measure cards plus the sample header on the legend card
+    for card_id, width, avail in reports:
+        assert float(width) <= float(avail), f"{card_id}: title {width}pt wider than the {avail}pt before the badge"
