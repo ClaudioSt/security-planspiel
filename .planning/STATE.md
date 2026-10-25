@@ -5,15 +5,15 @@ milestone_name: milestone
 current_phase: 05
 current_phase_name: Player & Facilitator Print Material
 status: executing
-stopped_at: Completed 05-02-PLAN.md
-last_updated: "2026-10-23T12:18:12.704Z"
+stopped_at: Completed 05-03-PLAN.md (print test approved round 5)
+last_updated: "2026-10-25T13:08:50.837Z"
 last_activity: 2026-10-23
 last_activity_desc: Phase 05 execution started
 progress:
   total_phases: 7
   completed_phases: 4
   total_plans: 40
-  completed_plans: 26
+  completed_plans: 27
   percent: 57
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-09-29)
 ## Current Position
 
 Phase: 05 (Player & Facilitator Print Material) — EXECUTING
-Plan: 3 of 16
+Plan: 4 of 16
 Status: Ready to execute
 Last activity: 2026-10-23 — Phase 05 execution started
 
@@ -83,6 +83,7 @@ Progress: [██████░░░░] 57% (4 of 7 phases)
 | Phase 04 P06 | 75min | 3 tasks | 12 files |
 | Phase 05 P01 | 90min | 3 tasks | 16 files |
 | Phase 05 P02 | 85min | 2 tasks | 17 files |
+| Phase 05 P03 | 95min | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -126,6 +127,9 @@ Recent decisions affecting current work:
 - [Phase 05]: 05-01: PDF-layer veil scan squashes whitespace and hyphens on both sides so line-end hyphenation cannot hide a leaked name
 - [Phase 05]: 05-01: Job-name prefix (spieler-, uebung-, angriff-, spielleitung-) is the single audience classification; render_all raises for unclassified jobs
 - [Phase 05]: 05-02: CardDeck carries CardLabels so the 13-field MeasureCard stays pinned; legend formula is the last legend line (a digit after wA trips the weight-symbol veil rule); cardsheet starts a new page except for the first so LastPage equals the sheet count — see 05-02-SUMMARY.md key-decisions
+- [Phase 05-03]: Card layout: A6 landscape (148.5x105 mm), 2x2 on A4 landscape; body 12/14.5 pt, technical line 10/12 pt, title 17/20 pt bold, text columns 82/48 mm; the 05-05 event deck reuses this layout — Approved by the user in print-test round 5 (Freigeben)
+- [Phase 05-03]: Init-Kosten, OPEX and Voraussetzung use factbox (caption band directly above its value); padding captop 1.6, capbot 0.8, valtop 1.3, valbot 0.6, plaintop 1.4, plainbot 1, plainside 2, techgap 1.6 mm, headsep 1.8 mm, badge sep 3 pt — Round 2 and 3 user feedback: label must belong visibly to its value, text must not touch box edges
+- [Phase 05-03]: One-line title guard: cardheader logs PLANSPIEL-CARDTITLE width/avail and a pdf test asserts width <= avail for all 31 headers (longest M10 116.2 of 121.8 mm); every card_header user, incl. the 05-05 event deck, is covered — 17 pt title chosen by the user in round 4; a wrapped title would break the bar
 
 ### Pending Todos
 
@@ -148,6 +152,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-10-23T12:18:12.691Z
-Stopped at: Completed 05-02-PLAN.md
+Last session: 2026-10-25T13:08:50.776Z
+Stopped at: Completed 05-03-PLAN.md (print test approved round 5)
 Resume file: None
