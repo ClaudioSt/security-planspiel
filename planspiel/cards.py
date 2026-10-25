@@ -44,6 +44,7 @@ class LegendCard:
     intro: str
     callouts: tuple[tuple[str, str], ...]
     formula: str
+    reveal_note: str
 
 
 @dataclass(frozen=True)
@@ -144,6 +145,7 @@ def _legend_card(texts: Texts, measure_cards: list[MeasureCard]) -> LegendCard:
         intro=str(texts.get("sheets.karten.legend_intro")),
         callouts=callouts,
         formula=str(texts.get("sheets.karten.legend_formula")),
+        reveal_note=str(texts.get("sheets.karten.legend_reveal")),
     )
 
 

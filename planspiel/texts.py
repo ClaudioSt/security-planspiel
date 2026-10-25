@@ -36,8 +36,8 @@ _SHEET_LABELS = (
 )
 
 _KARTEN_KEYS = (
-    "legend_title", "legend_intro", "legend_cia", "legend_formula", "legend_costs", "legend_dependency",
-    "legend_levels", "per_wave", "requires",
+    "legend_title", "legend_intro", "legend_cia", "legend_formula", "legend_reveal", "legend_costs",
+    "legend_dependency", "legend_levels", "per_wave", "requires",
 )
 
 SHEET_KEYS = (

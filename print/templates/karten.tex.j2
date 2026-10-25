@@ -69,6 +69,8 @@
 \BLOCK{for callout in card.callouts}
 \noindent\hangindent=4.5mm\hangafter=1 \callout{\VAR{callout[0]}}\hspace{1.2mm}\BLOCK{if loop.index == 3}\lockicon\ \BLOCK{endif}\VAR{callout[1]}\par
 \BLOCK{endfor}
+\vspace{0.5mm}
+\noindent{\itshape\color{mhpgrey}\VAR{card.reveal_note}\par}
 \#{ The formula comes last: a digit right after a weight symbol would trip the veil scan (wC = 4). }
 \vspace{0.5mm}
 \noindent{\bfseries{}\VAR{card.formula}\par}
