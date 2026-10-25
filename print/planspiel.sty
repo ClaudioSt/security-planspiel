@@ -118,16 +118,39 @@
 \newcommand{\planspiel@cardtextwidth}{134mm}
 
 % Two-column body of a card: text on the left, figures on the right, 4 mm gap in between.
-\newcommand{\cardleftwidth}{80mm}
-\newcommand{\cardrightwidth}{50mm}
+\newcommand{\cardleftwidth}{82mm}
+\newcommand{\cardrightwidth}{48mm}
 % Legend card: the annotated sample on the left, the numbered explanations on the right.
 \newcommand{\cardlegendleft}{62mm}
 \newcommand{\cardlegendright}{68mm}
 
-% Card text: 11 pt body on a 13 pt line, ragged right (hyphenation is off for the whole package).
-\newcommand{\cardfont}{\fontsize{11}{13}\selectfont\raggedright}
-\newcommand{\cardsmall}{\fontsize{9}{10.5}\selectfont}
-\newcommand{\cardtitlefont}{\fontsize{13}{15}\selectfont}
+% Card type, one set for the whole deck: 12 pt body on a 14.5 pt line, ragged right (hyphenation is off for
+% the whole package), 10 pt technical line, 15 pt title, bold 14 pt figures. The legend card sets its
+% own, smaller set (\cardlegendfont and the legend values); the sample on it takes the legend set too.
+\newcommand{\cardfont}{\fontsize{12}{14.5}\selectfont\raggedright}
+\newcommand{\cardtech}{\fontsize{10}{12}\selectfont}
+\newcommand{\cardcaption}{\fontsize{10.5}{12}\selectfont\bfseries\color{mhpblue}}
+\newcommand{\cardvalue}{\fontsize{14}{16.5}\selectfont\bfseries}
+\newcommand{\cardtitlefont}{\fontsize{15}{18}\selectfont}
+\newcommand{\cardlegendfont}{\fontsize{9}{10.5}\selectfont}
+\newcommand{\cardlegendcaption}{\fontsize{7.5}{9}\selectfont\bfseries\color{mhpblue}}
+\newcommand{\cardlegendvalue}{\fontsize{9}{10.5}\selectfont\bfseries}
+\newcommand{\cardfactwidth}{\linewidth}
+\newcommand{\cardgap}{2mm}
+\newcommand{\cardboxpad}{0.6mm}
+\newcommand{\cardlegendsample}{\cardlegendfont\let\cardtech\cardlegendfont\let\cardcaption\cardlegendcaption
+  \let\cardvalue\cardlegendvalue\renewcommand{\cardfactwidth}{\dimexpr\linewidth-5.5mm\relax}%
+  \renewcommand{\cardgap}{0.8mm}\renewcommand{\cardboxpad}{0.3mm}}
+
+% Fact box: a caption band (label) with its value directly beneath, both inside one blue frame, so a
+% value can only be read together with its label. #1 label, #2 value; the width is \cardfactwidth.
+\newdimen\planspiel@factwidth
+\newcommand{\factbox}[2]{\begingroup\setlength{\planspiel@factwidth}{\cardfactwidth}%
+  \setlength{\fboxsep}{0pt}\setlength{\fboxrule}{0.6pt}\setlength{\parskip}{0pt}%
+  \noindent\fcolorbox{mhpblue}{white}{\parbox{\dimexpr\planspiel@factwidth-2\fboxrule\relax}{%
+    \colorbox{mhplight}{\parbox{\dimexpr\planspiel@factwidth-2\fboxrule\relax}{\raggedright\cardcaption\strut\hspace{1.5mm}#1\strut}}\par
+    \vspace{\cardboxpad}\noindent\hspace{1.5mm}\parbox[t]{\dimexpr\planspiel@factwidth-2\fboxrule-3mm\relax}{\raggedright\cardvalue\strut #2\strut}\par
+    \vspace{\cardboxpad}}}\endgroup}
 
 % One sheet = one page: the guides first, then the cells. The counter gives each cell its position. A sheet
 % starts a new page unless it is the first, so the last page is never flushed early (LastPage stays right).

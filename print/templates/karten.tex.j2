@@ -13,19 +13,20 @@
 \BLOCK{endif}
 \vspace{0.6mm}
 \noindent\colorbox{mhplight}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\raggedright\bfseries\strut \VAR{card.simple}\strut}}\par
-{\cardsmall\color{mhpgrey}\VAR{card.technical}\par}
+{\cardtech\color{mhpgrey}\VAR{card.technical}\par}
 \BLOCK{endmacro}
 \BLOCK{macro card_facts(card, labels, legend)}
 \BLOCK{if caller}\BLOCK{endif}
 \BLOCK{set cia_shrink = "2.5mm" if legend else "1pt"}
 \vspace{0.6mm}
 \noindent\colorbox{mhplight}{\parbox{\dimexpr(\linewidth-6\fboxsep)/3-\VAR{cia_shrink}\relax}{\centering\strut\textbf{C}\enspace \VAR{card.cia_values[0]}\strut}}\hfill\colorbox{mhplight}{\parbox{\dimexpr(\linewidth-6\fboxsep)/3-\VAR{cia_shrink}\relax}{\centering\strut\textbf{I}\enspace \VAR{card.cia_values[1]}\strut}}\hfill\colorbox{mhplight}{\parbox{\dimexpr(\linewidth-6\fboxsep)/3-\VAR{cia_shrink}\relax}{\centering\strut\textbf{A}\enspace \VAR{card.cia_values[2]}\strut}}\BLOCK{if legend} \callout{\VAR{legend.callouts[0][0]}}\BLOCK{endif}\par
-\vspace{0.6mm}
-\noindent\textbf{\VAR{labels.init}}\hfill\VAR{card.init_text}\par
-\noindent\textbf{\VAR{labels.opex}}\hfill\VAR{card.opex_text}\BLOCK{if legend} \callout{\VAR{legend.callouts[1][0]}}\BLOCK{endif}\par
+\vspace{\cardgap}
+\factbox{\VAR{labels.init}}{\VAR{card.init_text}}\par
+\vspace{\cardgap}
+\factbox{\VAR{labels.opex}}{\VAR{card.opex_text}}\BLOCK{if legend} \callout{\VAR{legend.callouts[1][0]}}\BLOCK{endif}\par
 \BLOCK{if card.dependency}
-\vspace{0.6mm}
-\noindent\lockicon\ \textbf{\VAR{labels.requires}:} \VAR{card.dependency}\BLOCK{if legend} \callout{\VAR{legend.callouts[2][0]}}\BLOCK{endif}\par
+\vspace{\cardgap}
+\factbox{\lockicon\ \VAR{labels.requires}}{\VAR{card.dependency}}\BLOCK{if legend} \callout{\VAR{legend.callouts[2][0]}}\BLOCK{endif}\par
 \BLOCK{endif}
 \BLOCK{endmacro}
 \#{ A card: header across the full width; below it text left and figures right. The sample of the legend card is narrow, so it stacks both parts. }
@@ -56,13 +57,13 @@
 \begin{cardcell}
 \BLOCK{if card.kind == "legend"}
 {\bfseries\color{mhpblue}\cardtitlefont \VAR{card.title}\par}
-{\cardsmall{}\VAR{card.intro}\par}
+{\cardlegendfont{}\VAR{card.intro}\par}
 \vspace{1mm}
 \noindent\begin{minipage}[t]{\cardlegendleft}
-\noindent\fbox{\parbox[t]{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{\cardsmall\raggedright
+\noindent\fbox{\parbox[t]{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{\cardlegendsample\raggedright
 \BLOCK{call card_body(card.sample, deck.labels, card)}\BLOCK{endcall}
 }}
-\end{minipage}\hfill\begin{minipage}[t]{\cardlegendright}\cardsmall\raggedright
+\end{minipage}\hfill\begin{minipage}[t]{\cardlegendright}\cardlegendfont\raggedright
 \BLOCK{for callout in card.callouts}
 \noindent\hangindent=4.5mm\hangafter=1 \callout{\VAR{callout[0]}}\hspace{1.2mm}\BLOCK{if loop.index == 3}\lockicon\ \BLOCK{endif}\VAR{callout[1]}\par
 \BLOCK{endfor}
