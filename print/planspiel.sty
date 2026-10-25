@@ -88,8 +88,9 @@
   \fcolorbox{mhpblue}{white}{\rule{0pt}{4mm}\rule{4mm}{0pt}}}}}
 
 % Level badge: filled box in the level colour (white text, dark on the light yellow of level 2).
+\newcommand{\cardbadgesep}{3pt}
 \newcommand{\planspiel@badge}[3]{%
-  \colorbox{#1}{\parbox[c][4.5mm][c]{4.5mm}{\centering\color{#2}\bfseries #3}}}
+  {\setlength{\fboxsep}{\cardbadgesep}\colorbox{#1}{\parbox[c][4.5mm][c]{4.5mm}{\centering\color{#2}\bfseries #3}}}}
 \newcommand{\levelbadge}[1]{%
   \ifcase#1\relax #1\or
     \planspiel@badge{levelone}{white}{1}\or
@@ -125,13 +126,13 @@
 \newcommand{\cardlegendright}{68mm}
 
 % Card type, one set for the whole deck: 12 pt body on a 14.5 pt line, ragged right (hyphenation is off for
-% the whole package), 10 pt technical line, 15 pt title, bold 14 pt figures. The legend card sets its
+% the whole package), 10 pt technical line, 17 pt title, bold 14 pt figures. The legend card sets its
 % own, smaller set (\cardlegendfont and the legend values); the sample on it takes the legend set too.
 \newcommand{\cardfont}{\fontsize{12}{14.5}\selectfont\raggedright}
 \newcommand{\cardtech}{\fontsize{10}{12}\selectfont}
 \newcommand{\cardcaption}{\fontsize{10.5}{12}\selectfont\bfseries\color{mhpblue}}
 \newcommand{\cardvalue}{\fontsize{14}{16.5}\selectfont\bfseries}
-\newcommand{\cardtitlefont}{\fontsize{15}{18}\selectfont}
+\newcommand{\cardtitlefont}{\fontsize{17}{20}\selectfont\renewcommand{\planspiel@headstrut}{\rule[-4pt]{0pt}{14pt}}}
 \newcommand{\cardlegendfont}{\fontsize{9}{10.5}\selectfont}
 \newcommand{\cardlegendtitle}{\fontsize{14}{16}\selectfont}
 \newcommand{\cardlegendcaption}{\fontsize{7.5}{9}\selectfont\bfseries\color{mhpblue}}
@@ -148,11 +149,12 @@
 \newcommand{\cardplainbot}{1mm}
 \newcommand{\cardplainside}{2mm}
 \newcommand{\cardtechgap}{1.6mm}
+\newcommand{\cardheadsep}{1.8mm}
 \newcommand{\cardlegendsample}{\cardlegendfont\let\cardtech\cardlegendfont\let\cardcaption\cardlegendcaption
   \let\cardvalue\cardlegendvalue\renewcommand{\cardfactwidth}{\dimexpr\linewidth-5.5mm\relax}%
   \renewcommand{\cardgap}{0.6mm}\renewcommand{\cardcaptop}{1.2mm}\renewcommand{\cardcapbot}{0.6mm}%
   \renewcommand{\cardvaltop}{1mm}\renewcommand{\cardvalbot}{0.4mm}\renewcommand{\cardplaintop}{1.1mm}%
-  \renewcommand{\cardplainbot}{0.8mm}\renewcommand{\cardplainside}{1.6mm}\renewcommand{\cardtechgap}{1.2mm}}
+  \renewcommand{\cardplainbot}{0.8mm}\renewcommand{\cardplainside}{1.6mm}\renewcommand{\cardtechgap}{1.2mm}\renewcommand{\cardheadsep}{2pt}\renewcommand{\cardbadgesep}{2pt}}
 
 % Fact box: a caption band (label) with its value directly beneath, both inside one blue frame, so a
 % value can only be read together with its label. #1 label, #2 value; the width is \cardfactwidth.
@@ -215,6 +217,21 @@
 
 % Directly after \end{cardcell}: height of the card just placed against the room it had (log only).
 \newcommand{\cardreport}[1]{\typeout{PLANSPIEL-CARD id=#1 used=\the\dimexpr\ht\planspiel@cardbox+\dp\planspiel@cardbox\relax\space limit=\the\planspiel@cardlimit}}
+
+% Title bar of a card: title left, level badge (and the optional callout of the legend sample) right, \cardheadsep
+% clear on every side. The title must stay on one line: its width is measured against the room before the badge
+% (minus a 2 mm gap) and logged. #1 id, #2 type set, #3 title, #4 level, #5 extra. The 17 pt title set also
+% swaps in a tighter strut (14 pt up, 4 pt down) so the capitals sit centred in the bar, 1.8 mm clear all round.
+\newcommand{\planspiel@headstrut}{\strut}
+\newdimen\planspiel@titlewidth
+\newdimen\planspiel@badgewidth
+\newcommand{\cardheader}[5]{\begingroup\setlength{\fboxsep}{\cardheadsep}%
+  \settowidth{\planspiel@titlewidth}{\bfseries#2\strut #3}%
+  \settowidth{\planspiel@badgewidth}{\bfseries#2\levelbadge{#4}#5}%
+  \typeout{PLANSPIEL-CARDTITLE id=#1 width=\the\planspiel@titlewidth\space
+    avail=\the\dimexpr\linewidth-2\fboxsep-\planspiel@badgewidth-2mm\relax}%
+  \noindent\colorbox{mhpblue}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\color{white}\bfseries#2\planspiel@headstrut #3\hfill
+    \levelbadge{#4}#5\planspiel@headstrut}}\endgroup}
 
 % Sheet footer, once per sheet in the bottom strip: stamp left, page counter right. Added to every
 % shipped page by the template with \AddToHook{shipout/foreground}.

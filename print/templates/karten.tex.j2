@@ -2,7 +2,7 @@
 \#{ The three pieces below are called as statements (call ... endcall): Jinja then applies no escaping to the macro output. The line with caller only lets the macro accept the call block. }
 \BLOCK{macro card_header(card, legend)}
 \BLOCK{if caller}\BLOCK{endif}
-\noindent\colorbox{mhpblue}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\color{white}\bfseries\BLOCK{if not legend}\cardtitlefont\BLOCK{endif}\strut \VAR{card.title}\hfill\levelbadge{\VAR{card.level}}\BLOCK{if legend} \callout{\VAR{legend.callouts[3][0]}}\BLOCK{endif}\strut}}
+\cardheader{\BLOCK{if legend}legend-sample\BLOCK{else}\VAR{card.card_id}\BLOCK{endif}}{\BLOCK{if legend}\relax\BLOCK{else}\cardtitlefont\BLOCK{endif}}{\VAR{card.title}}{\VAR{card.level}}{\BLOCK{if legend} \callout{\VAR{legend.callouts[3][0]}}\BLOCK{endif}}
 \levelstrip{\VAR{card.level}}
 \BLOCK{endmacro}
 \BLOCK{macro card_text(card, legend)}
