@@ -22,6 +22,7 @@
 \definecolor{mhplight}{HTML}{CDD6FF}
 \definecolor{mhpgrey}{HTML}{575757}
 \definecolor{mhpdark}{HTML}{262626}
+\definecolor{mhpshade}{HTML}{D9D9D9}
 \definecolor{levelone}{HTML}{00CC67}
 \definecolor{leveltwo}{HTML}{DDEF03}
 \definecolor{levelthree}{HTML}{575757}
@@ -103,8 +104,15 @@
 % Taller write-in rows (10 mm) for the calculation tables of the booklet, and a centred stretch column.
 \newcommand{\rowstrutbig}{\rule[-3.3mm]{0pt}{10mm}}
 \newcolumntype{Z}{>{\centering\arraybackslash}X}
+% Compact write-in rows (6 mm) and a left-aligned stretch column for the dense tracking sheet of the booklet.
+\newcommand{\rowstrutgrid}{\rule[-2mm]{0pt}{6mm}}
+\newcommand{\hdrs}[1]{\color{white}\bfseries\rule[-1mm]{0pt}{3.8mm}#1}
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
 % End of a multi-line table cell: keeps the last line clear of the rule below it (2.6 mm below the baseline).
 \newcommand{\rowpad}{\rule[-2.6mm]{0pt}{0pt}}
+
+% A table cell that has nothing to write (crossed out in grey), as on the tracking sheet of the booklet.
+\newcommand{\shadedcell}{\cellcolor{mhpshade}}
 
 % Page fill report (log only, no change to the PDF): used height and text height of the page just filled.
 \newcommand{\fillreport}[1]{\par\typeout{PLANSPIEL-FILL page=#1 used=\the\pagetotal\space text=\the\textheight}}

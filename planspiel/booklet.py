@@ -126,14 +126,12 @@ class WindowBlock:
 class TrackingPage:
     title: str
     intro: str
-    step_waves: str
     columns: tuple[str, ...]
     rows: tuple[TrackingRow, ...]
     block_own: str
     block_external: str
     clamp_text: str
     hints: tuple[str, ...]
-    step_windows: str
     window_intro: str
     measure_header: str
     window_columns: tuple[str, str]
@@ -153,7 +151,11 @@ class TeamBooklet:
     ros: RosPage
 
     def printed_fragments(self) -> tuple[str, ...]:
-        return tuple(dict.fromkeys((*self.planning.printed_fragments(), *self.ros.printed_fragments())))
+        return tuple(
+            dict.fromkeys(
+                (*self.planning.printed_fragments(), *self.tracking.printed_fragments(), *self.ros.printed_fragments())
+            )
+        )
 
 
 def _fragments(page: object) -> tuple[str, ...]:
@@ -341,7 +343,7 @@ def _windows(cfg: Config, view: PreAttackView) -> tuple[tuple[WindowBlock, ...],
     credits = [wave.wave_id == kurswechsel for wave in gaps]
     net_formula = f"{words['window_net']} = {words['window_sum']}"
     if any(credits):
-        net_formula += f" {fmt.MINUS} {words['window_credit']}"
+        net_formula += f" {fmt.MINUS} {words['window_credit_short']}"
     net = f"{net_formula}, {words['never_refund']}"
     measures = tuple(f"{measure_id} {EN_DASH} {measure.name}" for measure_id, measure in cfg.measures.items())
     blocks = tuple(
@@ -382,14 +384,12 @@ def build_tracking_page(cfg: Config, texts: Texts) -> TrackingPage:
     return TrackingPage(
         title=words["title"],
         intro=words["intro"],
-        step_waves=words["step_waves"],
         columns=columns,
         rows=_tracking_rows(cfg, view),
         block_own=words["block_own"],
         block_external=words["block_external"],
         clamp_text=f"{words['clamp_lead']} {rules.KZ_MIN} {words['clamp_to']} {rules.KZ_MAX}",
-        hints=(words["rounding_hint"], words["external_hint"], remaining, words["review_hint"]),
-        step_windows=words["step_windows"],
+        hints=(words["rounding_hint"], words["external_hint"], remaining),
         window_intro=words["window_intro"],
         measure_header=labels["measure"],
         window_columns=(words["window_level"], words["window_delta"]),

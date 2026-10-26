@@ -49,7 +49,7 @@ def test_the_tracking_sheet_is_one_page_between_planning_and_ros(pages, booklet,
 def test_the_page_holds_every_column_head_row_label_and_both_block_titles(pages, booklet, tracking_index):
     page = pages[tracking_index]
     tracking = booklet.tracking
-    for text in (*tracking.columns, tracking.title, tracking.step_waves, tracking.block_own, tracking.block_external):
+    for text in (*tracking.columns, tracking.title, tracking.block_own, tracking.block_external):
         assert squash(text) in page, text
     for row in tracking.rows:
         assert squash(row.label) in page, row.label
@@ -58,7 +58,7 @@ def test_the_page_holds_every_column_head_row_label_and_both_block_titles(pages,
 def test_the_page_holds_the_window_blocks_with_all_measure_labels_and_the_summary(pages, booklet, tracking_index):
     page = pages[tracking_index]
     tracking = booklet.tracking
-    assert squash(tracking.step_windows) in page and squash(tracking.measure_header) in page
+    assert squash(tracking.measure_header) in page
     for block in tracking.windows:
         assert squash(block.after_wave) in page, block.after_wave
         for label in block.measure_rows:
