@@ -101,8 +101,12 @@ def damage_euros(severity_scaled: int, s_unit: int, recovery_scaled: int, ws: in
     return quotient
 
 
+KZ_MIN = 0
+KZ_MAX = 100
+
+
 def clamp_kz(value: int) -> int:
-    return max(0, min(100, value))
+    return max(KZ_MIN, min(KZ_MAX, value))
 
 
 def compute_bonus_reduction(

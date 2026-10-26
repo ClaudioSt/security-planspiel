@@ -15,7 +15,7 @@ from dataclasses import dataclass
 from planspiel import fmt, rules
 from planspiel.cards import printed_strings
 from planspiel.config import Config
-from planspiel.eventtext import effect_rows
+from planspiel.eventtext import EFFECT_KINDS, effect_rows
 from planspiel.printmodel import PrintModelError
 from planspiel.review_text import _tier_value_text, format_eur, penalty_rows, tier_rows
 from planspiel.texts import PreAttackView, Texts
@@ -26,6 +26,18 @@ BOOKLET_JOB = "spieler-teamheft"
 # calibrates X; a smaller X adds rows, so the constant is reviewed together with a new layout proof of that page.
 MAX_PENALTY_ROWS = 12
 EN_DASH = "–"
+
+# The tracking sheet (PRINT-08): rows in calculation order. `remaining` closes the wave columns; the Budget Review
+# column adds the two rows `kz_review` and `kz_final` below it. A cell is written (WRITE) or crossed out (SHADED).
+TRACKING_ROW_ORDER = (
+    "kz_before", "kz_change", "kz_after", "damage", "own_init", "own_opex", "own_window", "external_budget",
+    "external_opex", "remaining",
+)
+REVIEW_ROWS = ("kz_review", "kz_final")
+WRITE = "write"
+SHADED = "shaded"
+# Change windows the one-page measure grid is proven for (two columns per window). Today: after waves 1 and 2.
+MAX_WINDOWS = 2
 
 
 @dataclass(frozen=True)
@@ -91,9 +103,53 @@ class RosPage:
 
 
 @dataclass(frozen=True)
+class TrackingRow:
+    """One row of the tracking table: its label and one cell state per column (`WRITE` or `SHADED`)."""
+
+    key: str
+    label: str
+    group: str  # "kz", "damage", "own", "external", "budget", "review" or "window"
+    cells: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class WindowBlock:
+    """One change window: every measure once, and the summary labels that apply to this window."""
+
+    after_wave: str
+    measure_rows: tuple[str, ...]
+    with_credit: bool
+    summary_rows: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class TrackingPage:
+    title: str
+    intro: str
+    step_waves: str
+    columns: tuple[str, ...]
+    rows: tuple[TrackingRow, ...]
+    block_own: str
+    block_external: str
+    clamp_text: str
+    hints: tuple[str, ...]
+    step_windows: str
+    window_intro: str
+    measure_header: str
+    window_columns: tuple[str, str]
+    windows: tuple[WindowBlock, ...]
+    summary_rows: tuple[TrackingRow, ...]  # one cell per window
+    window_hints: tuple[str, ...]
+
+    def printed_fragments(self) -> tuple[str, ...]:
+        return _fragments(self)
+
+
+@dataclass(frozen=True)
 class TeamBooklet:
     job: str
     planning: PlanningPage
+    tracking: TrackingPage
     ros: RosPage
 
     def printed_fragments(self) -> tuple[str, ...]:
@@ -231,5 +287,122 @@ def _ros_page(cfg: Config, texts: Texts) -> RosPage:
     )
 
 
+def _event_kinds(cfg: Config, wave_id: int) -> set[str]:
+    return {EFFECT_KINDS[event.type] for event in cfg.events.get(wave_id, [])}
+
+
+def _tracking_rows(cfg: Config, view: PreAttackView) -> tuple[TrackingRow, ...]:
+    words, labels = view.sheet("tracking"), view.sheet("labels")
+    wave_ids = [wave.wave_id for wave in cfg.waves]
+
+    def cells(*, start: bool = False, wave=None, review: bool = False) -> tuple[str, ...]:
+        """Cell states of one row: the Start column, one column per wave (`wave(index, wave_id)`), the review."""
+        flags = [wave(index, wave_id) if wave else False for index, wave_id in enumerate(wave_ids)]
+        return tuple(WRITE if flag else SHADED for flag in (start, *flags, review))
+
+    def every_wave(index: int, wave_id: int) -> bool:
+        return True
+
+    def before_window(index: int, wave_id: int) -> bool:
+        return index < len(wave_ids) - 1
+
+    def with_event(kind: str):
+        return lambda index, wave_id: kind in _event_kinds(cfg, wave_id)
+
+    final = f"{words['row_kz_final']} = {words['kz_after_last']} + {words['row_kz_review']}"
+    spec = (
+        ("kz_before", words["row_kz_before"], "kz", cells(start=True, wave=every_wave)),
+        ("kz_change", words["row_kz_change"], "kz", cells(wave=every_wave)),
+        ("kz_after", words["row_kz_after"], "kz", cells(wave=every_wave)),
+        ("damage", words["row_damage"], "damage", cells(wave=every_wave)),
+        ("own_init", labels["init_costs"], "own", cells(start=True)),
+        ("own_opex", words["row_own_opex"], "own", cells(wave=every_wave)),
+        ("own_window", words["row_own_window"], "own", cells(wave=before_window)),
+        ("external_budget", words["row_external_budget"], "external", cells(wave=with_event("external_budget"))),
+        ("external_opex", words["row_external_opex"], "external", cells(wave=with_event("external_opex"))),
+        ("remaining", words["row_remaining"], "budget", cells(start=True, wave=every_wave, review=True)),
+        ("kz_review", words["row_kz_review"], "review", cells(review=True)),
+        ("kz_final", final, "review", cells(review=True)),
+    )
+    assert tuple(key for key, *_ in spec) == (*TRACKING_ROW_ORDER, *REVIEW_ROWS)
+    return tuple(TrackingRow(*item) for item in spec)
+
+
+def _windows(cfg: Config, view: PreAttackView) -> tuple[tuple[WindowBlock, ...], tuple[TrackingRow, ...]]:
+    words = view.sheet("tracking")
+    gaps = cfg.waves[:-1]
+    if len(gaps) > MAX_WINDOWS:
+        raise PrintModelError(
+            f"Die Config hat {len(gaps)} Change-Fenster, das Raster des Tracking-Bogens ist für höchstens "
+            f"{MAX_WINDOWS} belegt (MAX_WINDOWS in planspiel/booklet.py); die Konstante nur zusammen mit einem "
+            "neuen Layout-Nachweis dieser Seite anheben."
+        )
+    kurswechsel = rules.kurswechsel_wave(cfg.events)
+    credits = [wave.wave_id == kurswechsel for wave in gaps]
+    net_formula = f"{words['window_net']} = {words['window_sum']}"
+    if any(credits):
+        net_formula += f" {fmt.MINUS} {words['window_credit']}"
+    net = f"{net_formula}, {words['never_refund']}"
+    measures = tuple(f"{measure_id} {EN_DASH} {measure.name}" for measure_id, measure in cfg.measures.items())
+    blocks = tuple(
+        WindowBlock(
+            after_wave=f"{words['window_title']} {wave.wave_id}",
+            measure_rows=measures,
+            with_credit=with_credit,
+            summary_rows=(words["window_sum"], *((words["window_credit"],) if with_credit else ()), net),
+        )
+        for wave, with_credit in zip(gaps, credits)
+    )
+    summary = [TrackingRow("window_sum", words["window_sum"], "window", (WRITE,) * len(gaps))]
+    if any(credits):
+        summary.append(
+            TrackingRow(
+                "window_credit", words["window_credit"], "window", tuple(WRITE if has else SHADED for has in credits)
+            )
+        )
+    summary.append(TrackingRow("window_net", net, "window", (WRITE,) * len(gaps)))
+    return blocks, tuple(summary)
+
+
+def build_tracking_page(cfg: Config, texts: Texts) -> TrackingPage:
+    view = PreAttackView(cfg, texts)
+    words, labels, teamheft = view.sheet("tracking"), view.sheet("labels"), view.sheet("teamheft")
+    columns = (
+        labels["start"],
+        *(f"{words['wave']} {wave.wave_id}" for wave in cfg.waves),
+        teamheft["review_title"],
+    )
+    remaining = (
+        f"{teamheft['remaining_budget']} = {words['remaining_previous']} + {words['row_external_budget']} "
+        f"{fmt.MINUS} {words['row_own_opex']} {fmt.MINUS} {words['row_own_window']} "
+        f"{fmt.MINUS} {words['row_external_opex']}. {labels['start']}: {teamheft['tier_budget']} "
+        f"{fmt.MINUS} {labels['init_costs']}."
+    )
+    blocks, summary = _windows(cfg, view)
+    return TrackingPage(
+        title=words["title"],
+        intro=words["intro"],
+        step_waves=words["step_waves"],
+        columns=columns,
+        rows=_tracking_rows(cfg, view),
+        block_own=words["block_own"],
+        block_external=words["block_external"],
+        clamp_text=f"{words['clamp_lead']} {rules.KZ_MIN} {words['clamp_to']} {rules.KZ_MAX}",
+        hints=(words["rounding_hint"], words["external_hint"], remaining, words["review_hint"]),
+        step_windows=words["step_windows"],
+        window_intro=words["window_intro"],
+        measure_header=labels["measure"],
+        window_columns=(words["window_level"], words["window_delta"]),
+        windows=blocks,
+        summary_rows=summary,
+        window_hints=(words["credit_hint"], words["next_wave_hint"]),
+    )
+
+
 def build_team_booklet(cfg: Config, texts: Texts) -> TeamBooklet:
-    return TeamBooklet(job=BOOKLET_JOB, planning=_planning_page(cfg, texts), ros=_ros_page(cfg, texts))
+    return TeamBooklet(
+        job=BOOKLET_JOB,
+        planning=_planning_page(cfg, texts),
+        tracking=build_tracking_page(cfg, texts),
+        ros=_ros_page(cfg, texts),
+    )

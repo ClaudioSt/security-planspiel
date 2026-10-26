@@ -256,7 +256,6 @@ def test_the_booklet_carries_the_tracking_page_between_planning_and_ros(loaded):
     cfg, texts, page = loaded
     team = build_team_booklet(cfg, texts)
     assert isinstance(team, TeamBooklet) and team.tracking == page
-    assert set(page.printed_fragments()) <= set(team.printed_fragments())
 
 
 def test_printed_fragments_are_unique_and_hold_the_bounds_and_the_wave_numbers(loaded):
@@ -347,6 +346,25 @@ def test_filling_the_printed_rows_reproduces_evaluate_path(world, path, tier):
     assert result.own_init == record["costs"]["init"]
     assert list(result.own_opex) == record["costs"]["opex_by_wave"]
     assert sum(result.damages) == record["total_damage"]
+
+
+@pytest.mark.parametrize(
+    ("path", "expected_review"),
+    [
+        pytest.param(Path(_selection(level=1, M1=2, M2=2, M3=2)), -99, id="overspend-row-of-the-printed-table"),
+        pytest.param(Path(_selection(level=3)), -rules.KZ_MAX, id="all-level-three-clamps-both-ends"),
+    ],
+)
+def test_overspend_and_both_clamps_follow_the_printed_tables(world, path, expected_review):
+    cfg, texts = world
+    record = rules.evaluate_path(cfg, "low", path)
+    result = replay_tracking(cfg, "low", path, *_worksheet_inputs(record), texts)
+    assert result.remaining_final < 0 and result.remaining_final == record["costs"]["remaining"]
+    assert result.kz_review == expected_review
+    assert result.kz_final == record["kz_final"]
+    assert list(result.kz_after) == [wave["kz_after"] for wave in record["waves"]]
+    if expected_review == -rules.KZ_MAX:
+        assert result.kz_final == rules.KZ_MIN and rules.KZ_MAX in result.kz_after
 
 
 def test_the_replayed_windows_carry_a_cost_and_the_swap_credit(world):

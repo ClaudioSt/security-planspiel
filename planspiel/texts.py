@@ -23,14 +23,14 @@ PREWAVE_PREFIXES = ("story.", "measures.")
 MIN_QUOTE_LENGTH = 15
 
 STORY_DOCS = ("steckbrief", "zeitungsartikel", "anfrage_mail", "audit_mail")
-PREWAVE_SHEETS = ("budget", "ros", "backup_recovery", "labels", "karten", "eventkarten", "teamheft")
+PREWAVE_SHEETS = ("budget", "ros", "backup_recovery", "labels", "karten", "eventkarten", "teamheft", "tracking")
 CASE_KEYS = ("case_1", "case_2", "case_3")
 
 _SHEET_LABELS = (
     "measure", "level", "base_protection", "sum", "from_level", "bonus", "fulfilled", "total_bonus",
     "total_reduction", "e_value", "damage", "satisfaction", "case", "cost_type", "what", "when", "tier",
-    "available_budget", "period", "init_costs", "opex", "anticipated_sum", "status_tracker",
-    "point_in_time", "budget_remaining", "kz_cumulative", "damage_wave", "start", "after_wave", "events",
+    "available_budget", "period", "init_costs", "opex", "anticipated_sum",
+    "budget_remaining", "damage_wave", "start", "after_wave", "events",
     "metric", "value", "total_init", "total_opex", "total_costs", "avoided_damage", "event_after_wave",
     "condition_met", "effect", "no_implementation", "final_damage", "min_level",
 )
@@ -52,6 +52,15 @@ _TEAMHEFT_KEYS = (
     "damage_sum", "ros_short", "review_title", "review_intro", "tier_budget", "budget_event", "event_opex",
     "review_costs", "remaining_budget", "sign_hint", "kz_change", "penalty_title", "penalty_intro",
     "overspend_header",
+)
+
+_TRACKING_KEYS = (
+    "title", "intro", "step_waves", "step_windows", "wave", "row_kz_before", "row_kz_change", "row_kz_after",
+    "row_damage", "block_own", "row_own_opex", "row_own_window", "block_external", "row_external_budget",
+    "row_external_opex", "row_remaining", "row_kz_review", "row_kz_final", "kz_after_last", "remaining_previous",
+    "rounding_hint", "clamp_lead", "clamp_to", "external_hint", "review_hint", "window_title", "window_intro",
+    "window_level", "window_delta", "window_sum", "window_credit", "window_net", "never_refund", "credit_hint",
+    "next_wave_hint",
 )
 
 SHEET_KEYS = (
@@ -93,7 +102,6 @@ SHEET_KEYS = (
     "sheets.budget.opex_when",
     "sheets.budget.tier_intro",
     "sheets.budget.anticipated_sum_intro",
-    "sheets.budget.status_tracker_intro",
     "sheets.ros.title",
     "sheets.ros.instruction",
     "sheets.ros.purpose",
@@ -104,6 +112,7 @@ SHEET_KEYS = (
     *(f"sheets.karten.{name}" for name in _KARTEN_KEYS),
     *(f"sheets.eventkarten.{name}" for name in _EVENTKARTEN_KEYS),
     *(f"sheets.teamheft.{name}" for name in _TEAMHEFT_KEYS),
+    *(f"sheets.tracking.{name}" for name in _TRACKING_KEYS),
     *(f"sheets.labels.{name}" for name in _SHEET_LABELS),
 )
 

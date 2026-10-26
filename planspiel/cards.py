@@ -108,8 +108,9 @@ class CardDeck:
         return tuple(found)
 
 
-# Fields that identify a card in the model and the build log but are never printed on it.
-_NOT_PRINTED = frozenset({"kind", "card_id", "measure_id"})
+# Fields that identify a card in the model and the build log but are never printed on it. `key`, `group` and `cells`
+# belong to the tracking sheet rows: a row key and group name the row, the cells hold write/shaded states.
+_NOT_PRINTED = frozenset({"kind", "card_id", "measure_id", "key", "group", "cells"})
 
 
 def printed_strings(value: object) -> list[str]:
