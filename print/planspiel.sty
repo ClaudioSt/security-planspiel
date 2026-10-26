@@ -26,6 +26,7 @@
 \definecolor{levelone}{HTML}{00CC67}
 \definecolor{leveltwo}{HTML}{DDEF03}
 \definecolor{levelthree}{HTML}{575757}
+\definecolor{mhpwarn}{HTML}{B00020}
 
 % Version stamp "Stand <date> · <hash>": `planspiel print` writes it to stamp.tex (outside the
 % hashed content). Without it the build stops, so no page can be printed unstamped.
@@ -72,6 +73,11 @@
 % Reference line (cap line): bold text on a light blue bar.
 \newcommand{\refline}[1]{\par\noindent
   \colorbox{mhplight}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\bfseries\strut #1\strut}}\par}
+
+% Facilitator-only notice (page 1 of the facilitator booklet): full-width dark red bar with bold white text, so the booklet
+% cannot be mistaken for player material.
+\newcommand{\facilitatornotice}[1]{\par\vspace{1mm}\noindent
+  \colorbox{mhpwarn}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\color{white}\centering\bfseries\fontsize{14}{18}\selectfont\strut #1\strut}}\par\vspace{2mm}}
 
 % Fill-in boxes: 7 mm high, centred on the text line (7 mm = declared height plus depth). Sizes: short (an entry), long (a result).
 \newcommand{\planspiel@framebox}[1]{%

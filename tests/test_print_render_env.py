@@ -92,7 +92,7 @@ def test_render_all_merges_builders_sorted_by_job(monkeypatch, tmp_path):
     monkeypatch.setattr(
         render,
         "DOCUMENT_BUILDERS",
-        (lambda cfg, texts, env: {"spieler-zeta": "z"}, lambda cfg, texts, env: {"spieler-alpha": "a", "uebung-mid": "m"}),
+        (lambda cfg, texts, env, clues: {"spieler-zeta": "z"}, lambda cfg, texts, env, clues: {"spieler-alpha": "a", "uebung-mid": "m"}),
     )
     result = render.render_all(None, None, tmp_path)
     assert list(result) == ["spieler-alpha", "spieler-zeta", "uebung-mid"]
@@ -103,7 +103,7 @@ def test_render_all_rejects_duplicate_jobs(monkeypatch, tmp_path):
     monkeypatch.setattr(
         render,
         "DOCUMENT_BUILDERS",
-        (lambda cfg, texts, env: {"spieler-same": "1"}, lambda cfg, texts, env: {"spieler-same": "2"}),
+        (lambda cfg, texts, env, clues: {"spieler-same": "1"}, lambda cfg, texts, env, clues: {"spieler-same": "2"}),
     )
     with pytest.raises(ValueError, match="mehreren Erzeugern"):
         render.render_all(None, None, tmp_path)
@@ -112,6 +112,6 @@ def test_render_all_rejects_duplicate_jobs(monkeypatch, tmp_path):
 def test_render_all_rejects_an_invalid_job_name(tmp_path):
     from unittest import mock
 
-    with mock.patch.object(render, "DOCUMENT_BUILDERS", (lambda cfg, texts, env: {"Angriff-X": "x"},)):
+    with mock.patch.object(render, "DOCUMENT_BUILDERS", (lambda cfg, texts, env, clues: {"Angriff-X": "x"},)):
         with pytest.raises(ValueError, match="Angriff-X"):
             render.render_all(None, None, tmp_path)

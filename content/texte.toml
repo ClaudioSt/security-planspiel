@@ -483,6 +483,7 @@ title = "Spielleitung: Kennwerte, Prüfzeilen und Lösungsschlüssel"
 notice = "Nur für die Spielleitung – nicht an Teams ausgeben"
 intro = "Dieses Heft enthält je Welle die Kennwerte, Prüfzeilen, den Ereignisplan und die Lösungsschlüssel. Es verrät die Angriffe und darf die Teams vor der jeweiligen Welle nicht erreichen."
 gr_legend = "GR steht für Gesamtreduktion: E-Wert plus Gesamtbonus."
+contents_title = "Inhalt"
 how_to_title = "So prüft ihr ein Arbeitsblatt"
 how_to = [
     "Lest die GR des Teams vom Arbeitsblatt ab und sucht ihren Bereich in den Prüfzeilen der Welle: In den beiden äußeren Fällen sind Schaden und KZ fest, im mittleren Fall lest ihr sie aus der Tabelle der ganzen GR-Schritte ab.",

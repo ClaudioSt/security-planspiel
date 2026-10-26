@@ -10,6 +10,7 @@ RoS, final index) are printed with `fmt.format_approx` and appear on this sheet 
 The answer keys follow the reference paths pinned in the config (`reference_plans`, 05-14): the build stops with a
 `PrintModelError` when a tier has no path, a path is illegal or over budget, or it lacks a voluntary move.
 """
+import dataclasses
 from dataclasses import dataclass
 from typing import Optional
 
@@ -78,6 +79,7 @@ class WaveSection:
     parameters: ParameterBlock
     checks: CheckRows
     events: tuple[EventScheduleRow, ...]
+    no_events: str
     key_header: tuple[str, ...]
     key_rows: tuple[AnswerKeyRow, ...]
 
@@ -143,6 +145,7 @@ class MasterSheet:
     notice: str
     intro: str
     gr_legend: str
+    contents_title: str
     how_to_title: str
     how_to: tuple[str, ...]
     approx_hint: str
@@ -154,7 +157,6 @@ class MasterSheet:
     check_title: str
     check_table_intro: str
     events_title: str
-    events_none: str
     event_header: tuple[str, str, str]
     keys_title: str
     keys_intro: str
@@ -175,7 +177,12 @@ class MasterSheet:
 
     def printed_fragments(self) -> tuple[str, ...]:
         """Every string of the sheet that ends up on the paper, without duplicates and without empty strings."""
-        found = printed_strings(self)
+        found = [
+            text
+            for field in dataclasses.fields(self)
+            if field.name != "job"
+            for text in printed_strings(getattr(self, field.name))
+        ]
         return tuple(dict.fromkeys(text for text in found if text))
 
 
@@ -459,13 +466,15 @@ def build_master_sheet(cfg: Config, texts: Texts, clues: tuple[Clue, ...]) -> Op
         except rules.WorksheetInvariantError as error:
             raise PrintModelError(f"Welle {wave.wave_id}: {error}") from error
         columns = [_key_values(constants, trace.waves[index]) for trace in traces.values()]
+        events = _event_schedule(cfg, texts, wave, words)
         sections.append(
             WaveSection(
                 wave_id=wave.wave_id,
                 title=view.attack_title(wave),
                 parameters=_parameters(cfg, wave, constants, view, words, view.attack(wave.attack_id)),
                 checks=_check_rows(cfg, constants, view, words),
-                events=_event_schedule(cfg, texts, wave, words),
+                events=events,
+                no_events="" if events else words["events_none"],
                 key_header=(words["key_head"], *tier_names),
                 key_rows=_key_rows(words, columns),
             )
@@ -477,6 +486,7 @@ def build_master_sheet(cfg: Config, texts: Texts, clues: tuple[Clue, ...]) -> Op
         notice=words["notice"],
         intro=words["intro"],
         gr_legend=words["gr_legend"],
+        contents_title=words["contents_title"],
         how_to_title=words["how_to_title"],
         how_to=tuple(words["how_to"]),
         approx_hint=words["approx_hint"],
@@ -488,7 +498,6 @@ def build_master_sheet(cfg: Config, texts: Texts, clues: tuple[Clue, ...]) -> Op
         check_title=words["check_title"],
         check_table_intro=words["check_table_intro"],
         events_title=words["events_title"],
-        events_none=words["events_none"],
         event_header=(words["event_head_name"], words["event_head_kind"], words["event_head_effect"]),
         keys_title=words["keys_title"],
         keys_intro=words["keys_intro"],

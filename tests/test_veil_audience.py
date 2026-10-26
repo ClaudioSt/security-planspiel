@@ -92,7 +92,7 @@ def test_the_three_real_jobs_are_revealed():
 def test_render_all_rejects_a_job_without_a_known_prefix(monkeypatch):
     cfg = load_config(CONFIG_PATH)
     texts = load_texts(CONTENT_DIR / "texte.toml")
-    monkeypatch.setattr(render, "DOCUMENT_BUILDERS", (lambda cfg, texts, env: {"lose-datei": "x"},))
+    monkeypatch.setattr(render, "DOCUMENT_BUILDERS", (lambda cfg, texts, env, clues: {"lose-datei": "x"},))
     with pytest.raises(ValueError, match="spieler-"):
         render.render_all(cfg, texts, TEMPLATES)
 

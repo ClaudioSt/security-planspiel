@@ -193,7 +193,7 @@ def test_missing_text_key_exits_two_under_check(monkeypatch, tmp_path, capsys):
 
 
 def test_invalid_job_name_is_reported_by_check(monkeypatch, tmp_path, capsys):
-    monkeypatch.setattr(render, "DOCUMENT_BUILDERS", (lambda cfg, texts, env: {"Angriff-X": "x"},))
+    monkeypatch.setattr(render, "DOCUMENT_BUILDERS", (lambda cfg, texts, env, clues: {"Angriff-X": "x"},))
     assert main([*_argv(tmp_path), "--check"]) == 2
     out = capsys.readouterr().out
     assert "ERROR print.render" in out

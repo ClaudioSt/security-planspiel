@@ -61,8 +61,8 @@ def printed_set(tmp_path_factory):
     original = render.render_all
     smoke_dir = REPO_ROOT / "tests" / "fixtures" / "print"
 
-    def with_smoke(cfg, texts, template_dir):
-        documents = dict(original(cfg, texts, template_dir))
+    def with_smoke(cfg, texts, template_dir, *args, **kwargs):
+        documents = dict(original(cfg, texts, template_dir, *args, **kwargs))
         template = render.make_env(smoke_dir).get_template("smoke.tex.j2")
         documents["spieler-smoke"] = template.render(title=SMOKE_TITLE)
         return {job: documents[job] for job in sorted(documents)}

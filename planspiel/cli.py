@@ -185,7 +185,7 @@ def _print_command(
     from planspiel import render, stamp, texbuild, veil
     from planspiel.config import load_config
     from planspiel.printmodel import PrintModelError
-    from planspiel.texts import check_texts, load_content
+    from planspiel.texts import CLUES_FILE, check_clues, check_texts, load_clues, load_content
 
     failure = 2 if check else 1  # --check: 1 means stale, 2 means the check itself could not run
     if not check:
@@ -202,6 +202,7 @@ def _print_command(
     try:
         cfg = load_config(Path(config))
         content = load_content(Path(content_dir))
+        clues = load_clues(Path(content_dir) / CLUES_FILE)
     except (OSError, json.JSONDecodeError, tomllib.TOMLDecodeError, ValueError) as error:
         print(f"ERROR print.input {config} / {content_dir}: {error}")
         print("1 Fehler")
@@ -220,8 +221,15 @@ def _print_command(
             print(f"ERROR print.texts {issue.code} {issue.path}: {issue.message}")
         print(f"{len(text_errors)} Fehler")
         return failure
+    # The clue matrix of the facilitator booklet is a print input: it must quote the pre-wave texts verbatim (VEIL-03).
+    clue_errors = [issue for issue in check_clues(cfg, texts, clues) if issue.level == "error"]
+    if clue_errors:
+        for issue in clue_errors:
+            print(f"ERROR print.clues {issue.code} {issue.path}: {issue.message}")
+        print(f"{len(clue_errors)} Fehler")
+        return failure
     try:
-        documents = render.render_all(cfg, texts, Path(print_dir) / "templates")
+        documents = render.render_all(cfg, texts, Path(print_dir) / "templates", clues=clues)
     except PrintModelError as error:
         print(f"ERROR print.model {error}")
         print("1 Fehler")

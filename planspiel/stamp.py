@@ -22,6 +22,7 @@ from planspiel.render import tex_escape
 DATA_INPUTS = (
     "simulation_config.json",
     "content/texte.toml",
+    "content/clues.toml",
     "content/assets/images",
     "print/planspiel.sty",
     "print/templates",
@@ -31,6 +32,7 @@ DATA_INPUTS = (
 BUILD_INPUTS = (
     "simulation_config.json",
     "content/texte.toml",
+    "content/clues.toml",
     "content/assets/images",
     "print",
     "planspiel",
