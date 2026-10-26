@@ -10,7 +10,7 @@ from fractions import Fraction
 
 import pytest
 
-from planspiel import audience, fmt, rules, veil
+from planspiel import audience, fmt, render, rules, veil
 from planspiel.cards import printed_strings
 from planspiel.config import load_config
 from planspiel.eventtext import EFFECT_KINDS
@@ -313,3 +313,84 @@ def test_the_page_fragments_hold_every_printed_string_but_the_job_name(loaded):
 
 def test_prewave_sheets_now_hold_angriff_and_welle():
     assert "angriff" in PREWAVE_SHEETS and "welle" in PREWAVE_SHEETS
+
+
+# ---- the template (Task 2) ----------------------------------------------------------------------------------------
+
+
+@pytest.fixture(params=SETUPS)
+def rendered(request):
+    config_path, content_dir = request.param
+    cfg = load_config(config_path)
+    content = load_content(content_dir)
+    page = build_wave_page(cfg, content.texts)
+    return cfg, content, page, render.render_all(cfg, content.texts, TEMPLATES)[WAVE_PAGE_JOB]
+
+
+def test_render_all_holds_the_wave_page_job(rendered):
+    cfg, content, _, _ = rendered
+    jobs = list(render.render_all(cfg, content.texts, TEMPLATES))
+    assert WAVE_PAGE_JOB in jobs
+    assert jobs == sorted(jobs)
+
+
+def test_the_tex_is_a_one_page_document_with_one_tikz_flow(rendered):
+    _, _, _, source = rendered
+    assert source.startswith("\\documentclass")
+    assert "\\usepackage{planspiel}" in source
+    assert "\\usepackage{tikz}" in source
+    assert "\\usetikzlibrary{positioning,arrows.meta}" in source
+    assert source.count("\\begin{tikzpicture}") == 1
+    assert "\\clearpage" not in source and "\\newpage" not in source
+    lines = [line for line in source.splitlines() if line.strip()]
+    assert lines[-2] == "\\fillreport{1}"
+    assert lines[-1] == "\\end{document}"
+    assert "\r" not in source
+
+
+def test_the_flow_diagram_has_one_node_per_step_label_and_an_arrow_between_neighbours(rendered):
+    _, _, page, source = rendered
+    start = source.index("\\begin{tikzpicture}")
+    end = source.index("\\end{tikzpicture}")
+    diagram = source[start:end]
+    assert diagram.count("\\node") == len(page.diagram_labels) == 10
+    for label in page.diagram_labels:
+        assert render.tex_escape(label) in diagram, label
+    assert diagram.count("\\draw") == len(page.diagram_labels) - 1
+
+
+def test_every_printed_fragment_is_in_the_tex(rendered):
+    _, _, page, source = rendered
+    for fragment in page.printed_fragments():
+        assert render.tex_escape(fragment) in source, fragment
+
+
+def test_every_text_field_is_in_the_tex(rendered):
+    _, _, page, source = rendered
+    for text in printed_strings(page):
+        if text != page.job:
+            assert render.tex_escape(text) in source, text
+
+
+def test_the_recovery_table_has_a_level_badge_per_row(rendered):
+    _, _, page, source = rendered
+    for level, label, factor in page.recovery_rows:
+        assert f"\\levelbadge{{{level}}}" in source
+        assert render.tex_escape(label) in source and render.tex_escape(factor) in source
+
+
+def test_the_template_prints_only_plain_variables():
+    text = TEMPLATE.read_text(encoding="utf-8")
+    expressions = VARIABLE.findall(text)
+    assert expressions
+    for expression in expressions:
+        assert PLAIN_VARIABLE.match(expression), expression
+
+
+@pytest.mark.parametrize("setup", SETUPS)
+def test_the_rendered_page_passes_the_story_veil_scan(setup):
+    config_path, content_dir = setup
+    cfg = load_config(config_path)
+    content = load_content(content_dir)
+    documents = {WAVE_PAGE_JOB: render.render_all(cfg, content.texts, TEMPLATES)[WAVE_PAGE_JOB]}
+    assert veil.scan_documents(cfg, content.texts, content.terms, documents) == []
