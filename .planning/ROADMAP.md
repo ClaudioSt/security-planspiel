@@ -254,6 +254,14 @@ Plans:
   4. Design-principle checks pass per tier under full enumeration. No measure/level is strictly dominated or near-mandatory, and every decision point shifts outcomes. Good reference strategies rank in the top quartile and bad ones in the bottom quartile. A mediocre strategy ends above start KZ, a comeback after wave 1 is possible, and best results and spread stay comparable across tiers.
   5. All print material is regenerated from the rebalanced config with one command, and the print≡sim equivalence and Welle-0 golden tests pass on the new values.
 
+**Carried over from Phase 5:**
+
+- Re-choose the reference paths with `uv run planspiel referenzpfade` after the rebalance and re-pin `tests/golden/answer_keys.json` (D-18, D-22).
+- Rescale the `final_index` weights in `simulation_config.json` and drop the `vorläufig` label on the master sheet (D-23, BAL-03).
+- Re-run `practice.check_example` and re-pin `tests/golden/welle0.json` and `tests/golden/worksheet_tex.json` (BAL-05).
+- Review `booklet.MAX_PENALTY_ROWS` (12 today: X = 9 KZ je angefangene 10.000 €, ⌈100 ÷ 9⌉ rows) against the calibrated X and raise it together with a new RoS-page layout proof if X falls below 9 (a smaller X adds rows and stops the build with `ERROR print.model`). Review `booklet.MAX_WINDOWS` (2 today, about 2 mm to spare on the tracking page) the same way: a third change window or a fourth wave needs a new layout proof.
+- Remove the `≈` approximations on the master sheet once no slope is non-terminating (BAL-02).
+
 **Plans**: TBD
 **Research flag**: yes. Topics: calibration method (trim-back sweep over cached per-combo tuples instead of re-enumerating), concrete metrics and thresholds for BAL-06…09 (dominance, "near-mandatory", quartile placement, spread range), Final-Index rescaling.
 

@@ -29,3 +29,7 @@ Spieler sollen aus den vorgelesenen/gedruckten Texten nie den exakten Angriffsty
 
 TBD — Vorschlag: Kartentitel und Moderationstext durch neutrale/blumige Formulierungen ersetzen (z.B. "Vorfall A/B/C" als sichtbarer Titel, technische Details nur in einem separaten, für Moderator:innen internen Auflösungstext). Reihenfolge laut CLAUDE.md: zuerst `simulation_config.json` (name-Felder, Event-Texte) anpassen, dann `README.md`/Karten/Skripte synchron nachziehen. Nach Änderung `simulate_outcomes.py` + `balance_analysis.py` laufen lassen, um sicherzustellen, dass nur Text-/Darstellungsebene betroffen ist und keine Mechanik/Werte verändert wurden.
 </content>
+
+## Resolution
+
+Closed 2026-10-26 (Phase 5, plan 05-16). Phase 3 delivered the veiled content and the clue matrix. Phase 5 delivered the generated pre-wave material and the automated veil scan (VEIL-02, plan 05-01) and the measure-card boundary (VEIL-04, plan 05-04). Attacks are named only on the revealed worksheets and on the facilitator booklet; mechanics stay fully transparent.
