@@ -267,5 +267,34 @@
       "tiers": [[0, 0], [25, 5], [50, 10], [75, 15]],
       "overspend_penalty": {"kz_per_step": 9, "step": 10}
     }
-  ]
+  ],
+  "practice": {
+    "kz_start": 98,
+    "budget": 200,
+    "attack": {
+      "base_severity": 6,
+      "s_unit": 20,
+      "kz_at_full_damage": -6,
+      "kz_at_full_mitigation": 9,
+      "cia_impact": {"c": -1, "i": -1, "a": -1},
+      "mitigation_cap": 6,
+      "allow_recovery": true
+    },
+    "wave": {
+      "weights": {"c": 0.3, "i": 0.3, "a": 0.4},
+      "e_threshold": 18,
+      "bonus_measures": [
+        {"measure": "M9", "min_level": 2, "bonus": 4},
+        {"measure": "M10", "min_level": 2, "bonus": 3}
+      ]
+    },
+    "event": {
+      "id": "uebung_ereignis",
+      "name": "Übung",
+      "type": "measure_level_tier",
+      "measure": "M2",
+      "tiers": {"0": -4, "1": -2, "2": 1, "3": 3}
+    },
+    "selection": {"M1": 0, "M2": 0, "M3": 0, "M4": 1, "M5": 0, "M6": 0, "M7": 0, "M8": 2, "M9": 2, "M10": 1}
+  }
 }

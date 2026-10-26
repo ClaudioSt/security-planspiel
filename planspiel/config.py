@@ -3,7 +3,7 @@ import warnings
 from dataclasses import dataclass, field
 from fractions import Fraction
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 
 @dataclass
@@ -67,6 +67,18 @@ class Event:
 
 
 @dataclass
+class Practice:
+    """Welle 0 practice incident (D-12): read only by planspiel/practice.py, never by the real machinery."""
+
+    kz_start: int
+    budget: int
+    attack: Attack
+    wave: Wave
+    event: Event
+    selection: Dict[str, int]
+
+
+@dataclass
 class Config:
     default_budget_tier: str
     budget_tiers: Dict[str, BudgetTier]
@@ -78,10 +90,37 @@ class Config:
     final_events: List[Event]
     ws: int
     rs: int
+    practice: Optional[Practice] = None
 
     @property
     def measure_ids(self) -> List[str]:
         return list(self.measures)
+
+
+def _build_attack(attack_id: str, info: Dict) -> Attack:
+    return Attack(
+        attack_id=attack_id,
+        base_severity=info["base_severity"],
+        s_unit=info["s_unit"],
+        kz_at_full_damage=info["kz_at_full_damage"],
+        kz_at_full_mitigation=info["kz_at_full_mitigation"],
+        cia_impact=info["cia_impact"],
+        mitigation_cap=info["mitigation_cap"],
+        allow_recovery=info["allow_recovery"],
+    )
+
+
+def _build_wave(wave_id: int, attack_id: str, info: Dict) -> Wave:
+    return Wave(
+        wave_id=wave_id,
+        attack_id=attack_id,
+        weights=info["weights"],
+        e_threshold=info.get("e_threshold", 18),
+        bonus_measures=[
+            BonusMeasure(measure=bm["measure"], min_level=bm["min_level"], bonus=bm["bonus"])
+            for bm in info.get("bonus_measures", [])
+        ],
+    )
 
 
 def _build_event(ev: Dict) -> Event:
@@ -126,37 +165,9 @@ def load_config(path: Path) -> Config:
             severity_multiplier=info.get("severity_multiplier", Fraction(1)),
         )
 
-    attacks = {
-        attack_id: Attack(
-            attack_id=attack_id,
-            base_severity=info["base_severity"],
-            s_unit=info["s_unit"],
-            kz_at_full_damage=info["kz_at_full_damage"],
-            kz_at_full_mitigation=info["kz_at_full_mitigation"],
-            cia_impact=info["cia_impact"],
-            mitigation_cap=info["mitigation_cap"],
-            allow_recovery=info["allow_recovery"],
-        )
-        for attack_id, info in raw["attacks"].items()
-    }
+    attacks = {attack_id: _build_attack(attack_id, info) for attack_id, info in raw["attacks"].items()}
 
-    waves = []
-    for wave in raw["waves"]:
-        bonus_measures = [
-            BonusMeasure(
-                measure=bm["measure"],
-                min_level=bm["min_level"],
-                bonus=bm["bonus"],
-            )
-            for bm in wave.get("bonus_measures", [])
-        ]
-        waves.append(Wave(
-            wave_id=wave["id"],
-            attack_id=wave["attack_id"],
-            weights=wave["weights"],
-            e_threshold=wave.get("e_threshold", 18),
-            bonus_measures=bonus_measures,
-        ))
+    waves = [_build_wave(wave["id"], wave["attack_id"], wave) for wave in raw["waves"]]
 
     measures = {}
     for measure_id, info in raw["measures"].items():
@@ -186,6 +197,18 @@ def load_config(path: Path) -> Config:
 
     final_events = [_build_event(ev) for ev in raw.get("final_events", [])]
 
+    practice = None
+    if "practice" in raw:
+        block = raw["practice"]
+        practice = Practice(
+            kz_start=block["kz_start"],
+            budget=block["budget"],
+            attack=_build_attack("practice", block["attack"]),
+            wave=_build_wave(0, "practice", block["wave"]),
+            event=_build_event(block["event"]),
+            selection=dict(block["selection"]),
+        )
+
     return Config(
         default_budget_tier=raw["default_budget_tier"],
         budget_tiers=budget_tiers,
@@ -197,4 +220,5 @@ def load_config(path: Path) -> Config:
         final_events=final_events,
         ws=ws,
         rs=rs,
+        practice=practice,
     )

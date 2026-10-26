@@ -29,6 +29,9 @@ REQUIRED_EVENT_PARAMS = {
     "final_budget_tier": ("tiers", "overspend_penalty"),
 }
 
+PRACTICE_KEYS = ("kz_start", "budget", "attack", "wave", "event", "selection")
+PRACTICE_EVENT_TYPES = ("checklist_tier", "measure_level_tier", "level_bonus_per_measure", "and_condition")
+
 CIA_KEYS = {"c", "i", "a"}
 LEVEL_KEYS = {"0", "1", "2", "3"}
 WAVE_KEY = re.compile(r"wave_(\d+)")
@@ -207,6 +210,8 @@ class _Validator:
         self.check_events(raw.get("events"), raw.get("final_events"), measures)
         self.check_exactness()
         self.check_hand_calc()
+        if "practice" in raw:
+            self.check_practice(raw["practice"], attacks, measures)
         return self.issues
 
     def check_measures(self, measures: dict) -> None:
@@ -301,22 +306,24 @@ class _Validator:
 
     def check_attacks(self, attacks: dict) -> None:
         for attack_id, info in attacks.items():
-            path = f"attacks.{attack_id}"
-            if not self.container(info, dict, path):
-                continue
-            if "description" in info:
-                self.prose_key("description", f"{path}.description")
-            self.int_field(info, "base_severity", path, lo=0)
-            self.int_field(info, "s_unit", path, lo=0)
-            self.int_field(info, "kz_at_full_damage", path)
-            self.int_field(info, "kz_at_full_mitigation", path)
-            self.int_field(info, "mitigation_cap", path, lo=1)
-            cia_impact = self.field(info, "cia_impact", path)
-            if cia_impact is not None:
-                self.cia_dict(cia_impact, f"{path}.cia_impact")
-            recovery_flag = self.field(info, "allow_recovery", path)
-            if recovery_flag is not None and not isinstance(recovery_flag, bool):
-                self.error("schema.type", f"{path}.allow_recovery", "Wahrheitswert erwartet")
+            self.check_attack(info, f"attacks.{attack_id}")
+
+    def check_attack(self, info: Any, path: str) -> None:
+        if not self.container(info, dict, path):
+            return
+        if "description" in info:
+            self.prose_key("description", f"{path}.description")
+        self.int_field(info, "base_severity", path, lo=0)
+        self.int_field(info, "s_unit", path, lo=0)
+        self.int_field(info, "kz_at_full_damage", path)
+        self.int_field(info, "kz_at_full_mitigation", path)
+        self.int_field(info, "mitigation_cap", path, lo=1)
+        cia_impact = self.field(info, "cia_impact", path)
+        if cia_impact is not None:
+            self.cia_dict(cia_impact, f"{path}.cia_impact")
+        recovery_flag = self.field(info, "allow_recovery", path)
+        if recovery_flag is not None and not isinstance(recovery_flag, bool):
+            self.error("schema.type", f"{path}.allow_recovery", "Wahrheitswert erwartet")
 
     def check_waves(self, waves: Any, attacks: dict, measures: dict) -> None:
         if not isinstance(waves, list):
@@ -334,34 +341,37 @@ class _Validator:
             attack_id = self.field(wave, "attack_id", path)
             if attack_id is not None and (not isinstance(attack_id, str) or attack_id not in attacks):
                 self.error("ref.unknown_attack", f"{path}.attack_id", f"Unbekannter Angriff {attack_id!r}")
-            weights = self.field(wave, "weights", path)
-            if weights is not None and self.container(weights, dict, f"{path}.weights"):
-                if set(weights) != CIA_KEYS:
-                    self.error("schema.keys", f"{path}.weights", f"Schlüssel müssen genau c, i, a sein, gefunden {sorted(weights)}")
-                for key, value in weights.items():
-                    self.number_value(value, f"{path}.weights.{key}", lo=0)
-            if "e_threshold" in wave:
-                self.int_value(wave["e_threshold"], f"{path}.e_threshold", lo=0)
-            else:
-                self.warning("schema.default_used", f"{path}.e_threshold", "e_threshold fehlt, der Lader setzt 18")
-            for removed in ("kz_bonus", "kz_malus"):
-                if removed in wave:
-                    self.removed_key(removed, f"{path}.{removed}")
-            bonus_measures = wave.get("bonus_measures", [])
-            if self.container(bonus_measures, list, f"{path}.bonus_measures"):
-                for bm_index, bm in enumerate(bonus_measures):
-                    bm_path = f"{path}.bonus_measures[{bm_index}]"
-                    if not self.container(bm, dict, bm_path):
-                        continue
-                    self.check_measure_ref(bm.get("measure"), f"{bm_path}.measure", measures)
-                    self.int_field(bm, "min_level", bm_path, lo=1, hi=3)
-                    self.int_field(bm, "bonus", bm_path, lo=0)
-                    if "description" in bm:
-                        self.prose_key("description", f"{bm_path}.description")
+            self.check_wave_scoring(wave, path, measures)
         if ids != list(range(1, len(waves) + 1)):
             self.error("schema.wave_ids", "waves", f"Wellen-IDs müssen 1..{len(waves)} fortlaufend und eindeutig sein, gefunden {ids}")
         else:
             self.wave_ids = ids
+
+    def check_wave_scoring(self, wave: dict, path: str, measures: dict) -> None:
+        weights = self.field(wave, "weights", path)
+        if weights is not None and self.container(weights, dict, f"{path}.weights"):
+            if set(weights) != CIA_KEYS:
+                self.error("schema.keys", f"{path}.weights", f"Schlüssel müssen genau c, i, a sein, gefunden {sorted(weights)}")
+            for key, value in weights.items():
+                self.number_value(value, f"{path}.weights.{key}", lo=0)
+        if "e_threshold" in wave:
+            self.int_value(wave["e_threshold"], f"{path}.e_threshold", lo=0)
+        else:
+            self.warning("schema.default_used", f"{path}.e_threshold", "e_threshold fehlt, der Lader setzt 18")
+        for removed in ("kz_bonus", "kz_malus"):
+            if removed in wave:
+                self.removed_key(removed, f"{path}.{removed}")
+        bonus_measures = wave.get("bonus_measures", [])
+        if self.container(bonus_measures, list, f"{path}.bonus_measures"):
+            for bm_index, bm in enumerate(bonus_measures):
+                bm_path = f"{path}.bonus_measures[{bm_index}]"
+                if not self.container(bm, dict, bm_path):
+                    continue
+                self.check_measure_ref(bm.get("measure"), f"{bm_path}.measure", measures)
+                self.int_field(bm, "min_level", bm_path, lo=1, hi=3)
+                self.int_field(bm, "bonus", bm_path, lo=0)
+                if "description" in bm:
+                    self.prose_key("description", f"{bm_path}.description")
 
     def check_budget_tiers(self, tiers: Any, default_tier: Any) -> None:
         if not isinstance(tiers, dict):
@@ -545,6 +555,127 @@ class _Validator:
             self.error("schema.tiers_order", path, f"Stufenminima müssen streng aufsteigend sein, gefunden {minima}")
         if first_minimum is not None and minima and minima[0] != first_minimum:
             self.error("schema.tiers_order", path, f"erstes Stufenminimum muss {first_minimum} sein, gefunden {minima[0]}")
+
+    def check_practice(self, block: Any, attacks: dict, measures: dict) -> None:
+        """Welle 0 (D-12): own attack, wave, event and example selection that must stay invisible to waves 1-3."""
+        path = "practice"
+        if "practice" in attacks:
+            self.error("practice.attack_id_taken", "attacks.practice", "Die ID 'practice' ist dem Übungsangriff vorbehalten")
+        if not self.container(block, dict, path):
+            return
+        for key in block:
+            if key not in PRACTICE_KEYS:
+                self.error("schema.keys", f"{path}.{key}", f"Unbekannter Schlüssel '{key}' im Übungsblock")
+        self.int_field(block, "kz_start", path)
+        self.int_field(block, "budget", path, lo=0)
+
+        attack = self.field(block, "attack", path)
+        self.check_attack(attack, f"{path}.attack")
+        if (
+            isinstance(attack, dict)
+            and isinstance(attack.get("base_severity"), int)
+            and isinstance(attack.get("mitigation_cap"), int)
+            and attack["base_severity"] != attack["mitigation_cap"]
+        ):
+            self.error(
+                "practice.severity_cap",
+                f"{path}.attack",
+                f"base_severity {attack['base_severity']} muss mitigation_cap {attack['mitigation_cap']} gleich sein, "
+                "sonst stimmt die gedruckte Schadensformel nicht",
+            )
+
+        wave = self.field(block, "wave", path)
+        if isinstance(wave, dict):
+            self.check_wave_scoring(wave, f"{path}.wave", measures)
+            if "e_threshold" not in wave:
+                self.error("schema.keys", f"{path}.wave.e_threshold", "Pflichtfeld 'e_threshold' fehlt")
+            self.check_practice_distinct(wave, f"{path}.wave")
+        elif wave is not None:
+            self.error("schema.type", f"{path}.wave", "Objekt erwartet")
+
+        event = self.field(block, "event", path)
+        if isinstance(event, dict):
+            self.check_event(event, f"{path}.event", measures, final=False)
+            if event.get("type") in KNOWN_EVENT_TYPES and event["type"] not in PRACTICE_EVENT_TYPES:
+                self.error(
+                    "practice.event_type",
+                    f"{path}.event.type",
+                    f"Das Übungs-Ereignis braucht eine KZ-Wirkung, Typ {event['type']} hat keine",
+                )
+        elif event is not None:
+            self.error("schema.type", f"{path}.event", "Objekt erwartet")
+
+        selection = self.field(block, "selection", path)
+        if selection is not None and self.container(selection, dict, f"{path}.selection"):
+            if set(selection) != set(measures):
+                self.error(
+                    "practice.selection_measures",
+                    f"{path}.selection",
+                    f"Die Auswahl muss genau alle Maßnahmen enthalten, gefunden {sorted(selection)}",
+                )
+            for measure_id, level in selection.items():
+                known = measures.get(measure_id)
+                levels = known.get("levels") if isinstance(known, dict) else None
+                valid = (
+                    isinstance(level, int)
+                    and not isinstance(level, bool)
+                    and isinstance(levels, dict)
+                    and str(level) in levels
+                )
+                if measure_id in measures and not valid:
+                    self.error(
+                        "practice.selection_level",
+                        f"{path}.selection.{measure_id}",
+                        f"Level {level!r} von {measure_id} gibt es nicht in der Konfiguration",
+                    )
+
+    def check_practice_distinct(self, wave: dict, path: str) -> None:
+        """Weights and bonus measures of the practice wave must not hint at a real wave (D-12, T-05-39)."""
+        raw = self.raw
+        weights = wave.get("weights")
+        if isinstance(weights, dict) and set(weights) == CIA_KEYS:
+            values = [_fraction(weights[key]) for key in ("c", "i", "a")]
+            if all(value is not None for value in values):
+                weight_scale = scale_factors(raw)[0]
+                for key, value in zip(("c", "i", "a"), values):
+                    if weight_scale % value.denominator != 0:
+                        self.error(
+                            "practice.weight_scale",
+                            f"{path}.weights",
+                            f"Gewicht {key} = {float(value)} teilt die Gewichtsskala {weight_scale} der echten Wellen nicht",
+                        )
+                        break
+                for index, real in enumerate(_dicts(raw.get("waves"))):
+                    real_weights = real.get("weights")
+                    if not isinstance(real_weights, dict) or set(real_weights) != CIA_KEYS:
+                        continue
+                    real_values = [_fraction(real_weights[key]) for key in ("c", "i", "a")]
+                    if any(value is None for value in real_values):
+                        continue
+                    if values == real_values:
+                        self.error(
+                            "practice.weights_equal_wave",
+                            f"{path}.weights",
+                            f"Die Übungsgewichte sind gleich den Gewichten von waves[{index}]",
+                        )
+                    elif sorted(values) == sorted(real_values):
+                        self.error(
+                            "practice.weights_permutation",
+                            f"{path}.weights",
+                            f"Die Übungsgewichte sind eine Umordnung der Gewichte von waves[{index}]",
+                        )
+        real_bonus = {
+            bm.get("measure")
+            for real in _dicts(raw.get("waves"))
+            for bm in _dicts(real.get("bonus_measures"))
+        }
+        for index, bm in enumerate(_dicts(wave.get("bonus_measures"))):
+            if bm.get("measure") in real_bonus:
+                self.error(
+                    "practice.bonus_measure_shared",
+                    f"{path}.bonus_measures[{index}].measure",
+                    f"Maßnahme {bm.get('measure')} ist Bonus-Maßnahme einer echten Welle",
+                )
 
     def check_exactness(self) -> None:
         raw = self.raw
