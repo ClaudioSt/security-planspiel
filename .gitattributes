@@ -16,3 +16,4 @@ print/**/*.ttf binary
 print/**/*.otf binary
 final_documents/generated/*.pdf binary
 final_documents/generated/manifest.json text eol=lf
+content/assets/images/*.png binary

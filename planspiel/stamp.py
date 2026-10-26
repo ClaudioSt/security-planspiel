@@ -13,16 +13,30 @@ import re
 import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Dict, List, NamedTuple, Optional, Set
+from typing import Dict, List, Mapping, NamedTuple, Optional, Set
 
 from planspiel import texbuild
 from planspiel.render import tex_escape
 
 # Inputs whose last commit date names the stamp (D-19).
-DATA_INPUTS = ("simulation_config.json", "content/texte.toml", "print/planspiel.sty", "print/templates")
+DATA_INPUTS = (
+    "simulation_config.json",
+    "content/texte.toml",
+    "content/assets/images",
+    "print/planspiel.sty",
+    "print/templates",
+)
 # Inputs whose local modification appends "+lokal". Output directories are never listed, so a
 # rebuild cannot make the tree dirty.
-BUILD_INPUTS = ("simulation_config.json", "content/texte.toml", "print", "planspiel", "pyproject.toml", "uv.lock")
+BUILD_INPUTS = (
+    "simulation_config.json",
+    "content/texte.toml",
+    "content/assets/images",
+    "print",
+    "planspiel",
+    "pyproject.toml",
+    "uv.lock",
+)
 MANIFEST_NAME = "manifest.json"
 
 GIT_TIMEOUT_S = 30
@@ -68,8 +82,13 @@ def repo_root(start: Optional[Path] = None) -> Path:
     return Path(out.strip())
 
 
-def content_hash(documents: Dict[str, str], static_files: Dict[str, bytes]) -> str:
-    """SHA-256 over the rendered documents and the files TeX reads besides them."""
+def content_hash(
+    documents: Dict[str, str], static_files: Dict[str, bytes], assets: Optional[Mapping[str, bytes]] = None
+) -> str:
+    """SHA-256 over the rendered documents and the files TeX reads besides them.
+
+    `assets` (images, by fixed name) are hashed byte for byte after the static files; without assets the
+    digest equals the one from before assets existed."""
     digest = hashlib.sha256()
     for name in sorted(documents):
         digest.update(b"tex\0" + name.encode("utf-8") + b"\0" + documents[name].encode("utf-8") + b"\0")
@@ -78,6 +97,8 @@ def content_hash(documents: Dict[str, str], static_files: Dict[str, bytes]) -> s
         if name.endswith((".sty", ".tex", ".cls")):
             data = data.replace(b"\r\n", b"\n")
         digest.update(b"file\0" + name.encode("utf-8") + b"\0" + data + b"\0")
+    for name in sorted(assets or {}):
+        digest.update(b"asset\0" + name.encode("utf-8") + b"\0" + assets[name] + b"\0")
     return digest.hexdigest()
 
 
@@ -127,9 +148,17 @@ def nondefault_inputs(repo: Path, config: Path, content_dir: Path, print_dir: Pa
     return [option for option, given, default in expected if not _same_path(Path(given), default)]
 
 
-def compute_stamp(documents: Dict[str, str], print_dir: Path, repo: Path, *, unofficial: bool = False) -> Stamp:
+def compute_stamp(
+    documents: Dict[str, str],
+    print_dir: Path,
+    repo: Path,
+    *,
+    unofficial: bool = False,
+    assets: Optional[Mapping[str, Path]] = None,
+) -> Stamp:
     static_files = {name: (Path(print_dir) / name).read_bytes() for name in texbuild.STATIC_FILES}
-    digest = content_hash(documents, static_files)
+    asset_bytes = {name: Path(path).read_bytes() for name, path in (assets or {}).items()}
+    digest = content_hash(documents, static_files, asset_bytes)
     date = input_date_utc(repo)
     dirty = is_dirty(repo) or unofficial
     return Stamp(stamp_text(digest, date, dirty), digest, date, dirty)

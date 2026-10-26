@@ -166,6 +166,12 @@ def _print_command(
         print("1 Fehler")
         return failure
     texts = content.texts
+    try:
+        assets = texbuild.asset_paths(Path(content_dir))
+    except texbuild.TexBuildError as error:
+        print(f"ERROR print.input {error}")
+        print("1 Fehler")
+        return failure
     # The checks of `planspiel texts` (no numbers in prose, veil, required keys) hold at print time too.
     text_errors = [issue for issue in check_texts(cfg, content) if issue.level == "error"]
     if text_errors:
@@ -196,7 +202,9 @@ def _print_command(
     try:
         repo = stamp.repo_for_inputs(Path(config))
         off_default = stamp.nondefault_inputs(repo, Path(config), Path(content_dir), Path(print_dir))
-        version = stamp.compute_stamp(documents, Path(print_dir), repo, unofficial=bool(off_default))
+        version = stamp.compute_stamp(
+            documents, Path(print_dir), repo, unofficial=bool(off_default), assets=assets
+        )
     except (stamp.StampError, OSError) as error:
         print(f"ERROR print.stamp {error}")
         print("1 Fehler")
@@ -216,7 +224,7 @@ def _print_command(
     print(f"Stand: {version.text}")
     try:
         pdfs = texbuild.build_documents(
-            documents, Path(print_dir), Path(build_dir), stamp_tex=stamp.stamp_tex(version.text)
+            documents, Path(print_dir), Path(build_dir), stamp_tex=stamp.stamp_tex(version.text), assets=assets
         )
     except (texbuild.TexBuildError, ValueError, OSError) as error:
         print(f"ERROR print.tex {error}")

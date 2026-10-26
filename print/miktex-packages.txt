@@ -3,6 +3,7 @@ babel-german
 colortbl
 fontspec
 geometry
+graphics
 pgf
 tikzfill
 tools

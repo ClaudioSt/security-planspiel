@@ -13,7 +13,7 @@ import sys
 import time
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Callable, Dict, List, Optional, Tuple
+from typing import Callable, Dict, List, Mapping, Optional, Tuple
 
 # Probe file -> MiKTeX package id (for `miktex packages install`).
 TEX_PROBES: Dict[str, str] = {
@@ -26,10 +26,16 @@ TEX_PROBES: Dict[str, str] = {
     "array.sty": "tools",
     "tabularx.sty": "tools",
     "tikz.sty": "pgf",
+    "graphicx.sty": "graphics",
+    "multicol.sty": "tools",
 }
 
 # Files copied from the print directory into every build directory.
 STATIC_FILES = ("planspiel.sty",)
+# Images TeX may read, by fixed name (D-19). The names are code constants: no content string ever chooses
+# a file name, and the files are looked up under `<content dir>/ASSET_DIR` only.
+ASSET_DIR = Path("assets") / "images"
+ASSET_FILES = ("zeitungsartikel_bild_audit.png", "zeitungsartikel_bild_fabrik.png")
 # Written by build_documents after hashing; never part of the content hash.
 STAMP_FILE = "stamp.tex"
 
@@ -64,6 +70,23 @@ class MissingTex:
 def check_job_name(job: str) -> None:
     if not JOB_NAME.match(job):
         raise ValueError(f"Ungültiger Jobname {job!r}: erlaubt sind a-z, 0-9, _ und - (nicht am Anfang)")
+
+
+def check_asset_name(name: str) -> None:
+    if not name or name in (".", "..") or "/" in name or "\\" in name or ":" in name or Path(name).name != name:
+        raise ValueError(f"Ungültiger Asset-Name {name!r}: nur ein einfacher Dateiname ohne Pfad ist erlaubt")
+
+
+def asset_paths(content_dir: Path) -> Dict[str, Path]:
+    """The fixed asset names mapped to their files under `content_dir`; a missing file stops the build."""
+    folder = Path(content_dir) / ASSET_DIR
+    paths = {}
+    for name in ASSET_FILES:
+        path = folder / name
+        if not path.is_file():
+            raise TexBuildError(f"Bild {name} fehlt: erwartet in {folder}")
+        paths[name] = path
+    return paths
 
 
 def _kill_tree(pid: int) -> None:
@@ -224,18 +247,25 @@ def build_documents(
     stamp_tex: str,
     timeout_s: int = 300,
     run: Optional[Callable[..., Path]] = None,
+    assets: Optional[Mapping[str, Path]] = None,
 ) -> Dict[str, Path]:
     """Write each document as `<job>.tex` into `build_dir` and build it; return `{job: pdf}`.
 
     `stamp_tex` is written to `stamp.tex` before TeX runs; the style stops the build without it.
+    `assets` (name -> file) are copied next to the documents under their plain names.
     """
+    assets = dict(assets or {})
     for job in documents:
         check_job_name(job)
+    for name in assets:
+        check_asset_name(name)
     run = run or run_lualatex
     build_dir = Path(build_dir)
     build_dir.mkdir(parents=True, exist_ok=True)
     for name in STATIC_FILES:
         shutil.copyfile(Path(print_dir) / name, build_dir / name)
+    for name in sorted(assets):
+        shutil.copyfile(assets[name], build_dir / name)
     (build_dir / STAMP_FILE).write_text(stamp_tex, encoding="utf-8", newline="\n")
     pdfs = {}
     for job in sorted(documents):
