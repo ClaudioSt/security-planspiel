@@ -132,6 +132,18 @@ def test_repo_root_finds_the_toplevel(repo):
     assert stamp.repo_root(repo / "print").resolve() == repo.resolve()
 
 
+def test_the_clues_are_a_data_and_a_build_input():
+    """content/clues.toml feeds the facilitator booklet, so a change moves the date and marks the tree (research F15)."""
+    assert "content/clues.toml" in stamp.DATA_INPUTS
+    assert "content/clues.toml" in stamp.BUILD_INPUTS
+
+
+def test_a_clues_commit_moves_the_date(repo):
+    write(repo, "content/clues.toml", "b = 2\n")
+    commit_all(repo, "clues", "2026-10-29T12:00:00+00:00")
+    assert stamp.input_date_utc(repo) == "2026-10-29"
+
+
 # --- git: dirty flag ----------------------------------------------------------------------------
 
 
@@ -144,6 +156,7 @@ def test_clean_tree_is_not_dirty(repo):
     [
         "planspiel/x.py",
         "content/texte.toml",
+        "content/clues.toml",
         "print/planspiel.sty",
         "simulation_config.json",
         "uv.lock",
@@ -166,7 +179,7 @@ def test_untracked_build_input_is_dirty(repo, rel):
 
 @pytest.mark.parametrize(
     "rel",
-    ["final_documents/generated/x.pdf", "build/print/y.tex", ".planning/STATE.md", "content/clues.toml"],
+    ["final_documents/generated/x.pdf", "build/print/y.tex", ".planning/STATE.md"],
 )
 def test_changes_outside_the_build_inputs_are_not_dirty(repo, rel):
     write(repo, rel, "changed\n")

@@ -344,3 +344,71 @@ def test_check_hashes_the_images_but_builds_nothing(monkeypatch, calls, tmp_path
     main([*_argv(tmp_path), "--check"])
     assert set(seen["assets"]) == set(texbuild.ASSET_FILES)
     assert calls == ["render"]
+
+
+# ---- content/clues.toml is a print input (PRINT-10, research F15) -----------------------------------------------
+
+
+def _content_with_clues(tmp_path, text=None):
+    import shutil
+
+    content = tmp_path / "content"
+    shutil.copytree(MINI_CONTENT_DIR, content)
+    if text is None:
+        (content / "clues.toml").unlink()
+    else:
+        (content / "clues.toml").write_text(text, encoding="utf-8")
+    return content
+
+
+BROKEN_CLUES = """[[clue]]
+attack = "ransomware"
+source = "story.steckbrief.betrieb.bullets"
+quote = "Dieses Zitat steht in keinem Dokument des Inhalts"
+why = "Absichtlich falsch."
+"""
+
+
+def test_the_clues_of_the_content_dir_reach_the_render_stage(monkeypatch, tmp_path):
+    from planspiel.texts import load_clues
+
+    monkeypatch.setattr(texbuild, "preflight", lambda **kwargs: [])
+    seen = {}
+
+    def spy(cfg, texts, template_dir, **kwargs):
+        seen["clues"] = kwargs.get("clues")
+        return {"spieler-smoke": "x"}
+
+    monkeypatch.setattr(render, "render_all", spy)
+    main([*_argv(tmp_path), "--check"])
+    assert seen["clues"] == load_clues(MINI_CONTENT_DIR / "clues.toml")
+    assert len(seen["clues"]) == 6
+
+
+def test_a_clue_error_stops_the_build_before_render(monkeypatch, calls, tmp_path, capsys):
+    monkeypatch.setattr(texbuild, "preflight", lambda **kwargs: [])
+    content = _content_with_clues(tmp_path, BROKEN_CLUES)
+    assert main(_argv(tmp_path, **{"--content-dir": str(content)})) == 1
+    out = capsys.readouterr().out
+    assert "ERROR print.clues clues.quote_not_found clues[1]:" in out
+    assert "ERROR print.clues clues.too_few" in out
+    assert "Fehler" in out
+    assert calls == []
+    assert not (tmp_path / "out").exists()
+
+
+def test_a_clue_error_makes_check_fail_with_two(monkeypatch, calls, tmp_path, capsys):
+    content = _content_with_clues(tmp_path, BROKEN_CLUES)
+    assert main([*_argv(tmp_path, **{"--content-dir": str(content)}), "--check"]) == 2
+    assert "ERROR print.clues" in capsys.readouterr().out
+    assert calls == []
+
+
+def test_a_missing_clues_file_stops_the_build_with_print_input(monkeypatch, calls, tmp_path, capsys):
+    monkeypatch.setattr(texbuild, "preflight", lambda **kwargs: [])
+    content = _content_with_clues(tmp_path, None)
+    assert main(_argv(tmp_path, **{"--content-dir": str(content)})) == 1
+    out = capsys.readouterr().out
+    assert "ERROR print.input" in out
+    assert "clues.toml" in out
+    assert calls == []
