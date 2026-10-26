@@ -4,17 +4,17 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: 05
 current_phase_name: Player & Facilitator Print Material
-status: executing
-stopped_at: Completed 05-15-PLAN.md
-last_updated: "2026-10-26T14:36:24.857Z"
+status: verifying
+stopped_at: Completed 05-16-PLAN.md
+last_updated: "2026-10-26T14:57:51.571Z"
 last_activity: 2026-10-23
 last_activity_desc: Phase 05 execution started
 progress:
   total_phases: 7
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 40
-  completed_plans: 39
-  percent: 57
+  completed_plans: 40
+  percent: 71
 ---
 
 # Project State
@@ -30,7 +30,7 @@ See: .planning/PROJECT.md (updated 2026-09-29)
 
 Phase: 05 (Player & Facilitator Print Material) — EXECUTING
 Plan: 16 of 16
-Status: Ready to execute
+Status: Phase complete — ready for verification
 Last activity: 2026-10-23 — Phase 05 execution started
 
 Progress: [██████░░░░] 57% (4 of 7 phases)
@@ -96,6 +96,7 @@ Progress: [██████░░░░] 57% (4 of 7 phases)
 | Phase 05 P13 | 60min | 1 tasks | 13 files |
 | Phase 05 P14 | ~55 min | 3 tasks | 10 files |
 | Phase 05 P15 | 35 min | 2 tasks | 18 files |
+| Phase 05 P16 | 40 min | 2 tasks | 22 files |
 
 ## Accumulated Context
 
@@ -162,6 +163,8 @@ Recent decisions affecting current work:
 - [Phase 05]: Facilitator master sheet prints non-terminating values (17/7 slope, wave-3 attack KZ, RoS, final index) with format_approx on the facilitator booklet only — D-26 Q6: players never see an approximation; a PDF test proves the approximation sign appears in no other PDF
 - [Phase 05]: Each wave of the facilitator booklet is two pages: parameters, bonus and check rows, then event schedule and answer keys; the GR step table is transposed — Wave 2 with its schedule and a 9-row table overflowed one page; the per-page fill report now proves every page fits
 - [Phase 05]: content/clues.toml is a stamped print input checked at print time (ERROR print.clues) and passed to every builder as the fourth argument — Research F15: a clues change must move the stamp date and mark the tree dirty; the quotes must match the pre-wave texts verbatim
+- [Phase 05-16]: Clue matrix section labels for headingless mail sections come from digit-free sheets.spielleitung keys, raw key only as last fallback — Keeps story texts, veil scan and player documents untouched; guarded by a test over real and mini content
+- [Phase 05-16]: The committed print set is written only by the last plan of a phase in the D-19 order — Stamp and manifest do not churn per plan; --check and a byte-identical rebuild prove freshness
 
 ### Pending Todos
 
@@ -184,6 +187,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-10-26T14:36:24.844Z
-Stopped at: Completed 05-15-PLAN.md
+Last session: 2026-10-26T14:57:51.558Z
+Stopped at: Completed 05-16-PLAN.md
 Resume file: None
