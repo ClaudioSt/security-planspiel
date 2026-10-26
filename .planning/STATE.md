@@ -5,15 +5,15 @@ milestone_name: milestone
 current_phase: 05
 current_phase_name: Player & Facilitator Print Material
 status: executing
-stopped_at: Completed 05-12-PLAN.md
-last_updated: "2026-10-26T12:32:47.261Z"
+stopped_at: Completed 05-13-PLAN.md
+last_updated: "2026-10-26T12:57:27.077Z"
 last_activity: 2026-10-23
 last_activity_desc: Phase 05 execution started
 progress:
   total_phases: 7
   completed_phases: 4
   total_plans: 40
-  completed_plans: 36
+  completed_plans: 37
   percent: 57
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-09-29)
 ## Current Position
 
 Phase: 05 (Player & Facilitator Print Material) — EXECUTING
-Plan: 13 of 16
+Plan: 14 of 16
 Status: Ready to execute
 Last activity: 2026-10-23 — Phase 05 execution started
 
@@ -93,6 +93,7 @@ Progress: [██████░░░░] 57% (4 of 7 phases)
 | Phase 05 P10 | 30 min | 2 tasks | 12 files |
 | Phase 05 P11 | 45min | 2 tasks | 8 files |
 | Phase 05 P12 | 100 min | 3 tasks | 16 files |
+| Phase 05 P13 | 60min | 1 tasks | 13 files |
 
 ## Accumulated Context
 
@@ -154,6 +155,7 @@ Recent decisions affecting current work:
 - [Phase 05]: Practice block is a top-level config key read only by planspiel/practice.py — Full Config equality with and without the block, equal evaluate_plan/TierKernel results and an unchanged overspend gate prove the real machinery cannot see it
 - [Phase 05]: Welle 0 practice story approved by the user with neutral case texts (D-16) — User answered 'Freigeben + Fälle neutral'; the case texts avoid the Ihr/Eure voice to match the Beispielteam framing
 - [Phase 05]: Welle 0 bonus marks: cross for met, dash for missed; damage before recovery printed without euro sign in the short box — Arial has no tick glyph and an empty box reads as unfilled; 20.000 euro does not fit the 13 mm box
+- [Phase 05]: Final-index weights live in simulation_config.json (final_index block), no defaults in rules.final_index — D-23: one source for reports and PRINT-10 answer keys; outputs unchanged at 1 and 1
 
 ### Pending Todos
 
@@ -176,6 +178,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-10-26T12:32:47.249Z
-Stopped at: Completed 05-12-PLAN.md
+Last session: 2026-10-26T12:57:27.065Z
+Stopped at: Completed 05-13-PLAN.md
 Resume file: None
