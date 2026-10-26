@@ -11,7 +11,7 @@ from planspiel.cards import CARDS_PER_SHEET, EVENT_DECK_JOB, build_event_deck, p
 from planspiel.config import load_config
 from planspiel.texts import load_texts
 from tests.support import CONFIG_PATH, CONTENT_DIR
-from tests.support.pdf_text import CARD, CARDTITLE, squash, squashed_pages
+from tests.support.pdf_text import CARD, CARDTITLE, squash, squashed_pages, unwrapped_log
 
 pytestmark = pytest.mark.pdf
 
@@ -29,7 +29,7 @@ def pages(printed_set):
 
 
 def _log(printed_set):
-    return (printed_set.build_a / f"{EVENT_DECK_JOB}.log").read_text(encoding="utf-8", errors="replace")
+    return unwrapped_log(printed_set.build_a / f"{EVENT_DECK_JOB}.log")
 
 
 def test_the_deck_is_two_a4_landscape_sheets(deck, pages, printed_set):

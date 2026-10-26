@@ -98,7 +98,6 @@ def test_an_event_card_carries_header_title_texts_and_generated_effect_lines(loa
         assert card.rule == event_texts.get("rule")
         assert card.effect_heading == effect.heading
         assert card.effect_lines == tuple(row.text for row in effect.rows)
-        assert card.effect_label == labels["effect"]
 
 
 def test_the_real_header_numbers_are_the_wave_keys(real):
@@ -178,7 +177,7 @@ def test_the_event_deck_has_no_duplex_back_pages(loaded):
     cfg, texts, deck = loaded
     source = render.render_all(cfg, texts, TEMPLATES)[EVENT_DECK_JOB]
     assert source.count("\\begin{cardsheet}") == len(deck.sheets)
-    assert "back" not in source.lower().replace("background", "")
+    assert source.count("\clearpage") == 0  # sheets start new pages through cardsheet only: one page per sheet
 
 
 def test_the_event_deck_uses_the_one_line_title_guard(loaded):

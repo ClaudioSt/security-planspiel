@@ -1,4 +1,7 @@
-"""Pre-wave print model of the measure deck (PRINT-05, D-01..D-07): one card per measure level plus a legend card.
+"""Pre-wave print model of the card decks: the measure deck (PRINT-05, D-01..D-07) and the event deck (PRINT-06).
+
+The measure deck is one card per measure level plus a legend card; the event deck is one card per wave event plus
+the Budget Review card.
 
 Strings only: every number comes from `rules.card_facts` / `rules.level_requirements`, every word from
 `content/texte.toml` through `PreAttackView`; the template only inserts these strings. The card has no field for
@@ -9,6 +12,7 @@ from dataclasses import dataclass
 from typing import Optional
 
 from planspiel import audience, fmt, rules
+from planspiel.eventtext import effect_rows
 from planspiel.config import Config
 from planspiel.printmodel import PrintModelError
 from planspiel.texts import PreAttackView, Texts
@@ -16,6 +20,7 @@ from planspiel.texts import PreAttackView, Texts
 CARDS_PER_SHEET = 4
 LEVELS = (1, 2, 3)  # the level badge colours exist for exactly these levels
 LEGEND_ID = "LEGEND"
+EVENT_DECK_JOB = "spieler-eventkarten"
 
 
 @dataclass(frozen=True)
@@ -48,6 +53,35 @@ class LegendCard:
 
 
 @dataclass(frozen=True)
+class EventCard:
+    """A wave event: header, name, narrative, rule text where one exists, and the generated effect lines."""
+
+    kind: str
+    card_id: str
+    header: str
+    title: str
+    narrative: str
+    rule: Optional[str]
+    effect_heading: Optional[str]
+    effect_lines: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class ReviewCard:
+    """The Budget Review card: narrative, rule, the tier rows and the overspend rule (the full penalty table is not here)."""
+
+    kind: str
+    card_id: str
+    header: str
+    title: str
+    narrative: str
+    rule: str
+    tier_heading: str
+    tier_lines: tuple[str, ...]
+    overspend_line: str
+
+
+@dataclass(frozen=True)
 class CardLabels:
     """Row labels shared by every card of the deck."""
 
@@ -61,8 +95,8 @@ class CardLabels:
 class CardDeck:
     job: str
     labels: CardLabels
-    cards: tuple[MeasureCard | LegendCard, ...]
-    sheets: tuple[tuple[MeasureCard | LegendCard, ...], ...]
+    cards: tuple[MeasureCard | LegendCard | EventCard | ReviewCard, ...]
+    sheets: tuple[tuple[MeasureCard | LegendCard | EventCard | ReviewCard, ...], ...]
 
     def printed_fragments(self) -> tuple[str, ...]:
         """Every digit-bearing string a card prints, de-duplicated (the pdf test finds each in the PDF text)."""
@@ -149,18 +183,81 @@ def _legend_card(texts: Texts, measure_cards: list[MeasureCard]) -> LegendCard:
     )
 
 
+def _labels(cfg: Config, texts: Texts) -> CardLabels:
+    labels = PreAttackView(cfg, texts).sheet("labels")
+    return CardLabels(
+        level=labels["level"],
+        init=labels["init_costs"],
+        opex=labels["opex"],
+        requires=str(texts.get("sheets.karten.requires")),
+    )
+
+
+def _sheets(cards: tuple) -> tuple[tuple, ...]:
+    return tuple(cards[start:start + CARDS_PER_SHEET] for start in range(0, len(cards), CARDS_PER_SHEET))
+
+
 def build_measure_deck(cfg: Config, texts: Texts) -> CardDeck:
     measure_cards = _measure_cards(cfg, texts)
-    labels = PreAttackView(cfg, texts).sheet("labels")
     cards = (_legend_card(texts, measure_cards), *measure_cards)
-    return CardDeck(
-        job=audience.MEASURE_DECK_JOB,
-        labels=CardLabels(
-            level=labels["level"],
-            init=labels["init_costs"],
-            opex=labels["opex"],
-            requires=str(texts.get("sheets.karten.requires")),
-        ),
-        cards=cards,
-        sheets=tuple(cards[start:start + CARDS_PER_SHEET] for start in range(0, len(cards), CARDS_PER_SHEET)),
-    )
+    return CardDeck(job=audience.MEASURE_DECK_JOB, labels=_labels(cfg, texts), cards=cards, sheets=_sheets(cards))
+
+
+def _card_id(event_id: str) -> str:
+    """Ids with a hyphen: the id is written into the build log, where a TeX-escaped underscore would not round-trip."""
+    return event_id.replace("_", "-")
+
+
+def _event_cards(cfg: Config, texts: Texts) -> list[EventCard]:
+    """One card per wave event: waves in ascending key order, config order inside a wave (the order they are played)."""
+    view = PreAttackView(cfg, texts)
+    labels = view.sheet("labels")
+    cards: list[EventCard] = []
+    for wave_id in sorted(cfg.events):
+        for event in cfg.events[wave_id]:
+            event_texts = view.event(event.id)
+            effect = effect_rows(event, cfg, texts)
+            cards.append(
+                EventCard(
+                    kind="event",
+                    card_id=_card_id(event.id),
+                    header=f"{labels['event_after_wave']} {wave_id}",
+                    title=event.name,
+                    narrative=event_texts["narrative"],
+                    rule=event_texts.get("rule"),
+                    effect_heading=effect.heading,
+                    effect_lines=tuple(row.text for row in effect.rows),
+                )
+            )
+    return cards
+
+
+def _review_cards(cfg: Config, texts: Texts) -> list[ReviewCard]:
+    view = PreAttackView(cfg, texts)
+    header = view.sheet("eventkarten")["review_header"]
+    cards: list[ReviewCard] = []
+    for event in cfg.final_events:
+        if event.type != "final_budget_tier":
+            raise PrintModelError(f"Abschluss-Event '{event.id}': Typ '{event.type}' hat keine Karte")
+        event_texts = view.event(event.id)
+        effect = effect_rows(event, cfg, texts)
+        cards.append(
+            ReviewCard(
+                kind="review",
+                card_id=_card_id(event.id),
+                header=header,
+                title=event.name,
+                narrative=event_texts["narrative"],
+                rule=event_texts["rule"],
+                tier_heading=str(effect.heading),
+                tier_lines=tuple(row.text for row in effect.rows[:-1]),
+                overspend_line=effect.rows[-1].text,
+            )
+        )
+    return cards
+
+
+def build_event_deck(cfg: Config, texts: Texts) -> CardDeck:
+    """Seven wave event cards in play order, then the Budget Review card. `sheets.backup_recovery` is not a card (D-26)."""
+    cards = (*_event_cards(cfg, texts), *_review_cards(cfg, texts))
+    return CardDeck(job=EVENT_DECK_JOB, labels=_labels(cfg, texts), cards=cards, sheets=_sheets(cards))

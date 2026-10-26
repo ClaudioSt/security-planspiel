@@ -1,8 +1,8 @@
-\#{ Card deck template: loops and inserts only. Every number arrives as a finished string from the deck model. Cards are A6 landscape, four per A4 landscape sheet. Cards dispatch on card.kind (legend, measure; event cards follow). }
+\#{ Card deck template: loops and inserts only. Every number arrives as a finished string from the deck model. Cards are A6 landscape, four per A4 landscape sheet. Cards dispatch on card.kind (legend, measure, event, review). }
 \#{ The three pieces below are called as statements (call ... endcall): Jinja then applies no escaping to the macro output. The line with caller only lets the macro accept the call block. }
 \BLOCK{macro card_header(card, legend)}
 \BLOCK{if caller}\BLOCK{endif}
-\cardheader{\BLOCK{if legend}legend-sample\BLOCK{else}\VAR{card.card_id}\BLOCK{endif}}{\BLOCK{if legend}\relax\BLOCK{else}\cardtitlefont\BLOCK{endif}}{\VAR{card.title}}{\VAR{card.level}}{\BLOCK{if legend} \callout{\VAR{legend.callouts[3][0]}}\BLOCK{endif}}
+\cardheader{\BLOCK{if legend}legend-sample\BLOCK{else}\VAR{card.card_id}\BLOCK{endif}}{\BLOCK{if legend}\relax\BLOCK{else}\cardtitlefont\BLOCK{endif}}{\VAR{card.title}}{\levelbadge{\VAR{card.level}}}{\BLOCK{if legend} \callout{\VAR{legend.callouts[3][0]}}\BLOCK{endif}}{}
 \levelstrip{\VAR{card.level}}
 \BLOCK{endmacro}
 \BLOCK{macro card_text(card, legend)}
@@ -46,6 +46,28 @@
 \end{minipage}\par
 \BLOCK{endif}
 \BLOCK{endmacro}
+\#{ Event and Budget Review cards: the header bar carries the kicker line and the one-line guarded title, then narrative, rule text and the generated effect lines in a framed box. }
+\BLOCK{macro event_head(card)}
+\BLOCK{if caller}\BLOCK{endif}
+\cardheader{\VAR{card.card_id}}{\cardtitlefont}{\VAR{card.title}}{}{}{\VAR{card.header}}\par
+\vspace{1.6mm}
+{\color{mhpaccent}\VAR{card.narrative}\par}
+\BLOCK{if card.rule}
+\vspace{1.4mm}
+{\cardtech\color{mhpgrey}\VAR{card.rule}\par}
+\BLOCK{endif}
+\vspace{\cardgap}
+\BLOCK{endmacro}
+\BLOCK{macro event_body(card)}
+\BLOCK{if caller}\BLOCK{endif}
+\BLOCK{call event_head(card)}\BLOCK{endcall}
+\effectbox{}{\BLOCK{if card.effect_heading}{\cardtech\color{mhpgrey}\VAR{card.effect_heading}\par}\vspace{0.8mm}\BLOCK{endif}\BLOCK{for line in card.effect_lines}\VAR{line}\BLOCK{if not loop.last}\par{}\BLOCK{endif}\BLOCK{endfor}}\par
+\BLOCK{endmacro}
+\BLOCK{macro review_body(card)}
+\BLOCK{if caller}\BLOCK{endif}
+\BLOCK{call event_head(card)}\BLOCK{endcall}
+\effectbox{\VAR{card.tier_heading}}{\BLOCK{for line in card.tier_lines}\VAR{line}\par{}\BLOCK{endfor}\vspace{0.8mm}{\bfseries{}\VAR{card.overspend_line}}}\par
+\BLOCK{endmacro}
 \documentclass[a4paper,10pt]{article}
 \usepackage{planspiel}
 \usepackage{tikz}
@@ -77,6 +99,10 @@
 \end{minipage}\par
 \BLOCK{elif card.kind == "measure"}
 \BLOCK{call card_body(card, deck.labels, false)}\BLOCK{endcall}
+\BLOCK{elif card.kind == "event"}
+\BLOCK{call event_body(card)}\BLOCK{endcall}
+\BLOCK{elif card.kind == "review"}
+\BLOCK{call review_body(card)}\BLOCK{endcall}
 \BLOCK{endif}
 \end{cardcell}\cardreport{\VAR{card.card_id}}
 \BLOCK{endfor}

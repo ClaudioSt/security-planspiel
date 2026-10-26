@@ -26,3 +26,13 @@ def squashed_pages(pdf_path) -> list[str]:
 
 def pdf_text(pdf_path) -> str:
     return "\n".join(page_texts(pdf_path))
+
+
+TEX_LOG_WIDTH = 79
+
+
+def unwrapped_log(path) -> str:
+    """The TeX log with its hard line breaks removed: TeX wraps every log line at 79 characters, which would split a
+    long card id or a measured value in the PLANSPIEL-CARD and PLANSPIEL-CARDTITLE lines."""
+    text = path.read_text(encoding="utf-8", errors="replace")
+    return re.sub(rf"(?m)^(.{{{TEX_LOG_WIDTH}}})\n", r"\1", text)
