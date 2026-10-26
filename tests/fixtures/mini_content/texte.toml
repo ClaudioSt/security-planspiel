@@ -94,7 +94,7 @@ rule = """Die Geschäftsführung richtet die Sicherheitsstrategie neu aus. Im Ch
 
 [events.operative_unterstuetzung]
 narrative = "Ihr bekommt operative Unterstützung: Ein zentraler Rahmenvertrag senkt kurzfristig die laufenden Betriebskosten."
-rule = "Zählt für jede bestehende Maßnahme in der kommenden Runde"
+rule = "Zählt für jede Maßnahme, die in dieser Welle aktiv ist."
 
 [events.sparprogramm]
 narrative = "Der CFO verkündet ein konzernweites Sparprogramm. Das Budget wird gekürzt."

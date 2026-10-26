@@ -201,7 +201,7 @@ rule = "Die Geschäftsführung richtet die Sicherheitsstrategie neu aus. Im Chan
 
 [events.operative_unterstuetzung]
 narrative = "Ihr bekommt operative Unterstützung: Ein zentraler Rahmenvertrag bzw. Shared-Service senkt kurzfristig die laufenden Betriebskosten eurer Security-Maßnahmen. Für die nächste Runde wird der Betrieb günstiger, ohne dass ihr an Leistung verliert."
-rule = "Zählt für jede bestehende Maßnahme in der kommenden Runde"
+rule = "Zählt für jede Maßnahme, die in dieser Welle aktiv ist."
 
 [events.sparprogramm]
 narrative = "Der CFO verkündet ein konzernweites Sparprogramm, und auch eure Security-Initiativen bleiben nicht verschont. Das Budget wird gekürzt."
