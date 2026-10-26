@@ -10,6 +10,7 @@ from typing import Callable, Dict, Tuple
 import jinja2
 
 from planspiel import audience, texbuild
+from planspiel.booklet import build_team_booklet
 from planspiel.cards import build_event_deck, build_measure_deck
 from planspiel.printmodel import build_attack_sheets
 
@@ -83,9 +84,15 @@ def event_cards(cfg, texts, env: jinja2.Environment) -> Dict[str, str]:
     return {deck.job: env.get_template("karten.tex.j2").render(deck=deck)}
 
 
+def team_booklet(cfg, texts, env: jinja2.Environment) -> Dict[str, str]:
+    """The team booklet (planning first, RoS and Budget Review last), rendered with teamheft.tex.j2 and its partials."""
+    booklet = build_team_booklet(cfg, texts)
+    return {booklet.job: env.get_template("teamheft.tex.j2").render(booklet=booklet)}
+
+
 # Each builder takes (cfg, texts, env) and returns {job name: .tex source}.
 DocumentBuilder = Callable[..., Dict[str, str]]
-DOCUMENT_BUILDERS: Tuple[DocumentBuilder, ...] = (attack_worksheets, measure_cards, event_cards)
+DOCUMENT_BUILDERS: Tuple[DocumentBuilder, ...] = (attack_worksheets, measure_cards, event_cards, team_booklet)
 
 
 def render_all(cfg, texts, template_dir: Path) -> Dict[str, str]:

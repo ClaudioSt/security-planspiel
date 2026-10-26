@@ -1,0 +1,12 @@
+\#{ Team booklet: the shell only. The page partials hold the pages; every number arrives as a finished string from the print model. }
+\documentclass[a4paper,10pt]{article}
+\usepackage{planspiel}
+\begin{document}
+\raggedright
+\BLOCK{include "teamheft_planung.tex.j2"}
+\fillreport{\thepage}
+\clearpage
+\#{ Insertion point for the tracking page (plan 05-07): include teamheft_tracking.tex.j2 here, followed by its own fill report and page break. }
+\BLOCK{include "teamheft_ros.tex.j2"}
+\fillreport{\thepage}
+\end{document}

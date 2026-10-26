@@ -1,0 +1,45 @@
+\#{ Booklet page 1, budget and planning: loops and inserts only. Start levels are written only in the planning table. }
+\attacktitle{\VAR{booklet.planning.title}}
+\VAR{booklet.planning.intro}\par
+
+\step{\VAR{booklet.planning.step_costs}}
+\vspace{1mm}
+\noindent\begin{tabularx}{\linewidth}{|C{26mm}|X|C{38mm}|}
+\hline
+\rowcolor{mhpblue}\hdr{\VAR{booklet.planning.cost_header[0]}} & \hdr{\VAR{booklet.planning.cost_header[1]}} & \hdr{\VAR{booklet.planning.cost_header[2]}} \\
+\hline
+\BLOCK{for row in booklet.planning.cost_rows}
+\rowstrut{}\textbf{\VAR{row[0]}} & \VAR{row[1]}\rowpad{} & \VAR{row[2]} \\
+\hline
+\BLOCK{endfor}
+\end{tabularx}
+
+\step{\VAR{booklet.planning.step_tiers}}
+\VAR{booklet.planning.tier_intro}\par
+\vspace{1mm}
+\noindent\begin{tabularx}{\linewidth}{|Z|Z|Z|}
+\hline
+\rowcolor{mhpblue}\hdr{\VAR{booklet.planning.tier_header[0]}} & \hdr{\VAR{booklet.planning.tier_header[1]}} & \hdr{\VAR{booklet.planning.tier_header[2]}} \\
+\hline
+\BLOCK{for row in booklet.planning.tier_rows}
+\rowstrut{}\textbf{\VAR{row[0]}} & \VAR{row[1]} & \VAR{row[2]} \\
+\hline
+\BLOCK{endfor}
+\end{tabularx}
+
+\step{\VAR{booklet.planning.step_planning}}
+\VAR{booklet.planning.planning_intro}\par
+\VAR{booklet.planning.planning_instruction}\par
+\vspace{1mm}
+\noindent\begin{tabularx}{\linewidth}{|X|C{18mm}|C{30mm}|C{30mm}|}
+\hline
+\rowcolor{mhpblue}\hdr{\VAR{booklet.planning.planning_header[0]}} & \hdr{\VAR{booklet.planning.planning_header[1]}} & \hdr{\VAR{booklet.planning.planning_header[2]}} & \hdr{\VAR{booklet.planning.planning_header[3]}} \\
+\hline
+\BLOCK{for label in booklet.planning.planning_rows}
+\rowstrut{}\VAR{label} & & & \\
+\hline
+\BLOCK{endfor}
+\rowcolor{mhplight}\rowstrut{}\textbf{\VAR{booklet.planning.sum_label}} & &  &  \\
+\hline
+\end{tabularx}
+\fillline{\VAR{booklet.planning.anticipated_line} \ibox{long}}

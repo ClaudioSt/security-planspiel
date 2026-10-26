@@ -48,7 +48,7 @@ def test_the_print_set_holds_the_team_booklet(loaded):
 
 def test_the_shell_is_a_document_and_includes_the_two_partials():
     shell = (TEMPLATES / SHELL).read_text(encoding="utf-8")
-    assert shell.startswith("\\documentclass")
+    assert "\\documentclass[" in shell
     assert "\\usepackage{planspiel}" in shell
     assert f'include "{PLANNING}"' in shell
     assert f'include "{ROS}"' in shell
@@ -88,7 +88,7 @@ def test_planning_comes_first_and_the_ros_part_starts_on_a_new_page(loaded):
     _, _, booklet, source = loaded
     planning = source.index(render.tex_escape(booklet.planning.title))
     ros = source.index(render.tex_escape(booklet.ros.title))
-    review = source.index(render.tex_escape(booklet.ros.review_title))
+    review = source.rindex(render.tex_escape(booklet.ros.review_title))  # the RoS title names the review too
     assert planning < ros < review
     assert "\\clearpage" in source[planning:ros]
     assert "\\clearpage" in source[ros:review], "the Budget Review has its own page"

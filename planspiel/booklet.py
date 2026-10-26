@@ -84,6 +84,7 @@ class RosPage:
     penalty_intro: str
     penalty_header: tuple[str, str]
     penalty_rows: tuple[tuple[str, str], ...]
+    penalty_split: int  # rows of the left table; the right one holds the rest
 
     def printed_fragments(self) -> tuple[str, ...]:
         return _fragments(self)
@@ -177,6 +178,7 @@ def _ros_page(cfg: Config, texts: Texts) -> RosPage:
     view = PreAttackView(cfg, texts)
     labels, words, eventkarten = view.sheet("labels"), view.sheet("teamheft"), view.sheet("eventkarten")
     final = _review_event(cfg)
+    penalty = _penalty_texts(cfg)
     base_losses = fmt.format_money(rules.base_losses(cfg.waves, cfg.attacks) * 1000)
 
     total_init, total_opex = labels["total_init"], labels["total_opex"]
@@ -224,7 +226,8 @@ def _ros_page(cfg: Config, texts: Texts) -> RosPage:
         penalty_title=words["penalty_title"],
         penalty_intro=words["penalty_intro"],
         penalty_header=(words["overspend_header"], words["kz_change"]),
-        penalty_rows=_penalty_texts(cfg),
+        penalty_rows=penalty,
+        penalty_split=(len(penalty) + 1) // 2,
     )
 
 
