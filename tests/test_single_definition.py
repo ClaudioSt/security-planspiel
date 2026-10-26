@@ -73,7 +73,7 @@ FORMULA_FUNCTIONS.update(
 FORMULA_FUNCTIONS.update({name: REVIEW_TEXT for name in ("format_eur", "penalty_rows", "boundary_text", "tier_rows")})
 FORMULA_FUNCTIONS.update({name: GATE for name in ("lowering_closure", "required_penalty_x")})
 FORMULA_FUNCTIONS.update(
-    {name: FMT for name in ("format_number", "format_signed", "format_money", "format_factor", "format_percent", "terminates")}
+    {name: FMT for name in ("format_number", "format_signed", "format_money", "format_factor", "format_percent", "terminates", "format_approx")}
 )
 
 RETIRED_FUNCTIONS = {
