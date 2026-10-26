@@ -827,6 +827,180 @@ def evaluate_path(cfg: Config, tier_name: str, path: Path, *, enforce_kurswechse
     }
 
 
+class WaveTrace(NamedTuple):
+    """Every value a team writes down for one wave, in printed order (E-Wert, Bonus, Fall, Schaden, KZ, Budget)."""
+
+    wave_id: int
+    attack_id: str
+    selection: Dict[str, int]
+    cia: Dict[str, int]
+    e_value: Fraction
+    bonus_met: Tuple[str, ...]
+    bonus_missed: Tuple[str, ...]
+    bonus_reduction: int
+    gesamtreduktion: Fraction
+    case: int
+    damage_before_eur: int
+    recovery_factor: Fraction
+    damage_eur: int
+    kz_attack: Fraction
+    kz_event: int
+    kz_change_exact: Fraction
+    kz_change: int
+    kz_before: int
+    kz_unclamped: int
+    kz_after: int
+    own_opex_k: int
+    event_budget_k: int
+    event_opex_k: int
+    events: Tuple[Dict, ...]
+    window_cost_k: int
+    remaining_k: int
+
+
+class WindowTrace(NamedTuple):
+    """One change window: it follows wave `after_wave`; cost = increases - credit (never a refund)."""
+
+    after_wave: int
+    swap: Optional[Tuple[str, str]]
+    increase_k: int
+    credit_k: int
+    cost_k: int
+    selection: Dict[str, int]
+
+
+class ReviewTrace(NamedTuple):
+    kz_pre_review: int
+    kz_review_change: int
+    kz_final: int
+    own_spend_k: int
+    remaining_k: int
+    total_damage_eur: int
+    over_budget: bool
+    ros: Optional[Fraction]
+    final_events: Tuple[Dict, ...]
+
+
+class PathTrace(NamedTuple):
+    tier_name: str
+    init_k: int
+    start_remaining_k: int
+    waves: Tuple[WaveTrace, ...]
+    windows: Tuple[WindowTrace, ...]
+    review: ReviewTrace
+
+
+def path_trace(cfg: Config, tier_name: str, path: Path, *, enforce_kurswechsel: bool = True) -> PathTrace:
+    """Read-only trace of a game path for printed answer keys and worked examples.
+
+    Legality, window costs and the ledger come from `evaluate_path` (single definition, same PathError); the per-wave
+    detail is derived from the same primitives the simulation uses. The records of `simulate_waves` stay pinned by
+    the characterization goldens, so nothing is added to them here.
+    """
+    record = evaluate_path(cfg, tier_name, path, enforce_kurswechsel=enforce_kurswechsel)
+    tier = cfg.budget_tiers[tier_name]
+    selections = record["selections"]
+    costs = record["costs"]
+    window_costs = costs["window_costs"]
+
+    remaining = tier.budget - costs["init"]
+    start_remaining = remaining
+    kz = tier.kz_start
+    waves = []
+    for index, (wave, selection) in enumerate(zip(cfg.waves, selections)):
+        attack = cfg.attacks[wave.attack_id]
+        constants = worksheet_constants(cfg, wave)
+        cia = compute_cia(selection, cfg.measures, cfg.base_cia)
+        result = apply_attack(
+            selection, cfg.measures, attack, wave, cia, cfg.ws, cfg.rs, severity_multiplier=tier.severity_multiplier
+        )
+        event_kz, event_budget, event_opex, event_results = apply_events(wave.wave_id, selection, cfg.events)
+
+        gesamtreduktion = result["gesamtreduktion"]
+        if gesamtreduktion <= constants.lower:
+            case = 1
+        elif gesamtreduktion >= constants.upper:
+            case = 2
+        else:
+            case = 3
+        severity_s = _to_int(result["severity"] * cfg.ws)
+        damage_before = damage_euros(severity_s, attack.s_unit, 0, cfg.ws, cfg.rs)
+        damage_after = _to_int(result["damage"] * 1000)
+
+        kz_change_exact = result["kz_delta"] + Fraction(event_kz)
+        kz_change = wave_kz_change(result["kz_delta"], event_kz)
+        kz_unclamped = kz + kz_change
+        kz_after = clamp_kz(kz_unclamped)
+
+        own_opex = compute_costs(selection, cfg.measures, 1)[1]
+        window_cost = window_costs[index] if index < len(window_costs) else 0
+        remaining = remaining - own_opex + event_budget - event_opex - window_cost
+
+        waves.append(WaveTrace(
+            wave_id=wave.wave_id,
+            attack_id=wave.attack_id,
+            selection=dict(selection),
+            cia=cia,
+            e_value=result["e_value"],
+            bonus_met=tuple(bm.measure for bm in wave.bonus_measures if selection.get(bm.measure, 0) >= bm.min_level),
+            bonus_missed=tuple(bm.measure for bm in wave.bonus_measures if selection.get(bm.measure, 0) < bm.min_level),
+            bonus_reduction=result["bonus_reduction"],
+            gesamtreduktion=gesamtreduktion,
+            case=case,
+            damage_before_eur=damage_before,
+            recovery_factor=result["recovery_factor"],
+            damage_eur=damage_after,
+            kz_attack=result["kz_delta"],
+            kz_event=event_kz,
+            kz_change_exact=kz_change_exact,
+            kz_change=kz_change,
+            kz_before=kz,
+            kz_unclamped=kz_unclamped,
+            kz_after=kz_after,
+            own_opex_k=own_opex,
+            event_budget_k=event_budget,
+            event_opex_k=event_opex,
+            events=tuple(event_results),
+            window_cost_k=window_cost,
+            remaining_k=remaining,
+        ))
+        kz = kz_after
+
+    windows = []
+    for index, window in enumerate(path.windows):
+        credit = 0
+        if window.swap is not None:
+            credit = swap_credit(cfg.measures, selections[index], window.swap[0], window.swap[1], window.selection)
+        windows.append(WindowTrace(
+            after_wave=cfg.waves[index].wave_id,
+            swap=window.swap,
+            increase_k=window_costs[index] + credit,
+            credit_k=credit,
+            cost_k=window_costs[index],
+            selection=dict(window.selection),
+        ))
+
+    review = ReviewTrace(
+        kz_pre_review=record["kz_pre_review"],
+        kz_review_change=sum(event["kz_delta"] for event in record["final_events"]),
+        kz_final=record["kz_final"],
+        own_spend_k=costs["security_spend"],
+        remaining_k=costs["remaining"],
+        total_damage_eur=_to_int(record["total_damage"] * 1000),
+        over_budget=record["over_budget"],
+        ros=record["ros"],
+        final_events=tuple(record["final_events"]),
+    )
+    return PathTrace(
+        tier_name=tier_name,
+        init_k=costs["init"],
+        start_remaining_k=start_remaining,
+        waves=tuple(waves),
+        windows=tuple(windows),
+        review=review,
+    )
+
+
 class CompactOutcome(NamedTuple):
     kz_final: int
     own_cost: int

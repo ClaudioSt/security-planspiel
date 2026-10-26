@@ -57,6 +57,7 @@ FORMULA_FUNCTIONS = {
         "simulate_waves",
         "window_cost",
         "evaluate_path",
+        "path_trace",
         "recovery_carriers",
         "recovery_table",
         "path_outcome",

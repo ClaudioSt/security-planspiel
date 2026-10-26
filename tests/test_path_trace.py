@@ -207,14 +207,14 @@ def test_bonus_met_and_missed_partition_the_wave_rows(real, tier, name):
         assert wave.bonus_reduction == sum(row.bonus for row in rows if row.measure in wave.bonus_met)
 
 
-def test_a_high_kz_start_makes_the_clamp_act_and_the_trace_still_equals_the_simulation(real):
+def test_a_low_kz_start_makes_the_clamp_act_and_the_trace_still_equals_the_simulation(real):
     tier = real.budget_tiers["medium"]
-    boosted = dataclasses.replace(real, budget_tiers={"medium": dataclasses.replace(tier, kz_start=99)})
+    boosted = dataclasses.replace(real, budget_tiers={"medium": dataclasses.replace(tier, kz_start=1)})
     path = _swap_paths()["kurswechsel-swap"]
     record = rules.evaluate_path(boosted, "medium", path)
     trace = rules.path_trace(boosted, "medium", path)
 
-    assert any(wave.kz_unclamped > rules.KZ_MAX for wave in trace.waves), "the fixture must show the clamp"
+    assert any(wave.kz_unclamped < rules.KZ_MIN for wave in trace.waves), "the fixture must show the clamp"
     assert [wave.kz_after for wave in trace.waves] == [wave["kz_after"] for wave in record["waves"]]
     assert trace.review.kz_final == record["kz_final"]
 
