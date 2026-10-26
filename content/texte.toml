@@ -449,6 +449,9 @@ effect = "Auswirkung"
 no_implementation = "Keine Umsetzung"
 final_damage = "Endschaden"
 min_level = "mindestens auf Level"
+mail_from = "Von"
+mail_to = "An"
+mail_subject = "Betreff"
 
 [story.steckbrief]
 doc_title = "MECHTECH GmbH: Unternehmenssteckbrief"

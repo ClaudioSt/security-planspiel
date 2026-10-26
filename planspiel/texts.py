@@ -35,6 +35,7 @@ _SHEET_LABELS = (
     "budget_remaining", "damage_wave", "start", "after_wave", "events",
     "metric", "value", "total_init", "total_opex", "total_costs", "avoided_damage", "event_after_wave",
     "condition_met", "effect", "no_implementation", "final_damage", "min_level",
+    "mail_from", "mail_to", "mail_subject",
 )
 
 _KARTEN_KEYS = (
