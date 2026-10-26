@@ -194,7 +194,7 @@ def test_the_real_overspend_table_has_exactly_the_proven_row_count(real):
 
 def test_a_smaller_penalty_step_adds_rows_and_stops_the_build(tmp_path):
     raw = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
-    raw["final_events"][0]["params"]["overspend_penalty"]["kz_per_step"] = 5
+    raw["final_events"][0]["overspend_penalty"]["kz_per_step"] = 5
     path = tmp_path / "config.json"
     path.write_text(json.dumps(raw, ensure_ascii=False, indent=2), encoding="utf-8", newline="\n")
     cfg = load_config(path)
@@ -207,14 +207,15 @@ def test_a_smaller_penalty_step_adds_rows_and_stops_the_build(tmp_path):
 def test_the_budget_review_explains_the_remaining_budget_with_signed_event_values(loaded):
     cfg, texts, booklet = loaded
     ros = booklet.ros
-    labels = [row.label for row in ros.budget_rows]
-    assert len(labels) == 5
-    assert ros.remaining_line.label not in labels
-    assert "+" in ros.budget_rows[2].note, "available budget = tier budget + budget event"
-    assert "+" in ros.budget_rows[4].note, "total costs = own costs + OPEX event"
-    assert MINUS in ros.remaining_line.note
+    rows = ros.budget_rows
+    assert len(rows) == 6
+    assert ros.remaining_line.label not in [row.label for row in rows]
+    assert "+" in rows[2].note and MINUS not in rows[2].note, "available budget = tier budget + budget event"
+    assert rows[3].label == ros.own_cost_rows[3].label, "own costs are carried, not recomputed"
+    assert "+" in rows[5].note and MINUS not in rows[5].note, "total costs = own costs + OPEX event"
+    assert MINUS in ros.remaining_line.note and "+" not in ros.remaining_line.note
+    assert rows[1].note == "" and rows[4].note == "", "event values are entered, not calculated"
     assert ros.sign_hint
-    assert booklet.ros.budget_rows[3].label == ros.own_cost_rows[3].label, "own costs are carried, not recomputed"
 
 
 def test_no_final_index_on_any_booklet_page(loaded):
@@ -245,8 +246,11 @@ def test_printed_fragments_are_non_empty_and_unique(loaded):
 # ---- the printed formulas replayed against the simulation ---------------------------------------------------------
 
 
-def _selection(cfg, **levels):
-    return {measure_id: levels.get(measure_id, 0) for measure_id in cfg.measures}
+REAL_IDS = tuple(f"M{number}" for number in range(1, 11))
+
+
+def _selection(**levels):
+    return {measure_id: levels.get(measure_id, 0) for measure_id in REAL_IDS}
 
 
 def _init_k(cfg, selection):
@@ -272,10 +276,10 @@ def _window_difference_k(cfg, before, after, swap):
     return rises - credit
 
 
-def _paths(cfg):
-    start = _selection(cfg, M1=2, M2=1, M3=1, M4=1, M5=1)
-    swapped = _selection(cfg, M1=2, M2=1, M3=1, M4=1, M8=3)
-    downgraded = _selection(cfg, M1=1, M2=1, M3=1, M4=2, M8=3)
+def _paths():
+    start = _selection(M1=2, M2=1, M3=1, M4=1, M5=1)
+    swapped = _selection(M1=2, M2=1, M3=1, M4=1, M8=3)
+    downgraded = _selection(M1=1, M2=1, M3=1, M4=2, M8=3)
     swap = ("M5", "M8")
     return [
         pytest.param(Path(start), False, id="static-plan"),
@@ -300,7 +304,7 @@ def _event_value_k(cfg, texts, event_type):
     raise AssertionError(event_type)
 
 
-@pytest.mark.parametrize(("path", "enforce"), _paths(load_config(CONFIG_PATH)))
+@pytest.mark.parametrize(("path", "enforce"), _paths())
 def test_the_printed_formulas_reproduce_evaluate_path(replay_world, path, enforce):
     cfg, texts, booklet = replay_world
     record = rules.evaluate_path(cfg, "medium", path, enforce_kurswechsel=enforce)
@@ -319,6 +323,7 @@ def test_the_printed_formulas_reproduce_evaluate_path(replay_world, path, enforc
     assert own == record["costs"]["security_spend"]
     assert init_total == record["costs"]["init"]
     assert differences == sum(record["costs"]["window_costs"])
+    assert differences > 0 or not path.windows, "a replayed change window must carry a cost"
     assert opex_total == sum(record["costs"]["opex_by_wave"])
 
     # RoS = (Vermiedener Schaden - eigene Kosten) / eigene Kosten, Vermiedener Schaden = base losses - Summe der Schaeden.

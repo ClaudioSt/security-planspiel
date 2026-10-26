@@ -23,7 +23,7 @@ PREWAVE_PREFIXES = ("story.", "measures.")
 MIN_QUOTE_LENGTH = 15
 
 STORY_DOCS = ("steckbrief", "zeitungsartikel", "anfrage_mail", "audit_mail")
-PREWAVE_SHEETS = ("budget", "ros", "backup_recovery", "labels", "karten", "eventkarten")
+PREWAVE_SHEETS = ("budget", "ros", "backup_recovery", "labels", "karten", "eventkarten", "teamheft")
 CASE_KEYS = ("case_1", "case_2", "case_3")
 
 _SHEET_LABELS = (
@@ -44,6 +44,14 @@ _EVENTKARTEN_KEYS = (
     "review_header", "kz", "fulfilled", "each_at_least", "level_of_measure", "per_measure_at_level",
     "condition_if", "condition_and", "level_equals", "otherwise", "total_budget", "opex_costs",
     "per_active_measure", "kurswechsel_window", "tier_heading", "tier_from", "overspend_label", "per_started",
+)
+
+_TEAMHEFT_KEYS = (
+    "planning_title", "planning_instruction", "step_costs", "step_tiers", "step_planning", "kz_start",
+    "opex_per_wave", "ros_title", "ros_carry_hint", "window_differences", "init_differences", "own_costs",
+    "damage_sum", "ros_short", "review_title", "review_intro", "tier_budget", "budget_event", "event_opex",
+    "review_costs", "remaining_budget", "sign_hint", "kz_change", "penalty_title", "penalty_intro",
+    "overspend_header",
 )
 
 SHEET_KEYS = (
@@ -95,6 +103,7 @@ SHEET_KEYS = (
     *(f"sheets.backup_recovery.level_labels.{level}" for level in range(4)),
     *(f"sheets.karten.{name}" for name in _KARTEN_KEYS),
     *(f"sheets.eventkarten.{name}" for name in _EVENTKARTEN_KEYS),
+    *(f"sheets.teamheft.{name}" for name in _TEAMHEFT_KEYS),
     *(f"sheets.labels.{name}" for name in _SHEET_LABELS),
 )
 
