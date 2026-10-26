@@ -5,15 +5,15 @@ milestone_name: milestone
 current_phase: 05
 current_phase_name: Player & Facilitator Print Material
 status: executing
-stopped_at: Completed 05-06-PLAN.md
-last_updated: "2026-10-26T08:22:45.910Z"
+stopped_at: Completed 05-07-PLAN.md
+last_updated: "2026-10-26T09:05:11.671Z"
 last_activity: 2026-10-23
 last_activity_desc: Phase 05 execution started
 progress:
   total_phases: 7
   completed_phases: 4
   total_plans: 40
-  completed_plans: 30
+  completed_plans: 31
   percent: 57
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-09-29)
 ## Current Position
 
 Phase: 05 (Player & Facilitator Print Material) — EXECUTING
-Plan: 7 of 16
+Plan: 8 of 16
 Status: Ready to execute
 Last activity: 2026-10-23 — Phase 05 execution started
 
@@ -87,6 +87,7 @@ Progress: [██████░░░░] 57% (4 of 7 phases)
 | Phase 05 P04 | 30min | 2 tasks | 7 files |
 | Phase 05 P05 | 30min | 2 tasks | 15 files |
 | Phase 05 P06 | 30 min | 2 tasks | 13 files |
+| Phase 05 P07 | 40min | 2 tasks | 15 files |
 
 ## Accumulated Context
 
@@ -139,6 +140,8 @@ Recent decisions affecting current work:
 - [Phase 05-05]: Event deck: eventtext.effect_rows generates every effect line; each row proven equal to rules.evaluate_event / budget_review_delta; kinds window, external_opex, external_budget, kz, review — PRINT-06; plans 05-07 and 05-15 consume the kinds; cardheader takes badge material plus a kicker argument
 - [Phase 05]: Team booklet RoS part is two pages: RoS page and a separate Budget Review page — One page needed about 258 mm of the 257 mm text height at readable type; the overspend table is two side-by-side tables guarded by MAX_PENALTY_ROWS = 12
 - [Phase 05]: Booklet fill reports use thepage; remaining budget printed as the budget_ledger ledger with event values entered with the card sign — 05-07 can insert the tracking page without renumbering; the OPEX relief stays inside the cost sum so no double negative is needed
+- [Phase 05-07]: Both change windows share one measure grid (Level nach dem Fenster and Δ Init per window); credit cell shaded outside the Kurswechsel window — Stacked per-window grids needed about 186 mm and did not fit one A4 page
+- [Phase 05-07]: Tracking rows are 6 mm instead of 7 mm; MAX_WINDOWS = 2 guards the layout proof (about 2 mm spare) — The one-page proof needs 6 mm rows; a third window or a fourth wave needs a new proof
 
 ### Pending Todos
 
@@ -161,6 +164,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-10-26T08:22:45.897Z
-Stopped at: Completed 05-06-PLAN.md
+Last session: 2026-10-26T09:05:11.640Z
+Stopped at: Completed 05-07-PLAN.md
 Resume file: None
