@@ -121,10 +121,13 @@ def test_pre_attack_view_serves_measures_events_and_prewave_sheets(loaded):
     assert view.sheet("labels")["measure"] == "Maßnahme"
 
 
-def test_pre_attack_view_refuses_the_attack_worksheet(loaded):
+def test_pre_attack_view_refuses_a_sheet_that_is_not_pre_wave(loaded):
+    """`angriff` joined the pre-wave sheets deliberately (05-08): its wording is generic and story-profile clean."""
     cfg, texts = loaded
     with pytest.raises(KeyError):
-        PreAttackView(cfg, texts).sheet("angriff")
+        PreAttackView(cfg, texts).sheet("attacks")
+    with pytest.raises(KeyError):
+        PreAttackView(cfg, texts).sheet("revealed")
 
 
 def test_reveal_view_serves_every_sheet(loaded):
@@ -198,7 +201,8 @@ def test_pre_attack_strings_cover_every_text_family(loaded):
     assert str(texts.get("sheets.labels.measure")) in strings
     for wave in cfg.waves:
         assert f"Angriff {wave.wave_id}" in strings
-    assert str(texts.get("sheets.angriff.case_3_hint")) not in strings
+    assert str(texts.get("sheets.angriff.case_3_hint")) in strings
+    assert str(texts.get("sheets.welle.title")) in strings
 
 
 def test_leak_test_catches_a_name_in_a_measure_text(loaded):

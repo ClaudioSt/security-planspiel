@@ -23,7 +23,9 @@ PREWAVE_PREFIXES = ("story.", "measures.")
 MIN_QUOTE_LENGTH = 15
 
 STORY_DOCS = ("steckbrief", "zeitungsartikel", "anfrage_mail", "audit_mail")
-PREWAVE_SHEETS = ("budget", "ros", "backup_recovery", "labels", "karten", "eventkarten", "teamheft", "tracking")
+PREWAVE_SHEETS = (
+    "budget", "ros", "backup_recovery", "labels", "karten", "eventkarten", "teamheft", "tracking", "angriff", "welle"
+)
 CASE_KEYS = ("case_1", "case_2", "case_3")
 
 _SHEET_LABELS = (
@@ -61,6 +63,13 @@ _TRACKING_KEYS = (
     "rounding_hint", "clamp_lead", "clamp_to", "external_hint", "window_title", "window_intro",
     "window_level", "window_delta", "window_sum", "window_credit", "window_credit_short", "window_net", "never_refund", "credit_hint",
     "next_wave_hint",
+)
+
+_WELLE_KEYS = (
+    "title", "intro", "text_events", "text_cia", "text_e_value_lead", "text_e_value_reveal", "text_bonus",
+    "text_reduction", "text_cases_lead", "case_1", "case_2", "case_3", "text_recovery", "rounding_lead",
+    "clamp_next", "window_rules", "step_window", "effects_attacks_head", "effects_events_head", "effect_damage",
+    "effect_kz", "effect_budget", "effect_opex", "ros_note",
 )
 
 SHEET_KEYS = (
@@ -113,6 +122,7 @@ SHEET_KEYS = (
     *(f"sheets.eventkarten.{name}" for name in _EVENTKARTEN_KEYS),
     *(f"sheets.teamheft.{name}" for name in _TEAMHEFT_KEYS),
     *(f"sheets.tracking.{name}" for name in _TRACKING_KEYS),
+    *(f"sheets.welle.{name}" for name in _WELLE_KEYS),
     *(f"sheets.labels.{name}" for name in _SHEET_LABELS),
 )
 

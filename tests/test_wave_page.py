@@ -268,7 +268,7 @@ def test_no_attack_name_or_giveaway_term_is_on_the_page(loaded):
     assert veil.name_hits(_text(page), ctx, audience.PROFILE_STORY, squashed=True) == []
 
 
-def test_the_only_digits_are_case_numbers_the_measure_id_the_clamp_bounds_levels_and_recovery_factors(loaded):
+def test_the_only_digits_are_case_numbers_the_measure_id_the_clamp_bounds_levels_factors_and_the_rounding_rule(loaded):
     cfg, content, page = loaded
     words = PreAttackView(cfg, content.texts).sheet("labels")
     allowed = [
@@ -276,6 +276,7 @@ def test_the_only_digits_are_case_numbers_the_measure_id_the_clamp_bounds_levels
         page.recovery_measure_label,
         *("\n".join(row) for row in page.recovery_rows),
         *(f"{words['case']} {number}" for number in (1, 2, 3)),
+        PreAttackView(cfg, content.texts).sheet("angriff")["wave_kz_rounding"],  # the allowlisted ",5"
     ]
     remaining = _text(page)
     # the allowed strings may be a whole printed string or part of one, so remove them as substrings
@@ -301,12 +302,13 @@ def test_wave_page_is_registered_as_a_prewave_model_module():
     assert "wave_page.py" in PREWAVE_MODULES
 
 
-def test_the_page_fragments_hold_every_digit_bearing_string(loaded):
+def test_the_page_fragments_hold_every_printed_string_but_the_job_name(loaded):
     _, _, page = loaded
     fragments = page.printed_fragments()
-    assert fragments
     assert page.clamp_text in fragments
-    assert all(any(char.isdigit() for char in fragment) for fragment in fragments)
+    assert page.job not in fragments
+    assert len(fragments) == len(set(fragments))
+    assert set(fragments) == {text for text in printed_strings(page) if text and text != page.job}
 
 
 def test_prewave_sheets_now_hold_angriff_and_welle():

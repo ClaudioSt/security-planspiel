@@ -162,6 +162,33 @@ class WorksheetInvariantError(ValueError):
     """The printed hand-calculation shape no longer matches the config (D-06, D-03)."""
 
 
+def recovery_carriers(measures: Dict[str, Measure]) -> Tuple[str, ...]:
+    """Ids of the measures with a non-zero recovery at any level, in config order."""
+    return tuple(
+        measure_id
+        for measure_id, measure in measures.items()
+        if any(level.recovery != 0 for level in measure.levels.values())
+    )
+
+
+def recovery_table(cfg: Config) -> Tuple[Optional[str], Tuple[RecoveryRow, ...]]:
+    """The single recovery measure and its factor per level, independent of any attack or wave.
+
+    Returns (None, ()) when no measure carries recovery. Raises WorksheetInvariantError for more than one carrier,
+    because the printed material shows exactly one recovery table (D-03, D-26).
+    """
+    carriers = recovery_carriers(cfg.measures)
+    if len(carriers) > 1:
+        raise WorksheetInvariantError(
+            f"Recovery kommt von mehreren Maßnahmen ({', '.join(carriers)}), das Material druckt nur eine "
+            "Recovery-Tabelle (D-03, D-26)."
+        )
+    if not carriers:
+        return None, ()
+    levels = cfg.measures[carriers[0]].levels
+    return carriers[0], tuple(RecoveryRow(level, Fraction(levels[level].recovery)) for level in sorted(levels))
+
+
 def worksheet_constants(cfg: Config, wave: Wave) -> WorksheetConstants:
     """Derive the printed worksheet numbers of one wave from the config, through the simulation primitives.
 
@@ -181,11 +208,7 @@ def worksheet_constants(cfg: Config, wave: Wave) -> WorksheetConstants:
                 f"Budget-Tier '{tier.name}': Schweregrad-Multiplikator {tier.severity_multiplier} muss 1 sein, "
                 "sonst stimmt die gedruckte Schadensformel nicht (D-06)."
             )
-    carriers = [
-        measure_id
-        for measure_id, measure in cfg.measures.items()
-        if any(level.recovery != 0 for level in measure.levels.values())
-    ]
+    carriers = recovery_carriers(cfg.measures)
     if attack.allow_recovery and len(carriers) > 1:
         raise WorksheetInvariantError(
             f"Angriff '{attack.attack_id}': Recovery kommt von mehreren Maßnahmen ({', '.join(carriers)}), "
