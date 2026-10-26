@@ -5,15 +5,15 @@ milestone_name: milestone
 current_phase: 05
 current_phase_name: Player & Facilitator Print Material
 status: executing
-stopped_at: Completed 05-04-PLAN.md
-last_updated: "2026-10-25T13:21:28.312Z"
+stopped_at: Completed 05-05-PLAN.md
+last_updated: "2026-10-26T07:53:51.936Z"
 last_activity: 2026-10-23
 last_activity_desc: Phase 05 execution started
 progress:
   total_phases: 7
   completed_phases: 4
   total_plans: 40
-  completed_plans: 28
+  completed_plans: 29
   percent: 57
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-09-29)
 ## Current Position
 
 Phase: 05 (Player & Facilitator Print Material) — EXECUTING
-Plan: 5 of 16
+Plan: 6 of 16
 Status: Ready to execute
 Last activity: 2026-10-23 — Phase 05 execution started
 
@@ -85,6 +85,7 @@ Progress: [██████░░░░] 57% (4 of 7 phases)
 | Phase 05 P02 | 85min | 2 tasks | 17 files |
 | Phase 05 P03 | 95min | 2 tasks | 5 files |
 | Phase 05 P04 | 30min | 2 tasks | 7 files |
+| Phase 05 P05 | 30min | 2 tasks | 15 files |
 
 ## Accumulated Context
 
@@ -132,6 +133,9 @@ Recent decisions affecting current work:
 - [Phase 05-03]: Init-Kosten, OPEX and Voraussetzung use factbox (caption band directly above its value); padding captop 1.6, capbot 0.8, valtop 1.3, valbot 0.6, plaintop 1.4, plainbot 1, plainside 2, techgap 1.6 mm, headsep 1.8 mm, badge sep 3 pt — Round 2 and 3 user feedback: label must belong visibly to its value, text must not touch box edges
 - [Phase 05-03]: One-line title guard: cardheader logs PLANSPIEL-CARDTITLE width/avail and a pdf test asserts width <= avail for all 31 headers (longest M10 116.2 of 121.8 mm); every card_header user, incl. the 05-05 event deck, is covered — 17 pt title chosen by the user in round 4; a wrapped title would break the bar
 - [Phase 05]: Measure deck keeps the names-only veil profile; reveal note in legend, formula stays last line — VEIL-04: weights and bonus links appear only on revealed worksheets; D-24 keeps Phishing on M6
+- [Phase 05-05]: Operative Unterstuetzung rule text aligned to the rule (user: Text an Regel anpassen); rules and simulation unchanged — The text said every existing measure in the coming round, evaluate_event counts measures active in the event's own wave; user decided 2026-10-26
+- [Phase 05-05]: Event cards carry no caption band over the effect box; Budget Review keeps its caption — Kurswechsel card overflowed its cell by 15 pt with a caption (274 vs 259 pt); band dropped, no type reduced, 98% fill; check in the print test
+- [Phase 05-05]: Event deck: eventtext.effect_rows generates every effect line; each row proven equal to rules.evaluate_event / budget_review_delta; kinds window, external_opex, external_budget, kz, review — PRINT-06; plans 05-07 and 05-15 consume the kinds; cardheader takes badge material plus a kicker argument
 
 ### Pending Todos
 
@@ -154,6 +158,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-10-25T13:21:28.299Z
-Stopped at: Completed 05-04-PLAN.md
+Last session: 2026-10-26T07:53:51.923Z
+Stopped at: Completed 05-05-PLAN.md
 Resume file: None
