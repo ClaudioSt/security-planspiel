@@ -5,15 +5,15 @@ milestone_name: milestone
 current_phase: 05
 current_phase_name: Player & Facilitator Print Material
 status: executing
-stopped_at: Completed 05-05-PLAN.md
-last_updated: "2026-10-26T07:53:51.936Z"
+stopped_at: Completed 05-06-PLAN.md
+last_updated: "2026-10-26T08:22:45.910Z"
 last_activity: 2026-10-23
 last_activity_desc: Phase 05 execution started
 progress:
   total_phases: 7
   completed_phases: 4
   total_plans: 40
-  completed_plans: 29
+  completed_plans: 30
   percent: 57
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-09-29)
 ## Current Position
 
 Phase: 05 (Player & Facilitator Print Material) — EXECUTING
-Plan: 6 of 16
+Plan: 7 of 16
 Status: Ready to execute
 Last activity: 2026-10-23 — Phase 05 execution started
 
@@ -86,6 +86,7 @@ Progress: [██████░░░░] 57% (4 of 7 phases)
 | Phase 05 P03 | 95min | 2 tasks | 5 files |
 | Phase 05 P04 | 30min | 2 tasks | 7 files |
 | Phase 05 P05 | 30min | 2 tasks | 15 files |
+| Phase 05 P06 | 30 min | 2 tasks | 13 files |
 
 ## Accumulated Context
 
@@ -136,6 +137,8 @@ Recent decisions affecting current work:
 - [Phase 05-05]: Operative Unterstuetzung rule text aligned to the rule (user: Text an Regel anpassen); rules and simulation unchanged — The text said every existing measure in the coming round, evaluate_event counts measures active in the event's own wave; user decided 2026-10-26
 - [Phase 05-05]: Event cards carry no caption band over the effect box; Budget Review keeps its caption — Kurswechsel card overflowed its cell by 15 pt with a caption (274 vs 259 pt); band dropped, no type reduced, 98% fill; check in the print test
 - [Phase 05-05]: Event deck: eventtext.effect_rows generates every effect line; each row proven equal to rules.evaluate_event / budget_review_delta; kinds window, external_opex, external_budget, kz, review — PRINT-06; plans 05-07 and 05-15 consume the kinds; cardheader takes badge material plus a kicker argument
+- [Phase 05]: Team booklet RoS part is two pages: RoS page and a separate Budget Review page — One page needed about 258 mm of the 257 mm text height at readable type; the overspend table is two side-by-side tables guarded by MAX_PENALTY_ROWS = 12
+- [Phase 05]: Booklet fill reports use thepage; remaining budget printed as the budget_ledger ledger with event values entered with the card sign — 05-07 can insert the tracking page without renumbering; the OPEX relief stays inside the cost sum so no double negative is needed
 
 ### Pending Todos
 
@@ -158,6 +161,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-10-26T07:53:51.923Z
-Stopped at: Completed 05-05-PLAN.md
+Last session: 2026-10-26T08:22:45.897Z
+Stopped at: Completed 05-06-PLAN.md
 Resume file: None

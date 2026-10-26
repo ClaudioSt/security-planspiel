@@ -41,7 +41,7 @@
 - [x] **PRINT-04**: An equivalence test proves the printed hand-calculation steps give the same results as the simulation over a dense input grid
 - [x] **PRINT-05**: Measure cards (10 measures × 3 levels) are generated with a legend explaining how to read a card and how a measure affects CIA and the E-value
 - [x] **PRINT-06**: Event cards and the Budget Review card are generated, with effect lines derived from event type and parameters
-- [ ] **PRINT-07**: Budget sheet and RoS sheet are generated
+- [x] **PRINT-07**: Budget sheet and RoS sheet are generated
 - [ ] **PRINT-08**: A printed team tracking sheet in calculation order (incl. separate rows for own costs vs external effects) replaces the whiteboard write-up
 - [ ] **PRINT-09**: A one-page "So funktioniert eine Welle" explains the wave calculation and what attacks and events affect
 - [ ] **PRINT-10**: A facilitator master sheet lists per-wave thresholds, caps, bonus tables, event effects, check rows and answer keys for reference selections
@@ -145,7 +145,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PRINT-04 | Phase 4 | Complete |
 | PRINT-05 | Phase 5 | Complete |
 | PRINT-06 | Phase 5 | Complete |
-| PRINT-07 | Phase 5 | Pending |
+| PRINT-07 | Phase 5 | Complete |
 | PRINT-08 | Phase 5 | Pending |
 | PRINT-09 | Phase 5 | Pending |
 | PRINT-10 | Phase 5 | Pending |
