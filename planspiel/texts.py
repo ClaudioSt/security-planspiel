@@ -127,6 +127,13 @@ SHEET_KEYS = (
     *(f"sheets.labels.{name}" for name in _SHEET_LABELS),
 )
 
+PRACTICE_KEYS = tuple(
+    f"practice.{name}"
+    for name in (
+        "title", "intro", "narrative", "cia_rationale", *CASE_KEYS, "selection_title", "event_result", "tracking_title",
+    )
+)
+
 EVENT_KEYS_BY_TYPE = {
     "kurswechsel": ("narrative", "rule"),
     "opex_discount_per_active_measure": ("narrative", "rule"),
@@ -295,6 +302,10 @@ def required_keys(cfg: Config) -> set[str]:
         keys.update(_event_keys(f"final_events.{event.id}", event))
     keys.update(SHEET_KEYS)
     keys.update(f"story.{doc}.doc_title" for doc in STORY_DOCS)
+    if cfg.practice is not None:
+        keys.update(PRACTICE_KEYS)
+        keys.update(f"practice.bonus_reasons.{bonus.measure}" for bonus in cfg.practice.wave.bonus_measures)
+        keys.update(_event_keys("practice.event", cfg.practice.event))
     return keys
 
 
@@ -416,7 +427,7 @@ def check_giveaway(cfg: Config, texts: Texts, terms: GiveawayTerms) -> list[Issu
     attack_ids = tuple(cfg.attacks)
     issues: list[Issue] = []
     scoped = [(f"attacks.{attack_id}.veiled", "veiled") for attack_id in cfg.attacks]
-    scoped += [("events", "story"), ("final_events", "story"), ("story", "story")]
+    scoped += [("events", "story"), ("final_events", "story"), ("story", "story"), ("practice", "story")]
     for prefix, profile in scoped:
         for key, text in texts.strings(prefix):
             hits = giveaway_hits(text, terms, attack_ids, profile=profile)

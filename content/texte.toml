@@ -230,6 +230,31 @@ narrative = "Ihr zieht die Zugriffskontrollen an, aber die Belegschaft wurde nic
 narrative = "Nach Abschluss eurer Beauftragung macht der CFO den Kassensturz: Nicht nur das Sicherheitsniveau zählt, sondern auch, ob ihr das Budget im Griff hattet."
 rule = "Prüft euer Restbudget."
 
+[practice]
+title = "Übung"
+intro = "Bevor die erste Welle beginnt, rechnet ihr gemeinsam ein Beispiel durch. Der Vorfall ist erfunden und zählt nicht für eure Wertung. Alle Felder sind schon ausgefüllt: Verfolgt Schritt für Schritt, wie aus den Maßnahmen eines Beispielteams Schutzwerte, Schaden und Kundenzufriedenheit werden."
+narrative = "Nach einem Firmware-Update fällt das zentrale Speichersystem im Büro aus. Der Dateiserver ist nicht mehr erreichbar, Projektordner und Vorlagen stehen niemandem mehr zur Verfügung. Ob der Betrieb schnell wieder läuft und wie groß der Schaden wird, wird im Folgenden anhand der Sicherheitsmaßnahmen des Beispielteams berechnet."
+cia_rationale = "Hier zählt Verfügbarkeit (A) am meisten, weil ohne Dateiserver niemand an die Daten kommt. Vertraulichkeit (C) und Integrität (I) zählen gleich viel, aber weniger."
+case_1 = "Die Maßnahmen reichen nicht aus, der Ausfall trifft das Unternehmen voll."
+case_2 = "Der Ausfall wird vollständig abgefangen."
+case_3 = "Die Auswirkungen werden teilweise gemindert."
+selection_title = "Auswahl des Beispielteams"
+event_result = "Wirkung des Ereignisses auf das Beispielteam"
+tracking_title = "So sieht der Eintrag im Tracking-Bogen aus"
+
+[practice.bonus_reasons]
+M9 = "Geprüfte Cloud-Einstellungen: die Ersatzablage der Projektdaten in der Cloud steht sofort bereit"
+M10 = "Verwaltete Smartphones und Tablets mit freigegebenen Apps halten das Team auch ohne Dateiserver arbeitsfähig"
+
+[practice.event]
+narrative = "Schon Tage vor dem Ausfall meldet das Speichersystem Plattenwarnungen und Fehler in den Protokollen. Wer die Protokolle auswertet, sieht die Warnungen rechtzeitig. Wer sie nicht auswertet, merkt es erst, wenn alles steht."
+
+[practice.event.tier_labels]
+0 = "Warnungen bleiben unbemerkt"
+1 = "Warnungen liegen in den Protokollen, werden aber spät gelesen"
+2 = "Alarm kommt rechtzeitig an"
+3 = "Fachleute greifen sofort ein und dokumentieren den Fall"
+
 [sheets.angriff]
 start_values_intro = "Euer Unternehmen startet je Schutzziel mit einem Basiswert. Eure gewählten Maßnahmen erhöhen diese Werte."
 cia_table_instruction = "Tragt die CIA-Werte eurer Maßnahmen ein und berechnet euren Gesamtschutz über alle Schutzziele."
