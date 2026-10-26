@@ -5,15 +5,15 @@ milestone_name: milestone
 current_phase: 05
 current_phase_name: Player & Facilitator Print Material
 status: executing
-stopped_at: Completed 05-10-PLAN.md
-last_updated: "2026-10-26T10:21:48.382Z"
+stopped_at: Completed 05-11-PLAN.md
+last_updated: "2026-10-26T10:44:55.008Z"
 last_activity: 2026-10-23
 last_activity_desc: Phase 05 execution started
 progress:
   total_phases: 7
   completed_phases: 4
   total_plans: 40
-  completed_plans: 34
+  completed_plans: 35
   percent: 57
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-09-29)
 ## Current Position
 
 Phase: 05 (Player & Facilitator Print Material) — EXECUTING
-Plan: 11 of 16
+Plan: 12 of 16
 Status: Ready to execute
 Last activity: 2026-10-23 — Phase 05 execution started
 
@@ -91,6 +91,7 @@ Progress: [██████░░░░] 57% (4 of 7 phases)
 | Phase 05 P08 | 30min | 2 tasks | 13 files |
 | Phase 05 P09 | 25 min | 1 tasks | 12 files |
 | Phase 05 P10 | 30 min | 2 tasks | 12 files |
+| Phase 05 P11 | 45min | 2 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -148,6 +149,8 @@ Recent decisions affecting current work:
 - [Phase 05]: Wave explainer prints the recovery factor as a percentage like the worksheet — One spelling of r on worksheet and explainer; steps unnumbered because worksheet numbering shifts without recovery
 - [Phase 05-09]: Asset names are code constants (texbuild.ASSET_FILES); content_hash gains an optional assets mapping; mini content carries 1x1 PNG fixtures — Images stay inside the hashed, read-guarded set (D-19); the pure hash keeps its static_files shape; CLI tests need a valid content dir without 3.6 MB images
 - [Phase 05]: Story documents: images pass tex_escape only as render.AssetName (fixed ASSET_FILES names); story walker is strict (unknown keys, wrong types, nesting beyond one level, caption/image count mismatch stop the build) — An escaped underscore breaks the includegraphics lookup, and a lenient walker would drop story text silently
+- [Phase 05]: Practice example pinned to the illustrated Welle 0 parameter set; check_example requires an exact half before rounding — The exact half (5/2) makes half away from zero (+3) visibly differ from half to even (+2); all guards held on the first parameter set, so no search was needed
+- [Phase 05]: Practice block is a top-level config key read only by planspiel/practice.py — Full Config equality with and without the block, equal evaluate_plan/TierKernel results and an unchanged overspend gate prove the real machinery cannot see it
 
 ### Pending Todos
 
@@ -170,6 +173,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-10-26T10:21:48.370Z
-Stopped at: Completed 05-10-PLAN.md
+Last session: 2026-10-26T10:44:54.994Z
+Stopped at: Completed 05-11-PLAN.md
 Resume file: None
