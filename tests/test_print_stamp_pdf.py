@@ -50,7 +50,7 @@ def test_tex_read_nothing_outside_the_hashed_set(printed_set):
     for job in printed_set.jobs:
         fls = printed_set.build_a / f"{job}.fls"
         assert fls.exists(), f"{fls.name} fehlt: lualatex lief ohne -recorder"
-        allowed = {f"{job}.tex", f"{job}.aux", "stamp.tex", *texbuild.STATIC_FILES}
+        allowed = {f"{job}.tex", f"{job}.aux", "stamp.tex", *texbuild.STATIC_FILES, *texbuild.ASSET_FILES}
         extra = stamp.recorded_local_inputs(fls, printed_set.build_a) - allowed
         assert not extra, f"{job}: TeX las Dateien außerhalb des gehashten Satzes: {sorted(extra)}"
 

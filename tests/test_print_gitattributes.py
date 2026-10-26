@@ -1,4 +1,4 @@
-"""`.gitattributes`: LF normalisation for print sources, never for binary assets under print/."""
+"""`.gitattributes`: LF normalisation for print sources, never for binary assets under print/ or content/assets/images."""
 import subprocess
 
 import pytest
@@ -40,6 +40,8 @@ def test_print_sources_are_normalised_to_lf(path):
         "print/assets/page.pdf",
         "print/fonts/Arial.ttf",
         "print/fonts/Arial.otf",
+        "content/assets/images/zeitungsartikel_bild_audit.png",
+        "content/assets/images/zeitungsartikel_bild_fabrik.png",
     ],
 )
 def test_binary_assets_under_print_are_never_converted(path):

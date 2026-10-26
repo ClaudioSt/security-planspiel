@@ -276,3 +276,71 @@ def test_a_veil_leak_makes_check_fail_with_two(monkeypatch, calls, tmp_path, cap
     out = capsys.readouterr().out
     assert "ERROR print.veil" in out
     assert calls == []
+
+
+def _content_without_an_image(tmp_path, name):
+    import shutil
+
+    content = tmp_path / "content"
+    shutil.copytree(MINI_CONTENT_DIR, content)
+    (content / "assets" / "images" / name).unlink()
+    return content
+
+
+@pytest.mark.parametrize("name", texbuild.ASSET_FILES)
+def test_a_missing_image_stops_the_build_with_print_input(monkeypatch, calls, tmp_path, capsys, name):
+    monkeypatch.setattr(texbuild, "preflight", lambda **kwargs: [])
+    content = _content_without_an_image(tmp_path, name)
+    assert main(_argv(tmp_path, **{"--content-dir": str(content)})) == 1
+    out = capsys.readouterr().out
+    assert "ERROR print.input" in out
+    assert name in out
+    assert "1 Fehler" in out
+    assert calls == []
+    assert not (tmp_path / "out").exists()
+
+
+def test_a_missing_image_makes_check_fail_with_two(monkeypatch, calls, tmp_path, capsys):
+    content = _content_without_an_image(tmp_path, texbuild.ASSET_FILES[0])
+    assert main([*_argv(tmp_path, **{"--content-dir": str(content)}), "--check"]) == 2
+    out = capsys.readouterr().out
+    assert "ERROR print.input" in out
+    assert texbuild.ASSET_FILES[0] in out
+    assert calls == []
+
+
+def test_the_assets_under_the_content_dir_reach_stamp_and_build(monkeypatch, tmp_path):
+    monkeypatch.setattr(texbuild, "preflight", lambda **kwargs: [])
+    monkeypatch.setattr(render, "render_all", lambda *args, **kwargs: {"spieler-smoke": "x"})
+    seen = {}
+    real_stamp = stamp.compute_stamp
+
+    def spy_stamp(*args, **kwargs):
+        seen["stamp"] = kwargs.get("assets")
+        return real_stamp(*args, **kwargs)
+
+    def fake_build(documents, print_dir, build_dir, *, stamp_tex, **kwargs):
+        seen["build"] = kwargs.get("assets")
+        build_dir.mkdir(parents=True, exist_ok=True)
+        (build_dir / "spieler-smoke.pdf").write_bytes(b"%PDF-fake")
+        return {"spieler-smoke": build_dir / "spieler-smoke.pdf"}
+
+    monkeypatch.setattr(stamp, "compute_stamp", spy_stamp)
+    monkeypatch.setattr(texbuild, "build_documents", fake_build)
+    assert main(_argv(tmp_path)) == 0
+    expected = {name: MINI_CONTENT_DIR / "assets" / "images" / name for name in texbuild.ASSET_FILES}
+    assert seen == {"stamp": expected, "build": expected}
+
+
+def test_check_hashes_the_images_but_builds_nothing(monkeypatch, calls, tmp_path):
+    seen = {}
+    real_stamp = stamp.compute_stamp
+
+    def spy_stamp(*args, **kwargs):
+        seen["assets"] = kwargs.get("assets")
+        return real_stamp(*args, **kwargs)
+
+    monkeypatch.setattr(stamp, "compute_stamp", spy_stamp)
+    main([*_argv(tmp_path), "--check"])
+    assert set(seen["assets"]) == set(texbuild.ASSET_FILES)
+    assert calls == ["render"]

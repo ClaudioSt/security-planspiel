@@ -35,7 +35,7 @@ def test_hash_does_not_depend_on_style_line_endings():
 def test_hash_cannot_take_a_stamp():
     import inspect
 
-    assert list(inspect.signature(stamp.content_hash).parameters) == ["documents", "static_files"]
+    assert list(inspect.signature(stamp.content_hash).parameters) == ["documents", "static_files", "assets"]
 
 
 def test_hash_separates_name_from_content():
@@ -71,6 +71,7 @@ def repo(tmp_path):
     write(root, "content/clues.toml", "b = 1\n")
     write(root, "print/planspiel.sty", "% sty\n")
     write(root, "print/templates/a.tex.j2", "a\n")
+    write(root, "content/assets/images/a.png", "png\n")
     write(root, "planspiel/x.py", "x = 1\n")
     write(root, "pyproject.toml", "[project]\n")
     write(root, "uv.lock", "lock\n")
@@ -99,6 +100,12 @@ def test_a_texts_commit_moves_the_date(repo):
     write(repo, "content/texte.toml", "a = 2\n")
     commit_all(repo, "texts", "2026-10-27T12:00:00+00:00")
     assert stamp.input_date_utc(repo) == "2026-10-27"
+
+
+def test_an_image_commit_moves_the_date(repo):
+    write(repo, "content/assets/images/a.png", "changed png\n")
+    commit_all(repo, "image", "2026-10-28T12:00:00+00:00")
+    assert stamp.input_date_utc(repo) == "2026-10-28"
 
 
 def test_no_commit_on_the_data_inputs_is_an_error(tmp_path):
@@ -134,14 +141,24 @@ def test_clean_tree_is_not_dirty(repo):
 
 @pytest.mark.parametrize(
     "rel",
-    ["planspiel/x.py", "content/texte.toml", "print/planspiel.sty", "simulation_config.json", "uv.lock"],
+    [
+        "planspiel/x.py",
+        "content/texte.toml",
+        "print/planspiel.sty",
+        "simulation_config.json",
+        "uv.lock",
+        "content/assets/images/a.png",
+    ],
 )
 def test_modified_build_input_is_dirty(repo, rel):
     write(repo, rel, "changed\n")
     assert stamp.is_dirty(repo) is True
 
 
-@pytest.mark.parametrize("rel", ["print/new.sty", "planspiel/new.py", "print/templates/new.tex.j2"])
+@pytest.mark.parametrize(
+    "rel",
+    ["print/new.sty", "planspiel/new.py", "print/templates/new.tex.j2", "content/assets/images/new.png"],
+)
 def test_untracked_build_input_is_dirty(repo, rel):
     write(repo, rel, "new\n")
     assert stamp.is_dirty(repo) is True
