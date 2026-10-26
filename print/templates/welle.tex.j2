@@ -1,0 +1,74 @@
+\#{ Wave explainer "So funktioniert eine Welle": one A4 page, loops and inserts only. Every string arrives finished from the print model. }
+\#{ The flow diagram is laid out for exactly ten steps: two rows of five, the second row read right to left. }
+\documentclass[a4paper,10pt]{article}
+\usepackage{planspiel}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta}
+\begin{document}
+\raggedright
+\attacktitle{\VAR{page.title}}
+\VAR{page.intro}\par
+\vspace{2mm}
+\noindent\begin{tikzpicture}[
+  stepbox/.style={draw=mhpblue, fill=mhplight, rounded corners=1.2mm, line width=0.5pt, text width=27mm,
+    minimum height=11mm, align=center, font=\footnotesize, inner sep=1.2mm},
+  flow/.style={-{Stealth[length=2mm]}, draw=mhpblue, line width=0.7pt},
+  node distance=4mm and 3.5mm]
+  \node[stepbox] (n1) {\VAR{page.diagram_labels[0]}};
+  \node[stepbox, right=of n1] (n2) {\VAR{page.diagram_labels[1]}};
+  \node[stepbox, right=of n2] (n3) {\VAR{page.diagram_labels[2]}};
+  \node[stepbox, right=of n3] (n4) {\VAR{page.diagram_labels[3]}};
+  \node[stepbox, right=of n4] (n5) {\VAR{page.diagram_labels[4]}};
+  \node[stepbox, below=of n5] (n6) {\VAR{page.diagram_labels[5]}};
+  \node[stepbox, left=of n6] (n7) {\VAR{page.diagram_labels[6]}};
+  \node[stepbox, left=of n7] (n8) {\VAR{page.diagram_labels[7]}};
+  \node[stepbox, left=of n8] (n9) {\VAR{page.diagram_labels[8]}};
+  \node[stepbox, left=of n9] (n10) {\VAR{page.diagram_labels[9]}};
+  \draw[flow] (n1) -- (n2);
+  \draw[flow] (n2) -- (n3);
+  \draw[flow] (n3) -- (n4);
+  \draw[flow] (n4) -- (n5);
+  \draw[flow] (n5) -- (n6);
+  \draw[flow] (n6) -- (n7);
+  \draw[flow] (n7) -- (n8);
+  \draw[flow] (n8) -- (n9);
+  \draw[flow] (n9) -- (n10);
+\end{tikzpicture}\par
+\vspace{2mm}
+\begingroup\small\noindent\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{40mm}|X|}
+\hline
+\BLOCK{for step in page.steps}
+\textrowtop{}\textbf{\color{mhpblue}\VAR{step.heading}}\textrowend{} & \textrowtop{}\VAR{step.text}\textrowend{} \\
+\hline
+\BLOCK{endfor}
+\end{tabularx}\par\endgroup
+\vspace{2mm}
+\begingroup\small\noindent\begin{tabularx}{\linewidth}{|X|X|}
+\hline
+\rowcolor{mhpblue}\hdr{\VAR{page.effects_header[0]}} & \hdr{\VAR{page.effects_header[1]}} \\
+\hline
+\BLOCK{for left, right in page.effect_rows()}
+\BLOCK{if not left}\shadedcell{}\BLOCK{endif}\textrowtop{}\VAR{left}\textrowend{} & \BLOCK{if not right}\shadedcell{}\BLOCK{endif}\textrowtop{}\VAR{right}\textrowend{} \\
+\hline
+\BLOCK{endfor}
+\end{tabularx}\par\endgroup
+\vspace{1mm}
+{\small\bfseries \VAR{page.ros_note}\par}
+\step{\VAR{page.recovery_title}}
+\hint{\VAR{page.recovery_subtitle}}
+\vspace{1mm}
+\noindent\begin{minipage}[c]{0.33\linewidth}\small\raggedright
+\VAR{page.recovery_narrative}\par
+\end{minipage}\hfill\begin{minipage}[c]{0.65\linewidth}\small
+\noindent\begin{tabularx}{\linewidth}{|C{10mm}|X|C{28mm}|}
+\hline
+\rowcolor{mhpblue}\hdr{\VAR{page.recovery_header[0]}} & \hdr{\VAR{page.recovery_header[1]}} & \hdr{\VAR{page.recovery_header[2]}} \\
+\hline
+\BLOCK{for row in page.recovery_rows}
+\rowstrut{}\levelbadge{\VAR{row[0]}} & \VAR{row[1]} & \VAR{row[2]} \\
+\hline
+\BLOCK{endfor}
+\end{tabularx}
+\end{minipage}\par
+\fillreport{1}
+\end{document}

@@ -108,6 +108,10 @@
 \newcommand{\rowstrutgrid}{\rule[-2mm]{0pt}{6mm}}
 \newcommand{\hdrs}[1]{\color{white}\bfseries\rule[-1mm]{0pt}{3.8mm}#1}
 \newcolumntype{L}{>{\raggedright\arraybackslash}X}
+% Text cells of the wave explainer tables: \textrowtop leaves 1.6 mm clear above the first line of 9 pt text, \textrowend 1.5 mm below the
+% last line (descenders included). Both are rules without width; the leading between lines stays normal.
+\newcommand{\textrowtop}{\rule{0pt}{3.9mm}}
+\newcommand{\textrowend}{\rule[-2.3mm]{0pt}{0pt}}
 % End of a multi-line table cell: keeps the last line clear of the rule below it (2.6 mm below the baseline).
 \newcommand{\rowpad}{\rule[-2.6mm]{0pt}{0pt}}
 

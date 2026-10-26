@@ -13,6 +13,7 @@ from planspiel import audience, texbuild
 from planspiel.booklet import build_team_booklet
 from planspiel.cards import build_event_deck, build_measure_deck
 from planspiel.printmodel import build_attack_sheets
+from planspiel.wave_page import build_wave_page
 
 _TEX_SPECIALS = str.maketrans(
     {
@@ -90,9 +91,17 @@ def team_booklet(cfg, texts, env: jinja2.Environment) -> Dict[str, str]:
     return {booklet.job: env.get_template("teamheft.tex.j2").render(booklet=booklet)}
 
 
+def wave_page(cfg, texts, env: jinja2.Environment) -> Dict[str, str]:
+    """The one-page explainer "So funktioniert eine Welle", rendered with welle.tex.j2."""
+    page = build_wave_page(cfg, texts)
+    return {page.job: env.get_template("welle.tex.j2").render(page=page)}
+
+
 # Each builder takes (cfg, texts, env) and returns {job name: .tex source}.
 DocumentBuilder = Callable[..., Dict[str, str]]
-DOCUMENT_BUILDERS: Tuple[DocumentBuilder, ...] = (attack_worksheets, measure_cards, event_cards, team_booklet)
+DOCUMENT_BUILDERS: Tuple[DocumentBuilder, ...] = (
+    attack_worksheets, measure_cards, event_cards, team_booklet, wave_page
+)
 
 
 def render_all(cfg, texts, template_dir: Path) -> Dict[str, str]:
