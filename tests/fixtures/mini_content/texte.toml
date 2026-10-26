@@ -364,17 +364,21 @@ doc_title = "AUTO TIMES"
 [story.zeitungsartikel.aufmacher]
 heading = "OEM verschärft Anforderungen"
 text = "Ein führender Hersteller kündigt Audits für alle Zulieferer an."
+caption = "Symbolbild: Audits für Zulieferer."
 [story.zeitungsartikel.bericht]
 heading = "Vorfall bei einem Zulieferer"
 paragraphs = [
     "Drei Fertigungslinien standen still, Liefertermine wurden nicht gehalten.",
     "„Wir hatten kein funktionierendes Backup-Konzept“, so der Geschäftsführer.",
 ]
+caption = "Symbolbild: Stillstand in der Fertigung."
 
 [story.anfrage_mail]
 doc_title = "Anfrage: IT-Security-Beratung für MechTech GmbH"
+[story.anfrage_mail.kopf]
+von = "\"Dr. Thomas Weber\" <t.weber@mechtech-gmbh.de>"
+an = "\"VWI Security Consulting <security-consulting@vwi.de>\""
 [story.anfrage_mail.anrede]
-heading = "Anrede"
 text = "Sehr geehrte Damen und Herren,"
 [story.anfrage_mail.lage]
 heading = "Lage"
@@ -382,6 +386,9 @@ paragraphs = ["Wir wissen nicht genau, wer überall administrativen Zugriff auf 
 
 [story.audit_mail]
 doc_title = "Information Security Assessment - Supplier Audit"
+[story.audit_mail.kopf]
+von = "\"Klaus Hoffmann\" <k.hoffmann@premium-oem.com>"
+an = "\"Dr. Thomas Weber <t.weber@mechtech-gmbh.de>\""
 [story.audit_mail.einleitung]
 heading = "Einleitung"
 text = "Wir werden alle strategischen Zulieferer einem umfassenden IT-Security-Audit unterziehen."
