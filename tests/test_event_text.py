@@ -160,7 +160,7 @@ def test_level_tier_rows_equal_the_simulation_for_each_level(loaded):
         for row, level in zip(effect.rows, levels):
             selection = _selection(cfg, **{event.params["measure"]: level})
             assert rules.evaluate_event(event, selection)[0] == row.value
-            assert labels[level] in row.text
+            assert labels[str(level)] in row.text
             assert _tier_value_text(row.value) in row.text
         assert event.params["measure"] in effect.heading
 

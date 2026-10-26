@@ -193,6 +193,26 @@ legend_levels = "Die Farbe des Abzeichens zeigt das Level: grün für das niedri
 per_wave = "je Welle"
 requires = "Voraussetzung"
 
+[sheets.eventkarten]
+review_header = "Event: Zum Abschluss"
+kz = "KZ"
+fulfilled = "erfüllt"
+each_at_least = "jeweils mindestens auf Level"
+level_of_measure = "Level der Maßnahme"
+per_measure_at_level = "Je Maßnahme auf Level"
+condition_if = "Wenn"
+condition_and = "und"
+level_equals = "auf Level"
+otherwise = "Sonst"
+total_budget = "Gesamtbudget"
+opex_costs = "OPEX"
+per_active_measure = "je aktiver Maßnahme"
+kurswechsel_window = "Maßnahmentausch im Change-Fenster nach Welle"
+tier_heading = "Restbudget am Ende"
+tier_from = "ab"
+overspend_label = "Überzogen:"
+per_started = "je angefangene"
+
 [sheets.labels]
 measure = "Maßnahme"
 level = "Level"

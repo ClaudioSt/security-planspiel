@@ -1,5 +1,5 @@
 """Druckfertige Texte zum Budget Review, abgeleitet aus der Config (nur exakte Ganzzahlen)."""
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 
 
 def format_eur(amount_eur: int) -> str:
@@ -38,3 +38,18 @@ def boundary_text(tiers: List[List[int]]) -> str:
         f"ab {format_eur(minimum * 1000)} € → {_tier_value_text(value)}" for minimum, value in tiers[1:]
     )
     return ", ".join(parts)
+
+
+def tier_rows(tiers: List[List[int]]) -> List[Tuple[int, Optional[int], int]]:
+    """Restbudget-Stufen als (von_eur, bis_eur, kz); die oberste Stufe hat bis_eur None (nach oben offen).
+
+    Dieselbe Inklusivität wie boundary_text und rules._tier_lookup: eine Stufe gilt ab ihrem Minimum einschließlich.
+    """
+    return [
+        (
+            minimum * 1000,
+            tiers[index + 1][0] * 1000 - 1 if index + 1 < len(tiers) else None,
+            value,
+        )
+        for index, (minimum, value) in enumerate(tiers)
+    ]

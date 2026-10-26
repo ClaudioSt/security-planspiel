@@ -67,7 +67,7 @@ FORMULA_FUNCTIONS = {
 FORMULA_FUNCTIONS.update(
     {name: ROUNDING for name in ("round_half_away", "round_half_away_frac", "started_steps")}
 )
-FORMULA_FUNCTIONS.update({name: REVIEW_TEXT for name in ("format_eur", "penalty_rows", "boundary_text")})
+FORMULA_FUNCTIONS.update({name: REVIEW_TEXT for name in ("format_eur", "penalty_rows", "boundary_text", "tier_rows")})
 FORMULA_FUNCTIONS.update({name: GATE for name in ("lowering_closure", "required_penalty_x")})
 FORMULA_FUNCTIONS.update(
     {name: FMT for name in ("format_number", "format_signed", "format_money", "format_factor", "format_percent", "terminates")}
