@@ -114,6 +114,47 @@ def _tausch_command(parser: argparse.ArgumentParser, config: str, tiers: list[st
     return 0
 
 
+def _referenzpfade_command(
+    parser: argparse.ArgumentParser,
+    config: str,
+    tiers: list[str] | None,
+    median: int | None,
+    out_dir: str | None,
+    starts: int,
+    keep: int,
+) -> int:
+    import time
+
+    from planspiel.config import load_config
+    from planspiel.refpaths import candidate_paths, format_tier_report, swap_layer_median
+
+    cfg = load_config(Path(config))
+    names = tiers or list(cfg.budget_tiers)
+    unknown = [name for name in names if name not in cfg.budget_tiers]
+    if unknown:
+        parser.error(f"Unbekanntes Budget-Tier '{unknown[0]}'. Verfügbar: {', '.join(cfg.budget_tiers)}.")
+    target_dir = Path(out_dir) if out_dir else None
+    if target_dir is not None:
+        target_dir.mkdir(parents=True, exist_ok=True)
+    for name in names:
+        started = time.perf_counter()
+        tier_median = median if median is not None else swap_layer_median(cfg, name)
+        candidates = [] if tier_median is None else candidate_paths(
+            cfg, name, median=tier_median, starts=starts, keep=keep
+        )
+        text = format_tier_report(cfg, name, tier_median, candidates)
+        print(text)
+        print()
+        print(f"Laufzeit: {time.perf_counter() - started:.1f} s")
+        print()
+        if target_dir is not None:
+            path = target_dir / f"referenzpfade_{name}.txt"
+            path.write_text(text + "\n", encoding="utf-8", newline="\n")
+            print(f"Ausgabe: {path}")
+            print()
+    return 0
+
+
 def _gate_command(parser: argparse.ArgumentParser, config: str, tiers: list[str] | None) -> int:
     from planspiel.config import load_config
     from planspiel.gate import format_gate_report, gate_tier
@@ -295,6 +336,35 @@ def main(argv: list[str] | None = None) -> int:
         default=".",
         help="Verzeichnis für simulation_summary_tausch_<tier>.json (Standard: Arbeitsverzeichnis).",
     )
+    referenz_parser = subparsers.add_parser(
+        "referenzpfade",
+        help="Schlägt je Tier typische, legale Spielpfade (Start, Kurswechsel-Tausch, freiwilliger Zug) für die "
+        "Lösungsschlüssel vor.",
+    )
+    referenz_parser.add_argument(
+        "--config", default="simulation_config.json", help="Pfad zur Konfigurationsdatei."
+    )
+    referenz_parser.add_argument(
+        "--tier",
+        action="append",
+        default=None,
+        help="Budget-Tier (wiederholbar, Standard: alle Tiers der Konfiguration).",
+    )
+    referenz_parser.add_argument(
+        "--median",
+        type=int,
+        default=None,
+        help="End-KZ-Median im Budget statt des Tausch-Schicht-Medians (spart je Tier etwa vier Minuten).",
+    )
+    referenz_parser.add_argument(
+        "--out", default=None, help="Verzeichnis für referenzpfade_<tier>.txt (Standard: nur ausgeben)."
+    )
+    referenz_parser.add_argument(
+        "--starts", type=int, default=40, help="Anzahl der Startauswahlen, die ausgebaut werden (Standard: 40)."
+    )
+    referenz_parser.add_argument(
+        "--keep", type=int, default=3, help="Anzahl der Kandidaten je Tier (Standard: 3)."
+    )
     gate_parser = subparsers.add_parser(
         "gate",
         help="Prüft je Tier, dass Überziehen nie lohnt (gekürzte Version im Budget erreicht eine höhere End-KZ).",
@@ -369,6 +439,10 @@ def main(argv: list[str] | None = None) -> int:
         return _clues_command(args.config, args.content_dir)
     if args.command == "tausch":
         return _tausch_command(parser, args.config, args.tier, args.summary_dir)
+    if args.command == "referenzpfade":
+        return _referenzpfade_command(
+            parser, args.config, args.tier, args.median, args.out, args.starts, args.keep
+        )
     if args.command == "gate":
         return _gate_command(parser, args.config, args.tier)
     return _validate_command(args.config, args.strict)

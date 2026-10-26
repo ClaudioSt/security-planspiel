@@ -59,10 +59,11 @@ def test_the_loader_copies_the_block_and_defaults_to_empty(tmp_path):
     assert load_config(path).reference_plans == VALID_BLOCK
 
 
-def test_reference_plans_is_a_plain_trailing_config_field():
-    fields = dataclasses.fields(Config)
-    assert fields[-1].name == "reference_plans"
-    assert fields[-1].default_factory() == {}
+def test_reference_plans_is_a_plain_defaulted_config_field_before_practice():
+    fields = {field.name: field for field in dataclasses.fields(Config)}
+    assert fields["reference_plans"].default_factory() == {}
+    names = list(fields)
+    assert names.index("reference_plans") < names.index("practice") == len(names) - 1
 
 
 def test_block_must_be_an_object():

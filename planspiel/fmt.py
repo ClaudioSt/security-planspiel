@@ -6,6 +6,7 @@ can never reach a sheet by accident (D-08).
 from fractions import Fraction
 
 from planspiel.review_text import format_eur
+from planspiel.rounding import round_half_away_frac
 
 MINUS = "−"
 TIMES = "×"
@@ -64,3 +65,18 @@ def format_factor(value) -> str:
 
 def format_percent(value) -> str:
     return f"{format_number(Fraction(value) * 100)} %"
+
+
+def format_approx(value, places: int = 2) -> str:
+    """Facilitator-side value: exact text when it terminates within `places` decimals, otherwise '≈ ' plus the value
+    rounded half away from zero to exactly `places` decimals (D-26 Q6). Never for a printed player worksheet."""
+    if places < 1:
+        raise ValueError("format_approx needs at least one decimal place")
+    exact = Fraction(value)
+    scale = 10**places
+    if (exact * scale).denominator == 1:
+        return format_number(exact)
+    scaled = round_half_away_frac(exact * scale)
+    whole, rest = divmod(abs(scaled), scale)
+    text = f"{format_eur(whole)},{str(rest).rjust(places, '0')}"
+    return f"≈ {MINUS}{text}" if scaled < 0 else f"≈ {text}"

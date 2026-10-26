@@ -102,6 +102,7 @@ class Config:
     ws: int
     rs: int
     final_index: FinalIndexWeights
+    reference_plans: Dict[str, Dict] = field(default_factory=dict)
     practice: Optional[Practice] = None
 
     @property
@@ -237,4 +238,5 @@ def load_config(path: Path) -> Config:
             weight_ros=Fraction(raw["final_index"]["weight_ros"]),
         ),
         practice=practice,
+        reference_plans=dict(raw.get("reference_plans", {})),
     )

@@ -213,6 +213,8 @@ class _Validator:
         self.check_hand_calc()
         if "practice" in raw:
             self.check_practice(raw["practice"], attacks, measures)
+        if "reference_plans" in raw:
+            self.check_reference_plans(raw["reference_plans"], measures)
         return self.issues
 
     def check_measures(self, measures: dict) -> None:
@@ -692,6 +694,74 @@ class _Validator:
                     f"{path}.bonus_measures[{index}].measure",
                     f"Maßnahme {bm.get('measure')} ist Bonus-Maßnahme einer echten Welle",
                 )
+
+    def check_reference_plans(self, block: Any, measures: dict) -> None:
+        """Reference paths for the answer keys (D-22): references and ranges only; legality is a rules matter."""
+        path = "reference_plans"
+        if not self.container(block, dict, path):
+            return
+        tiers = self.raw.get("budget_tiers")
+        waves = self.raw.get("waves")
+        max_windows = len(waves) - 1 if isinstance(waves, list) else None
+        for tier, plan in block.items():
+            plan_path = f"{path}.{tier}"
+            if not isinstance(tiers, dict) or tier not in tiers:
+                self.error("ref.unknown_tier", plan_path, f"Unbekannter Budget-Tier {tier!r}")
+            if not self.container(plan, dict, plan_path):
+                continue
+            for key in plan:
+                if key not in ("start", "windows"):
+                    self.error("schema.keys", f"{plan_path}.{key}", f"Unbekannter Schlüssel '{key}' im Referenzpfad")
+            start = self.field(plan, "start", plan_path)
+            if start is not None:
+                self.check_reference_selection(start, f"{plan_path}.start", measures)
+            windows = self.field(plan, "windows", plan_path)
+            if windows is None or not self.container(windows, list, f"{plan_path}.windows"):
+                continue
+            if max_windows is not None and len(windows) > max_windows:
+                self.error(
+                    "ref.window_count",
+                    f"{plan_path}.windows",
+                    f"{len(windows)} Fenster bei {len(waves)} Wellen, höchstens {max_windows}",
+                )
+            for number, window in enumerate(windows, start=1):
+                window_path = f"{plan_path}.windows[{number}]"
+                if not self.container(window, dict, window_path):
+                    continue
+                for key in window:
+                    if key not in ("selection", "swap"):
+                        self.error("schema.keys", f"{window_path}.{key}", f"Unbekannter Schlüssel '{key}' im Fenster")
+                selection = self.field(window, "selection", window_path)
+                if selection is not None:
+                    self.check_reference_selection(selection, f"{window_path}.selection", measures)
+                if "swap" in window:
+                    self.check_reference_swap(window["swap"], f"{window_path}.swap", measures)
+
+    def check_reference_selection(self, selection: Any, path: str, measures: dict) -> None:
+        if not self.container(selection, dict, path):
+            return
+        if set(selection) != set(measures):
+            self.error(
+                "ref.measure_set",
+                path,
+                f"Die Auswahl muss genau alle Maßnahmen enthalten, gefunden {sorted(selection)}",
+            )
+        for measure_id, level in selection.items():
+            known = measures.get(measure_id)
+            levels = known.get("levels") if isinstance(known, dict) else None
+            if not isinstance(levels, dict):
+                continue
+            value = self.int_value(level, f"{path}.{measure_id}")
+            if value is not None and str(value) not in levels:
+                self.error("schema.range", f"{path}.{measure_id}", f"Level {value} von {measure_id} gibt es nicht")
+
+    def check_reference_swap(self, swap: Any, path: str, measures: dict) -> None:
+        if not isinstance(swap, list) or len(swap) != 2:
+            self.error("schema.type", path, "Liste aus genau zwei Maßnahmen erwartet (wegfallend, neu)")
+            return
+        known = [self.check_measure_ref(measure_id, f"{path}[{index}]", measures) for index, measure_id in enumerate(swap)]
+        if all(known) and swap[0] == swap[1]:
+            self.error("ref.swap_same_measure", path, "Ein Tausch nennt zwei verschiedene Maßnahmen")
 
     def check_exactness(self) -> None:
         raw = self.raw
