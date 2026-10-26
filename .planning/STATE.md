@@ -5,15 +5,15 @@ milestone_name: milestone
 current_phase: 05
 current_phase_name: Player & Facilitator Print Material
 status: executing
-stopped_at: Completed 05-14-PLAN.md
-last_updated: "2026-10-26T13:54:43.071Z"
+stopped_at: Completed 05-15-PLAN.md
+last_updated: "2026-10-26T14:36:24.857Z"
 last_activity: 2026-10-23
 last_activity_desc: Phase 05 execution started
 progress:
   total_phases: 7
   completed_phases: 4
   total_plans: 40
-  completed_plans: 38
+  completed_plans: 39
   percent: 57
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-09-29)
 ## Current Position
 
 Phase: 05 (Player & Facilitator Print Material) — EXECUTING
-Plan: 15 of 16
+Plan: 16 of 16
 Status: Ready to execute
 Last activity: 2026-10-23 — Phase 05 execution started
 
@@ -95,6 +95,7 @@ Progress: [██████░░░░] 57% (4 of 7 phases)
 | Phase 05 P12 | 100 min | 3 tasks | 16 files |
 | Phase 05 P13 | 60min | 1 tasks | 13 files |
 | Phase 05 P14 | ~55 min | 3 tasks | 10 files |
+| Phase 05 P15 | 35 min | 2 tasks | 18 files |
 
 ## Accumulated Context
 
@@ -158,6 +159,9 @@ Recent decisions affecting current work:
 - [Phase 05]: Welle 0 bonus marks: cross for met, dash for missed; damage before recovery printed without euro sign in the short box — Arial has no tick glyph and an empty box reads as unfilled; 20.000 euro does not fit the 13 mm box
 - [Phase 05]: Final-index weights live in simulation_config.json (final_index block), no defaults in rules.final_index — D-23: one source for reports and PRINT-10 answer keys; outputs unchanged at 1 and 1
 - [Phase 05]: Reference paths pinned: Low 2, Medium 1H, High 3 (user-approved, re-choose after Phase 6) — Legal paths from rules.path_trace near the swap-layer median (60/62/62); Config.reference_plans sits before practice
+- [Phase 05]: Facilitator master sheet prints non-terminating values (17/7 slope, wave-3 attack KZ, RoS, final index) with format_approx on the facilitator booklet only — D-26 Q6: players never see an approximation; a PDF test proves the approximation sign appears in no other PDF
+- [Phase 05]: Each wave of the facilitator booklet is two pages: parameters, bonus and check rows, then event schedule and answer keys; the GR step table is transposed — Wave 2 with its schedule and a 9-row table overflowed one page; the per-page fill report now proves every page fits
+- [Phase 05]: content/clues.toml is a stamped print input checked at print time (ERROR print.clues) and passed to every builder as the fourth argument — Research F15: a clues change must move the stamp date and mark the tree dirty; the quotes must match the pre-wave texts verbatim
 
 ### Pending Todos
 
@@ -180,6 +184,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-10-26T13:54:43.060Z
-Stopped at: Completed 05-14-PLAN.md
+Last session: 2026-10-26T14:36:24.844Z
+Stopped at: Completed 05-15-PLAN.md
 Resume file: None
