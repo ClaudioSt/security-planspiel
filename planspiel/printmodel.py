@@ -7,6 +7,7 @@ fields, so sheet and proof share one source (D-11). No formula is derived here: 
 rules.worksheet_constants, and the two build guards (D-06, D-09) turn a broken hand-calculation shape into a
 build failure instead of a wrong printed formula.
 """
+import dataclasses
 from dataclasses import dataclass
 from fractions import Fraction
 from typing import Optional
@@ -39,12 +40,25 @@ class PrintModelError(ValueError):
 
 @dataclass(frozen=True)
 class Box:
-    """A fill-in box; size is 'short' (an entry) or 'long' (a result). The template maps it to a width."""
+    """A fill-in box; size is 'short' (an entry) or 'long' (a result). The template maps it to a width.
+
+    A box with a value is a filled box (the Welle 0 worked example); without one it stays empty for the players.
+    """
 
     size: str
+    value: Optional[str] = None
 
 
 Line = tuple[str | Box, ...]
+
+
+def fill_line(line: Line, values: tuple[str, ...]) -> Line:
+    """The line with its boxes filled in order; the number of values must equal the number of boxes."""
+    boxes = sum(isinstance(part, Box) for part in line)
+    if boxes != len(values):
+        raise PrintModelError(f"Die Zeile hat {boxes} Felder, es wurden {len(values)} Werte übergeben.")
+    remaining = iter(values)
+    return tuple(dataclasses.replace(part, value=next(remaining)) if isinstance(part, Box) else part for part in line)
 
 
 @dataclass(frozen=True)
@@ -104,6 +118,10 @@ class AttackSheet:
     recovery_table: tuple[tuple[str, str, str], ...]
     recovery_line: Optional[Line]
     wave_kz_line: Line
+    # Filled by the Welle 0 worked example only; the empty defaults keep the real worksheets unchanged.
+    cia_filled: tuple[tuple[str, ...], ...] = ()
+    cia_sum: tuple[str, ...] = ()
+    bonus_fulfilled: tuple[str, ...] = ()
 
     def printed_fragments(self) -> tuple[str, ...]:
         """Title, step headings and every number-bearing display string, without duplicates (D-11).
@@ -121,10 +139,18 @@ class AttackSheet:
             for part in line or ():
                 if isinstance(part, str):
                     take(part)
+                elif part.value is not None:
+                    take(part.value)
 
         for cell in self.cia_base_row:
             take(cell)
-        take(self.level_hint)
+        for row in self.cia_filled:
+            for cell in row:
+                take(cell)
+        for cell in self.cia_sum:
+            take(cell)
+        if not self.cia_filled:
+            take(self.level_hint)
         for line in (self.e_value_line, self.total_bonus_line, self.reduction_line, self.cap_line):
             take_line(line)
         for row in self.bonus_table:
@@ -184,8 +210,9 @@ def worksheet_job(wave: Wave) -> str:
     return f"angriff-{wave.wave_id}_{wave.attack_id}"
 
 
-def build_attack_sheet(cfg: Config, texts: Texts, wave: Wave) -> AttackSheet:
-    view = RevealView(cfg, texts)
+def build_attack_sheet(cfg: Config, texts: Texts, wave: Wave, *, view=None, job: Optional[str] = None) -> AttackSheet:
+    """The worksheet model of one wave; `view` and `job` let the Welle 0 practice view reuse it (FLOW-01)."""
+    view = RevealView(cfg, texts) if view is None else view
     try:
         constants = worksheet_constants(cfg, wave)
     except WorksheetInvariantError as error:
@@ -304,7 +331,7 @@ def build_attack_sheet(cfg: Config, texts: Texts, wave: Wave) -> AttackSheet:
     return AttackSheet(
         wave_id=wave.wave_id,
         attack_id=wave.attack_id,
-        job=worksheet_job(wave),
+        job=worksheet_job(wave) if job is None else job,
         title=view.attack_title(wave),
         narrative=attack["narrative"],
         cia_rationale=attack["cia_rationale"],

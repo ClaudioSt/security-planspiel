@@ -81,12 +81,24 @@
 \newcommand{\planspiel@ibox@long}{\planspiel@framebox{28mm}}
 \newcommand{\ibox}[1]{\csname planspiel@ibox@#1\endcsname}
 
+% Filled fill-in box (the Welle 0 worked example): same frame, height and width as \ibox, the value centred in bold.
+\newcommand{\planspiel@filledbox}[2]{%
+  \raisebox{0pt}[4.4mm][2.6mm]{{\setlength{\fboxsep}{0pt}\setlength{\fboxrule}{0.5pt}%
+    \fcolorbox{mhpblue}{white}{\parbox[c][7mm][c]{#1}{\centering\bfseries #2}}}}}
+\newcommand{\planspiel@ifilled@short}{\planspiel@filledbox{13mm}}
+\newcommand{\planspiel@ifilled@long}{\planspiel@filledbox{28mm}}
+\newcommand{\ifilled}[1]{\csname planspiel@ifilled@#1\endcsname}
+
 % One fill-in line: the line height leaves room for the 7 mm boxes.
 \newcommand{\fillline}[1]{\begingroup\setlength{\baselineskip}{9.5mm}\noindent #1\par\endgroup}
 
 % Empty square for the "Erfuellt" column (no tick glyphs: Arial lacks them).
 \newcommand{\tickbox}{\raisebox{-1.2mm}[3mm][1mm]{{\setlength{\fboxsep}{0pt}\setlength{\fboxrule}{0.5pt}%
   \fcolorbox{mhpblue}{white}{\rule{0pt}{4mm}\rule{4mm}{0pt}}}}}
+
+% The same square with a mark in it (the Welle 0 worked example: a cross for met, a dash for missed).
+\newcommand{\tickfilled}[1]{\raisebox{-1.2mm}[3mm][1mm]{{\setlength{\fboxsep}{0pt}\setlength{\fboxrule}{0.5pt}%
+  \fcolorbox{mhpblue}{white}{\parbox[c][4mm][c]{4mm}{\centering\bfseries #1}}}}}
 
 % Level badge: filled box in the level colour (white text, dark on the light yellow of level 2).
 \newcommand{\cardbadgesep}{3pt}

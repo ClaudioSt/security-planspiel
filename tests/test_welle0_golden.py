@@ -135,7 +135,7 @@ def test_filled_values_equal_the_path_trace(doc, trace):
     assert _values(damage_line) == [number(wave.gesamtreduktion), fmt.format_money(wave.damage_before_eur)]
     assert _values(kz_line) == [number(wave.gesamtreduktion), signed(wave.kz_attack)]
     assert _values(sheet.recovery_line) == [
-        fmt.format_money(wave.damage_before_eur), fmt.format_percent(wave.recovery_factor),
+        number(wave.damage_before_eur), fmt.format_percent(wave.recovery_factor),
         fmt.format_money(wave.damage_eur),
     ]
     assert _values(sheet.wave_kz_line) == [
@@ -294,11 +294,15 @@ def test_every_printed_string_is_pinned(doc, update_golden, golden_report):
 
 def test_changing_a_practice_weight_changes_the_printed_e_value_line(texts, doc, tmp_path):
     def reweigh(raw):
-        raw["practice"]["wave"]["weights"] = {"c": 0.35, "i": 0.35, "a": 0.3}
+        # Different from every real wave (also as a multiset); the threshold moves with it so that the example
+        # still lands in Fall 3 on an exact half and the clamp still acts (the build guards of check_example).
+        raw["practice"]["wave"]["weights"] = {"c": 0.3, "i": 0.1, "a": 0.6}
+        raw["practice"]["wave"]["e_threshold"] = 17
 
     other = practice.build_practice_document(_modified(tmp_path, reweigh), texts)
     assert other.sheet.e_value_line != doc.sheet.e_value_line
-    assert "0,35" in "".join(part for part in other.sheet.e_value_line if isinstance(part, str))
+    printed = "".join(part for part in other.sheet.e_value_line if isinstance(part, str))
+    assert "× 0,6" in printed and "× 0,1" in printed
     assert printed_payload(other) != printed_payload(doc)
-    expected = Fraction(16) * Fraction(35, 100) + Fraction(22) * Fraction(35, 100) + Fraction(19) * Fraction(3, 10)
-    assert _values(other.sheet.e_value_line)[3] == fmt.format_number(expected)
+    expected = Fraction(16) * Fraction(3, 10) + Fraction(22) * Fraction(1, 10) + Fraction(19) * Fraction(6, 10)
+    assert _values(other.sheet.e_value_line)[3] == fmt.format_number(expected) == "18,4"

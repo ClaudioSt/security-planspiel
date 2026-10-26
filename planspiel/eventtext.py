@@ -64,7 +64,7 @@ def _measure_label(cfg: Config, measure_id: str) -> str:
     return f"{measure_id} {EN_DASH} {cfg.measures[measure_id].name}"
 
 
-def _checklist(event: Event, cfg: Config, view: PreAttackView, words: dict) -> EventEffect:
+def _checklist(event: Event, cfg: Config, view: PreAttackView, words: dict, event_texts: dict) -> EventEffect:
     params = event.params
     count_max = len(params["measures"])
     values = [rules._tier_lookup(count, params["tiers"]) for count in range(count_max + 1)]
@@ -80,13 +80,13 @@ def _checklist(event: Event, cfg: Config, view: PreAttackView, words: dict) -> E
         value = values[group[0]]
         rows.append(EffectRow(f"{counts} {words['fulfilled']} {ARROW} {_kz(words, value)}", value, tuple(group)))
     measures = ", ".join(_measure_label(cfg, measure_id) for measure_id in params["measures"])
-    labels = f"{view.event(event.id)['checklist_heading']}: {measures}, {words['each_at_least']} {params['min_level']}"
+    labels = f"{event_texts['checklist_heading']}: {measures}, {words['each_at_least']} {params['min_level']}"
     return EventEffect(event.id, EFFECT_KINDS[event.type], labels, tuple(rows))
 
 
-def _level_tier(event: Event, cfg: Config, view: PreAttackView, words: dict) -> EventEffect:
+def _level_tier(event: Event, cfg: Config, view: PreAttackView, words: dict, event_texts: dict) -> EventEffect:
     params = event.params
-    labels = view.event(event.id).get("tier_labels", {})
+    labels = event_texts.get("tier_labels", {})
     if set(labels) != set(params["tiers"]):
         raise PrintModelError(
             f"{event.id}: tier_labels {sorted(labels)} passen nicht zu den Stufen {sorted(params['tiers'])}"
@@ -168,8 +168,11 @@ def _budget_review(event: Event, cfg: Config, words: dict) -> EventEffect:
     return EventEffect(event.id, EFFECT_KINDS[event.type], words["tier_heading"], tuple(rows))
 
 
-def effect_rows(event: Event, cfg: Config, texts: Texts) -> EventEffect:
-    """The printed effect of one event; the rows are generated from the event type and its params."""
+def effect_rows(event: Event, cfg: Config, texts: Texts, event_texts: Optional[dict] = None) -> EventEffect:
+    """The printed effect of one event; the rows are generated from the event type and its params.
+
+    `event_texts` replaces the event's text subtree (the Welle 0 practice event keeps its texts under `practice.event`).
+    """
     if event.type not in EFFECT_KINDS:
         raise PrintModelError(f"Event '{event.id}': Typ '{event.type}' hat keine Druckdarstellung")
     view = PreAttackView(cfg, texts)
@@ -181,9 +184,9 @@ def effect_rows(event: Event, cfg: Config, texts: Texts) -> EventEffect:
     if event.type == "flat_budget":
         return _flat_budget(event, words)
     if event.type == "checklist_tier":
-        return _checklist(event, cfg, view, words)
+        return _checklist(event, cfg, view, words, event_texts if event_texts is not None else view.event(event.id))
     if event.type == "measure_level_tier":
-        return _level_tier(event, cfg, view, words)
+        return _level_tier(event, cfg, view, words, event_texts if event_texts is not None else view.event(event.id))
     if event.type == "level_bonus_per_measure":
         return _level_bonus(event, words)
     if event.type == "and_condition":

@@ -12,6 +12,7 @@ import jinja2
 from planspiel import audience, texbuild
 from planspiel.booklet import build_team_booklet
 from planspiel.cards import build_event_deck, build_measure_deck
+from planspiel.practice import build_practice_document
 from planspiel.printmodel import build_attack_sheets
 from planspiel.story import Mail, Steckbrief, Zeitungsartikel, build_story_documents
 from planspiel.wave_page import build_wave_page
@@ -116,6 +117,14 @@ def wave_page(cfg, texts, env: jinja2.Environment) -> Dict[str, str]:
     return {page.job: env.get_template("welle.tex.j2").render(page=page)}
 
 
+def practice_document(cfg, texts, env: jinja2.Environment) -> Dict[str, str]:
+    """The Welle 0 worked example, rendered with uebung.tex.j2; nothing without a practice block in the config."""
+    doc = build_practice_document(cfg, texts)
+    if doc is None:
+        return {}
+    return {doc.job: env.get_template("uebung.tex.j2").render(doc=doc)}
+
+
 STORY_TEMPLATES = {
     Steckbrief: "story_steckbrief.tex.j2",
     Zeitungsartikel: "story_zeitungsartikel.tex.j2",
@@ -135,7 +144,7 @@ def story_documents(cfg, texts, env: jinja2.Environment) -> Dict[str, str]:
 # Each builder takes (cfg, texts, env) and returns {job name: .tex source}.
 DocumentBuilder = Callable[..., Dict[str, str]]
 DOCUMENT_BUILDERS: Tuple[DocumentBuilder, ...] = (
-    attack_worksheets, measure_cards, event_cards, team_booklet, wave_page, story_documents
+    attack_worksheets, measure_cards, event_cards, team_booklet, wave_page, story_documents, practice_document
 )
 
 

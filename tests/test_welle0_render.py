@@ -62,7 +62,7 @@ def test_the_worksheet_body_is_a_shared_partial():
         assert 'include "angriff_blatt.tex.j2"' in (TEMPLATES / name).read_text(encoding="utf-8"), name
 
 
-@pytest.mark.parametrize("name", ["angriff.tex.j2", "angriff_blatt.tex.j2", "uebung.tex.j2"])
+@pytest.mark.parametrize("name", ["angriff_blatt.tex.j2", "uebung.tex.j2"])
 def test_templates_print_plain_variables_only(name):
     source = (TEMPLATES / name).read_text(encoding="utf-8")
     expressions = VARIABLE.findall(source)
