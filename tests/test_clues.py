@@ -328,3 +328,41 @@ def test_planspiel_texts_does_not_read_the_clues_file(tmp_path, capsys):
     _copy_content(tmp_path, drop_clues=True)
     assert main(["texts", "--config", str(MINI), "--content-dir", str(tmp_path)]) == 0
     assert "0 Fehler, 0 Warnung(en)" in capsys.readouterr().out
+
+
+def _matrix_cells(rows):
+    return [cell for row in rows for cell in (row.title, row.document, row.section)]
+
+
+def test_no_clue_matrix_cell_of_the_real_content_is_a_source_key():
+    cfg = load_config(REPO_ROOT / "simulation_config.json")
+    texts = load_texts(REPO_ROOT / "content" / "texte.toml")
+    clues = load_clues(REPO_ROOT / "content" / "clues.toml")
+    rows = FacilitatorView(cfg, texts, clues).clue_matrix()
+    assert rows
+    for cell in _matrix_cells(rows):
+        assert not cell.startswith(("story.", "measures.")), cell
+        assert ".paragraphs" not in cell and ".bullets" not in cell, cell
+
+
+def test_no_clue_matrix_cell_of_the_mini_content_is_a_source_key():
+    rows = FacilitatorView(CFG, TEXTS, CLUES).clue_matrix()
+    assert rows
+    for cell in _matrix_cells(rows):
+        assert not cell.startswith(("story.", "measures.")), cell
+        assert ".paragraphs" not in cell and ".bullets" not in cell, cell
+
+
+def test_a_mail_section_without_a_heading_prints_the_german_label():
+    cfg = load_config(REPO_ROOT / "simulation_config.json")
+    texts = load_texts(REPO_ROOT / "content" / "texte.toml")
+    clues = load_clues(REPO_ROOT / "content" / "clues.toml")
+    sections = {
+        clue.source: row.section
+        for clue, row in zip(
+            sorted(clues, key=lambda clue: [wave.attack_id for wave in cfg.waves].index(clue.attack)),
+            FacilitatorView(cfg, texts, clues).clue_matrix(),
+        )
+    }
+    assert sections["story.anfrage_mail.lage.paragraphs"] == "Lage"
+    assert sections["story.audit_mail.einleitung.paragraphs"] == "Einleitung"
