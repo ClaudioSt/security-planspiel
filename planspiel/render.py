@@ -13,6 +13,7 @@ from planspiel import audience, texbuild
 from planspiel.booklet import build_team_booklet
 from planspiel.cards import build_event_deck, build_measure_deck
 from planspiel.printmodel import build_attack_sheets
+from planspiel.story import Mail, Steckbrief, Zeitungsartikel, build_story_documents
 from planspiel.wave_page import build_wave_page
 
 _TEX_SPECIALS = str.maketrans(
@@ -34,12 +35,30 @@ _TEX_SPECIALS = str.maketrans(
     }
 )
 _CONTROL_CHARACTERS = re.compile(r"[\x00-\x08\x0b-\x1f]")
+_ASSET_NAME_CHARACTERS = re.compile(r"[A-Za-z0-9._-]+")
+
+
+class AssetName(str):
+    r"""A fixed image file name for `\includegraphics`: `tex_escape` leaves it as it is (an escaped `\_` breaks the lookup).
+
+    Only `asset_name` creates one, and only for a name in `texbuild.ASSET_FILES`, so no content string reaches TeX unescaped.
+    """
+
+    __slots__ = ()
+
+
+def asset_name(name: str) -> AssetName:
+    if name not in texbuild.ASSET_FILES or not _ASSET_NAME_CHARACTERS.fullmatch(name):
+        raise ValueError(f"Kein bekanntes Bild: {name!r} (erlaubt: {', '.join(texbuild.ASSET_FILES)})")
+    return AssetName(name)
 
 
 def tex_escape(value: object) -> str:
     """Escape the LaTeX specials and babel's `"` shorthand in one pass; reject non-strings and control characters."""
     if isinstance(value, jinja2.Undefined):
         str(value)  # StrictUndefined raises UndefinedError here, naming the missing variable
+    if isinstance(value, AssetName):
+        return str(value)
     if not isinstance(value, str):
         raise TypeError(
             f"Nur Strings dürfen in eine Vorlage ausgegeben werden, nicht {type(value).__name__}: {value!r}"
@@ -97,10 +116,26 @@ def wave_page(cfg, texts, env: jinja2.Environment) -> Dict[str, str]:
     return {page.job: env.get_template("welle.tex.j2").render(page=page)}
 
 
+STORY_TEMPLATES = {
+    Steckbrief: "story_steckbrief.tex.j2",
+    Zeitungsartikel: "story_zeitungsartikel.tex.j2",
+    Mail: "story_mail.tex.j2",
+}
+
+
+def story_documents(cfg, texts, env: jinja2.Environment) -> Dict[str, str]:
+    """The four pre-wave story documents; the template is chosen by the model type, the mails share one."""
+    assets = {name: asset_name(name) for name in texbuild.ASSET_FILES}
+    return {
+        model.job: env.get_template(STORY_TEMPLATES[type(model)]).render(doc=model, asset=assets)
+        for model in build_story_documents(cfg, texts)
+    }
+
+
 # Each builder takes (cfg, texts, env) and returns {job name: .tex source}.
 DocumentBuilder = Callable[..., Dict[str, str]]
 DOCUMENT_BUILDERS: Tuple[DocumentBuilder, ...] = (
-    attack_worksheets, measure_cards, event_cards, team_booklet, wave_page
+    attack_worksheets, measure_cards, event_cards, team_booklet, wave_page, story_documents
 )
 
 

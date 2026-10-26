@@ -126,7 +126,7 @@ def _texts(path: str, value: object) -> tuple[str, ...]:
     return tuple(_text(f"{path}[{number}]", item) for number, item in enumerate(value))
 
 
-def _section(path: str, node: object) -> Section:
+def _section(path: str, node: object, *, nested: bool = False) -> Section:
     if not isinstance(node, dict):
         raise PrintModelError(f"{path}: ein Abschnitt (Tabelle) wird erwartet, gefunden {node!r}")
     fields: dict[str, object] = {}
@@ -135,7 +135,9 @@ def _section(path: str, node: object) -> Section:
     for key, value in node.items():
         where = f"{path}.{key}"
         if isinstance(value, dict):
-            subsections.append(_section(where, value))
+            if nested:
+                raise PrintModelError(f"{where}: die Vorlagen setzen nur eine Ebene von Unterabschnitten")
+            subsections.append(_section(where, value, nested=True))
         elif key in _HEADING_KEYS:
             if "heading" in fields:
                 raise PrintModelError(f"{path}: Überschrift doppelt (heading und headline)")

@@ -63,6 +63,16 @@ def test_the_four_story_pdfs_exist_and_are_a4(printed_set):
         assert (round(float(box.width) / 72 * 25.4), round(float(box.height) / 72 * 25.4)) == (210, 297), job
 
 
+def test_the_page_counts_are_pinned(printed_set):
+    counts = {job: len(PdfReader(_pdf(printed_set, job)).pages) for job in STORY_JOBS.values()}
+    assert counts == {
+        STORY_JOBS["steckbrief"]: 2,
+        STORY_JOBS["zeitungsartikel"]: NEWSPAPER_PAGES,
+        STORY_JOBS["anfrage_mail"]: 1,
+        STORY_JOBS["audit_mail"]: 1,
+    }
+
+
 def test_the_newspaper_embeds_exactly_two_images_and_the_masthead_is_on_page_one(printed_set):
     reader = PdfReader(_pdf(printed_set, STORY_JOBS["zeitungsartikel"]))
     assert sum(len(page.images) for page in reader.pages) == 2

@@ -299,6 +299,17 @@ def test_an_unexpected_story_value_stops_the_build(path, value):
         build_story_documents(cfg, texts)
 
 
+def test_a_second_level_of_subsections_stops_the_build():
+    cfg = load_config(CONFIG_PATH)
+    texts = _modified(
+        load_content(CONTENT_DIR).texts,
+        ("story", "steckbrief", "it_ot_landschaft", "ot_produktion", "unten"),
+        {"heading": "zu tief", "text": "Text"},
+    )
+    with pytest.raises(PrintModelError, match="Ebene"):
+        build_story_documents(cfg, texts)
+
+
 def test_a_mail_without_a_header_stops_the_build():
     cfg = load_config(CONFIG_PATH)
     data = copy.deepcopy(load_content(CONTENT_DIR).texts.data)

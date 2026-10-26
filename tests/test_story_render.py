@@ -114,6 +114,15 @@ def test_the_newspaper_includes_exactly_the_two_fixed_images(rendered):
             assert "\\includegraphics" not in other, job
 
 
+def test_only_the_fixed_image_names_pass_tex_escape_unescaped():
+    for name in texbuild.ASSET_FILES:
+        assert render.tex_escape(render.asset_name(name)) == name and "_" in name
+        assert render.tex_escape(name) != name  # the same text as a plain string is escaped
+    for bad in ("other.png", "../zeitungsartikel_bild_audit.png", "", "zeitungsartikel_bild_audit.png\\input{x}"):
+        with pytest.raises(ValueError):
+            render.asset_name(bad)
+
+
 def test_the_mail_header_block_prints_label_and_value_as_stored(real_sources):
     models, documents = real_sources
     for mail in (m for m in models if isinstance(m, Mail)):
