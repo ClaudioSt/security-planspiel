@@ -43,7 +43,7 @@
 - [x] **PRINT-06**: Event cards and the Budget Review card are generated, with effect lines derived from event type and parameters
 - [x] **PRINT-07**: Budget sheet and RoS sheet are generated
 - [x] **PRINT-08**: A printed team tracking sheet in calculation order (incl. separate rows for own costs vs external effects) replaces the whiteboard write-up
-- [ ] **PRINT-09**: A one-page "So funktioniert eine Welle" explains the wave calculation and what attacks and events affect
+- [x] **PRINT-09**: A one-page "So funktioniert eine Welle" explains the wave calculation and what attacks and events affect
 - [ ] **PRINT-10**: A facilitator master sheet lists per-wave thresholds, caps, bonus tables, event effects, check rows and answer keys for reference selections
 - [x] **PRINT-11**: Every generated page carries a version stamp (config hash/date)
 - [ ] **PRINT-12**: The pre-wave story documents (Unternehmenssteckbrief, Zeitungsartikel, Anfrage-Mail, Audit-Mail) are generated from the content source via LaTeX; their veiled prose and clues live in `content/texte.toml` (added 2026-10-06, Phase 3 D-14)
@@ -147,7 +147,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PRINT-06 | Phase 5 | Complete |
 | PRINT-07 | Phase 5 | Complete |
 | PRINT-08 | Phase 5 | Complete |
-| PRINT-09 | Phase 5 | Pending |
+| PRINT-09 | Phase 5 | Complete |
 | PRINT-10 | Phase 5 | Pending |
 | PRINT-11 | Phase 4 | Complete |
 | PRINT-12 | Phase 5 | Pending |

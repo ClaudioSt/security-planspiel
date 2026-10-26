@@ -5,15 +5,15 @@ milestone_name: milestone
 current_phase: 05
 current_phase_name: Player & Facilitator Print Material
 status: executing
-stopped_at: Completed 05-07-PLAN.md
-last_updated: "2026-10-26T09:05:11.671Z"
+stopped_at: Completed 05-08-PLAN.md
+last_updated: "2026-10-26T09:37:38.735Z"
 last_activity: 2026-10-23
 last_activity_desc: Phase 05 execution started
 progress:
   total_phases: 7
   completed_phases: 4
   total_plans: 40
-  completed_plans: 31
+  completed_plans: 32
   percent: 57
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-09-29)
 ## Current Position
 
 Phase: 05 (Player & Facilitator Print Material) — EXECUTING
-Plan: 8 of 16
+Plan: 9 of 16
 Status: Ready to execute
 Last activity: 2026-10-23 — Phase 05 execution started
 
@@ -88,6 +88,7 @@ Progress: [██████░░░░] 57% (4 of 7 phases)
 | Phase 05 P05 | 30min | 2 tasks | 15 files |
 | Phase 05 P06 | 30 min | 2 tasks | 13 files |
 | Phase 05 P07 | 40min | 2 tasks | 15 files |
+| Phase 05 P08 | 30min | 2 tasks | 13 files |
 
 ## Accumulated Context
 
@@ -142,6 +143,7 @@ Recent decisions affecting current work:
 - [Phase 05]: Booklet fill reports use thepage; remaining budget printed as the budget_ledger ledger with event values entered with the card sign — 05-07 can insert the tracking page without renumbering; the OPEX relief stays inside the cost sum so no double negative is needed
 - [Phase 05-07]: Both change windows share one measure grid (Level nach dem Fenster and Δ Init per window); credit cell shaded outside the Kurswechsel window — Stacked per-window grids needed about 186 mm and did not fit one A4 page
 - [Phase 05-07]: Tracking rows are 6 mm instead of 7 mm; MAX_WINDOWS = 2 guards the layout proof (about 2 mm spare) — The one-page proof needs 6 mm rows; a third window or a fourth wave needs a new proof
+- [Phase 05]: Wave explainer prints the recovery factor as a percentage like the worksheet — One spelling of r on worksheet and explainer; steps unnumbered because worksheet numbering shifts without recovery
 
 ### Pending Todos
 
@@ -164,6 +166,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-10-26T09:05:11.640Z
-Stopped at: Completed 05-07-PLAN.md
+Last session: 2026-10-26T09:37:38.723Z
+Stopped at: Completed 05-08-PLAN.md
 Resume file: None
