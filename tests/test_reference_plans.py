@@ -8,9 +8,10 @@ import json
 
 import pytest
 
+from planspiel import refpaths, rules
 from planspiel.config import Config, load_config
 from planspiel.validate import validate
-from tests.support import REPO_ROOT
+from tests.support import CONFIG_PATH, REPO_ROOT
 
 MINI = REPO_ROOT / "tests" / "fixtures" / "mini_config.json"
 
@@ -125,3 +126,85 @@ def test_missing_keys_are_reported():
     block = copy.deepcopy(VALID_BLOCK)
     del block["medium"]["windows"][1]["selection"]
     assert "schema.keys" in _codes(_with_block(block))
+
+
+# --- real config: the three approved reference paths (checkpoint answer: Low 2, Medium 1H, High 3) -------------
+
+TIERS = ("low", "medium", "high")
+REAL_IDS = tuple(f"M{number}" for number in range(1, 11))
+
+
+def _levels(**levels):
+    return {measure_id: levels.get(measure_id, 0) for measure_id in REAL_IDS}
+
+
+# Approved structure only (D-22): start, the Kurswechsel swap with its window selection, one voluntary move.
+APPROVED = {
+    "low": {
+        "start": _levels(M4=1, M6=3, M7=1, M9=3, M10=1),
+        "swap": ("M4", "M5"),
+        "swapped": _levels(M5=2, M6=3, M7=1, M9=3, M10=1),
+        "moved": _levels(M5=2, M7=1, M9=3, M10=1),
+    },
+    "medium": {
+        "start": _levels(M4=1, M7=2, M8=1, M9=3, M10=3),
+        "swap": ("M4", "M5"),
+        "swapped": _levels(M5=1, M7=2, M8=1, M9=3, M10=3),
+        "moved": _levels(M5=1, M7=1, M8=1, M9=3, M10=3),
+    },
+    "high": {
+        "start": _levels(M4=1, M5=2, M6=3, M9=3, M10=3),
+        "swap": ("M4", "M8"),
+        "swapped": _levels(M5=2, M6=3, M8=2, M9=3, M10=3),
+        "moved": _levels(M5=2, M8=2, M9=3, M10=3),
+    },
+}
+
+
+@pytest.fixture(scope="module")
+def real():
+    return load_config(CONFIG_PATH)
+
+
+def test_real_config_pins_exactly_the_budget_tiers(real):
+    assert set(real.reference_plans) == set(real.budget_tiers) == set(TIERS)
+
+
+@pytest.mark.parametrize("tier", TIERS)
+def test_pinned_path_has_the_approved_structure(real, tier):
+    approved = APPROVED[tier]
+    path = refpaths.reference_path(real, tier)
+    assert path.start == approved["start"]
+    assert len(path.windows) == 2
+    assert path.windows[0].selection == approved["swapped"]
+    assert path.windows[0].swap == approved["swap"]
+    assert path.windows[1].selection == approved["moved"]
+    assert path.windows[1].swap is None
+
+
+@pytest.mark.parametrize("tier", TIERS)
+def test_pinned_path_is_legal_in_budget_with_swap_and_voluntary_move(real, tier):
+    path = refpaths.reference_path(real, tier)
+    record = rules.evaluate_path(real, tier, path)  # raises PathError when illegal; Kurswechsel enforced
+    assert record["over_budget"] is False
+    swap_window = [wave.wave_id for wave in real.waves].index(rules.kurswechsel_wave(real.events))
+    assert path.windows[swap_window].swap is not None
+    assert refpaths.voluntary_moves(real, path)
+
+
+@pytest.mark.parametrize("tier", TIERS)
+def test_pinned_path_touches_the_mechanics(real, tier):
+    trace = rules.path_trace(real, tier, refpaths.reference_path(real, tier))
+    waves = trace.waves
+    assert any(wave.case == 3 for wave in waves)
+    assert any(wave.recovery_factor > 0 for wave in waves)
+    assert any(wave.bonus_met for wave in waves) and any(wave.bonus_missed for wave in waves)
+    assert any(wave.bonus_met and wave.bonus_missed for wave in waves)
+    assert any(wave.kz_event != 0 for wave in waves)
+    assert refpaths.mechanics_score(trace, refpaths.review_deltas(real)) == refpaths.MECHANICS_MAX
+
+
+def test_real_config_still_validates_without_a_new_error():
+    raw = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
+    assert "reference_plans" in raw
+    assert _errors(raw) == []
