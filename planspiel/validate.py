@@ -192,6 +192,7 @@ class _Validator:
                 self.container(raw[key], kind, key, "schema.top_level")
         if "default_budget_tier" not in raw:
             self.error("schema.top_level", "default_budget_tier", "Pflichtfeld 'default_budget_tier' fehlt")
+        self.check_final_index(raw.get("final_index"), "final_index" in raw)
         if "events" in raw:
             self.container(raw["events"], dict, "events", "schema.top_level")
         if "final_events" in raw:
@@ -372,6 +373,21 @@ class _Validator:
                 self.int_field(bm, "bonus", bm_path, lo=0)
                 if "description" in bm:
                     self.prose_key("description", f"{bm_path}.description")
+
+    def check_final_index(self, block: Any, present: bool) -> None:
+        if not present:
+            self.error("schema.top_level", "final_index", "Pflichtfeld 'final_index' fehlt")
+            return
+        if not self.container(block, dict, "final_index"):
+            return
+        weights = [self.field(block, key, "final_index") for key in ("weight_kz", "weight_ros")]
+        values = [
+            self.number_value(weight, f"final_index.{key}", lo=0)
+            for key, weight in zip(("weight_kz", "weight_ros"), weights)
+            if weight is not None
+        ]
+        if len(values) == 2 and all(value is not None for value in values) and not any(values):
+            self.error("schema.range", "final_index", "weight_kz und weight_ros dürfen nicht beide 0 sein")
 
     def check_budget_tiers(self, tiers: Any, default_tier: Any) -> None:
         if not isinstance(tiers, dict):

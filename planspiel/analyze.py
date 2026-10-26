@@ -6,7 +6,7 @@ from typing import Dict, List, Optional
 
 from planspiel import rules
 from planspiel.cli import configure_utf8_stdio
-from planspiel.config import load_config
+from planspiel.config import DEFAULT_CONFIG_PATH, load_config
 from planspiel.report import REFERENCE_LABEL
 
 
@@ -150,8 +150,12 @@ def parse_args(argv=None):
     parser.add_argument("--input", default="simulation_results.json", help="Pfad zur Ergebnisdatei.")
     parser.add_argument("--config", default=None, help="Optionaler Pfad zur simulation_config.json (für RoS).")
     parser.add_argument("--top", type=int, default=5, help="Anzahl Top/Bottom-Einträge.")
-    parser.add_argument("--weight-kz", type=Fraction, default=Fraction(1), help="Gewichtung für KZ im Final-Index.")
-    parser.add_argument("--weight-ros", type=Fraction, default=Fraction(1), help="Gewichtung für RoS im Final-Index.")
+    parser.add_argument(
+        "--weight-kz", type=Fraction, default=None, help="Gewichtung für KZ im Final-Index (Standard: aus der Konfiguration)."
+    )
+    parser.add_argument(
+        "--weight-ros", type=Fraction, default=None, help="Gewichtung für RoS im Final-Index (Standard: aus der Konfiguration)."
+    )
     return parser.parse_args(argv)
 
 
@@ -163,5 +167,9 @@ def main(argv=None) -> int:
     if args.config:
         cfg = load_config(Path(args.config))
         base_losses = rules.base_losses(cfg.waves, cfg.attacks)
-    compute_summary(data, args.top, base_losses, args.weight_kz, args.weight_ros)
+    else:
+        cfg = load_config(DEFAULT_CONFIG_PATH)
+    weight_kz = cfg.final_index.weight_kz if args.weight_kz is None else args.weight_kz
+    weight_ros = cfg.final_index.weight_ros if args.weight_ros is None else args.weight_ros
+    compute_summary(data, args.top, base_losses, weight_kz, weight_ros)
     return 0

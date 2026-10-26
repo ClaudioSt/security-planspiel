@@ -6,6 +6,9 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 
+DEFAULT_CONFIG_PATH = Path(__file__).resolve().parents[1] / "simulation_config.json"
+
+
 @dataclass
 class Attack:
     attack_id: str
@@ -79,6 +82,14 @@ class Practice:
 
 
 @dataclass
+class FinalIndexWeights:
+    """Weights of the facilitator-side final index (D-23); the single source for reports and printed answer keys."""
+
+    weight_kz: Fraction
+    weight_ros: Fraction
+
+
+@dataclass
 class Config:
     default_budget_tier: str
     budget_tiers: Dict[str, BudgetTier]
@@ -90,6 +101,7 @@ class Config:
     final_events: List[Event]
     ws: int
     rs: int
+    final_index: FinalIndexWeights
     practice: Optional[Practice] = None
 
     @property
@@ -220,5 +232,9 @@ def load_config(path: Path) -> Config:
         final_events=final_events,
         ws=ws,
         rs=rs,
+        final_index=FinalIndexWeights(
+            weight_kz=Fraction(raw["final_index"]["weight_kz"]),
+            weight_ros=Fraction(raw["final_index"]["weight_ros"]),
+        ),
         practice=practice,
     )

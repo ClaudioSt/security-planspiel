@@ -9,10 +9,8 @@ from typing import Dict, List
 
 from planspiel import rules
 from planspiel.cli import configure_utf8_stdio
-from planspiel.config import load_config
+from planspiel.config import DEFAULT_CONFIG_PATH, load_config
 from planspiel.report import REFERENCE_LABEL
-
-DEFAULT_CONFIG_PATH = Path(__file__).resolve().parents[1] / "simulation_config.json"
 
 # Präsentationsschwelle für den Balance-Bericht, keine Spielregel; wird in Phase 6 (BAL-08) überprüft.
 POSITIVE_KZ_THRESHOLD = 50
@@ -313,7 +311,9 @@ def run_analysis(config_path: Path = DEFAULT_CONFIG_PATH):
 
             rec = rules.evaluate_plan(cfg, tier_name, strategy.selection)
             cia = rules.compute_cia(strategy.selection, cfg.measures, cfg.base_cia)
-            final_index = rules.final_index(rec["kz_final"], rec["ros"])
+            final_index = rules.final_index(
+                rec["kz_final"], rec["ros"], cfg.final_index.weight_kz, cfg.final_index.weight_ros
+            )
 
             result = {
                 "strategy": strategy.name,

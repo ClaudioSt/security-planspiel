@@ -186,8 +186,8 @@ def test_dump_record_takes_the_weights(mini):
 
 
 def test_balance_reads_the_config_weights(tmp_path):
-    plain = _captured(balance.run_analysis, MINI)
-    heavy = _captured(balance.run_analysis, _write_config(tmp_path, MINI, {"weight_kz": 2, "weight_ros": 1}))
+    plain = _captured(balance.run_analysis, CONFIG_PATH)
+    heavy = _captured(balance.run_analysis, _write_config(tmp_path, CONFIG_PATH, {"weight_kz": 2, "weight_ros": 1}))
     assert plain != heavy
 
 

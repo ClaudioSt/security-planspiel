@@ -101,7 +101,9 @@ def summarize_tier(cfg, tier_name: str, store: ResultStore, top_k: int = DEFAULT
         try:
             return fi_cache[key]
         except KeyError:
-            value = fi_cache[key] = rules.final_index(kz_col[i], ros_values[i])
+            value = fi_cache[key] = rules.final_index(
+                kz_col[i], ros_values[i], cfg.final_index.weight_kz, cfg.final_index.weight_ros
+            )
             return value
 
     def kz_key(i):
@@ -382,7 +384,7 @@ def write_summary(path, summary: Dict) -> None:
         handle.write(text)
 
 
-def dump_record(measure_ids, code_index: int, outcome, base_losses) -> Dict:
+def dump_record(measure_ids, code_index: int, outcome, base_losses, weights) -> Dict:
     ros = rules.ros(base_losses, Fraction(outcome.damage_eur, 1000), outcome.own_cost)
     return {
         "code": code_from_index(code_index, len(measure_ids)),
@@ -394,6 +396,8 @@ def dump_record(measure_ids, code_index: int, outcome, base_losses) -> Dict:
         "remaining": outcome.remaining,
         "total_damage": exact_to_json(Fraction(outcome.damage_eur, 1000)),
         "ros": None if ros is None else exact_to_json(ros),
-        "final_index": exact_to_json(rules.final_index(outcome.kz_final, ros)),
+        "final_index": exact_to_json(
+            rules.final_index(outcome.kz_final, ros, weights.weight_kz, weights.weight_ros)
+        ),
         "over_budget": outcome.over_budget,
     }

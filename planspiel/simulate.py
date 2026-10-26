@@ -161,7 +161,7 @@ def _enumerate(cfg, tier_name, dump_path):
     with open(dump_path, "w", encoding="utf-8", newline="\n") as handle:
 
         def write(code_index, outcome):
-            record = dump_record(measure_ids, code_index, outcome, base_losses)
+            record = dump_record(measure_ids, code_index, outcome, base_losses, cfg.final_index)
             handle.write(json.dumps(record, ensure_ascii=False, separators=(",", ":")) + "\n")
 
         return enumerate_tier(cfg, tier_name, on_outcome=write)

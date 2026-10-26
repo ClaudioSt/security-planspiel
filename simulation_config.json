@@ -1,6 +1,7 @@
 {
   "default_budget_tier": "medium",
   "base_cia": {"c": 10, "i": 10, "a": 10},
+  "final_index": {"weight_kz": 1, "weight_ros": 1},
   "budget_tiers": {
     "low": {
       "budget": 350,
