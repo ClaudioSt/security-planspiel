@@ -39,7 +39,7 @@ def _page_of(pages, text):
 
 
 def test_the_booklet_is_a4_portrait_with_the_planning_page_first(printed_set, pages, booklet):
-    assert len(pages) >= 3
+    assert len(pages) == 4, "planning, tracking, RoS and Budget Review"
     mm_per_pt = 25.4 / 72
     for number, page in enumerate(PdfReader(printed_set.out_a / f"{BOOKLET_JOB}.pdf").pages, start=1):
         width, height = float(page.mediabox.width) * mm_per_pt, float(page.mediabox.height) * mm_per_pt
@@ -65,7 +65,7 @@ def test_page_one_holds_the_cost_table_the_tier_rows_and_the_anticipated_sum(pag
 def test_the_ros_part_starts_on_a_new_page_and_holds_the_ros_formula(pages, booklet):
     ros = booklet.ros
     ros_page = _page_of(pages, ros.title)[0]
-    assert ros_page > 0
+    assert ros_page == _page_of(pages, booklet.tracking.title)[0] + 1, "the RoS page follows the tracking page"
     page = pages[ros_page]
     for metric in (*ros.own_cost_rows, *ros.damage_rows, ros.damage_sum, ros.avoided_line, ros.ros_line):
         assert squash(metric.label) in page, metric.label

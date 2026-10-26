@@ -19,7 +19,9 @@ SETUPS = [
     pytest.param((MINI, MINI_CONTENT_DIR), id="mini"),
     pytest.param((CONFIG_PATH, CONTENT_DIR), id="real"),
 ]
-SHELL, PLANNING, ROS = "teamheft.tex.j2", "teamheft_planung.tex.j2", "teamheft_ros.tex.j2"
+SHELL, PLANNING, TRACKING, ROS = (
+    "teamheft.tex.j2", "teamheft_planung.tex.j2", "teamheft_tracking.tex.j2", "teamheft_ros.tex.j2"
+)
 PLAIN_VARIABLE = re.compile(r"^[A-Za-z_][A-Za-z0-9_.\[\]'\"]*$")
 VARIABLE = re.compile(r"\\VAR\{([^}]*)\}")
 
@@ -46,25 +48,26 @@ def test_the_print_set_holds_the_team_booklet(loaded):
     assert audience.scan_profile(BOOKLET_JOB) == audience.PROFILE_STORY
 
 
-def test_the_shell_is_a_document_and_includes_the_two_partials():
+def test_the_shell_is_a_document_and_includes_the_three_partials():
     shell = (TEMPLATES / SHELL).read_text(encoding="utf-8")
     assert "\\documentclass[" in shell
     assert "\\usepackage{planspiel}" in shell
     assert f'include "{PLANNING}"' in shell
+    assert f'include "{TRACKING}"' in shell
     assert f'include "{ROS}"' in shell
-    assert shell.index(PLANNING) < shell.index(ROS)
-    for partial in (PLANNING, ROS):
+    assert shell.index(PLANNING) < shell.index(TRACKING) < shell.index(ROS)
+    for partial in (PLANNING, TRACKING, ROS):
         text = (TEMPLATES / partial).read_text(encoding="utf-8")
         assert "\\documentclass" not in text, partial
         assert "\\begin{document}" not in text, partial
 
 
-def test_the_shell_leaves_a_commented_insertion_point_for_the_tracking_page():
-    shell = (TEMPLATES / SHELL).read_text(encoding="utf-8")
-    between = shell[shell.index(PLANNING):shell.index(ROS)]
-    comment = re.search(r"\\#\{([^}]*)\}", between)
-    assert comment is not None, "a Jinja comment between the two includes marks the insertion point"
-    assert "tracking" in comment.group(1)
+def test_the_tracking_partial_sits_between_planning_and_ros_with_its_own_fill_report():
+    lines = [line for line in (TEMPLATES / SHELL).read_text(encoding="utf-8").splitlines() if line.strip()]
+    include = next(index for index, line in enumerate(lines) if TRACKING in line)
+    assert lines[include + 1].startswith("\\fillreport{\\thepage}")
+    assert lines[include + 2].strip() == "\\clearpage"
+    assert lines[include - 1].strip() == "\\clearpage"
 
 
 def test_the_rendered_booklet_is_a_complete_document(loaded):
@@ -84,20 +87,22 @@ def test_every_printed_fragment_is_in_the_tex(loaded):
         assert render.tex_escape(fragment) in source, fragment
 
 
-def test_planning_comes_first_and_the_ros_part_starts_on_a_new_page(loaded):
+def test_planning_comes_first_then_the_tracking_page_then_the_ros_part(loaded):
     _, _, booklet, source = loaded
     planning = source.index(render.tex_escape(booklet.planning.title))
+    tracking = source.index(render.tex_escape(booklet.tracking.title))
     ros = source.index(render.tex_escape(booklet.ros.title))
     review = source.rindex(render.tex_escape(booklet.ros.review_title))  # the RoS title names the review too
-    assert planning < ros < review
-    assert "\\clearpage" in source[planning:ros]
+    assert planning < tracking < ros < review
+    assert "\\clearpage" in source[planning:tracking]
+    assert "\\clearpage" in source[tracking:ros], "the RoS part starts on a new page after the tracking page"
     assert "\\clearpage" in source[ros:review], "the Budget Review has its own page"
 
 
 def test_every_page_break_and_the_end_of_the_document_follow_a_fill_report(loaded):
     lines = _lines(loaded[3])
     breaks = [index for index, line in enumerate(lines) if line.strip() == "\\clearpage"]
-    assert len(breaks) == 2
+    assert len(breaks) == 3
     for index in [*breaks, lines.index("\\end{document}")]:
         assert lines[index - 1].startswith("\\fillreport{"), lines[index - 1]
 
@@ -111,7 +116,7 @@ def test_the_planning_table_rows_are_writable(loaded):
         assert render.tex_escape(label) in source
 
 
-@pytest.mark.parametrize("template", [SHELL, PLANNING, ROS])
+@pytest.mark.parametrize("template", [SHELL, PLANNING, TRACKING, ROS])
 def test_templates_print_only_plain_variables(template):
     text = (TEMPLATES / template).read_text(encoding="utf-8")
     expressions = VARIABLE.findall(text)
@@ -138,3 +143,34 @@ def test_the_booklet_passes_the_story_veil_scan(setup):
 
 def test_the_booklet_has_no_final_index(loaded):
     assert "index" not in loaded[3].lower()
+
+
+def test_every_shaded_cell_of_the_tracking_sheet_is_a_grey_cell_in_the_tex(loaded):
+    _, _, booklet, source = loaded
+    tracking = booklet.tracking
+    shaded = sum(row.cells.count("shaded") for row in (*tracking.rows, *tracking.summary_rows))
+    assert shaded > 0
+    assert source.count("\\shadedcell") == shaded
+    assert "\\newcommand{\\shadedcell}{\\cellcolor{mhpshade}}" in STYLE.read_text(encoding="utf-8")
+
+
+def test_the_tracking_rows_are_writable_and_the_two_blocks_have_blue_header_rows(loaded):
+    _, _, booklet, source = loaded
+    partial = (TEMPLATES / TRACKING).read_text(encoding="utf-8")
+    assert "\\rowstrut" in partial
+    for title in (booklet.tracking.block_own, booklet.tracking.block_external):
+        assert render.tex_escape(title) in source
+    assert partial.count("\\rowcolor{mhpblue}") >= 3, "table header and the two block header rows"
+
+
+def test_the_tracking_sheet_prints_every_window_measure_in_every_window(loaded):
+    _, _, booklet, source = loaded
+    for label in booklet.tracking.windows[0].measure_rows:
+        assert render.tex_escape(label) in source
+    for block in booklet.tracking.windows:
+        assert render.tex_escape(block.after_wave) in source
+
+
+def test_the_booklet_fragments_include_the_tracking_page(loaded):
+    _, _, booklet, _ = loaded
+    assert set(booklet.tracking.printed_fragments()) <= set(booklet.printed_fragments())

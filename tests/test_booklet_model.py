@@ -234,13 +234,15 @@ def test_no_wave_weights_or_attack_names_in_the_booklet(real):
 
 def test_printed_fragments_are_non_empty_and_unique(loaded):
     booklet = loaded[2]
-    for part in (booklet, booklet.planning, booklet.ros):
+    for part in (booklet, booklet.planning, booklet.tracking, booklet.ros):
         fragments = part.printed_fragments()
         assert fragments
         assert len(set(fragments)) == len(fragments)
-    assert set(booklet.planning.printed_fragments()) | set(booklet.ros.printed_fragments()) == set(
-        booklet.printed_fragments()
-    )
+    assert (
+        set(booklet.planning.printed_fragments())
+        | set(booklet.tracking.printed_fragments())
+        | set(booklet.ros.printed_fragments())
+    ) == set(booklet.printed_fragments())
 
 
 # ---- the printed formulas replayed against the simulation ---------------------------------------------------------
