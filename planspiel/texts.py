@@ -73,6 +73,23 @@ _WELLE_KEYS = (
     "effect_kz", "effect_budget", "effect_opex", "ros_note",
 )
 
+_SPIELLEITUNG_KEYS = (
+    "title", "notice", "intro", "gr_legend", "how_to_title", "how_to", "approx_hint", "paths_title", "paths_intro",
+    "path_start", "path_window", "path_swap", "params_title", "param_weights", "param_unit", "param_slope",
+    "param_kz_full_damage", "param_kz_full_defence", "param_recovery", "recovery_allowed", "recovery_not_allowed",
+    "bonus_title", "bonus_reason_head", "check_title", "check_case_head", "check_kz_head",
+    "check_table_intro", "events_title", "events_none", "event_head_name", "event_head_kind", "event_head_effect",
+    "kind_window", "kind_external_opex", "kind_external_budget", "kind_kz", "kind_review", "keys_title", "keys_intro",
+    "key_head", "key_selection", "key_cia", "key_e_value", "key_bonus", "key_gr", "key_case", "key_damage_before",
+    "key_recovery", "key_damage_after", "key_kz_attack", "key_kz_event", "key_kz_exact", "key_kz_change",
+    "key_kz_before", "key_kz_unclamped", "key_kz_after", "key_own_opex", "key_window_cost", "key_external_budget",
+    "key_external_opex", "key_remaining", "review_intro", "review_x", "review_step", "final_title", "final_intro",
+    "final_head", "final_remaining", "final_review_delta", "final_kz", "final_own_spend", "final_total_damage",
+    "final_ros", "final_index", "final_index_provisional", "final_index_note", "welle0_title", "welle0_intro",
+    "clues_title", "clues_intro", "clue_head_nr", "clue_head_document", "clue_head_section", "clue_head_quote",
+    "clue_head_why",
+)
+
 SHEET_KEYS = (
     "sheets.angriff.start_values_intro",
     "sheets.angriff.cia_table_instruction",
@@ -124,6 +141,7 @@ SHEET_KEYS = (
     *(f"sheets.teamheft.{name}" for name in _TEAMHEFT_KEYS),
     *(f"sheets.tracking.{name}" for name in _TRACKING_KEYS),
     *(f"sheets.welle.{name}" for name in _WELLE_KEYS),
+    *(f"sheets.spielleitung.{name}" for name in _SPIELLEITUNG_KEYS),
     *(f"sheets.labels.{name}" for name in _SHEET_LABELS),
 )
 

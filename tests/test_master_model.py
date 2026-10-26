@@ -146,7 +146,9 @@ def test_parameters_equal_the_worksheet_constants(sheet, cfg, texts):
         assert values[texts.get("sheets.spielleitung.param_unit")] == fmt.format_money(constants.unit_eur)
         slope = values[texts.get("sheets.spielleitung.param_slope")]
         assert slope.startswith(fmt.format_factor(constants.slope))
-        assert (fmt.format_approx(constants.slope) in slope) == (not fmt.terminates(constants.slope))
+        assert ("≈" in slope) == (not fmt.terminates(constants.slope))
+        if not fmt.terminates(constants.slope):
+            assert fmt.format_approx(constants.slope) in slope
         assert values[texts.get("sheets.spielleitung.param_kz_full_damage")] == fmt.format_signed(constants.kz_case_1)
         assert values[texts.get("sheets.spielleitung.param_kz_full_defence")] == fmt.format_signed(constants.kz_case_2)
         recovery = values[texts.get("sheets.spielleitung.param_recovery")]
@@ -399,7 +401,7 @@ def test_the_clue_matrix_equals_the_facilitator_view(sheet, cfg, texts, clues):
         for group in sheet.clue_groups
         for entry in group.rows
     ]
-    assert flat == [(row.title, row.number, row.document, row.section, row.quote, row.why) for row in rows]
+    assert flat == [(row.title, str(row.number), row.document, row.section, row.quote, row.why) for row in rows]
     assert len(flat) == 14
     assert [group.title for group in sheet.clue_groups] == list(dict.fromkeys(row.title for row in rows))
 
@@ -417,7 +419,7 @@ def test_a_missing_tier_stops_the_build(texts, clues, tmp_path):
 
 def test_an_illegal_path_stops_the_build(texts, clues, tmp_path):
     def break_swap(raw):
-        raw["reference_plans"]["medium"]["windows"][0]["swap"] = None
+        del raw["reference_plans"]["medium"]["windows"][0]["swap"]
 
     with pytest.raises(PrintModelError, match="medium"):
         master.build_master_sheet(_modified(tmp_path, break_swap), texts, clues)
