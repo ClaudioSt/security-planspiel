@@ -569,6 +569,8 @@ clue_head_document = "Dokument"
 clue_head_section = "Abschnitt"
 clue_head_quote = "Zitat"
 clue_head_why = "Warum es hinweist"
+clue_section_anfrage_mail_lage = "Lage"
+clue_section_audit_mail_einleitung = "Einleitung"
 
 [story.steckbrief]
 doc_title = "MECHTECH GmbH: Unternehmenssteckbrief"

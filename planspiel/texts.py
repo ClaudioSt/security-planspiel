@@ -87,7 +87,7 @@ _SPIELLEITUNG_KEYS = (
     "final_head", "final_remaining", "final_review_delta", "final_kz", "final_own_spend", "final_total_damage",
     "final_ros", "final_index", "final_index_provisional", "final_index_note", "welle0_title", "welle0_intro",
     "clues_title", "clues_intro", "clue_head_nr", "clue_head_document", "clue_head_section", "clue_head_quote",
-    "clue_head_why",
+    "clue_head_why", "clue_section_anfrage_mail_lage", "clue_section_audit_mail_einleitung",
 )
 
 SHEET_KEYS = (
@@ -647,14 +647,17 @@ def check_clues(cfg: Config, texts: Texts, clues: tuple[Clue, ...]) -> list[Issu
 
 
 def _clue_section(texts: Texts, source: str) -> str:
-    """Nächste Überschrift (`heading`, sonst `headline`) entlang des Quellpfads, sonst der Quellschlüssel selbst."""
+    """Nächste Überschrift (`heading`, sonst `headline`) entlang des Quellpfads, sonst das Abschnitts-Label der Spielleitung, sonst der Quellschlüssel."""
     parts = source.split(".")[:-1]
+    label_key = "sheets.spielleitung.clue_section_" + "_".join(parts[1:])
     while parts:
         for name in ("heading", "headline"):
             key = ".".join([*parts, name])
             if texts.has(key) and isinstance(texts.get(key), str):
                 return str(texts.get(key))
         parts.pop()
+    if texts.has(label_key) and isinstance(texts.get(label_key), str):
+        return str(texts.get(label_key))
     return source
 
 
