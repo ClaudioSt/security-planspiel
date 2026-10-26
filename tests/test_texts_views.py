@@ -13,6 +13,8 @@ from planspiel.texts import (
     Texts,
     attack_title,
     check_coverage,
+    giveaway_hits,
+    load_content,
     load_texts,
     required_keys,
 )
@@ -213,3 +215,20 @@ def test_the_texts_cli_still_passes_on_the_mini_content(capsys):
     code = main(["texts", "--config", str(MINI), "--content-dir", str(MINI_CONTENT_DIR)])
     assert code == 0
     assert "0 Fehler, 0 Warnung(en)" in capsys.readouterr().out
+
+
+def test_every_angriff_sheet_string_passes_the_story_giveaway_profile(loaded):
+    """`sheets.angriff` is reachable from the pre-wave view (the wave explainer reuses the worksheet's step words)."""
+    cfg, texts = loaded
+    terms = load_content(CONTENT_DIR).terms
+    strings = [text for _, text in texts.strings("sheets.angriff")]
+    assert strings
+    for text in strings:
+        assert giveaway_hits(text, terms, tuple(cfg.attacks), profile="story") == [], text
+
+
+def test_the_pre_attack_view_reaches_the_angriff_and_welle_sheets(loaded):
+    cfg, texts = loaded
+    view = PreAttackView(cfg, texts)
+    assert view.sheet("angriff")["step_cia"]
+    assert view.sheet("welle")["title"]

@@ -12,7 +12,7 @@ from tests.support import REPO_ROOT
 
 # Later plans append their pre-wave builder modules (file names under planspiel/): cards.py (05-02),
 # eventtext.py (05-05), booklet.py (05-06), wave_page.py (05-08) and story.py (05-10).
-PREWAVE_MODULES: tuple[str, ...] = ("cards.py", "eventtext.py", "booklet.py")
+PREWAVE_MODULES: tuple[str, ...] = ("cards.py", "eventtext.py", "booklet.py", "wave_page.py")
 
 FORBIDDEN_NAMES = frozenset(
     {
