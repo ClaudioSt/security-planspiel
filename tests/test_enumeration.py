@@ -84,7 +84,7 @@ def _brute_records(cfg, tier):
                 "total": outcome.total_cost,
                 "damage": rec["total_damage"],
                 "ros": ros,
-                "fi": rules.final_index(outcome.kz_final, ros),
+                "fi": rules.final_index(outcome.kz_final, ros, cfg.final_index.weight_kz, cfg.final_index.weight_ros),
                 "over": outcome.over_budget,
             }
         )
@@ -355,7 +355,7 @@ def test_summary_labels_the_static_layer(mini):
 
 def test_dump_record_keys(mini):
     base = rules.base_losses(mini.waves, mini.attacks)
-    record = dump_record(mini.measure_ids, 5, _outcome(70, 100, total=104, damage=5000), base)
+    record = dump_record(mini.measure_ids, 5, _outcome(70, 100, total=104, damage=5000), base, mini.final_index)
     assert list(record) == [
         "code",
         "kz_final",

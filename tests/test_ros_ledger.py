@@ -141,7 +141,7 @@ def test_dump_record_ros_uses_own_cost():
         kz_final=70, own_cost=100, total_cost=104, damage_eur=5000, event_opex=4,
         event_budget=0, over_budget=False, kz_after=(70, 70, 70), kz_pre_review=70, remaining=0,
     )
-    record = dump_record(mini.measure_ids, 5, outcome, base)
+    record = dump_record(mini.measure_ids, 5, outcome, base, mini.final_index)
     assert record["ros"] == exact_to_json(rules.ros(base, Fraction(5), 100))
 
 
