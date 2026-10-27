@@ -36,13 +36,12 @@ Every balance decision is checked against these (measurable via full enumeration
 - ✓ Single content source (PRINT-02, VEIL-01, VEIL-03): all German print prose in `content/texte.toml` keyed by config id, prose in config is a validator error; `planspiel texts` checks coverage, digits (reviewed allowlist), story mechanics and giveaway terms; attacks have a veiled title ("Angriff N") and a separate revealed set, read only through `PreAttackView`/`RevealView` (leak-tested); story documents veiled and a 14-clue facilitator matrix (`planspiel clues`, ≥2 clues from ≥2 documents per attack); SC5 inventory of the hand-maintained documents — Validated in Phase 3: Content Source & Veiling (printing the veiled material is Phase 5)
 - ✓ Print pipeline and attack worksheets (PRINT-01, PRINT-03, PRINT-04, PRINT-11): `planspiel print` builds the print set from `simulation_config.json` + `content/texte.toml` via Jinja → LuaLaTeX non-interactively (installer disabled, bounded, byte-reproducible; MiKTeX 26.5); Angriff 1–3 worksheets generated into `final_documents/generated/` (two A4 pages each, test print approved); worksheet replay proven equal to the simulation (dense grid 36,467 cases + all 782,336 plans per tier, 0 mismatches); every page carries a content-hash version stamp ("+lokal" for uncommitted or non-default inputs) and `planspiel print --check` detects stale PDFs via manifest.json — Validated in Phase 4: Print Pipeline & Attack Worksheets (remaining print material is Phase 5; legacy Angriff-*.docx retire in Phase 7)
 
+- ✓ Player & facilitator print material (PRINT-05..10, PRINT-12, VEIL-02, VEIL-04): `planspiel print` now builds the complete set of 13 PDFs into `final_documents/generated/` from config + content. It covers measure cards with a legend (A6 landscape, names-only veil profile), event and Budget Review cards with effect lines proven equal to `rules.evaluate_event`, and the team booklet (budget, RoS, Budget Review, tracking page in calculation order). It also includes the one-page "So funktioniert eine Welle", the four story documents with images, the Welle 0 worked example (Fall 3, bonus met/missed, recovery, exact half, clamp) and the facilitator overview with answer keys on user-approved reference paths. A two-layer veil scan (rendered `.tex` + PDF, metadata) gates every pre-wave document. UAT 8/8 passed on physical prints and SECURITY verified with 55 threats closed. Validated in Phase 5: Player & Facilitator Print Material. Answer keys, Welle 0 and the overspend table are pinned to the current values and must be re-chosen after Phase 6.
+
 ### Active
 
-- [ ] Players understand how measures work and what attacks/events affect (card legend + explainer)
-- [ ] Attack names veiled in pre-attack material, revealed by name when the wave hits
-- [ ] All print material generated from `simulation_config.json` via LaTeX → PDF (attack worksheets, measure cards, budget/event cards, tracking + how-it-works sheet)
 - [ ] Rebalanced config verified by full enumeration after the rule changes
-- [ ] Flow fits the afternoon: wave 1 no longer overruns (worked example), whiteboard write-up replaced by printed tracking sheet
+- [ ] Flow fits the afternoon: wave 1 no longer overruns. The worked example (Welle 0) and the printed tracking sheet exist since Phase 5. Timing is still unproven until the next live run.
 
 ### Out of Scope
 
@@ -124,6 +123,10 @@ Every balance decision is checked against these (measurable via full enumeration
 | Paper rounding: KZ change per wave rounded once, half away from zero, then clamped 0–100; all else exact | Sim must match what facilitators compute by hand | ✓ Approved 2026-10-01 (commit 0d342f6, 01-EXACT-SWITCH-DIFF.md) |
 | Prose lives in content/texte.toml; config holds numbers, ids and short labels; prose in config is a validator error | One edit point for wording; printed numbers come from config, never from typed prose | ✓ Phase 3, D-01/D-02/A3 (03-01, commit e36f24d) |
 | Print stamp marks non-default inputs as +lokal instead of rejecting them (WR-07) | Keeps experimental/playtest prints possible while making them recognisable on paper | ✓ User 2026-10-22 (Phase 4 UAT, commit 8514b6a) |
+| Job-name prefix (`spieler-`, `uebung-`, `angriff-`, `spielleitung-`) is the single audience classification; unclassified jobs fail the build | One place decides who may see a document; the veil scan profile follows from it | ✓ Phase 5 (05-01) |
+| Cards in A6 landscape, 2×2 on A4, 12 pt body; event cards reuse the layout without a caption band | Approved after five physical print rounds; Kurswechsel card fits only without the band | ✓ User 2026-10-23..26 (05-03, 05-05; UAT 2026-10-27) |
+| Final-index weights and reference paths live in `simulation_config.json` (Low 2, Medium 1H, High 3) | One source for reports and answer keys; legal paths near the swap-layer median | ✓ User-approved in 05-13/05-14; re-choose after Phase 6 |
+| Approximations (`≈`) only on the facilitator booklet | Players never see a rounded non-terminating value; a PDF test enforces it | ✓ Phase 5 (05-15) |
 
 ## Evolution
 
@@ -143,4 +146,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-10-22 after Phase 4 (Print Pipeline & Attack Worksheets)*
+*Last updated: 2026-10-27 after Phase 5 (Player & Facilitator Print Material)*

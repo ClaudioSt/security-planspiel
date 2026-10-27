@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_phase: 05
-current_phase_name: Player & Facilitator Print Material
-status: verifying
-stopped_at: Completed 05-16-PLAN.md
-last_updated: "2026-10-26T14:57:51.571Z"
-last_activity: 2026-10-23
-last_activity_desc: Phase 05 execution started
+current_phase: 6
+current_phase_name: Rebalance
+status: ready_to_plan
+stopped_at: Phase 5 complete, ready to plan Phase 6
+last_updated: "2026-10-27T01:20:01.247Z"
+last_activity: 2026-10-27
+last_activity_desc: Phase 5 complete, transitioned to Phase 6
 progress:
   total_phases: 7
   completed_phases: 5
@@ -21,25 +21,25 @@ progress:
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-09-29)
+See: .planning/PROJECT.md (updated 2026-10-27)
 
 **Core value:** Facilitators and players can run the game by hand without ambiguity: every rule is unambiguous, every printed number matches `simulation_config.json`, and no strategy exploits a rule loophole.
-**Current focus:** Phase 05 — Player & Facilitator Print Material
+**Current focus:** Phase 06 — Rebalance
 
 ## Current Position
 
-Phase: 05 (Player & Facilitator Print Material) — EXECUTING
-Plan: 16 of 16
-Status: Phase complete — ready for verification
-Last activity: 2026-10-23 — Phase 05 execution started
+Phase: 6 — Rebalance
+Plan: Not started
+Status: Ready to plan
+Last activity: 2026-10-27 — Phase 5 complete, transitioned to Phase 6
 
-Progress: [██████░░░░] 57% (4 of 7 phases)
+Progress: [███████░░░] 71% (5 of 7 phases)
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 24
+- Total plans completed: 40
 - Average duration: -
 - Total execution time: 0 hours
 
@@ -51,6 +51,7 @@ Progress: [██████░░░░] 57% (4 of 7 phases)
 | 2 | 8 | - | - |
 | 03 | 3 | - | - |
 | 4 | 6 | - | - |
+| 5 | 16 | - | - |
 
 **Recent Trend:**
 
@@ -165,10 +166,11 @@ Recent decisions affecting current work:
 - [Phase 05]: content/clues.toml is a stamped print input checked at print time (ERROR print.clues) and passed to every builder as the fourth argument — Research F15: a clues change must move the stamp date and mark the tree dirty; the quotes must match the pre-wave texts verbatim
 - [Phase 05-16]: Clue matrix section labels for headingless mail sections come from digit-free sheets.spielleitung keys, raw key only as last fallback — Keeps story texts, veil scan and player documents untouched; guarded by a test over real and mini content
 - [Phase 05-16]: The committed print set is written only by the last plan of a phase in the D-19 order — Stamp and manifest do not churn per plan; --check and a byte-identical rebuild prove freshness
+- [Phase 05 UAT]: All eight human print checks passed 2026-10-27, so the open layout calls stand as is: event effect-box padding, 43 % empty RoS page, 1.3–1.5 mm tracking clearance, 9 pt explainer text, damage before recovery without euro sign
 
 ### Pending Todos
 
-1 pending: `.planning/todos/pending/2026-06-23-angriffe-und-aktionen-nur-indirekt-vermitteln-nie-explizit-b.md` (veil attacks/events). Covered by Phase 3 (VEIL-01, VEIL-03) and Phase 5 (VEIL-02, VEIL-04); close it when Phase 5 completes.
+None. The veiling todo (2026-06-23) is closed (moved to `todos/completed/` in Phase 5).
 
 ### Blockers/Concerns
 
@@ -187,6 +189,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-10-26T14:57:51.558Z
-Stopped at: Completed 05-16-PLAN.md
+Last session: 2026-10-27
+Stopped at: Phase 5 complete (UAT 8/8, SECURITY verified), ready to plan Phase 6
 Resume file: None
