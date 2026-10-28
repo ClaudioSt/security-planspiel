@@ -16,7 +16,7 @@ def test_harness_matches_run_simulation_on_in_budget_window(tmp_path):
     min_cost = budget_available - 2
 
     output = tmp_path / "out.json"
-    summary = simulate.run_simulation(CONFIG_PATH, "medium", output, min_cost, None, 0.0)
+    summary = simulate.run_simulation(CONFIG_PATH, "medium", output, min_cost)
     data = json.loads(output.read_text(encoding="utf-8"))
     results = data["results"]
     assert summary["total_outcomes"] == len(results) > 0

@@ -109,7 +109,7 @@ def test_legacy_output_on_mini_config(tmp_path):
 
 def test_analyze_handles_zero_cost_plan(tmp_path):
     out = tmp_path / "out.json"
-    run_simulation(MINI, "low", out, None, None, 0.0)
+    run_simulation(MINI, "low", out, None)
     data = json.loads(out.read_text(encoding="utf-8"))
     assert any(r["costs"]["total"] == 0 for r in data["results"])
 

@@ -431,6 +431,8 @@ def test_cli_output_keeps_the_legacy_mode(tmp_path):
         ["--budget-utilization", "0.85"],
         ["--budget-min", "10"],
         ["--budget-max", "100"],
+        ["--output", "a.json", "--budget-utilization", "0.85"],
+        ["--output", "a.json", "--budget-max", "100"],
         ["--output", "a.json", "--dump-jsonl", "b.jsonl"],
         ["--output", "a.json", "--summary", "s.json"],
         ["--output", "a.json", "--top", "3"],
@@ -444,7 +446,7 @@ def test_cli_rejects_inconsistent_flags(args, tmp_path):
 
 
 def test_cli_rejection_message_names_output_flag(tmp_path):
-    result = _run_cli(["--config", str(MINI), "--budget-utilization", "0.85"], tmp_path)
+    result = _run_cli(["--config", str(MINI), "--budget-min", "10"], tmp_path)
     assert "--output" in result.stderr.decode("utf-8", errors="replace")
 
 
@@ -464,15 +466,27 @@ def test_cli_top_flag_controls_list_length(tmp_path):
     assert [len(summary["top"][key]) for key in ("kz_final", "ros", "final_index")] == [3, 3, 3]
 
 
-def test_budget_max_only_scales_the_utilization_threshold(tmp_path):
+def test_budget_min_filters_the_legacy_output(tmp_path):
     out = tmp_path / "out.json"
-    summary = run_simulation(MINI, "low", out, None, 100, 0.0)
-    assert summary["budget_filter"] == {"min": 0, "max": 100, "utilization_min": None}
-    results = json.loads(out.read_text(encoding="utf-8"))["results"]
-    assert any(record["costs"]["total"] > 100 for record in results)
+    summary = run_simulation(MINI, "low", out, None)
+    assert summary["budget_filter"] == {"min": 0}
+    unfiltered = json.loads(out.read_text(encoding="utf-8"))["results"]
+    assert any(record["costs"]["total"] < 50 for record in unfiltered)
 
-    summary = run_simulation(MINI, "low", out, None, 100, 0.5)
-    assert summary["budget_filter"]["utilization_min"] == 50
+    summary = run_simulation(MINI, "low", out, 50)
+    assert summary["budget_filter"] == {"min": 50}
     results = json.loads(out.read_text(encoding="utf-8"))["results"]
-    assert results
+    assert results and len(results) < len(unfiltered)
     assert all(record["costs"]["total"] >= 50 for record in results)
+    assert all(record["costs"]["total"] <= record["costs"]["budget_available"] for record in results)
+
+
+def test_legacy_signature_has_no_upper_budget_or_utilization_parameter():
+    import inspect
+
+    assert list(inspect.signature(run_simulation).parameters) == [
+        "config_path",
+        "budget_tier_name",
+        "output_path",
+        "budget_min",
+    ]

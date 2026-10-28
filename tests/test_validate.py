@@ -313,7 +313,7 @@ def test_simulate_script_refuses_broken_config(tmp_path):
 def test_analyze_script_refuses_broken_config(tmp_path):
     broken = _write_config(tmp_path, _set(["waves", 0, "bonus_measures", 0, "measure"], "M99"))
     legacy = tmp_path / "legacy.json"
-    run_simulation(MINI, "low", legacy, None, None, 0.0)
+    run_simulation(MINI, "low", legacy, None)
     result = _run(["analyze_simulation_results.py", "--input", str(legacy), "--config", str(broken)])
     assert result.returncode != 0
     assert "ref.unknown_measure" in result.stderr.decode("utf-8", errors="replace")
