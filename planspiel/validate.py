@@ -101,9 +101,15 @@ def scale_factors(raw: dict) -> Tuple[int, int]:
     return weight_scale, recovery_scale
 
 
+HAND_CALC_LEVELS = ("warning", "error")
+
+
 class _Validator:
-    def __init__(self, raw: dict):
+    def __init__(self, raw: dict, hand_calc_level: str = "warning"):
+        if hand_calc_level not in HAND_CALC_LEVELS:
+            raise ValueError(f"hand_calc_level muss warning oder error sein, nicht {hand_calc_level!r}")
         self.raw = raw
+        self.hand_calc_level = hand_calc_level
         self.issues: List[Issue] = []
         self.wave_ids: List[int] = []
         self.event_ids: Dict[str, str] = {}
@@ -113,6 +119,9 @@ class _Validator:
 
     def warning(self, code: str, path: str, message: str) -> None:
         self.issues.append(Issue("warning", code, path, message))
+
+    def _hand_calc(self, code: str, path: str, message: str) -> None:
+        self.issues.append(Issue(self.hand_calc_level, code, path, message))
 
     def removed_key(self, key: str, path: str) -> None:
         self.warning(
@@ -543,7 +552,7 @@ class _Validator:
         self.int_field(penalty, "kz_per_step", penalty_path, lo=1)
         step = self.int_field(penalty, "step", penalty_path, lo=1)
         if step is not None and step != 10:
-            self.warning(
+            self._hand_calc(
                 "hand_calc.penalty_step",
                 f"{penalty_path}.step",
                 f"Schrittweite {step} k€ weicht von 10 k€ ab, die gedruckte Regel lautet \"je angefangene 10.000 €\"",
@@ -810,6 +819,19 @@ class _Validator:
                     )
                     break
 
+    def check_final_index_weights(self, block: Any) -> None:
+        if not isinstance(block, dict):
+            return
+        weight_kz, weight_ros = _fraction(block.get("weight_kz")), _fraction(block.get("weight_ros"))
+        if weight_kz is None or weight_ros is None:
+            return
+        if weight_kz != 1 or weight_ros.denominator != 1:
+            self._hand_calc(
+                "hand_calc.final_index_weights",
+                "final_index",
+                "Final-Index-Gewichte müssen ganze Zahlen sein und weight_kz = 1 (Form KZ + k × RoS)",
+            )
+
     def check_hand_calc(self) -> None:
         raw = self.raw
         waves = _dicts(raw.get("waves"))
@@ -825,18 +847,19 @@ class _Validator:
             if not _one_decimal(slope):
                 used = [f"Welle {wave.get('id')}" for wave in waves if wave.get("attack_id") == attack_id]
                 suffix = f" (verwendet in {', '.join(used)})" if used else ""
-                self.warning(
+                self._hand_calc(
                     "hand_calc.kz_slope",
                     path,
                     f"KZ-Steigung {slope.numerator}/{slope.denominator} hat mehr als eine Nachkommastelle{suffix}",
                 )
             if ints[3] != ints[2]:
-                self.warning("hand_calc.severity_cap", path, f"base_severity {ints[3]} weicht von mitigation_cap {ints[2]} ab")
+                self._hand_calc("hand_calc.severity_cap", path, f"base_severity {ints[3]} weicht von mitigation_cap {ints[2]} ab")
+        self.check_final_index_weights(raw.get("final_index"))
         tiers = raw["budget_tiers"] if isinstance(raw.get("budget_tiers"), dict) else {}
         for tier_name, tier in tiers.items():
             multiplier = _fraction(tier.get("severity_multiplier", 1.0)) if isinstance(tier, dict) else None
             if multiplier is not None and multiplier != 1:
-                self.warning(
+                self._hand_calc(
                     "hand_calc.severity_multiplier",
                     f"budget_tiers.{tier_name}.severity_multiplier",
                     f"severity_multiplier {float(multiplier)} weicht von 1.0 ab",
@@ -847,7 +870,7 @@ class _Validator:
             if not values or any(v is None for v in values):
                 continue
             if sum(values) != 1 or not all(_one_decimal(v) for v in values):
-                self.warning(
+                self._hand_calc(
                     "hand_calc.weights",
                     f"waves[{index}].weights",
                     f"Gewichte müssen sich zu 1.0 summieren und höchstens eine Nachkommastelle haben, Summe {float(sum(values))}",
@@ -858,12 +881,12 @@ class _Validator:
             for level_id, level in levels.items() if isinstance(levels, dict) else []:
                 recovery = _fraction(level.get("recovery", 0)) if isinstance(level, dict) else None
                 if recovery is not None and not _one_decimal(recovery):
-                    self.warning(
+                    self._hand_calc(
                         "hand_calc.recovery",
                         f"measures.{measure_id}.levels.{level_id}.recovery",
                         f"Recovery {float(recovery)} hat mehr als eine Nachkommastelle",
                     )
 
 
-def validate(raw: dict) -> List[Issue]:
-    return _Validator(raw).run()
+def validate(raw: dict, hand_calc_level: str = "warning") -> List[Issue]:
+    return _Validator(raw, hand_calc_level).run()
