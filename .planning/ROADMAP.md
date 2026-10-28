@@ -262,7 +262,37 @@ Plans:
 - Review `booklet.MAX_PENALTY_ROWS` (12 today: X = 9 KZ je angefangene 10.000 €, ⌈100 ÷ 9⌉ rows) against the calibrated X and raise it together with a new RoS-page layout proof if X falls below 9 (a smaller X adds rows and stops the build with `ERROR print.model`). Review `booklet.MAX_WINDOWS` (2 today, about 2 mm to spare on the tracking page) the same way: a third change window or a fourth wave needs a new layout proof.
 - Remove the `≈` approximations on the master sheet once no slope is non-terminating (BAL-02).
 
-**Plans**: TBD
+**Plans**: 10 plans
+
+Plans:
+**Wave 1**
+
+- [ ] 06-01-PLAN.md — BAL-01: move-path overspend gate (swap / window-1 / window-2, start-lowered trim, narrow diagnostic), raw and capped minimum X, calibration X = max + 1, shared candidate-config test infrastructure (wave 1)
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [ ] 06-02-PLAN.md — BAL-02: hand-calc severity parameter (errors on request), final-index weight rule, candidate hand-calc check (wave 2)
+- [ ] 06-03-PLAN.md — BAL-03: Final-Index as KZ + k · RoS (two-decimal RoS), k measurement from pooled IQR, 0.85 filter removed; code and tests only, the moved answer-key row is a tuning target until 06-10 (wave 2)
+- [ ] 06-04-PLAN.md — BAL-06: dominance, near-mandatory band, overpowered drop, decision-point effects (wave 2)
+- [ ] 06-05-PLAN.md — BAL-08: median above start on both layers, comeback after wave 1 (wave 2)
+- [ ] 06-06-PLAN.md — BAL-09: tier corridor, D-11 band, spread range (wave 2)
+
+**Wave 3** *(blocked on Wave 2 completion)*
+
+- [ ] 06-07-PLAN.md — BAL-07: clue → measure mapping and checks (console matrix), reference_strategies key, quartile placement, clue-derived good strategy (wave 3)
+
+**Wave 4** *(blocked on Wave 3 completion)*
+
+- [ ] 06-08-PLAN.md — BAL-04: in-budget top-K / Pareto / unfiltered optima and the consolidated balance report with baseline comparison (wave 4)
+
+**Wave 5** *(blocked on Wave 4 completion)*
+
+- [ ] 06-09-PLAN.md — Tuning (BAL-01/02/03/06/07/08/09 targets, X and k) on a candidate config/content, ending at the D-04 checkpoint (wave 5, checkpoint)
+
+**Wave 6** *(blocked on Wave 5 completion)*
+
+- [ ] 06-10-PLAN.md — BAL-05: pre-flight D-04 gate, adopt the approved candidate, flip defaults, final-index wording/weight row and booklet clue column, single re-pin of goldens, regenerate the print set (wave 6)
+
 **Research flag**: yes. Topics: calibration method (trim-back sweep over cached per-combo tuples instead of re-enumerating), concrete metrics and thresholds for BAL-06…09 (dominance, "near-mandatory", quartile placement, spread range), Final-Index rescaling.
 
 ### Phase 7: Session Flow & Handoff
@@ -292,5 +322,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 3 
 | 3. Content Source & Veiling | 3/3 | Complete    | 2026-10-19 |
 | 4. Print Pipeline & Attack Worksheets | 6/6 | Complete    | 2026-10-22 |
 | 5. Player & Facilitator Print Material | 16/16 | Complete    | 2026-10-26 |
-| 6. Rebalance | 0/TBD | Not started | - |
+| 6. Rebalance | 0/10 | Planned | - |
 | 7. Session Flow & Handoff | 0/TBD | Not started | - |

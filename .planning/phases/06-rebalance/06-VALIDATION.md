@@ -39,33 +39,35 @@ created: 2026-10-28
 
 Filled in by the planner/executor per task. Requirement → test map from research:
 
-| Req | Behavior | Test Type | Automated Command | File Exists | Status |
-|-----|----------|-----------|-------------------|-------------|--------|
-| BAL-01 | required-X closure on synthetic columns; move-path gate equals brute force on mini config; calibrated X = max + 1; real-config path gate per tier | unit + brute force; slow | `uv run pytest tests/test_overspend_gate.py tests/test_gate_paths.py -q` | gate ✅ / paths ❌ W0 | ⬜ pending |
-| BAL-02 | `hand_calc.*` severity parameter; `planspiel validate` exit codes; 17/7 candidate fails, fixed passes | unit | `uv run pytest tests/test_validate.py -q` | ✅ extend | ⬜ pending |
-| BAL-03 | `rules.final_index` = `weight_kz·KZ + k·RoS` with integer k from config; 0.85 filter removed or documented out | unit | `uv run pytest tests/test_final_index_config.py tests/test_enumeration.py -q` | ✅ extend | ⬜ pending |
-| BAL-04 | per-tier report: in-budget top-K, Pareto, unfiltered optima, percentile blocks; `balance` accepts `--config` | unit + CLI | `uv run pytest tests/test_balance_report.py -q` | ❌ W0 | ⬜ pending |
-| BAL-05 | goldens re-pinned; `print --check` exit 0; print≡sim equivalence; booklet row cap | fast + pdf | `uv run pytest -q && uv run pytest -m pdf -q && uv run planspiel print --check` | ✅ existing | ⬜ pending |
-| BAL-06 | dominance, band near-mandatory, overpowered drop, decision-point effect | unit; slow | `uv run pytest tests/test_balance_metrics.py -q` | ❌ W0 | ⬜ pending |
-| BAL-07 | `reference_strategies` validator + legality; quartile placement; clue-derived good strategy | unit; slow | `uv run pytest tests/test_reference_strategies.py tests/test_clues_mapping.py -q` | ❌ W0 | ⬜ pending |
-| BAL-08 | median − start KZ on both layers; comeback after wave 1 | unit; slow | `uv run pytest tests/test_balance_metrics.py -q` | ❌ W0 | ⬜ pending |
-| BAL-09 | tier corridor, IQR range, p5–p95 width, best-in-budget band | unit; slow | `uv run pytest tests/test_balance_metrics.py -q` | ❌ W0 | ⬜ pending |
+| Req | Plan | Behavior | Test Type | Automated Command | File Exists | Status |
+|-----|------|----------|-----------|-------------------|-------------|--------|
+| BAL-01 | 06-01 | required-X closure on synthetic columns; move-path gate equals brute force on mini config; raw and capped minimum X; calibrated X = max + 1; configured-config path gate per tier | unit + brute force; slow | `uv run pytest tests/test_overspend_gate.py tests/test_gate_paths.py tests/test_candidate_support.py -q` | gate ✅ / paths ❌ W0 (06-01) | ⬜ pending |
+| BAL-02 | 06-02 | `hand_calc_level` severity parameter; final-index weight rule; 17/7 fails in error mode, one-decimal variant passes | unit; slow | `uv run pytest tests/test_hand_calc_level.py tests/test_validate.py -q` | ❌ W0 (06-02) | ⬜ pending |
+| BAL-03 | 06-03 | `rules.final_index` = `weight_kz·KZ + k·RoS₂`; k recommendation from pooled IQR; 0.85 filter removed; answer-key golden compared strictly except the final-index row (TUNING_TARGET until the 06-10 re-pin) | unit; slow | `uv run pytest tests/test_index_weights.py tests/test_final_index_config.py tests/test_enumeration.py -q` | partly ✅ extend / index_weights ❌ W0 (06-03) | ⬜ pending |
+| BAL-04 | 06-08 | per-tier report: in-budget top-K, Pareto, unfiltered optima, percentile blocks; consolidated report with `--config`, `--baseline-config` | unit + CLI | `uv run pytest tests/test_balance_report.py tests/test_wrappers.py -q` | ❌ W0 (06-08) | ⬜ pending |
+| BAL-05 | 06-10 | goldens re-pinned (incl. gate_paths); `print --check` exit 0; print≡sim equivalence; booklet row cap; no approximation sign | fast + slow + pdf | `uv run pytest -q && uv run pytest -m slow -q && uv run pytest -m pdf -q && uv run planspiel print --check` | ✅ existing | ⬜ pending |
+| BAL-06 | 06-04 | dominance, band near-mandatory, overpowered drop, decision-point effects | unit; slow | `uv run pytest tests/test_choices.py -q` | ❌ W0 (06-04) | ⬜ pending |
+| BAL-07 | 06-07 | clue mapping checks; `reference_strategies` validator + legality; quartile placement; clue-derived good strategy | unit; slow | `uv run pytest tests/test_clues_mapping.py tests/test_reference_strategies.py tests/test_strategies.py -q` | ❌ W0 (06-07) | ⬜ pending |
+| BAL-08 | 06-05 | median − start KZ on both layers; comeback after wave 1 | unit; slow | `uv run pytest tests/test_rewarding.py -q` | ❌ W0 (06-05) | ⬜ pending |
+| BAL-09 | 06-06 | tier corridor, D-11 band, IQR range, p5–p95 width, median bound | unit; slow | `uv run pytest tests/test_spread.py -q` | ❌ W0 (06-06) | ⬜ pending |
+| BAL-01/02/03/06/07/08/09 targets | 06-09 | candidate passes every balance check as a hard check | slow | `uv run pytest -m balance --runxfail --planspiel-config .planning/phases/06-rebalance/candidate_config.json --planspiel-content-dir .planning/phases/06-rebalance/candidate_content -q` | built by 06-01 … 06-08 | ⬜ pending |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 
-Real-config variants of the Wave-1 checks are expected to fail on today's `simulation_config.json` (they are the tuning target). They are marked `slow` and kept out of the green gate until BAL-05 adopts the tuned config; fast variants run on `tests/fixtures/mini_config.json` and must be green.
+Configured-config variants of the check plans are marked `slow` + `balance`; those that fail on today's `simulation_config.json` (the tuning target) additionally carry the shared xfail marker `TUNING_TARGET` from `tests/support/candidate.py` (one approach for all plans). `uv run pytest -m slow` stays green; the tuning plan runs them as hard checks with `--runxfail --planspiel-config <cand> --planspiel-content-dir <dir>`; 06-10 removes the marker after adoption. Fast variants run on `tests/fixtures/mini_config.json` and must be green.
 
 ---
 
 ## Wave 0 Requirements
 
-- [ ] `tests/test_gate_paths.py` (+ goldens if pinned)
-- [ ] `tests/test_balance_metrics.py`
-- [ ] `tests/test_balance_report.py`
-- [ ] `tests/test_reference_strategies.py`
-- [ ] `tests/test_clues_mapping.py`
-- [ ] mini-fixture additions: `reference_strategies` in `mini_config.json`, clue→measure keys in `mini_content/clues.toml`
-- [ ] shared way to point slow real-config checks at a candidate config (`--config` CLI + test option/env), since `tests.support.CONFIG_PATH` is fixed
+- [ ] `tests/test_gate_paths.py`, `tests/test_candidate_support.py` (06-01; gate_paths goldens pinned in 06-10)
+- [ ] `tests/test_hand_calc_level.py` (06-02)
+- [ ] `tests/test_index_weights.py` (06-03)
+- [ ] `tests/test_choices.py` (06-04), `tests/test_rewarding.py` (06-05), `tests/test_spread.py` (06-06)
+- [ ] `tests/test_clues_mapping.py`, `tests/test_reference_strategies.py`, `tests/test_strategies.py` (06-07)
+- [ ] `tests/test_balance_report.py` (06-08)
+- [ ] mini-fixture additions: `reference_strategies` in `mini_config.json`, clue→measure keys in `mini_content/clues.toml` (06-07)
+- [ ] candidate-config mechanism: pytest options `--planspiel-config` / `--planspiel-content-dir`, marker `balance`, `TUNING_TARGET` (06-01)
 
 ---
 

@@ -78,7 +78,7 @@ Requirements: BAL-01 … BAL-09. Out of scope: new measures, attacks, waves or e
   - They live in config like `reference_plans`.
 - **D-07: Tier comparability (BAL-09) is measured on final KZ.** Best in-budget final KZ and median in-budget final KZ must lie within a corridor across tiers; research proposes the width, e.g. ±5 KZ.
   - The tier choice stays a trade-off (more budget vs lower start KZ); no tier may be clearly better.
-- **D-08: Priority when principles conflict:** 1 every choice matters > 2 good → good > 3 rewarding > 4 controlled. The overspend gate is a hard constraint above all of them.
+- **D-08: Priority when principles conflict.** 1 every choice matters > 2 good → good > 3 rewarding > 4 controlled. The overspend gate is a hard constraint above all of them.
 - **D-09: Quartiles and "mediocre" are measured against in-budget plans only.** Over-budget plans are judged by the gate, not by quartiles.
 - **D-10: "Mediocre ends positive" (BAL-08)** = the median in-budget plan of each tier ends above that tier's start KZ. This holds today (63/65/66 vs 50/42/34) and must keep holding.
 - **D-11: The best in-budget result lands slightly below 100** (about 90–98 per tier), so the 0..100 clamp barely binds and the top stays distinguishable. A perfect 100 should be very hard or impossible to reach.
@@ -94,7 +94,7 @@ Requirements: BAL-01 … BAL-09. Out of scope: new measures, attacks, waves or e
   Capping overspend and voiding bonuses stay excluded (Phase 2 D-18).
 
 ### Final index (BAL-03)
-- **D-14: Purpose: determining the winner in the debrief.** The facilitator compares teams with one number, also across tiers, so it must be computable by hand in the debrief minute. It stays facilitator-side and is not added to the team booklet.
+- **D-14: Purpose — determining the winner in the debrief.** The facilitator compares teams with one number, also across tiers, so it must be computable by hand in the debrief minute. It stays facilitator-side and is not added to the team booklet.
 - **D-15: KZ leads, RoS corrects.**
   - Weights are set from the measured in-budget distributions so that KZ carries about 2/3 and RoS about 1/3 of the in-budget spread; research picks the spread measure, e.g. IQR.
   - Form: `KZ + k · RoS`, with `weight_kz = 1` and an integer `k` (a round number like 20 or 25), RoS taken with two decimals.
@@ -126,7 +126,7 @@ Requirements: BAL-01 … BAL-09. Out of scope: new measures, attacks, waves or e
   - Any story change is shown at the D-04 checkpoint.
 
 ### Plan-phase requirements review (2026-10-28)
-- **D-21: Plan cut: one check plan per requirement, then one tuning plan, then BAL-05.** *(Decided 2026-10-28 in the plan-phase requirements review.)*
+- **D-21: Plan cut — one check plan per requirement, then one tuning plan, then BAL-05.** *(Decided 2026-10-28 in the plan-phase requirements review.)*
   - BAL-01, BAL-02, BAL-03, BAL-04, BAL-06, BAL-07, BAL-08 and BAL-09 each get their own plan. It builds that requirement's check, metric or tooling test-first. A check may fail against today's config; that is its target.
   - Exactly one tuning plan follows. It changes the values (X and the final-index `k` included) until every check passes and ends at the D-04 checkpoint. It is the only plan that carries several requirement IDs: the tuning is one search under the D-08 priorities, and splitting it per requirement would re-tune the same values, X above all, in every plan.
   - The BAL-05 plan comes last. It adopts the approved config, re-pins the goldens, re-chooses the reference paths and regenerates the print material (Phase 5 D-19 order).
