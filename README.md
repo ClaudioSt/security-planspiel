@@ -171,7 +171,7 @@ Nicht enthalten: Event‑Effekte auf Kosten oder Budget (Straf‑OPEX, OPEX‑Ra
 - **Restbudget < 0 (Überziehung):** −X KZ **je angefangene Schrittweite** Überziehung. X (`overspend_penalty.kz_per_step`) und die Schrittweite (`overspend_penalty.step`) stehen in der Config und sind bis zur Neuskalierung vorläufig. Die Nachschlagetabelle für die Karte wird daraus erzeugt (`planspiel.review_text.penalty_rows`).
 - **Begrenzung:** Nach dem Budget Review wird die KZ auf 0–100 begrenzt; weitere Überziehung senkt sie dann nicht unter null.
 - **Event‑induzierte Überziehung:** Events wie das Sparprogramm können ein Team zwischenzeitlich über das Budget bringen. Im folgenden Change‑Fenster kann es durch Herabstufen oder Kündigen zurück ins Budget kommen; das spart nur OPEX späterer Wellen, Init wird nie erstattet. Bestraft wird nur, wer am Ende noch überzogen hat. Eine Budgetkürzung in der letzten Welle sollte es nicht geben, weil danach kein Change‑Fenster mehr folgt (der Validator warnt).
-- **Überziehen lohnt sich nie (automatisch geprüft):** Zu jedem Plan über Budget gibt es eine gekürzte Version – nur Level gesenkt oder Maßnahmen gekündigt, im Budget –, die eine höhere End‑KZ erreicht. `uv run planspiel gate` prüft das je Tier auf dem Referenzplan ohne Change‑Fenster‑Züge, nennt das nötige X und den Plan, der es bestimmt.
+- **Überziehen lohnt sich nie (automatisch geprüft):** Zu jedem Plan über Budget gibt es eine gekürzte Version – nur Level gesenkt oder Maßnahmen gekündigt, im Budget –, die eine höhere End‑KZ erreicht. `uv run planspiel gate` prüft das je Tier auf dem Referenzplan ohne Change‑Fenster‑Züge, nennt das nötige X und den Plan, der es bestimmt; `uv run planspiel gate --paths` prüft zusätzlich die legalen Spielpfade (Tausch‑Schicht und je ein Zug im Fenster nach Welle 1 oder 2) und nennt das X, das sich aus allen Tiers und Familien ergibt.
 
 ---
 
@@ -265,7 +265,13 @@ Die Tausch‑Schicht bewertet jeden gültigen Plan der ersten Welle mit jedem le
 uv run planspiel gate --tier medium
 ```
 
-Das Gate vergleicht je Tier jeden Plan über Budget mit seiner besten gekürzten Version (nur Level gesenkt oder Maßnahmen gekündigt, im Budget, inklusive der positiven Budget‑Review‑Stufe) auf dem Referenzplan ohne Change‑Fenster‑Züge. Es nennt das nötige X (strikt: jeder Plan über Budget verliert; schwach: Gleichstand erlaubt), zählt Pläne, die nicht verlieren können (gekürzte Version endet bei KZ 0) oder nicht kürzbar sind, und endet mit Fehlercode 1 samt dem bestimmenden Plan, wenn das X der Konfiguration zu klein ist. Ohne `--tier` laufen alle Tiers der Konfiguration. Die Prüfung über Spielpfade mit Change‑Fenster‑Zügen folgt mit der Neuskalierung.
+Das Gate vergleicht je Tier jeden Plan über Budget mit seiner besten gekürzten Version (nur Level gesenkt oder Maßnahmen gekündigt, im Budget, inklusive der positiven Budget‑Review‑Stufe) auf dem Referenzplan ohne Change‑Fenster‑Züge. Es nennt das nötige X (strikt: jeder Plan über Budget verliert; schwach: Gleichstand erlaubt), zählt Pläne, die nicht verlieren können (gekürzte Version endet bei KZ 0) oder nicht kürzbar sind, und endet mit Fehlercode 1 samt dem bestimmenden Plan, wenn das X der Konfiguration zu klein ist. Ohne `--tier` laufen alle Tiers der Konfiguration.
+
+```
+uv run planspiel gate --paths [--narrow] [--jobs N]
+```
+
+Mit `--paths` prüft das Gate zusätzlich drei Pfadfamilien je Tier: die Tausch‑Schicht (Pflicht‑Maßnahmentausch, legales Minimum), einen einzelnen Zug im Fenster nach Welle 1 und einen einzelnen Zug im Fenster nach Welle 2. Die gekürzte Version eines Pfads über Budget entsteht so: Startplan senken oder Maßnahmen kündigen, danach jede legale Fortsetzung der Familie. Das Debriefing dazu: „Hätte das Team zu Spielbeginn weniger oder niedrigere Maßnahmen gewählt, wäre es im Budget geblieben und besser gelandet.“ Je Familie nennt der Bericht das nötige X roh (Strafe ohne Untergrenze) und gekappt (KZ nach der Strafe auf 0–100 begrenzt, wie im Budget Review), die Verteilung, den bestimmenden Pfad sowie die Zahl der nicht verlierbaren und nicht kürzbaren Pfade. `--narrow` zeigt zusätzlich die enge Kürzung (gleiches Tauschpaar, Startplan und Level der neuen Maßnahme nur gesenkt) als Diagnose; sie geht nie in das Urteil ein. `--jobs N` rechnet die Tiers in bis zu N Prozessen. Die Kalibrierung lautet: **X = größtes nötiges X über Tiers und Familien + 1**; der Bericht endet mit dieser Empfehlung und nennt Tier und Familie, die sie bestimmen.
 
 **Vollständiger Dump nur auf Anfrage:**
 ```
