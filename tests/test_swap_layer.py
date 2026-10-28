@@ -221,6 +221,29 @@ def test_summary_equals_a_brute_force_over_all_mini_paths(mini, tier):
     assert summary["percentiles"]["p"] == list(report.PERCENTILES)
 
 
+@pytest.mark.parametrize("tier", TIERS)
+def test_start_aggregates_equal_a_brute_force_over_the_mini_paths(mini, tier):
+    layer = enum.enumerate_swap_layer(mini, tier)
+    starts = layer["starts"]
+    size = 4 ** len(mini.measures)
+    for name in ("best_in_budget", "worst_in_budget", "in_budget_paths"):
+        assert len(starts[name]) == size
+    expected = {}
+    for game in _brute_games(tier):
+        if not game[6].over_budget:
+            expected.setdefault(game[0], []).append(game[6].kz_final)
+    assert expected
+    for start in range(size):
+        finals = expected.get(start)
+        if finals is None:
+            assert (starts["best_in_budget"][start], starts["worst_in_budget"][start], starts["in_budget_paths"][start]) == (-1, -1, 0), start
+        else:
+            assert starts["best_in_budget"][start] == max(finals), start
+            assert starts["worst_in_budget"][start] == min(finals), start
+            assert starts["in_budget_paths"][start] == len(finals), start
+    assert sum(starts["in_budget_paths"]) == layer["counts"]["in_budget"]
+
+
 def test_summary_header_fields(mini):
     layer = enum.enumerate_swap_layer(mini, "medium")
     summary = report.summarize_swap_layer(mini, "medium", layer)

@@ -62,6 +62,7 @@ FORMULA_FUNCTIONS = {
         "recovery_table",
         "path_outcome",
         "swap_paths",
+        "single_moves",
         "worksheet_constants",
         "card_facts",
         "level_requirements",
