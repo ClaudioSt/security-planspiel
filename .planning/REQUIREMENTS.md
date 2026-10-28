@@ -59,7 +59,7 @@
 ### Balance (BAL)
 
 - [x] **BAL-01**: X is calibrated per tier on the trim-back criterion (raw and capped KZ); if the required X is still impractical after softening the step rewards, accepting the higher X or softening further is presented to the user as a decision with measured numbers (capping overspend is excluded: Phase 2 D-18, Phase 6 D-22)
-- [ ] **BAL-02**: All worksheet slopes and constants are hand-friendly (e.g. no 17/7 in wave 3); validator warnings become errors
+- [x] **BAL-02**: All worksheet slopes and constants are hand-friendly (e.g. no 17/7 in wave 3); validator warnings become errors
 - [ ] **BAL-03**: The 0.85 utilization filter is dropped from the balance workflow and Final-Index weights are rescaled using measured data
 - [ ] **BAL-04**: Balance reports show top-K, Pareto and unfiltered optima per tier, not only averages
 - [ ] **BAL-05**: All print material is regenerated from the rebalanced config
@@ -157,7 +157,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | FLOW-04 | Phase 7 | Pending |
 | FLOW-05 | Phase 7 | Pending |
 | BAL-01 | Phase 6 | Complete |
-| BAL-02 | Phase 6 | Pending |
+| BAL-02 | Phase 6 | Complete |
 | BAL-03 | Phase 6 | Pending |
 | BAL-04 | Phase 6 | Pending |
 | BAL-05 | Phase 6 | Pending |

@@ -262,7 +262,7 @@ Plans:
 - Review `booklet.MAX_PENALTY_ROWS` (12 today: X = 9 KZ je angefangene 10.000 €, ⌈100 ÷ 9⌉ rows) against the calibrated X and raise it together with a new RoS-page layout proof if X falls below 9 (a smaller X adds rows and stops the build with `ERROR print.model`). Review `booklet.MAX_WINDOWS` (2 today, about 2 mm to spare on the tracking page) the same way: a third change window or a fourth wave needs a new layout proof.
 - Remove the `≈` approximations on the master sheet once no slope is non-terminating (BAL-02).
 
-**Plans**: 1/10 plans executed
+**Plans**: 2/10 plans executed
 
 Plans:
 **Wave 1**
@@ -271,7 +271,7 @@ Plans:
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 06-02-PLAN.md — BAL-02: hand-calc severity parameter (errors on request), final-index weight rule, candidate hand-calc check (wave 2)
+- [x] 06-02-PLAN.md — BAL-02: hand-calc severity parameter (errors on request), final-index weight rule, candidate hand-calc check (wave 2)
 - [ ] 06-03-PLAN.md — BAL-03: Final-Index as KZ + k · RoS (two-decimal RoS), k measurement from pooled IQR, 0.85 filter removed; code and tests only, the moved answer-key row is a tuning target until 06-10 (wave 2)
 - [ ] 06-04-PLAN.md — BAL-06: dominance, near-mandatory band, overpowered drop, decision-point effects (wave 2)
 - [ ] 06-05-PLAN.md — BAL-08: median above start on both layers, comeback after wave 1 (wave 2)
@@ -322,5 +322,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 3 
 | 3. Content Source & Veiling | 3/3 | Complete    | 2026-10-19 |
 | 4. Print Pipeline & Attack Worksheets | 6/6 | Complete    | 2026-10-22 |
 | 5. Player & Facilitator Print Material | 16/16 | Complete    | 2026-10-26 |
-| 6. Rebalance | 1/10 | In Progress|  |
+| 6. Rebalance | 2/10 | In Progress|  |
 | 7. Session Flow & Handoff | 0/TBD | Not started | - |
