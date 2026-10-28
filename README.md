@@ -287,15 +287,12 @@ uv run python simulate_outcomes.py --config simulation_config.json --budget-tier
 
 Die Ausgabe enthält alle Maßnahmen-Kombinationen im Budget (inkl. Level 0-3), die End-KZ, Schäden, CIA-Mali sowie die Kostenübersicht.
 
-**Legacy-Vollausgabe mit Budget-Filter (realistische Outcomes, Budget voll nutzen):**
+**Legacy-Vollausgabe mit Mindestkosten:**
 ```
-uv run python simulate_outcomes.py --config simulation_config.json --budget-tier medium --budget-utilization 0.9 --output simulation_results.json
+uv run python simulate_outcomes.py --config simulation_config.json --budget-min 300 --output simulation_results.json
 ```
 
-`--budget-max` ist keine harte Obergrenze: Es ist nur die Basis für `--budget-utilization` (Schwelle = Anteil × `--budget-max`); die harte Grenze ist das Tier-Budget inkl. Event-Budget. `--budget-min`, `--budget-max` und `--budget-utilization` wirken nur zusammen mit `--output`.
-```
-uv run python simulate_outcomes.py --config simulation_config.json --budget-min 300 --budget-max 380 --output simulation_results.json
-```
+Es gibt keinen Auslastungsfilter: Die Ausgabe enthält jede Kombination im Budget, auch die mit geringer Auslastung. Die harte Obergrenze ist das Tier-Budget inkl. Event-Budget; `--budget-min` wirkt nur zusammen mit `--output`.
 
 **Auswertung der Simulationsergebnisse:**
 ```

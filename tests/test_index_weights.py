@@ -67,7 +67,7 @@ def test_recommended_k_is_the_multiple_of_five_nearest_to_the_two_to_one_split()
 
 @pytest.mark.parametrize(
     ("iqr_kz", "iqr_ros", "expected"),
-    [(25, Fraction(1, 2), 25), (Fraction(125, 10), Fraction(1, 2), 5 * 5), (15, Fraction(1, 2), 15)],
+    [(25, Fraction(1, 2), 25), (11, Fraction(1, 2), 10), (15, Fraction(1, 2), 15)],
 )
 def test_recommended_k_rounds_to_multiples_of_five(iqr_kz, iqr_ros, expected):
     _, k = index_weights.recommended_k(iqr_kz, iqr_ros)

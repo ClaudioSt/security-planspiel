@@ -26,7 +26,7 @@ Every balance decision is checked against these (measurable via full enumeration
 
 - ✓ Deterministic resolution: E-value = Team_C·wC + Team_I·wI + Team_A·wA, Gesamtreduktion = E-value + bonus, 3-case resolution with linear KZ interpolation — existing (`simulate_outcomes.py`)
 - ✓ All numeric values parametrized in `simulation_config.json` (budget tiers, waves, attacks, measures, events, final events) — existing
-- ✓ Full enumeration of valid measure combinations per budget tier (`simulate_outcomes.py --budget-tier … --budget-utilization …`) — existing
+- ✓ Full enumeration of valid measure combinations per budget tier (`simulate_outcomes.py --budget-tier …`) — existing
 - ✓ Top-N ranking by Final-Index (`analyze_simulation_results.py`) and named-strategy dominance check (`balance_analysis.py`) — existing
 - ✓ Per-tier KZ start values (50/42/34) balanced — existing (commit 1cfb2fa)
 - ✓ Game is interactive and engaging — validated by MHP workshop feedback ("interaktiv ++"); keep the format

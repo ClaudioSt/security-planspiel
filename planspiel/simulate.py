@@ -34,8 +34,6 @@ def run_simulation(
     budget_tier_name: str,
     output_path: Path,
     budget_min: Optional[int],
-    budget_max: Optional[int],
-    budget_utilization: float,
 ) -> Dict:
     cfg = load_config(config_path)
     budget_tier = cfg.budget_tiers[budget_tier_name or cfg.default_budget_tier]
@@ -46,8 +44,6 @@ def run_simulation(
     # Use fixed budget value
     tier_budget = budget_tier.budget
     min_cost = budget_min if budget_min is not None else 0
-    max_cost = budget_max if budget_max is not None else tier_budget
-    utilization_threshold = max_cost * budget_utilization if budget_utilization else None
 
     for selection in iter_selections(measure_ids, LEVEL_OPTIONS):
         if not rules.dependencies_satisfied(selection, cfg.measures):
@@ -56,8 +52,6 @@ def run_simulation(
         total_cost = outcome["costs"]["total"]
 
         if total_cost < min_cost or outcome["over_budget"]:
-            continue
-        if utilization_threshold is not None and total_cost < utilization_threshold:
             continue
 
         del outcome["over_budget"]
@@ -71,11 +65,7 @@ def run_simulation(
         "budget_tier": budget_tier.name,
         "budget": tier_budget,
         "kz_start": kz_start,
-        "budget_filter": {
-            "min": min_cost,
-            "max": max_cost,
-            "utilization_min": utilization_threshold,
-        },
+        "budget_filter": {"min": min_cost},
         "measures": measure_ids,
     }
 
@@ -94,17 +84,10 @@ def build_parser():
     parser.add_argument(
         "--output",
         default=None,
-        help="Legacy-Vollausgabe als JSON (nur Kombinationen im Budget, Eingabe für analyze_simulation_results.py). "
+        help="Legacy-Vollausgabe als JSON (jede Kombination im Budget, Eingabe für analyze_simulation_results.py). "
         "Ohne --output wird die Zusammenfassung über alle Kombinationen geschrieben.",
     )
     parser.add_argument("--budget-min", type=int, default=None, help="Minimum total cost filter (points).")
-    parser.add_argument("--budget-max", type=int, default=None, help="Maximum total cost filter (points).")
-    parser.add_argument(
-        "--budget-utilization",
-        type=float,
-        default=None,
-        help="Minimum utilization of budget max (e.g. 0.9 for 90%%).",
-    )
     parser.add_argument(
         "--summary",
         default=None,
@@ -125,17 +108,8 @@ def parse_args(argv=None):
     parser = build_parser()
     args = parser.parse_args(argv)
     if args.output is None:
-        legacy = [
-            flag
-            for flag, value in (
-                ("--budget-min", args.budget_min),
-                ("--budget-max", args.budget_max),
-                ("--budget-utilization", args.budget_utilization),
-            )
-            if value is not None
-        ]
-        if legacy:
-            parser.error(f"{', '.join(legacy)} wirken nur zusammen mit --output (Legacy-Vollausgabe).")
+        if args.budget_min is not None:
+            parser.error("--budget-min wirkt nur zusammen mit --output (Legacy-Vollausgabe).")
     else:
         summary_flags = [
             flag
@@ -176,8 +150,6 @@ def main(argv=None) -> int:
             args.budget_tier,
             Path(args.output),
             args.budget_min,
-            args.budget_max,
-            args.budget_utilization or 0.0,
         )
         print(json.dumps(summary, indent=2))
         return 0
