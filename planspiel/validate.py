@@ -102,6 +102,7 @@ def scale_factors(raw: dict) -> Tuple[int, int]:
 
 
 HAND_CALC_LEVELS = ("warning", "error")
+REFERENCE_STRATEGY_KINDS = ("good", "mediocre", "bad")
 
 
 class _Validator:
@@ -224,6 +225,8 @@ class _Validator:
             self.check_practice(raw["practice"], attacks, measures)
         if "reference_plans" in raw:
             self.check_reference_plans(raw["reference_plans"], measures)
+        if "reference_strategies" in raw:
+            self.check_reference_strategies(raw["reference_strategies"], measures)
         return self.issues
 
     def check_measures(self, measures: dict) -> None:
@@ -710,41 +713,72 @@ class _Validator:
         if not self.container(block, dict, path):
             return
         tiers = self.raw.get("budget_tiers")
-        waves = self.raw.get("waves")
-        max_windows = len(waves) - 1 if isinstance(waves, list) else None
         for tier, plan in block.items():
             plan_path = f"{path}.{tier}"
             if not isinstance(tiers, dict) or tier not in tiers:
                 self.error("ref.unknown_tier", plan_path, f"Unbekannter Budget-Tier {tier!r}")
-            if not self.container(plan, dict, plan_path):
+            self._check_reference_path(plan, plan_path, measures, ("start", "windows"))
+
+    def check_reference_strategies(self, block: Any, measures: dict) -> None:
+        """Reference strategies of the quartile checks (BAL-07, D-25): tier, name, then kind plus the plan shape.
+
+        Kept apart from `reference_plans`; legality (Kurswechsel, budget) is judged by `rules.evaluate_path`.
+        """
+        path = "reference_strategies"
+        if not self.container(block, dict, path):
+            return
+        tiers = self.raw.get("budget_tiers")
+        for tier, entries in block.items():
+            tier_path = f"{path}.{tier}"
+            if not isinstance(tiers, dict) or tier not in tiers:
+                self.error("ref.unknown_tier", tier_path, f"Unbekannter Budget-Tier {tier!r}")
+            if not self.container(entries, dict, tier_path):
                 continue
-            for key in plan:
-                if key not in ("start", "windows"):
-                    self.error("schema.keys", f"{plan_path}.{key}", f"Unbekannter Schlüssel '{key}' im Referenzpfad")
-            start = self.field(plan, "start", plan_path)
-            if start is not None:
-                self.check_reference_selection(start, f"{plan_path}.start", measures)
-            windows = self.field(plan, "windows", plan_path)
-            if windows is None or not self.container(windows, list, f"{plan_path}.windows"):
+            for name, entry in entries.items():
+                entry_path = f"{tier_path}.{name}"
+                if isinstance(entry, dict):
+                    kind = entry.get("kind")
+                    if not isinstance(kind, str) or kind not in REFERENCE_STRATEGY_KINDS:
+                        self.error(
+                            "ref.bad_kind",
+                            f"{entry_path}.kind",
+                            f"Art muss eine von {', '.join(REFERENCE_STRATEGY_KINDS)} sein, gefunden {kind!r}",
+                        )
+                self._check_reference_path(entry, entry_path, measures, ("kind", "start", "windows"))
+
+    def _check_reference_path(self, plan: Any, plan_path: str, measures: dict, allowed_keys: tuple) -> None:
+        """Start selection and change windows of one reference path: references and ranges only."""
+        waves = self.raw.get("waves")
+        max_windows = len(waves) - 1 if isinstance(waves, list) else None
+        if not self.container(plan, dict, plan_path):
+            return
+        for key in plan:
+            if key not in allowed_keys:
+                self.error("schema.keys", f"{plan_path}.{key}", f"Unbekannter Schlüssel '{key}' im Referenzpfad")
+        start = self.field(plan, "start", plan_path)
+        if start is not None:
+            self.check_reference_selection(start, f"{plan_path}.start", measures)
+        windows = self.field(plan, "windows", plan_path)
+        if windows is None or not self.container(windows, list, f"{plan_path}.windows"):
+            return
+        if max_windows is not None and len(windows) > max_windows:
+            self.error(
+                "ref.window_count",
+                f"{plan_path}.windows",
+                f"{len(windows)} Fenster bei {len(waves)} Wellen, höchstens {max_windows}",
+            )
+        for number, window in enumerate(windows, start=1):
+            window_path = f"{plan_path}.windows[{number}]"
+            if not self.container(window, dict, window_path):
                 continue
-            if max_windows is not None and len(windows) > max_windows:
-                self.error(
-                    "ref.window_count",
-                    f"{plan_path}.windows",
-                    f"{len(windows)} Fenster bei {len(waves)} Wellen, höchstens {max_windows}",
-                )
-            for number, window in enumerate(windows, start=1):
-                window_path = f"{plan_path}.windows[{number}]"
-                if not self.container(window, dict, window_path):
-                    continue
-                for key in window:
-                    if key not in ("selection", "swap"):
-                        self.error("schema.keys", f"{window_path}.{key}", f"Unbekannter Schlüssel '{key}' im Fenster")
-                selection = self.field(window, "selection", window_path)
-                if selection is not None:
-                    self.check_reference_selection(selection, f"{window_path}.selection", measures)
-                if "swap" in window:
-                    self.check_reference_swap(window["swap"], f"{window_path}.swap", measures)
+            for key in window:
+                if key not in ("selection", "swap"):
+                    self.error("schema.keys", f"{window_path}.{key}", f"Unbekannter Schlüssel '{key}' im Fenster")
+            selection = self.field(window, "selection", window_path)
+            if selection is not None:
+                self.check_reference_selection(selection, f"{window_path}.selection", measures)
+            if "swap" in window:
+                self.check_reference_swap(window["swap"], f"{window_path}.swap", measures)
 
     def check_reference_selection(self, selection: Any, path: str, measures: dict) -> None:
         if not self.container(selection, dict, path):

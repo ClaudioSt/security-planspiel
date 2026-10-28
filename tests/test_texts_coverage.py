@@ -122,6 +122,7 @@ def test_a_new_config_measure_without_text_fails_coverage(tmp_path):
     raw = json.loads(MINI.read_text(encoding="utf-8"))
     raw["measures"]["M99"] = copy.deepcopy(raw["measures"]["M1"])
     raw["measures"]["M99"]["name"] = "Neu"
+    del raw["reference_strategies"]  # its selections name exactly the four mini measures
     config_path = tmp_path / "config.json"
     config_path.write_text(json.dumps(raw, ensure_ascii=False), encoding="utf-8")
     texts = load_texts(MINI_CONTENT_DIR / "texte.toml")

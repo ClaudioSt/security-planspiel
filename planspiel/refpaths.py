@@ -28,7 +28,11 @@ class Candidate(NamedTuple):
 
 def reference_path(cfg, tier_name: str) -> Path:
     """The pinned reference path of a tier (KeyError without a `reference_plans` entry)."""
-    block = cfg.reference_plans[tier_name]
+    return path_from_block(cfg.reference_plans[tier_name])
+
+
+def path_from_block(block) -> Path:
+    """The `rules.Path` of a config block with `start` and `windows` (reference plans and reference strategies)."""
     windows = tuple(
         Window(dict(window["selection"]), tuple(window["swap"]) if window.get("swap") is not None else None)
         for window in block["windows"]
