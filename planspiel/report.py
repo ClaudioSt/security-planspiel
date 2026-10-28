@@ -25,11 +25,13 @@ def nearest_rank(sorted_values: List, p: int):
     return sorted_values[max(0, (p * len(sorted_values) + 99) // 100 - 1)]
 
 
-def pareto_front(store: ResultStore) -> List[Dict]:
+def pareto_front(store: ResultStore, in_budget_only: bool = False) -> List[Dict]:
     pairs = {}
-    for code_index, kz, own in zip(
-        store.column("code_index"), store.column("kz_final"), store.column("own_cost")
+    for code_index, kz, own, over in zip(
+        store.column("code_index"), store.column("kz_final"), store.column("own_cost"), store.column("over_budget")
     ):
+        if in_budget_only and over:
+            continue
         key = (own, kz)
         seen = pairs.get(key)
         if seen is None:
@@ -156,19 +158,26 @@ def summarize_tier(cfg, tier_name: str, store: ResultStore, top_k: int = DEFAULT
     best_over = best_of(1)
     kz_gap = None if best_in is None or best_over is None else best_over["kz_final"] - best_in["kz_final"]
 
-    points = []
-    for point in pareto_front(store):
-        i = code_col.index(point["example_index"])
-        points.append(
-            {
-                "own_cost": point["own_cost"],
-                "kz_final": point["kz_final"],
-                "combinations": point["combinations"],
-                "example": entry(i),
-            }
-        )
+    def pareto_block(in_budget_only):
+        points = []
+        for point in pareto_front(store, in_budget_only):
+            i = code_col.index(point["example_index"])
+            points.append(
+                {
+                    "own_cost": point["own_cost"],
+                    "kz_final": point["kz_final"],
+                    "combinations": point["combinations"],
+                    "example": entry(i),
+                }
+            )
+        return {
+            "objectives": {"kz_final": "max", "own_cost": "min"},
+            "count": len(points),
+            "points": points,
+        }
 
-    in_budget_count = n - sum(over_col)
+    in_budget_indices = [i for i in range(n) if not over_col[i]]
+    in_budget_count = len(in_budget_indices)
     return {
         "format": 1,
         "tier": tier_name,
@@ -191,6 +200,11 @@ def summarize_tier(cfg, tier_name: str, store: ResultStore, top_k: int = DEFAULT
             "ros": ranked((i for i in range(n) if ros_values[i] is not None), ros_key),
             "final_index": ranked(range(n), final_index_key),
         },
+        "top_in_budget": {
+            "kz_final": ranked(in_budget_indices, kz_key),
+            "ros": ranked((i for i in in_budget_indices if ros_values[i] is not None), ros_key),
+            "final_index": ranked(in_budget_indices, final_index_key),
+        },
         "percentiles": {
             "method": "nearest-rank",
             "p": list(PERCENTILES),
@@ -203,11 +217,8 @@ def summarize_tier(cfg, tier_name: str, store: ResultStore, top_k: int = DEFAULT
             "over_budget": best_over,
             "kz_gap": kz_gap,
         },
-        "pareto": {
-            "objectives": {"kz_final": "max", "own_cost": "min"},
-            "count": len(points),
-            "points": points,
-        },
+        "pareto": pareto_block(False),
+        "pareto_in_budget": pareto_block(True),
     }
 
 
@@ -266,14 +277,28 @@ def format_console(summary: Dict) -> str:
         for item in summary["top"][key][:CONSOLE_TOP_LINES]:
             lines.append(f"  {item['rank']}. {_entry_line(item)}")
 
-    pareto = summary["pareto"]
-    lines.append("")
-    lines.append(f"Pareto-Front (End-KZ vs. eigene Kosten): {pareto['count']} Punkte")
-    if pareto["points"]:
-        cheapest = pareto["points"][0]
-        highest = pareto["points"][-1]
-        lines.append(f"  günstigster Punkt: eigene Kosten {cheapest['own_cost']}, End-KZ {cheapest['kz_final']}")
-        lines.append(f"  höchster Punkt: eigene Kosten {highest['own_cost']}, End-KZ {highest['kz_final']}")
+    for key, label in (
+        ("kz_final", "Top im Budget nach End-KZ"),
+        ("ros", "Top im Budget nach RoS"),
+        ("final_index", "Top im Budget nach Final-Index (vorläufig)"),
+    ):
+        lines.append("")
+        lines.append(f"{label} (K={summary['top_k']}, erste {CONSOLE_TOP_LINES}):")
+        for item in summary["top_in_budget"][key][:CONSOLE_TOP_LINES]:
+            lines.append(f"  {item['rank']}. {_entry_line(item)}")
+
+    for key, label in (
+        ("pareto", "Pareto-Front (End-KZ vs. eigene Kosten, alle Kombinationen)"),
+        ("pareto_in_budget", "Pareto-Front im Budget (End-KZ vs. eigene Kosten)"),
+    ):
+        pareto = summary[key]
+        lines.append("")
+        lines.append(f"{label}: {pareto['count']} Punkte")
+        if pareto["points"]:
+            cheapest = pareto["points"][0]
+            highest = pareto["points"][-1]
+            lines.append(f"  günstigster Punkt: eigene Kosten {cheapest['own_cost']}, End-KZ {cheapest['kz_final']}")
+            lines.append(f"  höchster Punkt: eigene Kosten {highest['own_cost']}, End-KZ {highest['kz_final']}")
     return "\n".join(lines)
 
 

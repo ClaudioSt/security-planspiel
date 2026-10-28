@@ -323,9 +323,11 @@ def test_summary_is_deterministic_and_has_no_timing(mini):
         "top_k",
         "final_index_status",
         "top",
+        "top_in_budget",
         "percentiles",
         "best",
         "pareto",
+        "pareto_in_budget",
     ]
 
 
