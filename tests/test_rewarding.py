@@ -13,7 +13,7 @@ import pytest
 
 from planspiel import enumerate as enum
 from planspiel import report, rewarding, rules
-from tests.support import REPO_ROOT, harness
+from tests.support import REPO_ROOT, candidate, harness
 
 TIERS = ("low", "medium", "high")
 MINI = REPO_ROOT / "tests" / "fixtures" / "mini_config.json"
@@ -291,3 +291,49 @@ def test_format_rewarding_reports_every_tier_in_german():
     assert "low" in text and "medium" in text
     assert "Comeback" in text and "Median" in text
     assert "keine Pläne im Budget" in text
+
+
+# ---------------------------------------------------------------------------------------------------------------
+# slow checks on the configured (real or candidate) config
+# ---------------------------------------------------------------------------------------------------------------
+
+_BLOCKS = {}
+
+
+def _balance_blocks(path):
+    key = str(path)
+    if key not in _BLOCKS:
+        cfg = candidate.load_balance_config(path)
+        statics = candidate.static_summaries(path)
+        layers = candidate.swap_layers(path)
+        _BLOCKS[key] = {
+            tier: rewarding.rewarding_tier(
+                cfg,
+                tier,
+                statics[tier],
+                report.summarize_swap_layer(cfg, tier, layers[tier]),
+                candidate.tier_tables(path, tier),
+                layers[tier],
+            )
+            for tier in statics
+        }
+    return _BLOCKS[key]
+
+
+def _failures(path, prefix):
+    blocks = _balance_blocks(path)
+    return [line for line in rewarding.check_rewarding(blocks) if prefix(line)], rewarding.format_rewarding(blocks)
+
+
+@pytest.mark.slow
+@pytest.mark.balance
+def test_median_ends_above_start_on_both_layers(balance_config_path):
+    failures, text = _failures(balance_config_path, lambda line: "Median" in line)
+    assert not failures, "\n".join(failures) + "\n\n" + text
+
+
+@pytest.mark.slow
+@pytest.mark.balance
+def test_comeback_after_wave_one_is_possible(balance_config_path):
+    failures, text = _failures(balance_config_path, lambda line: "Comeback" in line)
+    assert not failures, "\n".join(failures) + "\n\n" + text
