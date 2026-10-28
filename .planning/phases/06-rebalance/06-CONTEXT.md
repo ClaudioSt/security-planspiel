@@ -125,6 +125,16 @@ Requirements: BAL-01 … BAL-09. Out of scope: new measures, attacks, waves or e
   - Story edits must pass the veil scan, giveaway, digit and SC6 quote checks.
   - Any story change is shown at the D-04 checkpoint.
 
+### Plan-phase requirements review (2026-10-28)
+- **D-21: Plan cut: one check plan per requirement, then one tuning plan, then BAL-05.** *(Decided 2026-10-28 in the plan-phase requirements review.)*
+  - BAL-01, BAL-02, BAL-03, BAL-04, BAL-06, BAL-07, BAL-08 and BAL-09 each get their own plan. It builds that requirement's check, metric or tooling test-first. A check may fail against today's config; that is its target.
+  - Exactly one tuning plan follows. It changes the values (X and the final-index `k` included) until every check passes and ends at the D-04 checkpoint. It is the only plan that carries several requirement IDs: the tuning is one search under the D-08 priorities, and splitting it per requirement would re-tune the same values, X above all, in every plan.
+  - The BAL-05 plan comes last. It adopts the approved config, re-pins the goldens, re-chooses the reference paths and regenerates the print material (Phase 5 D-19 order).
+- **D-22: BAL-01's "capping overspend" option is superseded.** Phase 2 D-18 and D-13a exclude capping and voiding bonuses. If X stays above ~5 after softening, the user chooses between accepting the higher X and softening further. *(Clarified 2026-10-28 in the plan-phase requirements review.)*
+- **D-23: The "overspends" bad archetype of BAL-07 is judged by the overspend gate (D-09), not by quartile placement.** Putting a typical overspender into the bottom quartile would need a steep X, which D-12 and Phase 2 D-18 exclude. The other bad archetypes (ignores clues, all-in on one CIA dimension, hoards budget) are defined as in-budget plans and placed by quartile. *(Clarified 2026-10-28 in the plan-phase requirements review.)*
+- **D-24: BAL-05 covers the generated print set**, i.e. `planspiel print` and the PDFs in `final_documents/generated/`. The legacy hand-maintained docx/pptx in `final_documents/` are retired in Phase 7 (LEG-01) and are not updated in this phase. *(Clarified 2026-10-28 in the plan-phase requirements review.)*
+- **D-25: The BAL-07 reference strategies get their own config key**, e.g. `reference_strategies`. `reference_plans` keeps the Phase-5 answer-key paths that `planspiel referenzpfade` chooses. *(Clarified 2026-10-28 in the plan-phase requirements review.)*
+
 ### Claude's Discretion
 - The calibration method, e.g. a trim-back sweep over cached per-combination tuples instead of re-enumerating, and the search strategy over config values.
 - The exact metrics and numeric thresholds for BAL-06…09 (corridor width D-07, spread measure D-15, overpowered thresholds D-16), proposed with data at D-04.
@@ -132,6 +142,10 @@ Requirements: BAL-01 … BAL-09. Out of scope: new measures, attacks, waves or e
 - The clue weight scale and the exact graduation rule (D-18), e.g. the sum of clue weights per measure is monotone in bonus size.
 - How the balance report presents top-K, Pareto and unfiltered optima (BAL-04); the existing `simulation_summary_<tier>.json` already holds most of it.
 - Whether `MAX_PENALTY_ROWS` rises and the RoS page is re-proven, which depends on the final X.
+- What the trimmed in-budget version of an over-budget move path is (swap layer, window-1/window-2 families) for the move-path gate (D-13).
+- Which population the path-based reference strategies are placed against: static in-budget plans or legal in-budget paths (D-05, D-09).
+- How "the budget tier shifts outcomes" (BAL-06) is shown while best and median stay inside the D-07 corridor, e.g. each tier has a different optimal plan.
+- How the suite stays green while goldens and print wait for D-04 approval. One option: wave-1 checks are tested on fixtures, and the tuning plan works on a candidate config file that replaces `simulation_config.json` only after approval.
 
 </decisions>
 

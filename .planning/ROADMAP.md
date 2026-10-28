@@ -248,10 +248,10 @@ Plans:
 **Requirements**: BAL-01, BAL-02, BAL-03, BAL-04, BAL-05, BAL-06, BAL-07, BAL-08, BAL-09
 **Success Criteria** (what must be TRUE):
 
-  1. X is calibrated per tier on the trim-back criterion (raw and capped KZ) and the overspend gate passes with it. If the required X was impractical, the user chose between capping overspend and softening step rewards from presented numbers, and the gate passes under that choice.
+  1. X is calibrated per tier on the trim-back criterion (raw and capped KZ) and the overspend gate passes with it. If the required X was still impractical after softening, the user chose between accepting the higher X and softening further from presented numbers (capping is excluded, D-22), and the gate passes under that choice.
   2. The validator runs with hand-calculability checks as errors and passes: every worksheet slope and constant is hand-friendly, and no 17/7-type slope remains.
   3. The per-tier balance report runs without the 0.85 utilization filter and shows top-K, Pareto points and unfiltered optima. Final-Index weights are rescaled from measured data so RoS·100 no longer dominates KZ.
-  4. Design-principle checks pass per tier under full enumeration. No measure/level is strictly dominated or near-mandatory, and every decision point shifts outcomes. Good reference strategies rank in the top quartile and bad ones in the bottom quartile. A mediocre strategy ends above start KZ, a comeback after wave 1 is possible, and best results and spread stay comparable across tiers.
+  4. Design-principle checks pass per tier under full enumeration. No measure/level is strictly dominated or near-mandatory, and every decision point shifts outcomes. Good reference strategies rank in the top quartile and bad in-budget ones in the bottom quartile; an overspending one is judged by the gate (D-23). A mediocre strategy ends above start KZ, a comeback after wave 1 is possible, and best results and spread stay comparable across tiers.
   5. All print material is regenerated from the rebalanced config with one command, and the print≡sim equivalence and Welle-0 golden tests pass on the new values.
 
 **Carried over from Phase 5:**
