@@ -157,7 +157,8 @@ def test_best_band_names_a_best_below_the_minimum():
 def test_iqr_outside_the_range_names_tier_and_layer():
     spreads = _good()
     spreads["low"] = spreads["low"]._replace(iqr_static=12, iqr_legal=22)
-    spreads["medium"] = spreads["medium"]._replace(iqr_static=17, iqr_legal=17)
+    spreads["medium"] = spreads["medium"]._replace(iqr_static=14, iqr_legal=20)
+    spreads["high"] = spreads["high"]._replace(iqr_static=14, iqr_legal=20)  # tier differences stay within 4
     lines = spread.check_iqr(spreads)
     assert len(lines) == 2
     assert any("12" in line and "statisch" in line for line in lines)
