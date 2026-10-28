@@ -59,18 +59,23 @@ def test_median_margins_without_in_budget_plans_are_none_for_that_layer():
 # ---------------------------------------------------------------------------------------------------------------
 
 
+_KZ_AFTER_ONE = {1: 49, 2: 45, 3: 44, 4: 30}
+
+
+def _fake_outcome(codes, window_cost_total):
+    assert window_cost_total == 0
+    assert len(codes) == 3 and len(set(codes)) == 1
+    return SimpleNamespace(kz_after=(_KZ_AFTER_ONE[codes[0]], 0, 0))
+
+
 class _FakeTables:
     """Five states: state 0 is invalid; wave-1 KZ after the start 50: states 1..4 end at 49, 45, 44, 30."""
 
     wave_count = 3
     tier = SimpleNamespace(kz_start=50)
     valid = bytearray([0, 1, 1, 1, 1])
-    _kz_after_1 = {1: 49, 2: 45, 3: 44, 4: 30}
-
-    def path_outcome(self, codes, window_cost_total):
-        assert window_cost_total == 0
-        assert len(codes) == self.wave_count and len(set(codes)) == 1
-        return SimpleNamespace(kz_after=(self._kz_after_1[codes[0]], 0, 0))
+    # a game formula is defined once in rules.py (test_single_definition), so the stub gets it as an attribute
+    path_outcome = staticmethod(_fake_outcome)
 
 
 def _starts(best, paths):
