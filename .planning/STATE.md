@@ -6,14 +6,14 @@ current_phase: 6
 current_phase_name: Rebalance
 status: executing
 stopped_at: Phase 6 context gathered
-last_updated: "2026-10-28T21:31:12.231Z"
+last_updated: "2026-10-28T21:49:51.525Z"
 last_activity: 2026-10-28
 last_activity_desc: Phase 6 execution started
 progress:
   total_phases: 7
   completed_phases: 5
   total_plans: 50
-  completed_plans: 45
+  completed_plans: 46
   percent: 71
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-10-27)
 ## Current Position
 
 Phase: 6 (Rebalance) — EXECUTING
-Plan: 6 of 10
+Plan: 7 of 10
 Status: Ready to execute
 Last activity: 2026-10-28 — Phase 6 execution started
 
@@ -103,6 +103,7 @@ Progress: [███████░░░] 71% (5 of 7 phases)
 | Phase 06 P03 | 75min | 2 tasks | 16 files |
 | Phase 06 P04 | 70min | 2 tasks | 3 files |
 | Phase 06 P05 | 35min | 2 tasks | 2 files |
+| Phase 06 P06 | 30min | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -178,6 +179,7 @@ Recent decisions affecting current work:
 - [Phase 06-03]: Final-Index = weight_kz*KZ + weight_ros*RoS2 (two-decimal RoS); today's pooled IQR KZ 18 / RoS 0.43 gives k_raw 20.8, recommended k = 20 (KZ share 0.68); moved golden row final.final_index tracked by strict xfail until the 06-10 re-pin
 - [Phase 06-04]: Near-mandatory band is the 5-KZ band widened to the 200 best in-budget plans (200 in every tier today). Today near-mandatory: M7 all tiers, M2 medium/high, M1/M4/M5 also in high; overpowered: M7 (drop 14/16/18), M2 in high (11); dominance, swing, tier optima, Kurswechsel and window move pass. Thresholds go to D-04 for re-approval.
 - [Phase 06]: BAL-08 thresholds (median margin 5, comeback drop 5 / gain 10 / share 0.9) are proposals for D-04; low-tier comeback share 0.915 has only 1.5 pp headroom
+- [Phase 06-06]: BAL-09 spread thresholds (corridor 6, best 90..98, IQR 13..21, IQR diff 4, p5-p95 50, median-start 28) are module constants in planspiel/spread.py for D-04 re-approval; D-11 band and median bound are TUNING_TARGET today
 
 ### Pending Todos
 
@@ -200,6 +202,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-10-28T21:31:04.060Z
+Last session: 2026-10-28T21:49:45.499Z
 Stopped at: Phase 6 context gathered
 Resume file: .planning/phases/06-rebalance/06-CONTEXT.md
