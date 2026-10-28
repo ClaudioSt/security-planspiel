@@ -6,14 +6,14 @@ current_phase: 6
 current_phase_name: Rebalance
 status: executing
 stopped_at: Phase 6 context gathered
-last_updated: "2026-10-28T20:17:27.397Z"
+last_updated: "2026-10-28T20:41:40.153Z"
 last_activity: 2026-10-28
 last_activity_desc: Phase 6 execution started
 progress:
   total_phases: 7
   completed_phases: 5
   total_plans: 50
-  completed_plans: 42
+  completed_plans: 43
   percent: 71
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-10-27)
 ## Current Position
 
 Phase: 6 (Rebalance) — EXECUTING
-Plan: 3 of 10
+Plan: 4 of 10
 Status: Ready to execute
 Last activity: 2026-10-28 — Phase 6 execution started
 
@@ -100,6 +100,7 @@ Progress: [███████░░░] 71% (5 of 7 phases)
 | Phase 05 P16 | 40 min | 2 tasks | 22 files |
 | Phase 06 P01 | 60min | 3 tasks | 14 files |
 | Phase 06 P02 | 25min | 2 tasks | 2 files |
+| Phase 06 P03 | 75min | 2 tasks | 16 files |
 
 ## Accumulated Context
 
@@ -172,6 +173,7 @@ Recent decisions affecting current work:
 - [Phase 06-01]: Path gate trim is start-lowered (lower/cancel START levels, then any legal continuation of the family pool); narrow same-swap-pair is a diagnostic only. Measured X: static 9/5/3, swap 9/5/2, window-1 9/5/3, window-2 5/2/1, narrow 14/7/5; recommended X = 10 (low, static); raw/capped reading A1 and the definition are confirmed at D-04
 - [Phase 06-01]: Candidate checks use xfail TUNING_TARGET plus --runxfail with --planspiel-config/--planspiel-content-dir; gate --paths --jobs 3 takes about 10 min, with --narrow about 19 min
 - [Phase 06-02]: hand_calc_level default stays warning until 06-10 flips it with the adopted config; exfil fix option kz -5..9 at cap 7 is hand-friendly
+- [Phase 06-03]: Final-Index = weight_kz*KZ + weight_ros*RoS2 (two-decimal RoS); today's pooled IQR KZ 18 / RoS 0.43 gives k_raw 20.8, recommended k = 20 (KZ share 0.68); moved golden row final.final_index tracked by strict xfail until the 06-10 re-pin
 
 ### Pending Todos
 
@@ -194,6 +196,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-10-28T20:17:20.084Z
+Last session: 2026-10-28T20:41:32.417Z
 Stopped at: Phase 6 context gathered
 Resume file: .planning/phases/06-rebalance/06-CONTEXT.md

@@ -60,7 +60,7 @@
 
 - [x] **BAL-01**: X is calibrated per tier on the trim-back criterion (raw and capped KZ); if the required X is still impractical after softening the step rewards, accepting the higher X or softening further is presented to the user as a decision with measured numbers (capping overspend is excluded: Phase 2 D-18, Phase 6 D-22)
 - [x] **BAL-02**: All worksheet slopes and constants are hand-friendly (e.g. no 17/7 in wave 3); validator warnings become errors
-- [ ] **BAL-03**: The 0.85 utilization filter is dropped from the balance workflow and Final-Index weights are rescaled using measured data
+- [x] **BAL-03**: The 0.85 utilization filter is dropped from the balance workflow and Final-Index weights are rescaled using measured data
 - [ ] **BAL-04**: Balance reports show top-K, Pareto and unfiltered optima per tier, not only averages
 - [ ] **BAL-05**: All print material is regenerated from the rebalanced config
 - [ ] **BAL-06**: Every choice matters — no measure or level is strictly dominated or near-mandatory (appears in almost all top strategies), and each decision point (budget tier, measure/level selection, change window, Kurswechsel) measurably shifts outcomes; verified by full enumeration per tier
@@ -158,7 +158,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | FLOW-05 | Phase 7 | Pending |
 | BAL-01 | Phase 6 | Complete |
 | BAL-02 | Phase 6 | Complete |
-| BAL-03 | Phase 6 | Pending |
+| BAL-03 | Phase 6 | Complete |
 | BAL-04 | Phase 6 | Pending |
 | BAL-05 | Phase 6 | Pending |
 | BAL-06 | Phase 6 | Pending |
