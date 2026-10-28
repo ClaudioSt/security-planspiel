@@ -6,14 +6,14 @@ current_phase: 6
 current_phase_name: Rebalance
 status: executing
 stopped_at: Phase 6 context gathered
-last_updated: "2026-10-28T16:47:09.655Z"
-last_activity: 2026-10-27
-last_activity_desc: Phase 5 complete, transitioned to Phase 6
+last_updated: "2026-10-28T20:06:09.795Z"
+last_activity: 2026-10-28
+last_activity_desc: Phase 6 execution started
 progress:
   total_phases: 7
   completed_phases: 5
-  total_plans: 40
-  completed_plans: 40
+  total_plans: 50
+  completed_plans: 41
   percent: 71
 ---
 
@@ -24,14 +24,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-10-27)
 
 **Core value:** Facilitators and players can run the game by hand without ambiguity: every rule is unambiguous, every printed number matches `simulation_config.json`, and no strategy exploits a rule loophole.
-**Current focus:** Phase 06 — Rebalance
+**Current focus:** Phase 6 — Rebalance
 
 ## Current Position
 
-Phase: 6 — Rebalance
-Plan: Not started
+Phase: 6 (Rebalance) — EXECUTING
+Plan: 2 of 10
 Status: Ready to execute
-Last activity: 2026-10-27 — Phase 5 complete, transitioned to Phase 6
+Last activity: 2026-10-28 — Phase 6 execution started
 
 Progress: [███████░░░] 71% (5 of 7 phases)
 
@@ -98,6 +98,7 @@ Progress: [███████░░░] 71% (5 of 7 phases)
 | Phase 05 P14 | ~55 min | 3 tasks | 10 files |
 | Phase 05 P15 | 35 min | 2 tasks | 18 files |
 | Phase 05 P16 | 40 min | 2 tasks | 22 files |
+| Phase 06 P01 | 60min | 3 tasks | 14 files |
 
 ## Accumulated Context
 
@@ -167,6 +168,8 @@ Recent decisions affecting current work:
 - [Phase 05-16]: Clue matrix section labels for headingless mail sections come from digit-free sheets.spielleitung keys, raw key only as last fallback — Keeps story texts, veil scan and player documents untouched; guarded by a test over real and mini content
 - [Phase 05-16]: The committed print set is written only by the last plan of a phase in the D-19 order — Stamp and manifest do not churn per plan; --check and a byte-identical rebuild prove freshness
 - [Phase 05 UAT]: All eight human print checks passed 2026-10-27, so the open layout calls stand as is: event effect-box padding, 43 % empty RoS page, 1.3–1.5 mm tracking clearance, 9 pt explainer text, damage before recovery without euro sign
+- [Phase 06-01]: Path gate trim is start-lowered (lower/cancel START levels, then any legal continuation of the family pool); narrow same-swap-pair is a diagnostic only. Measured X: static 9/5/3, swap 9/5/2, window-1 9/5/3, window-2 5/2/1, narrow 14/7/5; recommended X = 10 (low, static); raw/capped reading A1 and the definition are confirmed at D-04
+- [Phase 06-01]: Candidate checks use xfail TUNING_TARGET plus --runxfail with --planspiel-config/--planspiel-content-dir; gate --paths --jobs 3 takes about 10 min, with --narrow about 19 min
 
 ### Pending Todos
 
@@ -189,6 +192,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-10-28T12:56:45.505Z
+Last session: 2026-10-28T20:06:01.890Z
 Stopped at: Phase 6 context gathered
 Resume file: .planning/phases/06-rebalance/06-CONTEXT.md

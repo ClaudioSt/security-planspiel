@@ -262,12 +262,12 @@ Plans:
 - Review `booklet.MAX_PENALTY_ROWS` (12 today: X = 9 KZ je angefangene 10.000 €, ⌈100 ÷ 9⌉ rows) against the calibrated X and raise it together with a new RoS-page layout proof if X falls below 9 (a smaller X adds rows and stops the build with `ERROR print.model`). Review `booklet.MAX_WINDOWS` (2 today, about 2 mm to spare on the tracking page) the same way: a third change window or a fourth wave needs a new layout proof.
 - Remove the `≈` approximations on the master sheet once no slope is non-terminating (BAL-02).
 
-**Plans**: 10 plans
+**Plans**: 1/10 plans executed
 
 Plans:
 **Wave 1**
 
-- [ ] 06-01-PLAN.md — BAL-01: move-path overspend gate (swap / window-1 / window-2, start-lowered trim, narrow diagnostic), raw and capped minimum X, calibration X = max + 1, shared candidate-config test infrastructure (wave 1)
+- [x] 06-01-PLAN.md — BAL-01: move-path overspend gate (swap / window-1 / window-2, start-lowered trim, narrow diagnostic), raw and capped minimum X, calibration X = max + 1, shared candidate-config test infrastructure (wave 1)
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
@@ -322,5 +322,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 3 
 | 3. Content Source & Veiling | 3/3 | Complete    | 2026-10-19 |
 | 4. Print Pipeline & Attack Worksheets | 6/6 | Complete    | 2026-10-22 |
 | 5. Player & Facilitator Print Material | 16/16 | Complete    | 2026-10-26 |
-| 6. Rebalance | 0/10 | Planned | - |
+| 6. Rebalance | 1/10 | In Progress|  |
 | 7. Session Flow & Handoff | 0/TBD | Not started | - |
