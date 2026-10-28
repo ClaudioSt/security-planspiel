@@ -405,7 +405,7 @@ def test_a_missing_good_entry_is_reported(mini):
 def test_a_good_start_that_differs_from_the_clue_procedure_is_reported(mini):
     cfg = _good_config(mini)
     entries = copy.deepcopy(cfg.reference_strategies["medium"])
-    entries["good"]["start"] = dict(entries["good"]["start"], M6=3)
+    entries["good"]["start"] = dict(entries["good"]["start"], M1=0)
     cfg = _with_entries(mini, "medium", entries)
     lines = strategies.check_strategies(cfg, "medium", _placements(), MINI_CLUES, Fraction(1, 3))
     assert len(lines) == 1 and "Hinweis" in lines[0] and "good" in lines[0]
