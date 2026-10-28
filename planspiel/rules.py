@@ -126,6 +126,17 @@ def kz_slope(kz_at_full_damage, kz_at_full_mitigation, mitigation_cap) -> Fracti
     return (Fraction(kz_at_full_mitigation) - Fraction(kz_at_full_damage)) / mitigation_cap
 
 
+def bonus_importance(cfg: Config) -> Dict[str, Fraction]:
+    """KZ points at stake per bonus measure: the sum over its waves of bonus times the KZ slope of the wave's attack."""
+    importance: Dict[str, Fraction] = {}
+    for wave in cfg.waves:
+        attack = cfg.attacks[wave.attack_id]
+        slope = kz_slope(attack.kz_at_full_damage, attack.kz_at_full_mitigation, attack.mitigation_cap)
+        for bonus in wave.bonus_measures:
+            importance[bonus.measure] = importance.get(bonus.measure, Fraction(0)) + bonus.bonus * slope
+    return importance
+
+
 class BonusRow(NamedTuple):
     measure: str
     min_level: int

@@ -69,7 +69,7 @@ def _clues_command(config: str, content_dir: str) -> int:
         cfg = load_config(Path(config))
         texts = load_texts(Path(content_dir) / TEXTE_FILE)
         clues = load_clues(clues_path)
-    except (OSError, tomllib.TOMLDecodeError) as error:
+    except (OSError, ValueError, tomllib.TOMLDecodeError) as error:
         print(f"ERROR clues.toml {clues_path}: {error}")
         print("1 Fehler, 0 Warnung(en)")
         return 1

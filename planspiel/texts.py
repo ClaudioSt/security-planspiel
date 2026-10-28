@@ -10,6 +10,7 @@ import unicodedata
 from dataclasses import dataclass
 from pathlib import Path
 
+from planspiel import rules
 from planspiel.config import Config, Wave
 from planspiel.review_text import format_eur
 from planspiel.validate import Issue
@@ -21,6 +22,9 @@ GIVEAWAY_FILE = "giveaway_terms.toml"
 CLUES_FILE = "clues.toml"
 PREWAVE_PREFIXES = ("story.", "measures.")
 MIN_QUOTE_LENGTH = 15
+CLUE_WEIGHTS = (1, 2, 3)
+CLUE_SCORE_MIN = 2
+CLUE_SCORE_TOP = 4
 
 STORY_DOCS = ("steckbrief", "zeitungsartikel", "anfrage_mail", "audit_mail")
 PREWAVE_SHEETS = (
@@ -549,6 +553,8 @@ class Clue:
     source: str
     quote: str
     why: str
+    measures: tuple[str, ...] = ()
+    weight: int = 0
 
 
 @dataclass(frozen=True)
@@ -559,20 +565,88 @@ class ClueRow:
     section: str
     quote: str
     why: str
+    measures: str = ""
+
+
+def _clue_mapping(number: int, entry: dict) -> tuple[tuple[str, ...], int]:
+    measures = entry.get("measures", [])
+    if not isinstance(measures, list) or not all(isinstance(item, str) for item in measures):
+        raise ValueError(f"Hinweis {number}: 'measures' muss eine Liste von Maßnahmen-Kennungen (Text) sein")
+    weight = entry.get("weight", 0)
+    if isinstance(weight, bool) or not isinstance(weight, int):
+        raise ValueError(f"Hinweis {number}: 'weight' muss eine ganze Zahl sein")
+    return tuple(measures), weight
 
 
 def load_clues(path: Path) -> tuple[Clue, ...]:
     with open(path, "rb") as handle:
         data = tomllib.load(handle)
-    return tuple(
-        Clue(
-            attack=str(entry.get("attack", "")),
-            source=str(entry.get("source", "")),
-            quote=str(entry.get("quote", "")),
-            why=str(entry.get("why", "")),
+    clues = []
+    for number, entry in enumerate(data.get("clue", []), start=1):
+        measures, weight = _clue_mapping(number, entry)
+        clues.append(
+            Clue(
+                attack=str(entry.get("attack", "")),
+                source=str(entry.get("source", "")),
+                quote=str(entry.get("quote", "")),
+                why=str(entry.get("why", "")),
+                measures=measures,
+                weight=weight,
+            )
         )
-        for entry in data.get("clue", [])
-    )
+    return tuple(clues)
+
+
+def clue_scores(clues: tuple[Clue, ...]) -> dict[str, int]:
+    """Hinweis-Punkte je Maßnahme: Summe der Gewichte aller Hinweise, die sie nennen (D-17)."""
+    scores: dict[str, int] = {}
+    for clue in clues:
+        for measure_id in clue.measures:
+            scores[measure_id] = scores.get(measure_id, 0) + clue.weight
+    return scores
+
+
+def clue_mapping_issues(cfg: Config, clues: tuple[Clue, ...]) -> list[Issue]:
+    """Jede Bonus-Maßnahme ist gestützt, die Punkte folgen der Wichtigkeit, die wichtigste hat mindestens CLUE_SCORE_TOP (D-18)."""
+    scores = clue_scores(clues)
+    importance = rules.bonus_importance(cfg)
+    ranked = sorted(importance, key=lambda measure_id: (-importance[measure_id], measure_id))
+    issues: list[Issue] = []
+    for measure_id in ranked:
+        if scores.get(measure_id, 0) < CLUE_SCORE_MIN:
+            issues.append(
+                Issue(
+                    "error",
+                    "clues.unsupported_bonus",
+                    f"clues.measures.{measure_id}",
+                    f"Bonus-Maßnahme '{measure_id}' hat {scores.get(measure_id, 0)} Hinweis-Punkt(e), nötig sind mindestens {CLUE_SCORE_MIN}",
+                )
+            )
+    for measure_id in ranked:
+        outranking = [
+            other
+            for other in ranked
+            if importance[other] < importance[measure_id] and scores.get(other, 0) > scores.get(measure_id, 0)
+        ]
+        if outranking:
+            issues.append(
+                Issue(
+                    "error",
+                    "clues.not_graduated",
+                    f"clues.measures.{measure_id}",
+                    f"Bonus-Maßnahme '{measure_id}' ist wichtiger als '{outranking[0]}', hat aber weniger Hinweis-Punkte",
+                )
+            )
+    if ranked and scores.get(ranked[0], 0) < CLUE_SCORE_TOP:
+        issues.append(
+            Issue(
+                "error",
+                "clues.top_too_weak",
+                f"clues.measures.{ranked[0]}",
+                f"Die wichtigste Bonus-Maßnahme '{ranked[0]}' braucht mindestens {CLUE_SCORE_TOP} Hinweis-Punkte",
+            )
+        )
+    return issues
 
 
 def _clue_document(source: str) -> str | None:
@@ -596,8 +670,11 @@ def _source_strings(texts: Texts, source: str) -> list[str] | None:
     return None
 
 
-def check_clues(cfg: Config, texts: Texts, clues: tuple[Clue, ...]) -> list[Issue]:
-    """Mindestens zwei wörtliche Hinweise aus zwei Vorab-Dokumenten je Angriff der Wellen (VEIL-03, D-17, D-18)."""
+def check_clues(cfg: Config, texts: Texts, clues: tuple[Clue, ...], require_mapping: bool = False) -> list[Issue]:
+    """Mindestens zwei wörtliche Hinweise aus zwei Vorab-Dokumenten je Angriff der Wellen (VEIL-03, D-17, D-18).
+
+    Mit `require_mapping` muss außerdem die Maßnahmen-Zuordnung vollständig und nach Wichtigkeit gestaffelt sein.
+    """
     attack_ids = list(dict.fromkeys(wave.attack_id for wave in cfg.waves))
     issues: list[Issue] = []
     documents: dict[str, set[str]] = {attack_id: set() for attack_id in attack_ids}
@@ -610,6 +687,20 @@ def check_clues(cfg: Config, texts: Texts, clues: tuple[Clue, ...]) -> list[Issu
             )
             continue
         counts[clue.attack] += 1
+        for measure_id in clue.measures:
+            if measure_id not in cfg.measures:
+                issues.append(
+                    Issue("error", "clues.unknown_measure", path, f"Maßnahme '{measure_id}' kommt in der Config nicht vor")
+                )
+        if (clue.weight not in CLUE_WEIGHTS) if clue.measures else (clue.weight != 0):
+            issues.append(
+                Issue(
+                    "error",
+                    "clues.bad_weight",
+                    path,
+                    f"Gewicht {clue.weight} ist ungültig (mit Maßnahmen {CLUE_WEIGHTS[0]} bis {CLUE_WEIGHTS[-1]}, ohne Maßnahmen 0)",
+                )
+            )
         document = _clue_document(clue.source)
         if document is not None:
             documents[clue.attack].add(document)
@@ -643,6 +734,8 @@ def check_clues(cfg: Config, texts: Texts, clues: tuple[Clue, ...]) -> list[Issu
             issues.append(
                 Issue("error", "clues.single_source", f"clues.{attack_id}", f"Die Hinweise zu '{attack_id}' stammen aus weniger als zwei verschiedenen Dokumenten")
             )
+    if require_mapping:
+        issues.extend(clue_mapping_issues(cfg, clues))
     return issues
 
 
@@ -694,6 +787,7 @@ class FacilitatorView:
                         section=_clue_section(self._texts, clue.source),
                         quote=clue.quote,
                         why=clue.why,
+                        measures=", ".join(f"{measure_id} ({clue.weight})" for measure_id in clue.measures),
                     )
                 )
         return rows
@@ -705,11 +799,11 @@ def _cell(text: str) -> str:
 
 def format_clue_matrix(rows: list[ClueRow]) -> str:
     lines = [
-        "| Angriff | Nr. | Dokument | Abschnitt | Zitat | Warum |",
-        "|---|---|---|---|---|---|",
+        "| Angriff | Nr. | Dokument | Abschnitt | Zitat | Warum | Maßnahmen (Gewicht) |",
+        "|---|---|---|---|---|---|---|",
     ]
     for row in rows:
-        cells = (row.title, str(row.number), row.document, row.section, row.quote, row.why)
+        cells = (row.title, str(row.number), row.document, row.section, row.quote, row.why, row.measures)
         lines.append("| " + " | ".join(_cell(cell) for cell in cells) + " |")
     return "\n".join(lines)
 
