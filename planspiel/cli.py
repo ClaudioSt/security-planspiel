@@ -155,21 +155,58 @@ def _referenzpfade_command(
     return 0
 
 
-def _gate_command(parser: argparse.ArgumentParser, config: str, tiers: list[str] | None) -> int:
+def _gate_command(
+    parser: argparse.ArgumentParser,
+    config: str,
+    tiers: list[str] | None,
+    paths: bool = False,
+    narrow: bool = False,
+    jobs: int = 1,
+) -> int:
     from planspiel.config import load_config
     from planspiel.gate import format_gate_report, gate_tier
 
+    if narrow and not paths:
+        parser.error("--narrow gehört zu --paths.")
     cfg = load_config(Path(config))
     names = tiers or list(cfg.budget_tiers)
     unknown = [name for name in names if name not in cfg.budget_tiers]
     if unknown:
         parser.error(f"Unbekanntes Budget-Tier '{unknown[0]}'. Verfügbar: {', '.join(cfg.budget_tiers)}.")
+    if paths:
+        return _gate_paths_command(config, names, narrow, jobs)
     all_passed = True
     for name in names:
         result = gate_tier(cfg, name)
         print(format_gate_report(result))
         print()
         all_passed = all_passed and result.passed
+    print("Überziehungs-Gate: bestanden" if all_passed else "Überziehungs-Gate: NICHT bestanden")
+    return 0 if all_passed else 1
+
+
+def _gate_paths_command(config: str, names: list[str], narrow: bool, jobs: int) -> int:
+    import functools
+
+    from planspiel import gate, parallel
+
+    results = parallel.map_tiers(functools.partial(gate.paths_worker, narrow=narrow), config, names, jobs)
+    all_passed = True
+    for name in names:
+        static, families = results[name]
+        print(gate.format_gate_report(static))
+        print()
+        all_passed = all_passed and static.passed
+        for family, result in families.items():
+            print(gate.format_path_gate_report(result))
+            print()
+            if family != gate.NARROW_FAMILY:
+                all_passed = all_passed and result.passed
+    calibration = gate.calibrate(
+        {name: results[name][0] for name in names}, {name: results[name][1] for name in names}
+    )
+    print(gate.format_calibration(calibration))
+    print()
     print("Überziehungs-Gate: bestanden" if all_passed else "Überziehungs-Gate: NICHT bestanden")
     return 0 if all_passed else 1
 
@@ -386,6 +423,19 @@ def main(argv: list[str] | None = None) -> int:
         default=None,
         help="Budget-Tier (wiederholbar, Standard: alle Tiers der Konfiguration).",
     )
+    gate_parser.add_argument(
+        "--paths",
+        action="store_true",
+        help="prüft zusätzlich Spielpfade: Tausch-Schicht und je ein Zug im Fenster nach Welle 1 oder 2",
+    )
+    gate_parser.add_argument(
+        "--narrow",
+        action="store_true",
+        help="zeigt zusätzlich die enge Kürzung (gleiches Tauschpaar) als Diagnose (nur mit --paths)",
+    )
+    gate_parser.add_argument(
+        "--jobs", type=int, default=1, help="Anzahl der Prozesse für --paths, höchstens ein Prozess je Tier."
+    )
     texts_parser = subparsers.add_parser(
         "texts", help="Prüft content/texte.toml: Abdeckung, Ziffern und Story-Regeln."
     )
@@ -452,5 +502,5 @@ def main(argv: list[str] | None = None) -> int:
             parser, args.config, args.tier, args.median, args.out, args.starts, args.keep
         )
     if args.command == "gate":
-        return _gate_command(parser, args.config, args.tier)
+        return _gate_command(parser, args.config, args.tier, args.paths, args.narrow, args.jobs)
     return _validate_command(args.config, args.strict)
