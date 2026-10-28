@@ -6,14 +6,14 @@ current_phase: 6
 current_phase_name: Rebalance
 status: executing
 stopped_at: Phase 6 context gathered
-last_updated: "2026-10-28T21:10:59.046Z"
+last_updated: "2026-10-28T21:31:12.231Z"
 last_activity: 2026-10-28
 last_activity_desc: Phase 6 execution started
 progress:
   total_phases: 7
   completed_phases: 5
   total_plans: 50
-  completed_plans: 44
+  completed_plans: 45
   percent: 71
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-10-27)
 ## Current Position
 
 Phase: 6 (Rebalance) — EXECUTING
-Plan: 5 of 10
+Plan: 6 of 10
 Status: Ready to execute
 Last activity: 2026-10-28 — Phase 6 execution started
 
@@ -102,6 +102,7 @@ Progress: [███████░░░] 71% (5 of 7 phases)
 | Phase 06 P02 | 25min | 2 tasks | 2 files |
 | Phase 06 P03 | 75min | 2 tasks | 16 files |
 | Phase 06 P04 | 70min | 2 tasks | 3 files |
+| Phase 06 P05 | 35min | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -176,6 +177,7 @@ Recent decisions affecting current work:
 - [Phase 06-02]: hand_calc_level default stays warning until 06-10 flips it with the adopted config; exfil fix option kz -5..9 at cap 7 is hand-friendly
 - [Phase 06-03]: Final-Index = weight_kz*KZ + weight_ros*RoS2 (two-decimal RoS); today's pooled IQR KZ 18 / RoS 0.43 gives k_raw 20.8, recommended k = 20 (KZ share 0.68); moved golden row final.final_index tracked by strict xfail until the 06-10 re-pin
 - [Phase 06-04]: Near-mandatory band is the 5-KZ band widened to the 200 best in-budget plans (200 in every tier today). Today near-mandatory: M7 all tiers, M2 medium/high, M1/M4/M5 also in high; overpowered: M7 (drop 14/16/18), M2 in high (11); dominance, swing, tier optima, Kurswechsel and window move pass. Thresholds go to D-04 for re-approval.
+- [Phase 06]: BAL-08 thresholds (median margin 5, comeback drop 5 / gain 10 / share 0.9) are proposals for D-04; low-tier comeback share 0.915 has only 1.5 pp headroom
 
 ### Pending Todos
 
@@ -198,6 +200,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-10-28T21:10:52.507Z
+Last session: 2026-10-28T21:31:04.060Z
 Stopped at: Phase 6 context gathered
 Resume file: .planning/phases/06-rebalance/06-CONTEXT.md

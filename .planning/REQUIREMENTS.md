@@ -65,7 +65,7 @@
 - [ ] **BAL-05**: All print material is regenerated from the rebalanced config
 - [x] **BAL-06**: Every choice matters — no measure or level is strictly dominated or near-mandatory (appears in almost all top strategies), and each decision point (budget tier, measure/level selection, change window, Kurswechsel) measurably shifts outcomes; verified by full enumeration per tier
 - [ ] **BAL-07**: Good strategies lead to good outcomes — defined reference strategies (good: reacts to discovery clues, balanced CIA; bad: ignores clues, all-in on one dimension, overspends, hoards budget) rank in the top resp. bottom quartile of their tier; an over-budget strategy is judged by the overspend gate instead (Phase 6 D-23)
-- [ ] **BAL-08**: The game is rewarding overall — a sensible but mediocre strategy still ends positive (e.g. final KZ above start KZ), and no team is effectively eliminated after wave 1 (comeback possible via change window)
+- [x] **BAL-08**: The game is rewarding overall — a sensible but mediocre strategy still ends positive (e.g. final KZ above start KZ), and no team is effectively eliminated after wave 1 (comeback possible via change window)
 - [ ] **BAL-09**: Outcomes stay controlled — the best achievable result is comparable across budget tiers and the outcome spread per tier stays within a defined range
 
 ### Legacy (LEG)
@@ -163,7 +163,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | BAL-05 | Phase 6 | Pending |
 | BAL-06 | Phase 6 | Complete |
 | BAL-07 | Phase 6 | Pending |
-| BAL-08 | Phase 6 | Pending |
+| BAL-08 | Phase 6 | Complete |
 | BAL-09 | Phase 6 | Pending |
 | LEG-01 | Phase 7 | Pending |
 | LEG-02 | Phase 7 | Pending |
