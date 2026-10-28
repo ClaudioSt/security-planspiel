@@ -14,6 +14,16 @@ def pytest_addoption(parser):
         default=False,
         help="rewrite tests/golden/*.json and print a 'tier code | field | old -> new' summary",
     )
+    parser.addoption(
+        "--planspiel-config",
+        default=None,
+        help="path of the config the Phase-6 balance checks evaluate (default simulation_config.json)",
+    )
+    parser.addoption(
+        "--planspiel-content-dir",
+        default=None,
+        help="content directory the Phase-6 balance checks evaluate (default content/)",
+    )
 
 
 @pytest.fixture
@@ -24,6 +34,20 @@ def update_golden(request):
 @pytest.fixture
 def golden_report():
     return _REPORT
+
+
+@pytest.fixture(scope="session")
+def balance_config_path(request):
+    from tests.support import candidate
+
+    return candidate.resolve_config_path(request.config.getoption("--planspiel-config"))
+
+
+@pytest.fixture(scope="session")
+def balance_content_dir(request):
+    from tests.support import candidate
+
+    return candidate.resolve_content_dir(request.config.getoption("--planspiel-content-dir"))
 
 
 def pytest_terminal_summary(terminalreporter):

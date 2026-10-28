@@ -1264,3 +1264,19 @@ class TierTables:
                         if valid[end]:
                             incoming_init = level_init[incoming][level]
                             yield (start, end, dropped, incoming, level, incoming_init - min(credit_cap, incoming_init))
+
+    def single_moves(self, code: int):
+        """Erzeugt (Ziel, Kosten) für jede gültige Ein-Maßnahmen-Änderung des Zustands code: ein anderes Level einer
+        Maßnahme; Kosten = Netto-Init der Änderung, nie eine Erstattung (D-27); entspricht window_cost ohne Tausch."""
+        valid = self.valid
+        level_init = self.level_init
+        for measure, stride in enumerate(self.strides):
+            current = (code // stride) % len(_STATE_LEVELS)
+            base = code - current * stride
+            current_init = level_init[measure][current]
+            for level in _STATE_LEVELS:
+                if level == current:
+                    continue
+                target = base + level * stride
+                if valid[target]:
+                    yield target, max(0, level_init[measure][level] - current_init)

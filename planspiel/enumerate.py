@@ -122,11 +122,21 @@ def enumerate_swap_layer(cfg, tier_name: str) -> Dict:
     last_start = -1
     best = [None, None]
     best_head = [None, None]
+    grid = 4 ** len(tables.measure_ids)
+    best_in_budget = array("b", [-1]) * grid
+    worst_in_budget = array("b", [-1]) * grid
+    in_budget_paths = array("I", [0]) * grid
     for start, end, dropped, incoming, level, cost in tables.swap_paths():
         outcome = tables.path_outcome((start,) * prefix + (end,) * suffix, cost)
         flag = 1 if outcome.over_budget else 0
         kz_final = outcome.kz_final
         histogram[flag][kz_final] += 1
+        if not flag:
+            in_budget_paths[start] += 1
+            if kz_final > best_in_budget[start]:
+                best_in_budget[start] = kz_final
+            if worst_in_budget[start] < 0 or kz_final < worst_in_budget[start]:
+                worst_in_budget[start] = kz_final
         if start != last_start:
             start_plans += 1
             last_start = start
@@ -169,4 +179,25 @@ def enumerate_swap_layer(cfg, tier_name: str) -> Dict:
             "in_budget": None if best[0] is None else best[0][1],
             "over_budget": None if best[1] is None else best[1][1],
         },
+        "starts": {
+            "best_in_budget": best_in_budget,
+            "worst_in_budget": worst_in_budget,
+            "in_budget_paths": in_budget_paths,
+        },
     }
+
+
+def store_worker(config_path: str, tier_name: str) -> ResultStore:
+    from pathlib import Path
+
+    from planspiel.config import load_config
+
+    return enumerate_tier(load_config(Path(config_path)), tier_name)
+
+
+def swap_layer_worker(config_path: str, tier_name: str) -> Dict:
+    from pathlib import Path
+
+    from planspiel.config import load_config
+
+    return enumerate_swap_layer(load_config(Path(config_path)), tier_name)

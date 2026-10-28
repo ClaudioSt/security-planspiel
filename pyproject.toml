@@ -30,6 +30,7 @@ addopts = "-m 'not slow and not pdf' --strict-markers"
 markers = [
     "slow: full-enumeration checks over all 782,336 dependency-valid combinations per tier; run with `uv run pytest -m slow`",
     "pdf: builds PDFs with LuaLaTeX via MiKTeX; run with `uv run pytest -m pdf`; skipped when no TeX engine or a required package is missing",
+    "balance: Phase-6 design-principle checks on the config chosen by --planspiel-config (default simulation_config.json); select with uv run pytest -m balance",
 ]
 
 [dependency-groups]
