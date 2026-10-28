@@ -1,7 +1,7 @@
 from fractions import Fraction
 
 from planspiel.config import Config, load_config
-from planspiel.rules import base_losses, evaluate_plan, final_index, over_budget, penalty_params, ros
+from planspiel.rules import base_losses, evaluate_plan, final_index, over_budget, penalty_params, ros, ros_two_decimals
 from tests.support import CONFIG_PATH
 
 
@@ -23,7 +23,7 @@ def test_ros_is_exact_for_exact_inputs():
 
 
 def test_final_index_falls_back_to_kz_without_ros():
-    assert final_index(80, None, 1.0, 1.0) == 80
+    assert final_index(80, None, Fraction(1), Fraction(20)) == 80
 
 
 def test_final_index_without_ros_honours_the_kz_weight():
@@ -31,9 +31,19 @@ def test_final_index_without_ros_honours_the_kz_weight():
     assert final_index(80, None, Fraction(1), Fraction(1)) == 80
 
 
-def test_final_index_weights():
-    assert final_index(80, 0.5, 1.0, 1.0) == 130.0
-    assert final_index(80, 0.5, 2.0, 0.5) == 185.0
+def test_ros_two_decimals_rounds_half_away_from_zero():
+    assert ros_two_decimals(Fraction(1234, 10000)) == Fraction(12, 100)
+    assert ros_two_decimals(Fraction(-125, 1000)) == Fraction(-13, 100)
+    assert ros_two_decimals(Fraction(5, 1000)) == Fraction(1, 100)
+    assert ros_two_decimals(Fraction(-5, 1000)) == Fraction(-1, 100)
+    assert ros_two_decimals(Fraction(4, 1000)) == 0
+
+
+def test_final_index_is_kz_plus_k_times_the_two_decimal_ros():
+    assert final_index(80, Fraction(1234, 10000), Fraction(1), Fraction(20)) == Fraction(824, 10)
+    assert final_index(80, None, 1, 20) == 80
+    assert final_index(80, Fraction(1, 2), 1, 1) == Fraction(161, 2)
+    assert final_index(80, Fraction(1, 2), Fraction(2), Fraction(1, 2)) == Fraction(641, 4)
 
 
 def test_over_budget_boundary():

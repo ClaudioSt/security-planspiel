@@ -12,6 +12,7 @@ import pytest
 from planspiel import audience, eventtext, fmt, master, practice, refpaths, rules
 from planspiel.config import load_config
 from planspiel.printmodel import PrintModelError, build_attack_sheet
+from planspiel.rounding import round_half_away_frac
 from planspiel.texts import (
     SHEET_KEYS,
     FacilitatorView,
@@ -462,8 +463,35 @@ def printed_payload(sheet) -> dict:
     }
 
 
+def _golden_final_index_row() -> list:
+    golden = json.loads((GOLDEN_DIR / "answer_keys.json").read_text(encoding="utf-8"))
+    return golden["final"]["final_index"]
+
+
+# 06-10: remove the substitution below and the two tests after it in the task of the D-04 re-pin.
+# The Final-Index formula (BAL-03, D-15) moves exactly one pinned field, `final.final_index`. It is taken from the golden
+# file itself, so every other field stays strictly compared and --update-golden cannot rewrite or drop that row.
 def test_every_printed_answer_key_is_pinned(sheet, update_golden, golden_report):
-    check_golden(GOLDEN_DIR / "answer_keys.json", printed_payload(sheet), update_golden, golden_report)
+    payload = printed_payload(sheet)
+    payload["final"]["final_index"] = _golden_final_index_row()
+    check_golden(GOLDEN_DIR / "answer_keys.json", payload, update_golden, golden_report)
+
+
+@pytest.mark.xfail(strict=True, reason="Zeile wird in 06-10 nach D-04 einmal neu gepinnt")
+def test_final_index_row_matches_golden(sheet):
+    assert printed_payload(sheet)["final"]["final_index"] == _golden_final_index_row()
+
+
+def test_interim_real_config_index_is_kz_plus_two_decimal_ros(cfg, traces):
+    raw = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
+    assert raw["final_index"] == {"weight_kz": 1, "weight_ros": 1}
+    for name, trace in traces.items():
+        review = trace.review
+        expected = review.kz_final + Fraction(round_half_away_frac(review.ros * 100), 100)
+        index = rules.final_index(
+            review.kz_final, review.ros, cfg.final_index.weight_kz, cfg.final_index.weight_ros
+        )
+        assert index == expected, name
 
 
 def test_changing_a_reference_path_changes_the_pinned_payload(sheet, texts, clues, tmp_path):

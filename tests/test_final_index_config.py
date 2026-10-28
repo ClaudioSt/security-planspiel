@@ -1,11 +1,10 @@
 """The final-index weights live in config and every caller reads them (PRINT-10 part 1, D-23, T-05-45).
 
-With the weights 1 and 1 every output stays identical: the digests below were taken from a run before the move.
+The index is weight_kz * KZ + weight_ros * RoS2 with RoS2 the RoS rounded to two decimals (BAL-03, D-15); the tests
+below check that every caller follows the weights of its config, not a pinned scale.
 """
 import contextlib
-import copy
 import dataclasses
-import hashlib
 import io
 import json
 from fractions import Fraction
@@ -16,21 +15,12 @@ from planspiel import analyze, balance, rules
 from planspiel.config import FinalIndexWeights, load_config
 from planspiel.enumerate import enumerate_tier
 from planspiel.report import dump_record, summarize_tier
+from planspiel.rounding import round_half_away_frac
 from planspiel.validate import validate
 from tests.support import CONFIG_PATH, REPO_ROOT, harness
 
 MINI = REPO_ROOT / "tests" / "fixtures" / "mini_config.json"
 ONE = FinalIndexWeights(Fraction(1), Fraction(1))
-
-# sha256 of json.dumps(summarize_tier(mini, tier, ..., top_k=1000), sort_keys=True, ensure_ascii=False), before the move
-MINI_SUMMARY_DIGESTS = {
-    "low": "0790ec3478565acf1e638daccd05f6c5e753373bc4b7bf605ad84f7840dd2db7",
-    "medium": "8c7325f49a96337295af572be7f2e466e91bd4701d1556ca9ba4990f88561539",
-    "high": "d6519d67d2a819d21c07fec8d449642875898c6e444465d931a9973a7a52d31c",
-}
-ANALYZE_DIGEST = "9c30f423ab84cf3a06963b14de9a997b35bcf225ca7792f4fe8f5d1ee5707330"
-ANALYZE_NO_ROS_DIGEST = "77f92af7a564b79ef2974ea85e0c379eaef4c369e8a6a226ea01122b1ab8b025"
-BALANCE_DIGEST = "d3af3a547e68b0d3fa7a90661173a38eb60e1f17104f9f712998329482c7d0ae"
 
 RESULTS = {
     "results": [
@@ -39,10 +29,6 @@ RESULTS = {
         {"kz_final": 90, "total_damage": 200, "costs": {"security_spend": 300, "total": 300, "event_opex": 0}, "selection": {"M1": 3, "M2": 3}},
     ]
 }
-
-
-def _digest(text):
-    return hashlib.sha256(text.encode()).hexdigest()
 
 
 def _captured(function, *args):
@@ -143,7 +129,7 @@ def test_final_index_requires_both_weights():
         rules.final_index(80, Fraction(1, 2))
     with pytest.raises(TypeError):
         rules.final_index(80, None)
-    assert rules.final_index(80, Fraction(1, 2), Fraction(1), Fraction(1)) == 130
+    assert rules.final_index(80, Fraction(1, 2), Fraction(1), Fraction(1)) == Fraction(161, 2)
 
 
 # --- every caller reads the config -----------------------------------------------------------------------------
@@ -165,10 +151,56 @@ def test_summary_final_index_follows_the_config_weights(mini):
         assert entry["kz_final"] == base["kz_final"] and entry["ros"] == base["ros"]
         expected = Fraction(2 * entry["kz_final"])
         if entry["ros"] is not None:
-            expected += Fraction(str(entry["ros"])) * 100
+            expected += Fraction(round_half_away_frac(Fraction(str(entry["ros"])) * 100), 100)
         assert Fraction(str(entry["final_index"])) == expected
         changed += entry["final_index"] != base["final_index"]
     assert changed > 0
+
+
+def test_weight_ros_zero_makes_the_summary_index_equal_to_the_kz(mini):
+    summary = summarize_tier(_weighted(mini, 1, 0), "low", enumerate_tier(mini, "low"), top_k=1000)
+    entries = summary["top"]["final_index"]
+    assert entries
+    assert all(Fraction(str(entry["final_index"])) == entry["kz_final"] for entry in entries)
+
+
+def test_summary_final_index_follows_weight_ros_alone(mini):
+    k1 = summarize_tier(_weighted(mini, 1, 1), "low", enumerate_tier(mini, "low"), top_k=1000)
+    k20 = summarize_tier(_weighted(mini, 1, 20), "low", enumerate_tier(mini, "low"), top_k=1000)
+    by_code = {entry["code"]: entry for entry in k1["top"]["final_index"]}
+    checked = 0
+    for entry in k20["top"]["final_index"]:
+        base = by_code.get(entry["code"])
+        if base is None or entry["ros"] is None:
+            continue
+        ros2 = Fraction(round_half_away_frac(Fraction(str(entry["ros"])) * 100), 100)
+        assert Fraction(str(entry["final_index"])) - Fraction(str(base["final_index"])) == 19 * ros2
+        checked += 1
+    assert checked > 0
+
+
+def test_dump_record_follows_weight_ros_and_zero_gives_the_kz(mini):
+    outcome = rules.CompactOutcome(
+        kz_final=70, own_cost=100, total_cost=104, damage_eur=5000, event_opex=4,
+        event_budget=0, over_budget=False, kz_after=(70, 70, 70), kz_pre_review=70, remaining=0,
+    )
+    base = rules.base_losses(mini.waves, mini.attacks)
+    zero = dump_record(mini.measure_ids, 5, outcome, base, FinalIndexWeights(Fraction(1), Fraction(0)))
+    twenty = dump_record(mini.measure_ids, 5, outcome, base, FinalIndexWeights(Fraction(1), Fraction(20)))
+    assert Fraction(str(zero["final_index"])) == 70
+    ros2 = Fraction(round_half_away_frac(Fraction(str(twenty["ros"])) * 100), 100)
+    assert Fraction(str(twenty["final_index"])) == 70 + 20 * ros2
+
+
+def test_analyze_final_index_follows_the_weights(tmp_path, capsys):
+    results = tmp_path / "results.json"
+    results.write_text(json.dumps(RESULTS), encoding="utf-8")
+    analyze.main(["--input", str(results), "--config", str(MINI), "--weight-ros", "0"])
+    zero = capsys.readouterr().out
+    analyze.main(["--input", str(results), "--config", str(MINI), "--weight-ros", "20"])
+    twenty = capsys.readouterr().out
+    assert zero != twenty
+    assert "Final-Index: min 55,00, max 90,00" in zero
 
 
 def test_dump_record_takes_the_weights(mini):
@@ -227,21 +259,3 @@ def test_analyze_weight_flags_default_to_none():
     assert args.weight_kz is None and args.weight_ros is None
     args = analyze.parse_args(["--weight-kz", "2", "--weight-ros", "1/2"])
     assert (args.weight_kz, args.weight_ros) == (Fraction(2), Fraction(1, 2))
-
-
-# --- outputs unchanged at 1 and 1 -------------------------------------------------------------------------------
-
-
-@pytest.mark.parametrize("tier", ["low", "medium", "high"])
-def test_mini_summary_is_unchanged(mini, tier):
-    summary = summarize_tier(mini, tier, enumerate_tier(mini, tier), top_k=1000)
-    assert _digest(json.dumps(summary, sort_keys=True, ensure_ascii=False)) == MINI_SUMMARY_DIGESTS[tier]
-
-
-def test_analyze_output_is_unchanged():
-    assert _digest(_captured(analyze.compute_summary, RESULTS, 2, 620, Fraction(1), Fraction(1))) == ANALYZE_DIGEST
-    assert _digest(_captured(analyze.compute_summary, RESULTS, 2, None, Fraction(1), Fraction(1))) == ANALYZE_NO_ROS_DIGEST
-
-
-def test_balance_output_is_unchanged():
-    assert _digest(_captured(balance.run_analysis)) == BALANCE_DIGEST

@@ -43,6 +43,7 @@ FORMULA_FUNCTIONS = {
         "over_budget",
         "base_losses",
         "ros",
+        "ros_two_decimals",
         "final_index",
         "budget_ledger",
         "security_spend",
