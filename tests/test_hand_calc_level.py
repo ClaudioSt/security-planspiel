@@ -4,8 +4,9 @@ import json
 
 import pytest
 
+from planspiel.config import read_raw_config
 from planspiel.validate import validate
-from tests.support import CONFIG_PATH, REPO_ROOT
+from tests.support import CONFIG_PATH, REPO_ROOT, candidate
 
 MINI = REPO_ROOT / "tests" / "fixtures" / "mini_config.json"
 
@@ -107,3 +108,42 @@ def test_todays_final_index_weights_are_fine(path):
 def test_default_call_on_the_real_config_is_unchanged():
     issues = validate(_raw())
     assert [(i.level, i.code, i.path) for i in issues] == [("warning", "hand_calc.kz_slope", "attacks.exfil")]
+
+
+def _errors(issues):
+    return [issue for issue in issues if issue.level == "error"]
+
+
+def _exfil_one_decimal(raw):
+    raw["attacks"]["exfil"]["kz_at_full_damage"] = -5
+    raw["attacks"]["exfil"]["kz_at_full_mitigation"] = 9
+
+
+def test_real_config_in_error_mode_has_only_the_exfil_slope():
+    errors = _errors(validate(_raw(), hand_calc_level="error"))
+    assert [(issue.code, issue.path) for issue in errors] == [("hand_calc.kz_slope", "attacks.exfil")]
+    assert "17/7" in errors[0].message
+    assert "Welle 3" in errors[0].message
+
+
+def test_exfil_with_one_decimal_slope_has_no_issue_in_error_mode():
+    raw = _mutated(_exfil_one_decimal)
+    assert raw["attacks"]["exfil"]["mitigation_cap"] == 7
+    assert validate(raw, hand_calc_level="error") == []
+
+
+def test_cli_strict_gate_accepts_the_one_decimal_variant_only(tmp_path):
+    from planspiel.cli import main
+
+    config_file = tmp_path / "candidate_config.json"
+    config_file.write_text(json.dumps(_mutated(_exfil_one_decimal)), encoding="utf-8")
+    assert main(["validate", "--config", str(config_file), "--strict"]) == 0
+    assert main(["validate", "--config", str(CONFIG_PATH), "--strict"]) == 1
+
+
+@pytest.mark.slow
+@pytest.mark.balance
+@candidate.TUNING_TARGET
+def test_configured_config_is_hand_friendly(balance_config_path):
+    issues = validate(read_raw_config(balance_config_path), hand_calc_level="error")
+    assert _errors(issues) == [], [(issue.code, issue.path) for issue in _errors(issues)]
