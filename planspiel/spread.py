@@ -74,8 +74,8 @@ def tier_spread(static_summary: Dict, swap_summary: Optional[Dict] = None) -> Ti
 
 Spreads = Dict[str, TierSpread]
 
-# (Label, Feldname) je Schicht für die Kennzahlen best / median / iqr / p5_p95
-_LAYERS: Tuple[Tuple[str, str], ...] = ((STATIC_LABEL, "static"), (LEGAL_LABEL, "legal"))
+# (Label im Dativ, Feldsuffix) je Schicht für die Kennzahlen best / median / iqr / p5_p95
+_LAYERS: Tuple[Tuple[str, str], ...] = (("statischen Schicht", "static"), ("legalen Tausch-Schicht", "legal"))
 
 
 def _values(spreads: Spreads, metric: str, suffix: str) -> List[Tuple[str, int]]:
@@ -99,7 +99,7 @@ def _window(values: List[Tuple[str, int]]) -> Optional[Tuple[int, int, str, str]
 def check_missing(spreads: Spreads) -> List[str]:
     """Die statische Schicht braucht Pläne im Budget; die legale Schicht darf fehlen (nicht berechnet)."""
     return [
-        f"Tier {tier}: Auf der {STATIC_LABEL} gibt es keine Pläne im Budget, die Streuung ist nicht messbar"
+        f"Tier {tier}: Auf der statischen Schicht gibt es keine Pläne im Budget, die Streuung ist nicht messbar"
         for tier, entry in spreads.items()
         if None in (entry.best_static, entry.median_static, entry.iqr_static, entry.p5_p95_static)
     ]

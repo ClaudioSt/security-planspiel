@@ -290,5 +290,37 @@ def _balance_spreads(path):
 
 def _assert_criterion(path, criterion):
     spreads = _balance_spreads(path)
-    lines = criterion(spreads)
+    lines = spread.check_missing(spreads) + criterion(spreads)
     assert not lines, "\n".join(lines) + "\n\n" + spread.format_spread(spreads)
+
+
+@pytest.mark.slow
+@pytest.mark.balance
+def test_best_and_median_inside_tier_corridor(balance_config_path):
+    _assert_criterion(balance_config_path, spread.check_corridor)
+
+
+@pytest.mark.slow
+@pytest.mark.balance
+@candidate.TUNING_TARGET
+def test_best_in_budget_inside_d11_band(balance_config_path):
+    _assert_criterion(balance_config_path, spread.check_best_band)
+
+
+@pytest.mark.slow
+@pytest.mark.balance
+def test_iqr_inside_range(balance_config_path):
+    _assert_criterion(balance_config_path, spread.check_iqr)
+
+
+@pytest.mark.slow
+@pytest.mark.balance
+def test_p5_p95_width_bounded(balance_config_path):
+    _assert_criterion(balance_config_path, spread.check_width)
+
+
+@pytest.mark.slow
+@pytest.mark.balance
+@candidate.TUNING_TARGET
+def test_median_not_too_far_above_start(balance_config_path):
+    _assert_criterion(balance_config_path, spread.check_median_bound)
