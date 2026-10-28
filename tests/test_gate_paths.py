@@ -17,9 +17,10 @@ from itertools import product
 
 import pytest
 
-from planspiel import gate, rules
+from planspiel import gate, parallel, rules
+from planspiel.cli import main
 from planspiel.rounding import started_steps
-from tests.support import REPO_ROOT, harness
+from tests.support import REPO_ROOT, candidate, harness
 
 TIERS = ("low", "medium", "high")
 MINI = REPO_ROOT / "tests" / "fixtures" / "mini_config.json"
@@ -543,3 +544,101 @@ def test_paths_worker_returns_the_static_gate_and_the_path_families(mini):
     assert tuple(families) == gate.PATH_FAMILIES
     static, families = gate.paths_worker(str(MINI), "low", narrow=True)
     assert gate.NARROW_FAMILY in families
+
+
+# ---------------------------------------------------------------------------------------------------------------
+# planspiel gate --paths
+# ---------------------------------------------------------------------------------------------------------------
+
+
+def _run(capsys, *args):
+    code = main(["gate", "--config", str(MINI), *args])
+    return code, capsys.readouterr().out
+
+
+def test_gate_paths_prints_static_families_and_calibration(capsys):
+    code, out = _run(capsys, "--paths")
+    assert code == 0
+    for tier in TIERS:
+        assert f"Überziehungs-Gate, Tier {tier}: " in out
+        for family in gate.PATH_FAMILIES:
+            assert f"Überziehungs-Gate, Tier {tier}, Pfade: {gate.PATH_LABELS[family]}" in out
+    assert gate.PATH_LABELS[gate.NARROW_FAMILY] not in out
+    assert "Empfohlenes X = Maximum + 1" in out
+    assert out.rstrip().endswith("Überziehungs-Gate: bestanden")
+
+
+def test_gate_paths_exit_code_follows_the_static_and_family_verdicts(capsys, tmp_path):
+    text = MINI.read_text(encoding="utf-8").replace('"kz_per_step": 9', '"kz_per_step": 1')
+    assert text != MINI.read_text(encoding="utf-8")
+    low_x_config = tmp_path / "x1.json"
+    low_x_config.write_text(text, encoding="utf-8")
+    code = main(["gate", "--config", str(low_x_config), "--paths"])
+    out = capsys.readouterr().out
+    assert code == 1
+    assert out.rstrip().endswith("Überziehungs-Gate: NICHT bestanden")
+    assert "nicht kalibriert" in out
+
+
+def test_gate_paths_narrow_adds_the_diagnostic_without_changing_the_exit_code(capsys):
+    code, plain = _run(capsys, "--paths")
+    code_narrow, narrow = _run(capsys, "--paths", "--narrow")
+    assert code_narrow == code
+    assert gate.PATH_LABELS[gate.NARROW_FAMILY] in narrow
+    assert narrow.count("Pfade: " + gate.PATH_LABELS[gate.NARROW_FAMILY]) == len(TIERS)
+
+
+def test_gate_narrow_without_paths_is_a_parser_error(capsys):
+    with pytest.raises(SystemExit) as raised:
+        main(["gate", "--config", str(MINI), "--narrow"])
+    assert raised.value.code == 2
+    assert "--paths" in capsys.readouterr().err
+
+
+def test_gate_paths_jobs_do_not_change_the_output(capsys):
+    _, serial = _run(capsys, "--paths", "--jobs", "1")
+    _, pooled = _run(capsys, "--paths", "--jobs", "2")
+    assert serial == pooled
+
+
+def test_gate_without_paths_output_is_the_static_report_only(capsys, mini):
+    code, out = _run(capsys)
+    expected = ""
+    for tier in TIERS:
+        expected += gate.format_gate_report(gate.gate_tier(mini, tier)) + "\n\n"
+    expected += "Überziehungs-Gate: bestanden\n"
+    assert code == 0
+    assert out == expected
+
+
+# ---------------------------------------------------------------------------------------------------------------
+# slow checks on the configured (real or candidate) config
+# ---------------------------------------------------------------------------------------------------------------
+
+_BALANCE = {}
+
+
+def _balance_results(path):
+    key = str(path)
+    if key not in _BALANCE:
+        names = list(candidate.load_balance_config(path).budget_tiers)
+        _BALANCE[key] = parallel.map_tiers(gate.paths_worker, path, names, jobs=3)
+    return _BALANCE[key]
+
+
+@pytest.mark.slow
+@pytest.mark.balance
+def test_every_path_family_passes_at_config_x(balance_config_path):
+    for tier, (static, families) in _balance_results(balance_config_path).items():
+        assert static.passed, gate.format_gate_report(static)
+        for family, result in families.items():
+            assert result.passed, gate.format_path_gate_report(result)
+
+
+@pytest.mark.slow
+@pytest.mark.balance
+@candidate.TUNING_TARGET
+def test_config_x_is_calibrated(balance_config_path):
+    results = _balance_results(balance_config_path)
+    cal = gate.calibrate({t: r[0] for t, r in results.items()}, {t: r[1] for t, r in results.items()})
+    assert cal.calibrated, gate.format_calibration(cal)
