@@ -420,5 +420,28 @@
       ],
       "overspend_penalty": {"kz_per_step": 9, "step": 10}
     }
-  ]
+  ],
+  "reference_strategies": {
+    "low": {
+      "good": {"kind": "good", "start": {"M1": 0, "M2": 2, "M4": 3, "M6": 2}, "windows": [{"selection": {"M1": 1, "M2": 2, "M4": 3, "M6": 0}, "swap": ["M6", "M1"]}]},
+      "mediocre": {"kind": "mediocre", "start": {"M1": 1, "M2": 1, "M4": 1, "M6": 0}, "windows": [{"selection": {"M1": 1, "M2": 1, "M4": 0, "M6": 1}, "swap": ["M4", "M6"]}]},
+      "bad_ignore": {"kind": "bad", "start": {"M1": 0, "M2": 0, "M4": 1, "M6": 0}, "windows": [{"selection": {"M1": 0, "M2": 0, "M4": 0, "M6": 1}, "swap": ["M4", "M6"]}]},
+      "bad_all_in": {"kind": "bad", "start": {"M1": 0, "M2": 3, "M4": 0, "M6": 0}, "windows": [{"selection": {"M1": 0, "M2": 0, "M4": 0, "M6": 1}, "swap": ["M2", "M6"]}]},
+      "bad_hoard": {"kind": "bad", "start": {"M1": 0, "M2": 0, "M4": 0, "M6": 1}, "windows": [{"selection": {"M1": 1, "M2": 0, "M4": 0, "M6": 0}, "swap": ["M6", "M1"]}]}
+    },
+    "medium": {
+      "good": {"kind": "good", "start": {"M1": 0, "M2": 2, "M4": 3, "M6": 2}, "windows": [{"selection": {"M1": 1, "M2": 2, "M4": 3, "M6": 0}, "swap": ["M6", "M1"]}]},
+      "mediocre": {"kind": "mediocre", "start": {"M1": 1, "M2": 1, "M4": 1, "M6": 0}, "windows": [{"selection": {"M1": 1, "M2": 1, "M4": 0, "M6": 1}, "swap": ["M4", "M6"]}]},
+      "bad_ignore": {"kind": "bad", "start": {"M1": 0, "M2": 0, "M4": 1, "M6": 0}, "windows": [{"selection": {"M1": 0, "M2": 0, "M4": 0, "M6": 1}, "swap": ["M4", "M6"]}]},
+      "bad_all_in": {"kind": "bad", "start": {"M1": 0, "M2": 3, "M4": 0, "M6": 0}, "windows": [{"selection": {"M1": 0, "M2": 0, "M4": 0, "M6": 1}, "swap": ["M2", "M6"]}]},
+      "bad_hoard": {"kind": "bad", "start": {"M1": 0, "M2": 0, "M4": 0, "M6": 1}, "windows": [{"selection": {"M1": 1, "M2": 0, "M4": 0, "M6": 0}, "swap": ["M6", "M1"]}]}
+    },
+    "high": {
+      "good": {"kind": "good", "start": {"M1": 0, "M2": 2, "M4": 3, "M6": 2}, "windows": [{"selection": {"M1": 1, "M2": 2, "M4": 3, "M6": 0}, "swap": ["M6", "M1"]}]},
+      "mediocre": {"kind": "mediocre", "start": {"M1": 1, "M2": 1, "M4": 1, "M6": 0}, "windows": [{"selection": {"M1": 1, "M2": 1, "M4": 0, "M6": 1}, "swap": ["M4", "M6"]}]},
+      "bad_ignore": {"kind": "bad", "start": {"M1": 0, "M2": 0, "M4": 1, "M6": 0}, "windows": [{"selection": {"M1": 0, "M2": 0, "M4": 0, "M6": 1}, "swap": ["M4", "M6"]}]},
+      "bad_all_in": {"kind": "bad", "start": {"M1": 0, "M2": 3, "M4": 0, "M6": 0}, "windows": [{"selection": {"M1": 0, "M2": 0, "M4": 0, "M6": 1}, "swap": ["M2", "M6"]}]},
+      "bad_hoard": {"kind": "bad", "start": {"M1": 0, "M2": 0, "M4": 0, "M6": 1}, "windows": [{"selection": {"M1": 1, "M2": 0, "M4": 0, "M6": 0}, "swap": ["M6", "M1"]}]}
+    }
+  }
 }
