@@ -203,6 +203,17 @@ def test_analyze_final_index_follows_the_weights(tmp_path, capsys):
     assert "Final-Index: min 55,00, max 90,00" in zero
 
 
+def test_analyze_handles_fractional_damage_from_the_legacy_file(capsys):
+    data = {
+        "results": [
+            {"kz_final": 70, "total_damage": 40.5, "costs": {"security_spend": 100, "total": 110, "event_opex": 10}, "selection": {}},
+        ]
+    }
+    analyze.compute_summary(data, 1, 620, Fraction(1), Fraction(20))
+    # RoS = (620 - 40.5 - 100) / 100 = 4.795 -> 4.80 (half away from zero), index = 70 + 20 * 4.80
+    assert "Final-Index: 166,00" in capsys.readouterr().out
+
+
 def test_dump_record_takes_the_weights(mini):
     outcome = rules.CompactOutcome(
         kz_final=70, own_cost=100, total_cost=104, damage_eur=5000, event_opex=4,
