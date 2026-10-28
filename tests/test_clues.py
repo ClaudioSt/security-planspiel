@@ -20,7 +20,7 @@ from tests.support import MINI_CONTENT_DIR, REPO_ROOT
 
 MINI = REPO_ROOT / "tests" / "fixtures" / "mini_config.json"
 CLUES_PATH = MINI_CONTENT_DIR / "clues.toml"
-HEADER = "| Angriff | Nr. | Dokument | Abschnitt | Zitat | Warum |"
+HEADER = "| Angriff | Nr. | Dokument | Abschnitt | Zitat | Warum | Maßnahmen (Gewicht) |"
 
 CFG = load_config(MINI)
 TEXTS = load_texts(MINI_CONTENT_DIR / "texte.toml")
@@ -236,6 +236,7 @@ def test_the_matrix_rows_carry_document_section_quote_and_reason():
     assert first.why == CLUES[0].why
     assert second.document == "AUTO TIMES"
     assert second.section == "Vorfall bei einem Zulieferer"
+    assert (first.measures, second.measures) == ("M4 (2)", "M6 (2)")
 
 
 def test_a_measure_source_uses_the_measure_name_and_the_source_key_as_section():
@@ -278,7 +279,7 @@ def test_a_pipe_inside_a_cell_is_escaped():
     rows = FacilitatorView(CFG, TEXTS, (clue, *CLUES[1:])).clue_matrix()
     line = format_clue_matrix(rows).splitlines()[2]
     assert "Erst A \\| dann B" in line
-    assert line.count(" | ") + line.count("\\|") >= 5
+    assert line.count(" | ") + line.count("\\|") >= 6
 
 
 def test_the_cli_prints_the_matrix_and_passes(capsys):

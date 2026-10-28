@@ -34,6 +34,7 @@ FORMULA_FUNCTIONS = {
         "compute_bonus_reduction",
         "apply_attack",
         "kz_slope",
+        "bonus_importance",
         "count_measures_at_level",
         "_tier_lookup",
         "evaluate_event",

@@ -1,38 +1,50 @@
 # Mini-Hinweis-Matrix für die Tests (passt zu mini_config.json und mini_content/texte.toml).
-# Je Angriff zwei Hinweise aus zwei verschiedenen Dokumenten.
+# Je Angriff zwei Hinweise aus zwei verschiedenen Dokumenten; measures/weight sind die Spielleitungs-Zuordnung (D-17).
 
 [[clue]]
 attack = "ransomware"
 source = "story.steckbrief.betrieb.bullets"
 quote = "Sicherung der Daten nur einmal im Monat"
 why = "Kaum Datensicherung: ein Verschlüsselungsangriff träfe ungeschützte Daten."
+measures = ["M4"]
+weight = 2
 
 [[clue]]
 attack = "ransomware"
 source = "story.zeitungsartikel.bericht.paragraphs"
 quote = "Wir hatten kein funktionierendes Backup-Konzept"
 why = "Der Artikel zeigt die Folgen fehlender Wiederherstellung."
+measures = ["M6"]
+weight = 2
 
 [[clue]]
 attack = "ot"
 source = "story.steckbrief.betrieb.bullets"
 quote = "Büro und Produktion nutzen dasselbe Netzwerk"
 why = "Kein getrenntes Produktionsnetz: ein Angriff im Büro erreicht die Fertigung."
+measures = []
+weight = 0
 
 [[clue]]
 attack = "ot"
 source = "story.zeitungsartikel.bericht.paragraphs"
 quote = "Drei Fertigungslinien standen still"
 why = "Der Artikel zeigt einen Produktionsausfall."
+measures = []
+weight = 0
 
 [[clue]]
 attack = "exfil"
 source = "story.steckbrief.betrieb.bullets"
 quote = "Ein Lieferanten-Portal ist aus dem Internet erreichbar"
 why = "Extern erreichbarer Zugang als mögliches Einfallstor."
+measures = ["M1", "M2"]
+weight = 3
 
 [[clue]]
 attack = "exfil"
 source = "story.anfrage_mail.lage.paragraphs"
 quote = "wer überall administrativen Zugriff auf unsere Systeme hat"
 why = "Unklare Zugriffsrechte erleichtern Datenabfluss."
+measures = ["M1"]
+weight = 2
