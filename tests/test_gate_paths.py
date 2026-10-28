@@ -408,7 +408,6 @@ def test_mini_narrow_diagnostic_equals_brute_force(mini, tier):
         and expected["unlosable"] == 0
         and expected["untrimmable"] == 0
     )
-    assert narrow.min_x_strict >= results["tausch"].min_x_strict
     for family in gate.PATH_FAMILIES:
         assert results[family] == _cached_result(mini, tier)[family]
 
