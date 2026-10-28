@@ -11,7 +11,7 @@ from fractions import Fraction
 import pytest
 
 from planspiel import choices, enumerate as enum, report, rules
-from tests.support import REPO_ROOT, harness
+from tests.support import REPO_ROOT, candidate, harness
 
 TIERS = ("low", "medium", "high")
 MINI = REPO_ROOT / "tests" / "fixtures" / "mini_config.json"
@@ -561,3 +561,73 @@ def test_format_choices_is_german_and_names_the_worst_offenders(mini_blocks):
         assert tier in text
     assert "M1" in text
     assert "Band" in text and "Kurswechsel" in text and "Fenster" in text
+
+
+# ---------------------------------------------------------------------------------------------------------------
+# slow checks on the configured (real or candidate) config, one test per criterion
+# ---------------------------------------------------------------------------------------------------------------
+
+_BLOCKS = {}
+
+
+def _balance_blocks(path):
+    key = str(path)
+    if key not in _BLOCKS:
+        cfg = candidate.load_balance_config(path)
+        stores = candidate.static_stores(path)
+        layers = candidate.swap_layers(path)
+        _BLOCKS[key] = {
+            tier: choices.choices_tier(cfg, tier, stores[tier], candidate.tier_tables(path, tier), layers[tier])
+            for tier in stores
+        }
+    return _BLOCKS[key]
+
+
+def _assert_criterion(name, path):
+    blocks = _balance_blocks(path)
+    failures = dict(choices.CRITERIA)[name](blocks)
+    assert not failures, "\n".join(failures) + "\n\n" + choices.format_choices(blocks)
+
+
+@pytest.mark.slow
+@pytest.mark.balance
+def test_no_level_is_strictly_dominated(balance_config_path):
+    _assert_criterion("dominated", balance_config_path)
+
+
+@pytest.mark.slow
+@pytest.mark.balance
+def test_every_measure_shifts_the_final_kz_by_its_level(balance_config_path):
+    _assert_criterion("swing", balance_config_path)
+
+
+@pytest.mark.slow
+@pytest.mark.balance
+def test_budget_tiers_have_distinct_optima(balance_config_path):
+    _assert_criterion("tiers", balance_config_path)
+
+
+@pytest.mark.slow
+@pytest.mark.balance
+def test_the_kurswechsel_shifts_the_final_kz(balance_config_path):
+    _assert_criterion("kurswechsel", balance_config_path)
+
+
+@pytest.mark.slow
+@pytest.mark.balance
+def test_the_change_window_move_shifts_the_final_kz(balance_config_path):
+    _assert_criterion("window", balance_config_path)
+
+
+@pytest.mark.slow
+@pytest.mark.balance
+@candidate.TUNING_TARGET
+def test_no_measure_is_near_mandatory(balance_config_path):
+    _assert_criterion("near_mandatory", balance_config_path)
+
+
+@pytest.mark.slow
+@pytest.mark.balance
+@candidate.TUNING_TARGET
+def test_no_measure_is_overpowered(balance_config_path):
+    _assert_criterion("overpowered", balance_config_path)

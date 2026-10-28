@@ -1231,10 +1231,11 @@ class TierTables:
             remaining=ledger.remaining_budget,
         )
 
-    def swap_paths(self):
+    def swap_paths(self, start_stride: int = 1):
         """Erzeugt (start, end, dropped, incoming, level, window_cost) für jeden gültigen Start: ohne möglichen
         Tausch (D-22) den statischen Pfad (s, s, None, None, 0, 0), sonst jeden legalen Kurswechsel-Tausch mit
-        der kanonischen minimalen Reparatur (D-28). dropped und incoming sind Maßnahmen-Indizes."""
+        der kanonischen minimalen Reparatur (D-28). dropped und incoming sind Maßnahmen-Indizes. Mit start_stride > 1
+        nur die Starts, deren Index durch start_stride teilbar ist (deterministische Stichprobe)."""
         measures = self.cfg.measures
         ids = self.measure_ids
         strides = self.strides
@@ -1244,7 +1245,7 @@ class TierTables:
         count = len(ids)
         has_kurswechsel = self.kurswechsel_wave is not None
         for start, levels in enumerate(itertools.product(_STATE_LEVELS, repeat=count)):
-            if not valid[start]:
+            if not valid[start] or start % start_stride:
                 continue
             selection = dict(zip(ids, levels))
             if not has_kurswechsel or not swap_possible(selection):
