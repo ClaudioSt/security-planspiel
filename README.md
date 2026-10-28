@@ -299,9 +299,9 @@ Es gibt keinen Auslastungsfilter: Die Ausgabe enthält jede Kombination im Budge
 uv run python analyze_simulation_results.py --input simulation_results.json --config simulation_config.json --top 5
 ```
 
-Final-Index gewichtet KZ und RoS (Standard: 1.0/1.0):
+Final-Index = `weight_kz` · KZ + `weight_ros` · RoS, wobei die RoS vorher auf zwei Nachkommastellen gerundet wird (ab ,5 vom Betrag aufrunden). Die Gewichte stehen in der Config (Block `final_index`; `weight_kz` = 1, `weight_ros` = k ganzzahlig) und lassen sich für eine Auswertung überschreiben:
 ```
-uv run python analyze_simulation_results.py --input simulation_results.json --config simulation_config.json --weight-kz 1.0 --weight-ros 0.5
+uv run python analyze_simulation_results.py --input simulation_results.json --config simulation_config.json --weight-ros 20
 ```
 
 ---

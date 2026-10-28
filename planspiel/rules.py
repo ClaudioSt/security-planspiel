@@ -626,10 +626,14 @@ def ros(base_losses: float, total_damage: float, own_spend: float) -> Optional[F
     return (avoided_losses - own_spend) / own_spend
 
 
+def ros_two_decimals(ros: Fraction) -> Fraction:
+    return Fraction(round_half_away_frac(ros * 100), 100)
+
+
 def final_index(kz_final: int, ros: Optional[Fraction], weight_kz: Fraction, weight_ros: Fraction) -> Fraction:
     if ros is None:
         return weight_kz * kz_final
-    return (weight_kz * kz_final) + (weight_ros * (ros * 100))
+    return (weight_kz * kz_final) + (weight_ros * ros_two_decimals(ros))
 
 
 def over_budget(total_cost: float, budget_available: float) -> bool:
