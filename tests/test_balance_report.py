@@ -210,6 +210,14 @@ def test_distribution_carries_the_in_budget_sections(static_report):
     assert summary["pareto_in_budget"]["count"] >= 1
 
 
+def _without_final_index(value):
+    if isinstance(value, dict):
+        return {key: _without_final_index(item) for key, item in value.items() if key != "final_index"}
+    if isinstance(value, list):
+        return [_without_final_index(item) for item in value]
+    return value
+
+
 def test_index_weights_override_changes_only_final_index_based_values(static_report):
     heavy = FinalIndexWeights(Fraction(1), Fraction(20))
     other = balance.build_balance_report(MINI, MINI_CONTENT, layers="static", index_weights=heavy)
@@ -219,10 +227,11 @@ def test_index_weights_override_changes_only_final_index_based_values(static_rep
         before = static_report["tiers"][tier]["distribution"]["data"]["static"]
         after = other["tiers"][tier]["distribution"]["data"]["static"]
         assert before["top_in_budget"]["final_index"] != after["top_in_budget"]["final_index"]
-        assert before["top"]["kz_final"] == after["top"]["kz_final"]
         for key in ("percentiles", "best", "pareto", "pareto_in_budget", "combinations"):
-            assert before[key] == after[key]
-        assert before["top_in_budget"]["kz_final"] == after["top_in_budget"]["kz_final"]
+            assert _without_final_index(before[key]) == _without_final_index(after[key])
+        for group in ("top", "top_in_budget"):
+            for name in ("kz_final", "ros"):
+                assert _without_final_index(before[group][name]) == _without_final_index(after[group][name])
         assert static_report["tiers"][tier]["gate"]["data"]["static"] == other["tiers"][tier]["gate"]["data"]["static"]
     old_block = static_report["cross_tier"]["final_index"]["data"]
     new_block = other["cross_tier"]["final_index"]["data"]

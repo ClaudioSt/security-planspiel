@@ -228,10 +228,21 @@ def test_dump_record_takes_the_weights(mini):
         dump_record(mini.measure_ids, 5, outcome, base)
 
 
-def test_balance_reads_the_config_weights(tmp_path):
-    plain = _captured(balance.run_analysis, CONFIG_PATH)
-    heavy = _captured(balance.run_analysis, _write_config(tmp_path, CONFIG_PATH, {"weight_kz": 2, "weight_ros": 1}))
-    assert plain != heavy
+def test_balance_report_reads_the_config_weights(tmp_path):
+    content = REPO_ROOT / "tests" / "fixtures" / "mini_content"
+    plain = balance.build_balance_report(MINI, content, tiers=["low"])
+    heavy_path = _write_config(tmp_path, MINI, {"weight_kz": 1, "weight_ros": 2})
+    heavy = balance.build_balance_report(heavy_path, content, tiers=["low"])
+
+    def top_final_index(report):
+        summary = report["tiers"]["low"]["distribution"]["data"]["static"]
+        return [entry["final_index"] for entry in summary["top_in_budget"]["final_index"]]
+
+    assert top_final_index(plain) != top_final_index(heavy)
+    assert plain["final_index_weights"] == {"weight_kz": 1, "weight_ros": 1}
+    assert heavy["final_index_weights"] == {"weight_kz": 1, "weight_ros": 2}
+    assert heavy["cross_tier"]["final_index"]["data"]["weight_ros"] == 2
+    assert heavy["index_weights_source"] == "Konfiguration"
 
 
 def test_analyze_resolves_weights_from_the_given_config(tmp_path, capsys):
