@@ -102,7 +102,7 @@ def _final_index_failure(block: Dict) -> List[str]:
     if block["passed"]:
         return []
     return [
-        f"Final-Index: Gewicht KZ {_plain(block['weight_kz'])}, k = {_plain(block['weight_ros'])}, KZ-Anteil "
+        f"Gewicht KZ {_plain(block['weight_kz'])}, k = {_plain(block['weight_ros'])}, KZ-Anteil "
         f"{format_approx(block['kz_share'])} (Soll: Gewicht KZ gleich 1, Anteil {format_approx(KZ_SHARE_MIN)} bis "
         f"{format_approx(KZ_SHARE_MAX)}); aus den Daten empfohlenes k {block['k']}"
     ]
@@ -112,7 +112,7 @@ def _final_index_result(stores: Dict, weights, configured) -> Dict:
     try:
         block = final_index_block(stores, weights)
     except ValueError as error:
-        return _checked([f"Final-Index: {error}"], None)
+        return _checked([str(error)], None)
     block["configured_weights"] = {"weight_kz": configured.weight_kz, "weight_ros": configured.weight_ros}
     return _checked(_final_index_failure(block), block)
 

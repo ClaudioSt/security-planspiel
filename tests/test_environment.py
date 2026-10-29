@@ -55,7 +55,7 @@ def test_module_entry_point():
     [
         ["simulate_outcomes.py", "--help"],
         ["analyze_simulation_results.py", "--help"],
-        ["balance_analysis.py"],
+        ["balance_analysis.py", "--help"],
     ],
     ids=["simulate_outcomes", "analyze_simulation_results", "balance_analysis"],
 )
