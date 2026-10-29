@@ -6,14 +6,14 @@ current_phase: 6
 current_phase_name: Rebalance
 status: executing
 stopped_at: Phase 6 context gathered
-last_updated: "2026-10-28T22:20:12.412Z"
+last_updated: "2026-10-29T01:47:48.813Z"
 last_activity: 2026-10-28
 last_activity_desc: Phase 6 execution started
 progress:
   total_phases: 7
   completed_phases: 5
   total_plans: 50
-  completed_plans: 47
+  completed_plans: 48
   percent: 71
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-10-27)
 ## Current Position
 
 Phase: 6 (Rebalance) — EXECUTING
-Plan: 8 of 10
+Plan: 9 of 10
 Status: Ready to execute
 Last activity: 2026-10-28 — Phase 6 execution started
 
@@ -105,6 +105,7 @@ Progress: [███████░░░] 71% (5 of 7 phases)
 | Phase 06 P05 | 35min | 2 tasks | 2 files |
 | Phase 06 P06 | 30min | 2 tasks | 2 files |
 | Phase 06 P07 | 55min | 3 tasks | 15 files |
+| Phase 06 P08 | 190min | 3 tasks | 9 files |
 
 ## Accumulated Context
 
@@ -183,6 +184,7 @@ Recent decisions affecting current work:
 - [Phase 06-06]: BAL-09 spread thresholds (corridor 6, best 90..98, IQR 13..21, IQR diff 4, p5-p95 50, median-start 28) are module constants in planspiel/spread.py for D-04 re-approval; D-11 band and median bound are TUNING_TARGET today
 - [Phase 06-07]: Clue score = sum of clue weights, importance = bonus x KZ slope, graduation I(a)>I(b) => S(a)>=S(b), floors 2 and 4; placement on both populations (static Final-Index, swap-layer KZ); proposals for D-04
 - [Phase 06-07]: Today's clue-derived good start is top quartile only in low (FI 77 / swap-layer KZ 81); medium 58/64 and high 62/69 miss it; all-in-C is top quartile everywhere; require_mapping stays False until 06-10
+- [Phase 06]: [06-08] Balance report: static layer skips swap-dependent blocks (choices, strategies, rewarding) and labels them not computed; input errors exit 2, verdict 0/1; baseline report built with the candidate's Final-Index weights
 
 ### Pending Todos
 
@@ -205,6 +207,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-10-28T22:20:02.819Z
+Last session: 2026-10-29T01:47:41.885Z
 Stopped at: Phase 6 context gathered
 Resume file: .planning/phases/06-rebalance/06-CONTEXT.md
