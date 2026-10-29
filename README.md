@@ -273,6 +273,15 @@ uv run planspiel gate --paths [--narrow] [--jobs N]
 
 Mit `--paths` prüft das Gate zusätzlich drei Pfadfamilien je Tier: die Tausch‑Schicht (Pflicht‑Maßnahmentausch, legales Minimum), einen einzelnen Zug im Fenster nach Welle 1 und einen einzelnen Zug im Fenster nach Welle 2. Die gekürzte Version eines Pfads über Budget entsteht so: Startplan senken oder Maßnahmen kündigen, danach jede legale Fortsetzung der Familie. Das Debriefing dazu: „Hätte das Team zu Spielbeginn weniger oder niedrigere Maßnahmen gewählt, wäre es im Budget geblieben und besser gelandet.“ Je Familie nennt der Bericht das nötige X roh (Strafe ohne Untergrenze) und gekappt (KZ nach der Strafe auf 0–100 begrenzt, wie im Budget Review), die Verteilung, den bestimmenden Pfad sowie die Zahl der nicht verlierbaren und nicht kürzbaren Pfade. `--narrow` zeigt zusätzlich die enge Kürzung (gleiches Tauschpaar, Startplan und Level der neuen Maßnahme nur gesenkt) als Diagnose; sie geht nie in das Urteil ein. `--jobs N` rechnet die Tiers in bis zu N Prozessen. Die Kalibrierung lautet: **X = größtes nötiges X über Tiers und Familien + 1**; der Bericht endet mit dieser Empfehlung und nennt Tier und Familie, die sie bestimmen.
 
+**Balance‑Bericht (alle Prüfungen in einem Lauf):**
+```
+uv run python balance_analysis.py [--config simulation_config.json] [--content-dir content]
+uv run python balance_analysis.py --layers all --paths --jobs 3 --out build/balance
+uv run python balance_analysis.py --config <kandidat.json> --baseline-config simulation_config.json --layers all --paths --jobs 3
+```
+
+`balance_analysis.py` wertet eine Konfiguration samt Inhalten über die volle Enumeration aus und druckt je Tier einen Bericht (Top‑K nach End‑KZ, RoS und Final‑Index sowie Pareto‑Front, jeweils über alle Kombinationen und nur im Budget, daneben die Optima im Budget und über Budget, Perzentile, Überziehungs‑Gate) und darüber hinaus die Blöcke über alle Tiers: Streuung, Entscheidungen, Final‑Index‑Gewicht, Handrechen‑Prüfung, Referenzstrategien samt Hinweis‑Zuordnung, Belohnung und, mit `--paths`, die Pfad‑Gates mit der Kalibrierung von X. Jeder Block nennt sein Urteil und seine Fehlerzeilen; der Exit‑Code ist 0 nur, wenn jede berechnete Prüfung besteht. `--layers static` (Standard) rechnet die statische Enumeration und das statische Gate (einige Minuten für drei Tiers mit `--jobs 3`); `--layers all` ergänzt die Tausch‑Schicht und alles, was von ihr abhängt. Teile, die ein Lauf nicht berechnet, sind benannt und zählen nicht zum Gesamturteil. Mit `--out <verzeichnis>` entstehen `balance_report.json` und `balance_report.txt` (ohne Angabe wird nichts geschrieben; `build/` ist nicht versioniert). Mit `--baseline-config` zeigt der Bericht zusätzlich jede geänderte Stelle der Konfiguration (JSON‑Pfad, alt, neu) und eine Vorher‑nachher‑Tabelle der Kennzahlen; die Final‑Index‑Kennzahlen beider Spalten nutzen dabei das k der Kandidatenkonfiguration. Das ist der Vergleich für den Abnahme‑Checkpoint der Abstimmung.
+
 **Vollständiger Dump nur auf Anfrage:**
 ```
 uv run python simulate_outcomes.py --budget-tier medium --dump-jsonl simulation_full_medium.jsonl
