@@ -281,7 +281,7 @@ def _verdict(report: Dict) -> Dict:
             continue
         checks.append({"name": name, "passed": block["passed"]})
         if not block["passed"]:
-            failures.extend(f"{name}: {line}" for line in block["failures"])
+            failures.extend(f"{name.split(', Tier ')[0]}: {line}" for line in block["failures"])
     failed = sum(1 for check in checks if not check["passed"])
     return {"passed": failed == 0, "failed_checks": failed, "checks": checks, "failures": failures}
 
