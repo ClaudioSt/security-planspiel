@@ -132,10 +132,14 @@ def test_analyze_handles_zero_cost_plan(tmp_path):
 
 
 def test_balance_runs_with_canonical_semantics():
-    result = _run(["balance_analysis.py"])
-    assert result.returncode == 0, result.stderr.decode("utf-8", errors="replace")
+    # A run without arguments would enumerate the real config for minutes; the mini config exercises the same code.
+    content = REPO_ROOT / "tests" / "fixtures" / "mini_content"
+    result = _run(["balance_analysis.py", "--config", str(MINI), "--content-dir", str(content)])
+    stderr = result.stderr.decode("utf-8", errors="replace")
+    assert result.returncode in (0, 1), stderr
+    assert "Traceback" not in stderr
     stdout = result.stdout.decode("utf-8")
     assert "Final-Index (vorläufig)" in stdout
     assert "Referenzplan ohne Change-Fenster-Züge" in stdout
-    assert "ÜBER BUDGET" in stdout
+    assert "Gesamturteil" in stdout
     assert "Score=" not in stdout

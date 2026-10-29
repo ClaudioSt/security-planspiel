@@ -4,6 +4,8 @@ The in-budget sections are compared with an independent brute force over `rules.
 enumeration test helpers); the consolidated report is exercised on the mini config and mini content.
 """
 import json
+import subprocess
+import sys
 from fractions import Fraction
 
 import pytest
@@ -358,3 +360,120 @@ def test_removed_hard_coded_strategy_list():
     assert not hasattr(balance, "POSITIVE_KZ_THRESHOLD")
     assert not hasattr(balance, "define_strategies")
     assert not hasattr(balance, "run_analysis")
+
+
+# ---------------------------------------------------------------------------------------------------------------
+# Task 3: command line
+# ---------------------------------------------------------------------------------------------------------------
+
+def _args(*extra):
+    return ["--config", str(MINI), "--content-dir", str(MINI_CONTENT), *extra]
+
+
+def _edited_mini(tmp_path, name="edited.json"):
+    raw = json.loads(MINI.read_text(encoding="utf-8"))
+    raw["budget_tiers"]["low"]["kz_start"] = raw["budget_tiers"]["low"]["kz_start"] - 3
+    path = tmp_path / name
+    path.write_text(json.dumps(raw, ensure_ascii=False), encoding="utf-8")
+    return path
+
+
+def test_main_writes_json_and_text_and_returns_the_verdict(tmp_path, capsys):
+    out = tmp_path / "out"
+    code = balance.main(_args("--out", str(out)))
+    printed = capsys.readouterr().out
+    assert code in (0, 1)
+    assert "Gesamturteil:" in printed
+    assert "Referenzplan ohne Change-Fenster-Züge" in printed
+    data = json.loads((out / "balance_report.json").read_text(encoding="utf-8"))
+    assert data["verdict"]["passed"] is (code == 0)
+    text = (out / "balance_report.txt").read_text(encoding="utf-8")
+    assert "Gesamturteil:" in text
+    assert b"\r" not in (out / "balance_report.txt").read_bytes()
+
+
+def test_main_writes_nothing_without_out(tmp_path, capsys, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    balance.main(_args())
+    capsys.readouterr()
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_main_tier_is_repeatable_and_unknown_tier_is_a_parser_error(capsys):
+    balance.main(_args("--tier", "low", "--tier", "high"))
+    printed = capsys.readouterr().out
+    assert "Tier low" in printed and "Tier high" in printed and "Tier medium" not in printed
+    with pytest.raises(SystemExit) as raised:
+        balance.main(_args("--tier", "nope"))
+    assert raised.value.code == 2
+    assert "nope" in capsys.readouterr().err
+
+
+def test_main_rejects_unknown_layers_and_bad_jobs():
+    with pytest.raises(SystemExit):
+        balance.main(_args("--layers", "everything"))
+    with pytest.raises(SystemExit):
+        balance.main(_args("--jobs", "0"))
+
+
+def test_main_reports_unreadable_input_instead_of_a_partial_verdict(tmp_path, capsys):
+    code = balance.main(["--config", str(MINI), "--content-dir", str(tmp_path)])
+    captured = capsys.readouterr()
+    assert code == 2
+    assert "FEHLER" in captured.err
+    assert "Gesamturteil" not in captured.out
+
+
+def test_main_with_baseline_prints_the_diff_and_the_before_after_table(tmp_path, capsys):
+    baseline = _edited_mini(tmp_path)
+    out = tmp_path / "out"
+    code = balance.main(_args("--baseline-config", str(baseline), "--baseline-content-dir", str(MINI_CONTENT), "--out", str(out)))
+    printed = capsys.readouterr().out
+    assert code in (0, 1)
+    assert "Konfigurationsänderungen (alt → neu)" in printed
+    assert "budget_tiers.low.kz_start" in printed
+    assert "Kennzahlen vorher → nachher" in printed
+    assert "Final-Index-Kennzahlen beider Spalten mit k der Kandidatenkonfiguration" in printed
+    data = json.loads((out / "balance_report.json").read_text(encoding="utf-8"))
+    assert [row[0] for row in data["config_diff"]] == ["budget_tiers.low.kz_start"]
+    assert data["comparison"]
+
+
+def test_baseline_report_uses_the_weights_of_the_candidate(tmp_path, monkeypatch):
+    baseline = _edited_mini(tmp_path)
+    raw = json.loads(MINI.read_text(encoding="utf-8"))
+    raw["final_index"] = {"weight_kz": 1, "weight_ros": 10}
+    candidate = tmp_path / "candidate.json"
+    candidate.write_text(json.dumps(raw, ensure_ascii=False), encoding="utf-8")
+    calls = []
+    original = balance.build_balance_report
+
+    def spy(config_path, content_dir, *args, **kwargs):
+        calls.append((str(config_path), kwargs.get("index_weights")))
+        return original(config_path, content_dir, *args, **kwargs)
+
+    monkeypatch.setattr(balance, "build_balance_report", spy)
+    balance.main(
+        ["--config", str(candidate), "--content-dir", str(MINI_CONTENT), "--baseline-config", str(baseline),
+         "--baseline-content-dir", str(MINI_CONTENT)]
+    )
+    assert calls[0] == (str(candidate), None)
+    assert calls[1][0] == str(baseline)
+    assert calls[1][1] == FinalIndexWeights(Fraction(1), Fraction(10))
+
+
+def test_the_root_wrapper_runs_on_the_mini_config(tmp_path):
+    result = subprocess.run(
+        [sys.executable, "balance_analysis.py", *_args("--out", str(tmp_path))],
+        cwd=REPO_ROOT,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+    stderr = result.stderr.decode("utf-8", errors="replace")
+    stdout = result.stdout.decode("utf-8")
+    assert result.returncode in (0, 1), stderr
+    assert "Traceback" not in stderr
+    assert "Referenzplan ohne Change-Fenster-Züge" in stdout
+    assert "Gesamturteil" in stdout
+    assert (tmp_path / "balance_report.json").is_file()
