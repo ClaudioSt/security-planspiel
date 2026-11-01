@@ -64,15 +64,22 @@ def _clues_command(config: str, content_dir: str) -> int:
         load_texts,
     )
 
+    texts_path = Path(content_dir) / TEXTE_FILE
     clues_path = Path(content_dir) / CLUES_FILE
-    try:
-        cfg = load_config(Path(config))
-        texts = load_texts(Path(content_dir) / TEXTE_FILE)
-        clues = load_clues(clues_path)
-    except (OSError, ValueError, tomllib.TOMLDecodeError) as error:
-        print(f"ERROR clues.toml {clues_path}: {error}")
-        print("1 Fehler, 0 Warnung(en)")
-        return 1
+    loaded = []
+    # Each input is loaded on its own so an error names the file that actually carries it (a ConfigError is a ValueError).
+    for label, source, loader in (
+        ("config", config, load_config),
+        ("texte.toml", texts_path, load_texts),
+        ("clues.toml", clues_path, load_clues),
+    ):
+        try:
+            loaded.append(loader(Path(source)))
+        except (OSError, ValueError, tomllib.TOMLDecodeError) as error:
+            print(f"ERROR {label} {source}: {error}")
+            print("1 Fehler, 0 Warnung(en)")
+            return 1
+    cfg, texts, clues = loaded
     print(format_clue_matrix(FacilitatorView(cfg, texts, clues).clue_matrix()))
     print()
     issues = check_clues(cfg, texts, clues)

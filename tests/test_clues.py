@@ -1,6 +1,7 @@
 """Hinweis-Matrix für die Spielleitung: Daten, Prüfung, Tabelle und `planspiel clues` (VEIL-03, D-17, D-18)."""
 import copy
 import dataclasses
+import json
 import unicodedata
 
 import pytest
@@ -316,6 +317,28 @@ def test_the_cli_fails_on_a_missing_clues_file(tmp_path, capsys):
     out = capsys.readouterr().out
     assert "ERROR clues.toml" in out
     assert "1 Fehler, 0 Warnung(en)" in out
+
+
+def test_the_cli_blames_the_config_for_an_invalid_config(tmp_path, capsys):
+    raw = json.loads(MINI.read_text(encoding="utf-8"))
+    raw["attacks"]["exfil"]["kz_at_full_damage"] = -8  # KZ slope 17/7: a hand-calc error of the config
+    broken = tmp_path / "config.json"
+    broken.write_text(json.dumps(raw, ensure_ascii=False), encoding="utf-8")
+    assert main(["clues", "--config", str(broken), "--content-dir", str(MINI_CONTENT_DIR)]) == 1
+    out = capsys.readouterr().out
+    assert f"ERROR config {broken}" in out
+    assert "hand_calc.kz_slope" in out
+    assert "clues.toml" not in out
+    assert "1 Fehler, 0 Warnung(en)" in out
+
+
+def test_the_cli_blames_texte_toml_for_a_missing_text_file(tmp_path, capsys):
+    _copy_content(tmp_path)
+    (tmp_path / "texte.toml").unlink()
+    assert main(["clues", "--config", str(MINI), "--content-dir", str(tmp_path)]) == 1
+    out = capsys.readouterr().out
+    assert "ERROR texte.toml" in out
+    assert "ERROR clues.toml" not in out
 
 
 def test_the_cli_fails_on_malformed_toml(tmp_path, capsys):
