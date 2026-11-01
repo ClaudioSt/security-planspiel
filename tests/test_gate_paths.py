@@ -21,6 +21,7 @@ from planspiel import gate, parallel, rules
 from planspiel.cli import main
 from planspiel.rounding import started_steps
 from tests.support import REPO_ROOT, candidate, harness
+from tests.support.golden import check_golden
 
 TIERS = ("low", "medium", "high")
 MINI = REPO_ROOT / "tests" / "fixtures" / "mini_config.json"
@@ -637,8 +638,19 @@ def test_every_path_family_passes_at_config_x(balance_config_path):
 
 @pytest.mark.slow
 @pytest.mark.balance
-@candidate.TUNING_TARGET
 def test_config_x_is_calibrated(balance_config_path):
     results = _balance_results(balance_config_path)
     cal = gate.calibrate({t: r[0] for t, r in results.items()}, {t: r[1] for t, r in results.items()})
     assert cal.calibrated, gate.format_calibration(cal)
+
+
+@pytest.mark.slow
+@pytest.mark.balance
+@pytest.mark.parametrize("tier", TIERS)
+def test_path_gate_matches_golden(tier, update_golden, golden_report):
+    static, families = _balance_results(candidate.resolve_config_path(None))[tier]
+    payload = {
+        "static": gate.gate_result_json(static),
+        "families": {family: gate.gate_paths_result_json(result) for family, result in families.items()},
+    }
+    check_golden(REPO_ROOT / "tests" / "golden" / f"gate_paths_{tier}.json", payload, update_golden, golden_report)

@@ -1,0 +1,114 @@
+{
+  "static": {
+    "tier": "low",
+    "layer": "referenz",
+    "config_x": 3,
+    "step": 10,
+    "over_budget": 697634,
+    "min_x_strict": 2,
+    "min_x_weak": 2,
+    "x_histogram": {
+      "1": 697457,
+      "2": 177
+    },
+    "witness": {
+      "code": "0100113322",
+      "remaining": -70,
+      "steps": 7,
+      "kz_pre_review": 77,
+      "kz_final": 56,
+      "required_x": 2,
+      "trimmed_code": "0100112220",
+      "trimmed_kz_final": 70,
+      "trimmed_remaining": 79
+    },
+    "unlosable": 0,
+    "untrimmable": 0,
+    "violations_at_config_x": 0,
+    "passed": true
+  },
+  "families": {
+    "tausch": {
+      "tier": "low",
+      "family": "tausch",
+      "pool": "legal",
+      "config_x": 3,
+      "step": 10,
+      "paths": 37348851,
+      "over_budget": 32891603,
+      "min_x_strict": 2,
+      "min_x_capped": 2,
+      "min_x_weak": 1,
+      "x_histogram": {
+        "1": 8839121,
+        "2": 1
+      },
+      "witness": {
+        "code": "2111103022",
+        "steps": 10,
+        "kz_pre_review": 84,
+        "required_x": 2,
+        "trimmed_code": "0100003012",
+        "trimmed_kz_final": 74
+      },
+      "unlosable": 0,
+      "untrimmable": 0,
+      "violations_at_config_x": 0,
+      "passed": true
+    },
+    "fenster1": {
+      "tier": "low",
+      "family": "fenster1",
+      "pool": "union",
+      "config_x": 3,
+      "step": 10,
+      "paths": 22274048,
+      "over_budget": 20550633,
+      "min_x_strict": 1,
+      "min_x_capped": 1,
+      "min_x_weak": 1,
+      "x_histogram": {
+        "1": 8795591
+      },
+      "witness": {
+        "code": "0000000233",
+        "steps": 2,
+        "kz_pre_review": 41,
+        "required_x": 1,
+        "trimmed_code": "0000000222",
+        "trimmed_kz_final": 68
+      },
+      "unlosable": 0,
+      "untrimmable": 0,
+      "violations_at_config_x": 0,
+      "passed": true
+    },
+    "fenster2": {
+      "tier": "low",
+      "family": "fenster2",
+      "pool": "union",
+      "config_x": 3,
+      "step": 10,
+      "paths": 22274048,
+      "over_budget": 20551618,
+      "min_x_strict": 1,
+      "min_x_capped": 1,
+      "min_x_weak": 1,
+      "x_histogram": {
+        "1": 7248409
+      },
+      "witness": {
+        "code": "0000000233",
+        "steps": 2,
+        "kz_pre_review": 32,
+        "required_x": 1,
+        "trimmed_code": "0000000222",
+        "trimmed_kz_final": 68
+      },
+      "unlosable": 0,
+      "untrimmable": 0,
+      "violations_at_config_x": 0,
+      "passed": true
+    }
+  }
+}

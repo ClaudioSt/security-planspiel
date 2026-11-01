@@ -621,13 +621,11 @@ def test_the_change_window_move_shifts_the_final_kz(balance_config_path):
 
 @pytest.mark.slow
 @pytest.mark.balance
-@candidate.TUNING_TARGET
 def test_no_measure_is_near_mandatory(balance_config_path):
     _assert_criterion("near_mandatory", balance_config_path)
 
 
 @pytest.mark.slow
 @pytest.mark.balance
-@candidate.TUNING_TARGET
 def test_no_measure_is_overpowered(balance_config_path):
     _assert_criterion("overpowered", balance_config_path)

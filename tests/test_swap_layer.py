@@ -306,8 +306,8 @@ REAL_LOW_COUNTS = {
     "start_plans": 782_336,
     "exempt_static": 48_115,
     "swap_paths": 37_300_736,
-    "swap_in_budget": 3_587_803,
-    "swap_over_budget": 33_712_933,
+    "swap_in_budget": 4_457_231,
+    "swap_over_budget": 32_843_505,
 }
 
 

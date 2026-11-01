@@ -1,0 +1,113 @@
+{
+  "static": {
+    "tier": "medium",
+    "layer": "referenz",
+    "config_x": 3,
+    "step": 10,
+    "over_budget": 675589,
+    "min_x_strict": 2,
+    "min_x_weak": 2,
+    "x_histogram": {
+      "1": 675563,
+      "2": 26
+    },
+    "witness": {
+      "code": "2100113022",
+      "remaining": -22,
+      "steps": 3,
+      "kz_pre_review": 65,
+      "kz_final": 56,
+      "required_x": 2,
+      "trimmed_code": "0100103022",
+      "trimmed_kz_final": 62,
+      "trimmed_remaining": 86
+    },
+    "unlosable": 0,
+    "untrimmable": 0,
+    "violations_at_config_x": 0,
+    "passed": true
+  },
+  "families": {
+    "tausch": {
+      "tier": "medium",
+      "family": "tausch",
+      "pool": "legal",
+      "config_x": 3,
+      "step": 10,
+      "paths": 37348851,
+      "over_budget": 31662061,
+      "min_x_strict": 1,
+      "min_x_capped": 1,
+      "min_x_weak": 1,
+      "x_histogram": {
+        "1": 8614430
+      },
+      "witness": {
+        "code": "0000001233",
+        "steps": 1,
+        "kz_pre_review": 42,
+        "required_x": 1,
+        "trimmed_code": "0000001222",
+        "trimmed_kz_final": 67
+      },
+      "unlosable": 0,
+      "untrimmable": 0,
+      "violations_at_config_x": 0,
+      "passed": true
+    },
+    "fenster1": {
+      "tier": "medium",
+      "family": "fenster1",
+      "pool": "union",
+      "config_x": 3,
+      "step": 10,
+      "paths": 22274048,
+      "over_budget": 20029414,
+      "min_x_strict": 1,
+      "min_x_capped": 1,
+      "min_x_weak": 1,
+      "x_histogram": {
+        "1": 8591132
+      },
+      "witness": {
+        "code": "0000000233",
+        "steps": 1,
+        "kz_pre_review": 44,
+        "required_x": 1,
+        "trimmed_code": "0000000222",
+        "trimmed_kz_final": 67
+      },
+      "unlosable": 0,
+      "untrimmable": 0,
+      "violations_at_config_x": 0,
+      "passed": true
+    },
+    "fenster2": {
+      "tier": "medium",
+      "family": "fenster2",
+      "pool": "union",
+      "config_x": 3,
+      "step": 10,
+      "paths": 22274048,
+      "over_budget": 20030450,
+      "min_x_strict": 1,
+      "min_x_capped": 1,
+      "min_x_weak": 1,
+      "x_histogram": {
+        "1": 7078935
+      },
+      "witness": {
+        "code": "0000000323",
+        "steps": 1,
+        "kz_pre_review": 30,
+        "required_x": 1,
+        "trimmed_code": "0000000222",
+        "trimmed_kz_final": 67
+      },
+      "unlosable": 0,
+      "untrimmable": 0,
+      "violations_at_config_x": 0,
+      "passed": true
+    }
+  }
+}

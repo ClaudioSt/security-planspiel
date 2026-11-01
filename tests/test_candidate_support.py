@@ -31,13 +31,6 @@ def test_balance_fixtures_follow_the_pytest_options(request, balance_config_path
     assert balance_content_dir == candidate.resolve_content_dir(request.config.getoption("--planspiel-content-dir"))
 
 
-def test_tuning_target_is_a_non_strict_xfail():
-    mark = candidate.TUNING_TARGET.mark
-    assert mark.name == "xfail"
-    assert mark.kwargs["strict"] is False
-    assert "Phase-6" in mark.kwargs["reason"]
-
-
 def test_load_balance_config_is_cached_and_silent(mini, recwarn):
     first = candidate.load_balance_config(MINI)
     assert candidate.load_balance_config(MINI) is first

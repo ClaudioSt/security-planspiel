@@ -302,7 +302,6 @@ def test_best_and_median_inside_tier_corridor(balance_config_path):
 
 @pytest.mark.slow
 @pytest.mark.balance
-@candidate.TUNING_TARGET
 def test_best_in_budget_inside_d11_band(balance_config_path):
     _assert_criterion(balance_config_path, spread.check_best_band)
 
@@ -321,6 +320,5 @@ def test_p5_p95_width_bounded(balance_config_path):
 
 @pytest.mark.slow
 @pytest.mark.balance
-@candidate.TUNING_TARGET
 def test_median_not_too_far_above_start(balance_config_path):
     _assert_criterion(balance_config_path, spread.check_median_bound)

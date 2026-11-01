@@ -482,7 +482,6 @@ def _tier_blocks(config_path, content_dir):
 
 @pytest.mark.slow
 @pytest.mark.balance
-@candidate.TUNING_TARGET
 def test_strategies_are_present_legal_and_in_budget(balance_config_path):
     cfg = candidate.load_balance_config(balance_config_path)
     for tier in cfg.budget_tiers:
@@ -496,7 +495,6 @@ def test_strategies_are_present_legal_and_in_budget(balance_config_path):
 
 @pytest.mark.slow
 @pytest.mark.balance
-@candidate.TUNING_TARGET
 def test_strategies_are_placed_by_kind_on_both_populations(balance_config_path, balance_content_dir):
     blocks = _tier_blocks(balance_config_path, balance_content_dir)
     misplaced = [
@@ -510,7 +508,6 @@ def test_strategies_are_placed_by_kind_on_both_populations(balance_config_path, 
 
 @pytest.mark.slow
 @pytest.mark.balance
-@candidate.TUNING_TARGET
 def test_the_good_strategy_is_derived_from_the_clues(balance_config_path, balance_content_dir):
     cfg, clues = _balance_inputs(balance_config_path, balance_content_dir)
     assert strategies.clue_scores(clues), "content/clues.toml enthält noch keine Maßnahmen-Zuordnung"
@@ -522,7 +519,6 @@ def test_the_good_strategy_is_derived_from_the_clues(balance_config_path, balanc
 
 @pytest.mark.slow
 @pytest.mark.balance
-@candidate.TUNING_TARGET
 def test_buying_only_the_clued_measures_is_not_automatically_best(balance_config_path, balance_content_dir):
     cfg, clues = _balance_inputs(balance_config_path, balance_content_dir)
     assert strategies.clue_scores(clues), "content/clues.toml enthält noch keine Maßnahmen-Zuordnung"
@@ -534,7 +530,6 @@ def test_buying_only_the_clued_measures_is_not_automatically_best(balance_config
 
 @pytest.mark.slow
 @pytest.mark.balance
-@candidate.TUNING_TARGET
 def test_the_configured_clue_mapping_is_complete(balance_config_path, balance_content_dir):
     from planspiel.texts import load_texts
 

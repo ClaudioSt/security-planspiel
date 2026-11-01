@@ -142,7 +142,6 @@ def test_cli_strict_gate_accepts_the_real_config_only(tmp_path):
 
 @pytest.mark.slow
 @pytest.mark.balance
-@candidate.TUNING_TARGET
 def test_configured_config_is_hand_friendly(balance_config_path):
     issues = validate(read_raw_config(balance_config_path), hand_calc_level="error")
     assert _errors(issues) == [], [(issue.code, issue.path) for issue in _errors(issues)]

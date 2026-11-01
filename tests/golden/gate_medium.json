@@ -1,28 +1,25 @@
 {
   "tier": "medium",
   "layer": "referenz",
-  "config_x": 9,
+  "config_x": 3,
   "step": 10,
-  "over_budget": 658015,
-  "min_x_strict": 5,
-  "min_x_weak": 4,
+  "over_budget": 675589,
+  "min_x_strict": 2,
+  "min_x_weak": 2,
   "x_histogram": {
-    "1": 651931,
-    "2": 5778,
-    "3": 258,
-    "4": 37,
-    "5": 11
+    "1": 675563,
+    "2": 26
   },
   "witness": {
-    "code": "1101103113",
-    "remaining": -5,
-    "steps": 1,
-    "kz_pre_review": 89,
-    "kz_final": 80,
-    "required_x": 5,
-    "trimmed_code": "1101103111",
-    "trimmed_kz_final": 85,
-    "trimmed_remaining": 57
+    "code": "2100113022",
+    "remaining": -22,
+    "steps": 3,
+    "kz_pre_review": 65,
+    "kz_final": 56,
+    "required_x": 2,
+    "trimmed_code": "0100103022",
+    "trimmed_kz_final": 62,
+    "trimmed_remaining": 86
   },
   "unlosable": 0,
   "untrimmable": 0,

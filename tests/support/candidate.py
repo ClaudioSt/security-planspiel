@@ -4,13 +4,10 @@ The slow design-principle checks read the config chosen with `--planspiel-config
 and the content directory chosen with `--planspiel-content-dir` (default content/), through the session fixtures
 `balance_config_path` and `balance_content_dir` of tests/conftest.py.
 
-Checks that fail on today's config but are targets of the Phase-6 tuning carry `TUNING_TARGET` (a non-strict xfail),
-so they stay visible in every `-m slow` run. The hard verdict on a candidate config is
+The balance checks are plain slow checks on the committed config (the tuning of Phase 6 is adopted). The options
+stay for future candidates; the verdict on a candidate config is
 
-    uv run pytest -m balance --runxfail --planspiel-config <candidate> --planspiel-content-dir <dir>
-
-(xfail plus --runxfail was chosen over a separate default-deselected marker because the targets stay visible in
-every run; it is the single approach for all Phase-6 checks).
+    uv run pytest tests -m balance --planspiel-config <candidate> --planspiel-content-dir <dir>
 
 The enumerations (static stores, summaries, swap layers, tier tables) are cached per resolved config path; stores
 and swap layers are computed with one worker process per tier.
@@ -20,18 +17,11 @@ import warnings
 from pathlib import Path
 from typing import Dict
 
-import pytest
-
 from planspiel import enumerate as enum
 from planspiel import parallel, report, rules
 from planspiel.config import load_config
 from planspiel.validate import HandCalcWarning
 from tests.support import CONFIG_PATH, CONTENT_DIR
-
-TUNING_TARGET = pytest.mark.xfail(
-    strict=False,
-    reason="Ziel des Phase-6-Tunings: gilt erst mit der abgenommenen Konfiguration (06-10)",
-)
 
 TIER_JOBS = 3
 

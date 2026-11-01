@@ -135,7 +135,6 @@ def test_format_final_index_block_is_german_and_names_k(mini_stores):
 
 @pytest.mark.slow
 @pytest.mark.balance
-@candidate.TUNING_TARGET
 def test_configured_k_gives_kz_two_thirds(balance_config_path):
     cfg = candidate.load_balance_config(balance_config_path)
     block = index_weights.final_index_block(candidate.static_stores(balance_config_path), cfg.final_index)
