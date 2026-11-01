@@ -447,7 +447,8 @@ def main(argv: list[str] | None = None) -> int:
     gate_parser.add_argument(
         "--paths",
         action="store_true",
-        help="prüft zusätzlich Spielpfade: Tausch-Schicht und je ein Zug im Fenster nach Welle 1 oder 2",
+        help="prüft zusätzlich Spielpfade: Tausch-Schicht, Tausch mit einem Zug im Fenster nach Welle 2 und, wo kein "
+        "Tausch möglich ist, je ein Zug im Fenster nach Welle 1 oder 2",
     )
     gate_parser.add_argument(
         "--narrow",

@@ -9,12 +9,30 @@ Budget-Review-Stufe). Das nötige X je Plan ist die kleinste ganze Zahl, bei der
 Das Gate liest nur Spalten des Ergebnisspeichers und `rules.penalty_params`, nie Formel-Operanden.
 
 Pfad-Gate (D-13, BAL-01; Phase-2-D-25 zurückgestellt): dieselbe Frage für legale Spielpfade, in den Familien
-`tausch` (Tausch-Schicht, legales Minimum), `fenster1` und `fenster2` (je ein Zug im Fenster nach Welle 1 oder 2, ohne
-Tausch). Gekürzte Version eines Pfads über Budget = Startplan mit nur gesenkten oder gekündigten Leveln, danach jede
-legale Fortsetzung des Pools der Familie (Tausch-Schicht: legaler Pool; Fenster: Vereinigung aus statischem Pfad,
-Tausch-Schicht und beiden Zug-Familien). Debriefing: "Hätte das Team zu Spielbeginn weniger oder niedrigere Maßnahmen
+- `tausch`: Tausch-Schicht (Pflicht-Maßnahmentausch mit kanonischer Reparatur, legales Minimum);
+- `tausch_fenster2`: der Pflicht-Tausch und danach ein freiwilliger Zug (ein Level einer Maßnahme geändert) im Fenster
+  nach Welle 2; das ist die Form der Referenzpfade und Lösungsschlüssel (`refpaths`);
+- `fenster1`, `fenster2`: ein Zug im Fenster nach Welle 1 oder 2 ohne Tausch, nur aus Startplänen, in denen kein Tausch
+  möglich ist. Ist ein Tausch möglich, ist er Pflicht (D-22, `rules.evaluate_path`); ein Zug ohne Tausch wäre dort ein
+  Pfad, den kein Team spielen kann, und darf weder geprüft werden noch als gekürzte Version dienen (06-REVIEW WR-03).
+Gekürzte Version eines Pfads über Budget = Startplan mit nur gesenkten oder gekündigten Leveln, danach jede legale
+Fortsetzung des Pools der Familie (Tausch-Schicht: legaler Pool; Zug-Familien: Vereinigung aller vier Familien, also
+aller hier geprüften legalen Pfade). Debriefing: "Hätte das Team zu Spielbeginn weniger oder niedrigere Maßnahmen
 gewählt, wäre es im Budget geblieben und besser gelandet." Die enge Kürzung (gleiches Tauschpaar) ist nur eine
 Diagnose (`tausch_eng`) und geht nie in das Urteil oder die Kalibrierung ein.
+
+Nicht geprüft sind mehrere Züge in einem Fenster, Züge in beiden Fenstern und ein zusätzlicher freiwilliger Zug im
+Tausch-Fenster (die Regeln erlauben "beliebig viele" Züge); die Kalibrierung nennt diese Lücke.
+
+`tausch_fenster2` hat etwa 30 Züge je Tausch-Pfad (rund eine Milliarde Pfade je Tier) und wird deshalb verdichtet: ein
+Zug wirkt nur über seine KZ-Änderung in Welle 3 und seinen Budgetbedarf (OPEX und Event-Kosten der Welle 3, Init-
+Differenz, abzüglich Event-Budget der Welle 3). Je Fensterzustand zählen nur die Züge der Pareto-Front (kein anderer Zug
+hat höchstens den Bedarf und mindestens die KZ-Änderung). Ein beherrschter Zug erhöht X nie: liegt sein Beherrscher über
+Budget, verlangt dieser bei höchstens so vielen Schritten mindestens dieselbe KZ vor Review; liegt der Beherrscher im
+Budget, endet die gekürzte Version mindestens auf dessen End-KZ (Budget-Review-Stufen nicht negativ und steigend), der
+beherrschte Zug braucht X = 1. Nötiges X (roh, schwach, gekappt), Urteil, Pfadzahlen sowie nicht verlierbare und nicht
+kürzbare Pfade sind damit exakt; Verteilung und "nicht strikt verlieren" zählen Gruppen der Pareto-Front, der
+bestimmende Pfad ist exakt, sobald das nötige X über 1 liegt.
 
 Kalibrierung (D-13): X = größtes nötiges X über alle Tiers und Familien + 1. Roh und gekappt werden beide gemeldet
 (Annahme A1 der Phase-6-Recherche, am Checkpoint D-04 zu bestätigen): roh = Strafe ohne Untergrenze
@@ -23,6 +41,7 @@ Review). Endet die gekürzte Version bei KZ 0, gibt es kein endliches gekapptes 
 "nicht verlierbar".
 """
 from array import array
+from bisect import bisect_right
 from pathlib import Path
 from typing import Dict, NamedTuple, Optional
 
@@ -33,17 +52,24 @@ from planspiel.rounding import started_steps
 
 LEVELS = 4
 
-PATH_FAMILIES = ("tausch", "fenster1", "fenster2")
+SWAP_MOVE_FAMILY = "tausch_fenster2"
+PATH_FAMILIES = ("tausch", "fenster1", "fenster2", SWAP_MOVE_FAMILY)
 NARROW_FAMILY = "tausch_eng"
 STATIC_FAMILY = "statisch"
 X_TARGET = 5
 PATH_LABELS = {
     "tausch": "Tausch-Schicht (Pflicht-Maßnahmentausch, legales Minimum)",
-    "fenster1": "ein Zug im Fenster nach Welle 1 (ohne Tausch)",
-    "fenster2": "ein Zug im Fenster nach Welle 2 (ohne Tausch)",
+    "fenster1": "ein Zug im Fenster nach Welle 1 (Startpläne ohne möglichen Tausch)",
+    "fenster2": "ein Zug im Fenster nach Welle 2 (Startpläne ohne möglichen Tausch)",
+    SWAP_MOVE_FAMILY: "Pflicht-Maßnahmentausch, danach ein Zug im Fenster nach Welle 2",
     NARROW_FAMILY: "Tausch-Schicht, enge Kürzung (gleiches Tauschpaar)",
 }
-POOL_OF = {"tausch": "legal", "fenster1": "union", "fenster2": "union", NARROW_FAMILY: "same_pair"}
+POOL_OF = {
+    "tausch": "legal", "fenster1": "union", "fenster2": "union", SWAP_MOVE_FAMILY: "union", NARROW_FAMILY: "same_pair",
+}
+UNCOVERED_SHAPES = (
+    "nicht geprüft: mehrere Züge in einem Fenster, Züge in beiden Fenstern, ein zusätzlicher Zug im Tausch-Fenster"
+)
 
 
 class GateResult(NamedTuple):
@@ -289,6 +315,10 @@ class PathScan:
 
     def add_over(self, start: int, steps: int, pre: int) -> None:
         self.over_budget[start] += 1
+        self.add_group(start, steps, pre)
+
+    def add_group(self, start: int, steps: int, pre: int) -> None:
+        """Nur die Verdichtung, ohne den Pfad zu zählen (die Zug-Familie mit Tausch zählt ihre Pfade selbst)."""
         column = self.max_pre.get(steps)
         if column is None:
             column = self.max_pre[steps] = array("b", [-1]) * self.size
@@ -393,16 +423,18 @@ def _swap_stream(tables):
         yield start, (start,) * prefix + (end,) * suffix, cost
 
 
-def _static_stream(tables):
-    codes = tables.wave_count
-    for start in range(len(tables.valid)):
-        if tables.valid[start]:
-            yield start, (start,) * codes, 0
+def _swap_mandatory(tables, start: int) -> bool:
+    """D-22 auf dem Zustandsindex: mit Kurswechsel ist der Tausch Pflicht, sobald eine Maßnahme aktiv und eine inaktiv ist."""
+    if tables.kurswechsel_wave is None:
+        return False
+    levels = [(start // stride) % LEVELS for stride in tables.strides]
+    return any(levels) and not all(levels)
 
 
 def _window_stream(tables, window: int):
+    """Ein Zug ohne Tausch, nur aus Startplänen, in denen kein Tausch möglich ist (sonst wäre der Pfad illegal)."""
     for start in range(len(tables.valid)):
-        if not tables.valid[start]:
+        if not tables.valid[start] or _swap_mandatory(tables, start):
             continue
         for target, cost in tables.single_moves(start):
             if window == 1:
@@ -433,6 +465,93 @@ def _run_stream(tables, stream, pools, scan, step: int) -> int:
                 if key > pool[start]:
                     pool[start] = key
     return count
+
+
+def _review_monotone(final_events) -> bool:
+    """Die Verdichtung der Zug-Familie mit Tausch setzt nicht negative, mit dem Restbudget steigende Review-Stufen voraus."""
+    for event in final_events:
+        if event.type != "final_budget_tier":
+            return False
+        values = [value for _minimum, value in event.params["tiers"]]
+        if values[0] < 0 or any(later < earlier for earlier, later in zip(values, values[1:])):
+            return False
+    return True
+
+
+def _move_front(tables, end: int):
+    """(alle Bedarfe aufsteigend, Pareto-Front als (Bedarf, KZ-Änderung) aufsteigend) der Züge im Fenster nach Welle 2."""
+    opex = tables.opex_cost
+    change = tables.change[2]
+    event_opex = tables.event_opex[2]
+    event_budget = tables.event_budget[2]
+    options = [
+        (opex[target] + cost + event_opex[target] - event_budget[target], change[target])
+        for target, cost in tables.single_moves(end)
+    ]
+    needs = tuple(sorted(need for need, _ in options))
+    options.sort(key=lambda option: (option[0], -option[1]))
+    front = []
+    for need, kz_change in options:
+        if not front or kz_change > front[-1][1]:
+            front.append((need, kz_change))
+    return needs, tuple(front)
+
+
+def _run_swap_moves(tables, pool: array, scan: PathScan, step: int) -> int:
+    """Familie `tausch_fenster2` in einer Runde über die Tausch-Pfade: KZ nach Welle 2 und Restbudget ohne Welle 3 je
+    Tausch-Pfad, dann die Züge der Pareto-Front (Modul-Docstring). Die Pfade über Budget je Start zählt sie exakt."""
+    size = len(tables.valid)
+    tier = tables.tier
+    budget = tier.budget
+    kz_start = tier.kz_start
+    change0, change1 = tables.change[0], tables.change[1]
+    event_opex0, event_opex1 = tables.event_opex[0], tables.event_opex[1]
+    event_budget0, event_budget1 = tables.event_budget[0], tables.event_budget[1]
+    init = tables.init_cost
+    opex = tables.opex_cost
+    final_events = tables.cfg.final_events
+    clamp = rules.clamp_kz
+    over_count = scan.over_budget
+    fronts: Dict[int, tuple] = {}
+    finals: Dict[tuple, int] = {}
+    steps_of: Dict[int, int] = {}
+    paths = 0
+    for start, end, dropped, _incoming, _level, cost in tables.swap_paths():
+        if dropped is None:
+            continue
+        entry = fronts.get(end)
+        if entry is None:
+            entry = fronts[end] = _move_front(tables, end)
+        needs, front = entry
+        paths += len(needs)
+        kz = clamp(clamp(kz_start + change0[start]) + change1[end])
+        before = (
+            budget + event_budget0[start] + event_budget1[end]
+            - init[start] - opex[start] - opex[end] - cost - event_opex0[start] - event_opex1[end]
+        )
+        over = len(needs) - bisect_right(needs, before)
+        if over:
+            over_count[start] += over
+        best = pool[start]
+        for need, kz_change in front:
+            remaining = before - need
+            kz_pre = clamp(kz + kz_change)
+            if remaining < 0:
+                steps = steps_of.get(remaining)
+                if steps is None:
+                    steps = steps_of[remaining] = started_steps(-remaining, step)
+                scan.add_group(start, steps, kz_pre)
+            else:
+                kz_final = finals.get((remaining, kz_pre))
+                if kz_final is None:
+                    kz_final = finals[(remaining, kz_pre)] = rules.apply_final_events(
+                        final_events, {}, remaining, kz_pre
+                    )[0]
+                key = kz_final * size + size - 1 - start
+                if key > best:
+                    best = key
+        pool[start] = best
+    return paths
 
 
 def _narrow_family(tables, config_x: int, step: int, tier_name: str) -> PathGateResult:
@@ -540,23 +659,30 @@ def _narrow_family(tables, config_x: int, step: int, tier_name: str) -> PathGate
 
 
 def gate_paths_tier(cfg, tier_name: str, tables=None, narrow: bool = False) -> Dict[str, PathGateResult]:
-    """Pfad-Gate eines Tiers (Familien `tausch`, `fenster1`, `fenster2`; mit `narrow` zusätzlich `tausch_eng`).
+    """Pfad-Gate eines Tiers (Familien `tausch`, `fenster1`, `fenster2`, `tausch_fenster2`; mit `narrow` zusätzlich
+    `tausch_eng`).
     Je Familie höchstens eine Runde über ihre Pfade; die Verdichtung je (Start, angefangene Schritte) macht das
     nötige X, die Zähler für nicht verlierbare und nicht kürzbare Pfade und den bestimmenden Pfad exakt."""
     if tables is None:
         tables = rules.TierTables(cfg, tier_name)
     if tables.wave_count != 3:
         raise ValueError("Das Pfad-Gate kennt zwei Change-Fenster (MAX_WINDOWS = 2, drei Wellen)")
+    if tables.kurswechsel_wave is not None and tables.prefix_waves != 1:
+        raise ValueError("Das Pfad-Gate erwartet den Kurswechsel in der ersten Welle (Tausch im Fenster nach Welle 1)")
+    if not _review_monotone(cfg.final_events):
+        raise ValueError("Das Pfad-Gate setzt nicht negative, mit dem Restbudget steigende Budget-Review-Stufen voraus")
     n = len(tables.measure_ids)
     config_x, step = rules.penalty_params(cfg.final_events)
     legal_pool = new_pool(n)
     union_pool = new_pool(n)
     scans = {family: PathScan(n) for family in PATH_FAMILIES}
 
+    # The swap layer carries the static paths of the starts without a possible swap; static paths of every other start
+    # are illegal (the swap is mandatory there), so the union gets no separate static pass.
     scans["tausch"].paths = _run_stream(tables, _swap_stream(tables), (legal_pool, union_pool), scans["tausch"], step)
-    _run_stream(tables, _static_stream(tables), (union_pool,), None, step)
     scans["fenster1"].paths = _run_stream(tables, _window_stream(tables, 1), (union_pool,), scans["fenster1"], step)
     scans["fenster2"].paths = _run_stream(tables, _window_stream(tables, 2), (union_pool,), scans["fenster2"], step)
+    scans[SWAP_MOVE_FAMILY].paths = _run_swap_moves(tables, union_pool, scans[SWAP_MOVE_FAMILY], step)
     lowering_closure(legal_pool, n)
     lowering_closure(union_pool, n)
 
@@ -683,7 +809,8 @@ def calibration_json(cal: Calibration) -> Dict:
 
 POOL_TEXT = {
     "legal": "gekürzter Startplan, danach jede legale Fortsetzung der Tausch-Schicht",
-    "union": "gekürzter Startplan, danach jede legale Fortsetzung (statisch, Tausch-Schicht, Züge in Fenster 1 und 2)",
+    "union": "gekürzter Startplan, danach jede legale Fortsetzung (Tausch-Schicht, Tausch mit Zug in Fenster 2, "
+    "Züge in Fenster 1 und 2 ohne möglichen Tausch)",
     "same_pair": "gekürzter Startplan und gesenktes Level der neuen Maßnahme, gleiches Tauschpaar (Diagnose)",
 }
 HISTOGRAM_TAIL = 5
@@ -691,6 +818,8 @@ HISTOGRAM_TAIL = 5
 
 def format_path_gate_report(result: PathGateResult) -> str:
     unit = "Pfade" if result.family == NARROW_FAMILY else "Gruppen aus Start und angefangenen Schritten"
+    if result.family == SWAP_MOVE_FAMILY:
+        unit += " (Pareto-Front der Züge je Fensterzustand)"
     lines = [
         f"Überziehungs-Gate, Tier {result.tier}, Pfade: {PATH_LABELS[result.family]}",
         f"  Vergleich: {POOL_TEXT[result.pool]}",
@@ -721,7 +850,7 @@ def format_path_gate_report(result: PathGateResult) -> str:
 
 
 def format_calibration(cal: Calibration) -> str:
-    lines = ["Kalibrierung von X (Maximum über Tiers und Familien, enge Kürzung ausgenommen)"]
+    lines = ["Kalibrierung von X (Maximum über Tiers und Familien, enge Kürzung ausgenommen)", f"  {UNCOVERED_SHAPES}"]
     if cal.static_min_x_capped:
         capped = ", ".join(f"{tier} {x}" for tier, x in cal.static_min_x_capped.items())
         lines.append(f"  statisches Gate, nötiges X gekappt je Tier: {capped}")

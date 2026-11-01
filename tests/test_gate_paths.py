@@ -1,8 +1,13 @@
 """Move-path overspend gate (BAL-01, D-13): families, start-lowered trim, narrow diagnostic and calibration.
 
+Families (WR-03): the swap layer (`tausch`), the mandatory swap followed by one voluntary window-2 move
+(`tausch_fenster2`, the shape of the reference paths) and one move in window 1 or 2 (`fenster1`, `fenster2`) from the
+starts where no swap is possible (D-22: everywhere else the swap is mandatory, so a move without it is illegal). Every
+path of every family is evaluated with `enforce_kurswechsel=True`, so an illegal path would raise.
+
 Trim definition of the path gate (research Q2): the trimmed versions of an over-budget path are all in-budget legal
 paths whose START plan has only lowered or cancelled levels, followed by ANY legal continuation of the family's pool
-(swap layer: legal pool; window-1 and window-2 single moves: union pool of static, swap layer and both move families).
+(swap layer: legal pool; the move families: union pool of all four families).
 The narrow definition (same swap pair, start and incoming level lowered) is a diagnostic and never enters the verdict.
 
 Debrief sentence: "Hätte das Team zu Spielbeginn weniger oder niedrigere Maßnahmen gewählt, wäre es im Budget
@@ -11,6 +16,7 @@ geblieben und besser gelandet."
 The brute force below builds every path of a family as a `rules.Path`, evaluates it with `rules.evaluate_path` and
 never touches `TierTables`.
 """
+import copy
 import json
 from array import array
 from itertools import product
@@ -186,10 +192,32 @@ def _legal_paths(cfg):
                 yield start, (dropped, incoming, level), path, True
 
 
+def _moves(cfg, selection):
+    for measure, level in product(cfg.measure_ids, range(4)):
+        if level == selection[measure]:
+            continue
+        target = dict(selection)
+        target[measure] = level
+        if rules.dependencies_satisfied(target, cfg.measures):
+            yield target
+
+
+def _swap_move_paths(cfg):
+    """Every swap path of the swap layer followed by one voluntary move in window 2."""
+    for start, swap, path, _enforce in _legal_paths(cfg):
+        if swap is None:
+            continue
+        end = path.windows[0]
+        for target in _moves(cfg, end.selection):
+            yield start, swap, rules.Path(path.start, (end, rules.Window(target))), True
+
+
 def _move_paths(cfg, window):
     ids = cfg.measure_ids
     for start in _valid_starts(cfg):
         selection = _selection(cfg, start)
+        if rules.swap_possible(selection):
+            continue
         for measure, level in product(ids, range(4)):
             if level == selection[measure]:
                 continue
@@ -198,12 +226,7 @@ def _move_paths(cfg, window):
             if not rules.dependencies_satisfied(target, cfg.measures):
                 continue
             windows = (rules.Window(target),) if window == 1 else (rules.Window(selection), rules.Window(target))
-            yield start, None, rules.Path(selection, windows), False
-
-
-def _static_paths(cfg):
-    for start in _valid_starts(cfg):
-        yield start, None, rules.Path(_selection(cfg, start)), False
+            yield start, None, rules.Path(selection, windows), True
 
 
 def _evaluate(cfg, tier, stream):
@@ -277,15 +300,16 @@ def _expected(cfg, over_paths, pool, config_x, step):
 def _mini_expected(cfg, tier):
     config_x, step = rules.penalty_params(cfg.final_events)
     legal = _evaluate(cfg, tier, _legal_paths(cfg))
-    static = _evaluate(cfg, tier, _static_paths(cfg))
     window1 = _evaluate(cfg, tier, _move_paths(cfg, 1))
     window2 = _evaluate(cfg, tier, _move_paths(cfg, 2))
+    swap_move = _evaluate(cfg, tier, _swap_move_paths(cfg))
     legal_pool = _closed_pool(cfg, [legal])
-    union_pool = _closed_pool(cfg, [static, legal, window1, window2])
+    union_pool = _closed_pool(cfg, [legal, window1, window2, swap_move])
     return {
         "tausch": (legal, _expected(cfg, legal, legal_pool, config_x, step), len(legal)),
         "fenster1": (window1, _expected(cfg, window1, union_pool, config_x, step), len(window1)),
         "fenster2": (window2, _expected(cfg, window2, union_pool, config_x, step), len(window2)),
+        "tausch_fenster2": (swap_move, _expected(cfg, swap_move, union_pool, config_x, step), len(swap_move)),
     }
 
 
@@ -318,21 +342,59 @@ def test_mini_path_gate_equals_brute_force(mini, tier, family):
     assert result.pool == ("legal" if family == "tausch" else "union")
     assert (result.config_x, result.step) == (config_x, step)
     assert result.paths == count
-    assert result.over_budget == expected["over_budget"] > 0
+    assert result.over_budget == expected["over_budget"]
+    if family in ("tausch", gate.SWAP_MOVE_FAMILY):
+        assert expected["over_budget"] > 0
     assert result.min_x_strict == expected["min_x_strict"]
     assert result.min_x_weak == expected["min_x_weak"]
     assert result.min_x_capped == expected["min_x_strict"]
     assert result.unlosable == expected["unlosable"]
     assert result.untrimmable == expected["untrimmable"]
-    assert result.x_histogram == expected["histogram"]
-    assert result.violations_at_config_x == expected["violations"]
     assert result.passed is expected["passed"]
+    if family == gate.SWAP_MOVE_FAMILY:
+        # Groups are counted on the Pareto front of the window-2 moves per window state: dominated moves never raise X
+        # (gate docstring), so the histogram can hold fewer groups but has the same maximum.
+        assert max(result.x_histogram, default=1) == max(expected["histogram"], default=1)
+        assert sum(result.x_histogram.values()) <= sum(expected["histogram"].values())
+        assert (result.violations_at_config_x > 0) is (expected["violations"] > 0)
+        if expected["min_x_strict"] == 1:
+            assert result.witness is None or result.witness["required_x"] == 1
+            return
+    else:
+        assert result.x_histogram == expected["histogram"]
+        assert result.violations_at_config_x == expected["violations"]
     if expected["witness_start"] is None:
         assert result.witness is None
     else:
         n = len(mini.measures)
         assert result.witness["code"] == "".join(map(str, _digits(expected["witness_start"], n)))
         assert result.witness["required_x"] == expected["min_x_strict"]
+
+
+def test_window_families_skip_every_start_where_the_swap_is_mandatory(mini):
+    tables = rules.TierTables(mini, "low")
+    for start in range(len(tables.valid)):
+        if tables.valid[start]:
+            assert gate._swap_mandatory(tables, start) is rules.swap_possible(_selection(mini, start))
+
+
+def test_path_gate_requires_a_rising_non_negative_budget_review(mini):
+    falling = copy.deepcopy(mini)
+    tiers = falling.final_events[0].params["tiers"]
+    tiers[:] = [[minimum, -value] for minimum, value in tiers]
+    with pytest.raises(ValueError, match="Budget-Review"):
+        gate.gate_paths_tier(falling, "low")
+
+
+def test_path_gate_requires_the_kurswechsel_in_the_first_wave(mini):
+    late = copy.deepcopy(mini)
+    first, second = sorted(late.events)[:2]
+    kurswechsel = [event for event in late.events[first] if event.type == "kurswechsel"]
+    assert kurswechsel
+    late.events[first] = [event for event in late.events[first] if event.type != "kurswechsel"]
+    late.events[second] = late.events[second] + kurswechsel
+    with pytest.raises(ValueError, match="Kurswechsel"):
+        gate.gate_paths_tier(late, "low")
 
 
 def test_mini_path_gate_covers_every_family(mini):
@@ -497,7 +559,8 @@ def test_calibrate_ignores_the_narrow_family_and_counts_unlosable_paths():
 
 def test_x_target_is_the_design_goal():
     assert gate.X_TARGET == 5
-    assert gate.PATH_FAMILIES == ("tausch", "fenster1", "fenster2")
+    assert gate.PATH_FAMILIES == ("tausch", "fenster1", "fenster2", "tausch_fenster2")
+    assert gate.SWAP_MOVE_FAMILY == "tausch_fenster2"
     assert gate.NARROW_FAMILY == "tausch_eng"
     assert set(gate.PATH_LABELS) == set(gate.PATH_FAMILIES) | {gate.NARROW_FAMILY}
 
@@ -536,6 +599,7 @@ def test_reports_are_german_and_name_raw_and_capped(mini):
     report = gate.format_calibration(cal)
     assert "Empfohlenes X = Maximum + 1" in report
     assert "bestimmend: Tier" in report
+    assert gate.UNCOVERED_SHAPES in report
     assert "Startplan" in gate.__doc__ and "A1" in gate.__doc__
 
 

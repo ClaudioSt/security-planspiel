@@ -197,7 +197,7 @@ def test_full_report_computes_every_block(full_report):
             assert blocks[name]["data"] is not None
         assert blocks["distribution"]["data"]["legal"] is not None
         assert blocks["gate"]["data"]["paths"] is not None
-        assert set(blocks["gate"]["data"]["paths"]) >= {"tausch", "fenster1", "fenster2"}
+        assert set(blocks["gate"]["data"]["paths"]) >= {"tausch", "fenster1", "fenster2", "tausch_fenster2"}
         assert blocks["spread_input"]["data"].best_static is not None
     assert list(full_report["cross_tier"]) == CROSS_BLOCKS + ["calibration"]
     assert full_report["cross_tier"]["choices"]["passed"] in (True, False)
