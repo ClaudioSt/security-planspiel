@@ -101,12 +101,12 @@ Every balance decision is checked against these (measurable via full enumeration
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Overspending allowed, penalized linearly: −X KZ per started 10k over budget | Keeps overspending as a risky option while removing the flat −15 exploit; X calibrated via full enumeration so over-budget never beats best in-budget | ✓ Implemented 2026-10-01 (RULE-03, D-15): provisional X = 9 (D-25), calibrated in Phase 6 |
+| Overspending allowed, penalized linearly: −X KZ per started 10k over budget | Keeps overspending as a risky option while removing the flat −15 exploit; X calibrated via full enumeration so over-budget never beats best in-budget | ✓ Implemented 2026-10-01 (RULE-03, D-15); X calibrated in Phase 6 (06-09/06-10) as the largest required X over the static reference and the move paths plus 1; the value lives in `simulation_config.json` |
 | Event cost effects removed from RoS | RoS should measure efficiency of the team's own security spend, not external shocks | ✓ Implemented 2026-10-01 (RULE-06, D-21): excluded in both directions (penalties and discounts) |
 | Attack names veiled only before the wave, revealed by name when it hits; mechanics always transparent | Players should infer threats from clues, but understand the mechanics fully | ✓ Decided 2026-09-29 |
 | Print material generated via LaTeX → PDF from `simulation_config.json` | Eliminates manual print-sync; precise print layout | ✓ Decided 2026-09-29 |
 | Generate docs before rebalancing | Every rebalance otherwise requires manual docx edits | ✓ Decided 2026-09-29 |
-| Overspend X calibrated on trim-back criterion | Every over-budget plan must lose to its own trimmed version; step rewards make marginal criterion infeasible | ✓ Decided 2026-09-29; gate implemented 2026-10-04 (RULE-04): strict minimum X 9 / 5 / 3 on the static reference, config X = 9 passes; final X in Phase 6 |
+| Overspend X calibrated on trim-back criterion | Every over-budget plan must lose to its own trimmed version; step rewards make marginal criterion infeasible | ✓ Decided 2026-09-29; gate implemented 2026-10-04 (RULE-04), extended in Phase 6 (06-01) to the move paths (swap layer, window moves, start-lowered trim); config X is max + 1 and `planspiel gate --paths` passes; D-04 approval 2026-11-01 |
 | Downgrade allowed: no init refund, OPEX drops next wave | Gives teams an adaptation lever; requires change model in sim | ✓ Decided 2026-09-29; implemented 2026-10-04 (RULE-02: `evaluate_path`, net pricing D-27, swap layer D-24) |
 | RoS = own spend only; event effects out in both directions | Symmetric, matches Decisions & Disruptions ledgers | ✓ Decided 2026-09-29 |
 | Sparprogramm overrun → re-plan window before penalty | Teams shouldn't be punished for an external shock they can still react to | ✓ Decided 2026-09-29; implemented 2026-10-01 (RULE-05, D-14: single end check, pinned on legal paths) |
@@ -125,8 +125,8 @@ Every balance decision is checked against these (measurable via full enumeration
 | Print stamp marks non-default inputs as +lokal instead of rejecting them (WR-07) | Keeps experimental/playtest prints possible while making them recognisable on paper | ✓ User 2026-10-22 (Phase 4 UAT, commit 8514b6a) |
 | Job-name prefix (`spieler-`, `uebung-`, `angriff-`, `spielleitung-`) is the single audience classification; unclassified jobs fail the build | One place decides who may see a document; the veil scan profile follows from it | ✓ Phase 5 (05-01) |
 | Cards in A6 landscape, 2×2 on A4, 12 pt body; event cards reuse the layout without a caption band | Approved after five physical print rounds; Kurswechsel card fits only without the band | ✓ User 2026-10-23..26 (05-03, 05-05; UAT 2026-10-27) |
-| Final-index weights and reference paths live in `simulation_config.json` (Low 2, Medium 1H, High 3) | One source for reports and answer keys; legal paths near the swap-layer median | ✓ User-approved in 05-13/05-14; re-choose after Phase 6 |
-| Approximations (`≈`) only on the facilitator booklet | Players never see a rounded non-terminating value; a PDF test enforces it | ✓ Phase 5 (05-15) |
+| Final-index weights (`KZ + k × RoS₂`, k from the spread of the data), reference strategies and reference paths live in `simulation_config.json` | One source for reports and answer keys; legal paths near the swap-layer median | ✓ Weights and paths approved at D-04 (2026-11-01), paths re-chosen in 06-09; clue to measure mapping in `content/clues.toml` is required |
+| Approximations (`≈`) only on the facilitator booklet | Players never see a rounded non-terminating value; a PDF test enforces it | ✓ Phase 5 (05-15); no approximation remains after the Phase 6 tuning (one-decimal slopes, hand-calc findings are errors) |
 
 ## Evolution
 

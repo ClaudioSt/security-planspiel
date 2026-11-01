@@ -40,4 +40,18 @@ sha256.angriff-1_ransomware, sha256.angriff-2_ot, sha256.angriff-3_exfil
 
 ## Golden update summary (slow)
 
-_Filled in by Task 2 after `uv run pytest -m slow --update-golden`._
+`uv run pytest -m slow --update-golden -q` (56 min 50 s, raw output `build/06-10-golden-slow.txt`) rewrote the digest and static gate goldens and created the path-gate goldens. Compared with the pre-tuning goldens:
+
+| File | Before | After |
+|---|---|---|
+| `digest_low.json` | in budget 69454, over budget 712882 | in budget 84702, over budget 697634, histogram of the final KZ moved away from 0 (606209 plans with KZ 0 before, 251727 after) |
+| `digest_medium.json` | (see git diff) | in budget 106747, over budget 675589 |
+| `digest_high.json` | (see git diff) | in budget 125332, over budget 657004 |
+| `gate_{low,medium,high}.json` | `config_x` 9, strict minimum X 3 (high) | `config_x` 3, strict minimum X 2 / 2 / 2, weak minimum X 2 / 2 / 1, 0 unlosable, 0 untrimmable |
+| `gate_paths_{low,medium,high}.json` (new) | none | static gate plus the three path families (`tausch`, `fenster1`, `fenster2`) per tier, all passed; minimum capped X per family low 2 / 1 / 1, medium 1 / 1 / 1, high 1 / 1 / 1; so the required X is 2 and the calibrated config X is 3 |
+
+The same run executed every balance check of `-m slow` without markers: all passed, except `tests/test_swap_layer.py::test_real_low_tier_counts_and_runtime`, which pinned the pre-tuning counts of the swap layer. Its two budget-dependent counts were updated by hand to the measured values (`swap_in_budget` 3_587_803 to 4_457_231, `swap_over_budget` 33_712_933 to 32_843_505; the total 37_300_736 of swap paths is unchanged, the arithmetic closes).
+
+## Reference paths
+
+`uv run planspiel referenzpfade --out build/06-10-refpaths` on the adopted config (about 6 min per tier) reports the swap-layer medians 56 / 58 / 57 (tolerance +-2, three candidates per tier). The three pinned `reference_plans` (chosen in 06-09 on identical values) are legal and in budget, carry the Kurswechsel swap and a voluntary move, and end on KZ 56 / 58 / 57, i.e. exactly on the medians (`tests/test_reference_plans.py` pins the structure and the mechanics score). No re-choice was needed, so `reference_plans` and the reference rows of `answer_keys.json` stayed as adopted.
