@@ -61,21 +61,21 @@
       "pool": "union",
       "config_x": 3,
       "step": 10,
-      "paths": 22274048,
-      "over_budget": 20029414,
+      "paths": 1373463,
+      "over_budget": 1372650,
       "min_x_strict": 1,
       "min_x_capped": 1,
       "min_x_weak": 1,
       "x_histogram": {
-        "1": 8591132
+        "1": 489641
       },
       "witness": {
-        "code": "0000000233",
-        "steps": 1,
-        "kz_pre_review": 44,
+        "code": "1111111111",
+        "steps": 2,
+        "kz_pre_review": 48,
         "required_x": 1,
-        "trimmed_code": "0000000222",
-        "trimmed_kz_final": 67
+        "trimmed_code": "0111001111",
+        "trimmed_kz_final": 76
       },
       "unlosable": 0,
       "untrimmable": 0,
@@ -88,21 +88,48 @@
       "pool": "union",
       "config_x": 3,
       "step": 10,
-      "paths": 22274048,
-      "over_budget": 20030450,
+      "paths": 1373463,
+      "over_budget": 1372755,
       "min_x_strict": 1,
       "min_x_capped": 1,
       "min_x_weak": 1,
       "x_histogram": {
-        "1": 7078935
+        "1": 380886
       },
       "witness": {
-        "code": "0000000323",
+        "code": "1111111111",
         "steps": 1,
-        "kz_pre_review": 30,
+        "kz_pre_review": 47,
         "required_x": 1,
-        "trimmed_code": "0000000222",
-        "trimmed_kz_final": 67
+        "trimmed_code": "0111001111",
+        "trimmed_kz_final": 76
+      },
+      "unlosable": 0,
+      "untrimmable": 0,
+      "violations_at_config_x": 0,
+      "passed": true
+    },
+    "tausch_fenster2": {
+      "tier": "medium",
+      "family": "tausch_fenster2",
+      "pool": "union",
+      "config_x": 3,
+      "step": 10,
+      "paths": 1059867648,
+      "over_budget": 943262665,
+      "min_x_strict": 1,
+      "min_x_capped": 1,
+      "min_x_weak": 1,
+      "x_histogram": {
+        "1": 12108772
+      },
+      "witness": {
+        "code": "0000000123",
+        "steps": 1,
+        "kz_pre_review": 50,
+        "required_x": 1,
+        "trimmed_code": "0000000122",
+        "trimmed_kz_final": 72
       },
       "unlosable": 0,
       "untrimmable": 0,
