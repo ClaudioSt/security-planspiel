@@ -544,3 +544,26 @@ Search iterations (state before = last accepted state of the same run; lever nam
 | s5-27 | b_M1 4→3, start_high 31→33 | 2/2/2 | 92/94/93 | 59/58/58 | 0.81 | 4 | 2.5 | yes |
 | s5-28 | b_M3 7→5, nervig -6→-8, start_high 33→35 | 2/2/2 | 92/93/95 | 59/58/60 | 0.85 | 3 | 2.5 | yes |
 | s5-29 | b_M4 5→4, m7_cia 2→0 | 2/1/1 | 96/97/99 | 62/62/64 | 0.99 | 6 | 45.0 | no |
+
+## D-04 decision
+
+**Date:** 2026-11-01
+**Answer (verbatim):** "Freigeben"
+
+Read as approval of all 13 points with the recommendations given:
+
+1. Trim definition: start-lowered (narrow stays a diagnostic).
+2. Raw/capped KZ reading (A1): accepted as the pair implemented.
+3. Global X = 3 (calibrated, D-13); 06-10 raises `MAX_PENALTY_ROWS` to 34 and re-proves the RoS page.
+4. Thresholds: unchanged, no module constant is edited in 06-10.
+5. Structural value changes: as listed in "Config diff" (M7 CIA -2 and bonus 3, flatter Kritische Schwachstelle, linear OEM-Audit, Exzellenz from Level 2 with 3 KZ, Nervige Authentifizierung -6, Budget Review 0/9/18/27, budgets 370/390/405, start KZ 39/36/33, thresholds -1 in waves 1 and 3, M6 init +6).
+6. Final-Index: `KZ + k * RoS2` with k = 10.
+7. Clue mapping: 21 clues including clue 21.
+8. Reference strategies and archetype definitions.
+9. Reference paths; practice unchanged.
+10. Wording edits (Exzellenz narrative, Final-Index note) and planned labels `final_index_weight`, `clue_head_measures`.
+11. Plan 06-08 interface choices.
+12. Consequences for 06-10 noted (penalty rows 34, `hand_calc` default to error, `require_mapping` on, "vorläufig" removed, goldens re-pinned).
+13. D-13a not triggered.
+
+Candidate files are final; 06-10 adopts `candidate_config.json` and `candidate_content/` mechanically.
