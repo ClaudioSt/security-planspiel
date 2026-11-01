@@ -46,7 +46,11 @@ class Issue:
 
 
 class HandCalcWarning(UserWarning):
-    pass
+    """A `hand_calc.*` finding loaded at level "warning" (reports that judge hand-calculability themselves)."""
+
+
+class ConfigWarning(UserWarning):
+    """Every other warning-level finding (schema defaults, removed keys, rule hints); never suppressed by reports."""
 
 
 class ConfigError(ValueError):

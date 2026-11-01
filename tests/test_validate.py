@@ -11,7 +11,7 @@ from planspiel.cli import main
 from planspiel.config import load_config
 from planspiel.rules import kz_slope
 from planspiel.simulate import run_simulation
-from planspiel.validate import ConfigError, HandCalcWarning, scale_factors, validate
+from planspiel.validate import ConfigError, ConfigWarning, HandCalcWarning, scale_factors, validate
 from tests.support import CONFIG_PATH, REPO_ROOT
 
 MINI = REPO_ROOT / "tests" / "fixtures" / "mini_config.json"
@@ -283,8 +283,33 @@ def test_load_config_rejects_a_slope_that_is_not_hand_calculable(tmp_path):
 
 def test_load_config_still_warns_about_other_warnings(tmp_path):
     other = _write_config(tmp_path, _set(["waves", 0, "kz_bonus"], 5))
-    with pytest.warns(HandCalcWarning, match="schema.removed_key"):
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
         load_config(other)
+    assert [type(w.message) for w in caught] == [ConfigWarning]
+    assert "schema.removed_key" in str(caught[0].message)
+
+
+def test_load_config_warns_about_hand_calc_findings_only_at_level_warning(tmp_path):
+    slope = _write_config(tmp_path, _old_exfil_slope)
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        load_config(slope, hand_calc_level="warning")
+    assert [type(w.message) for w in caught] == [HandCalcWarning]
+    assert "hand_calc.kz_slope" in str(caught[0].message)
+
+
+def test_suppressing_hand_calc_warnings_keeps_the_other_warnings(tmp_path):
+    def mutate(raw):
+        _old_exfil_slope(raw)
+        raw["waves"][0]["kz_bonus"] = 5
+
+    both = _write_config(tmp_path, mutate)
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        warnings.simplefilter("ignore", HandCalcWarning)
+        load_config(both, hand_calc_level="warning")
+    assert [type(w.message) for w in caught] == [ConfigWarning]
 
 
 def test_cli_validate_real_config_exits_zero_without_issues(capsys):

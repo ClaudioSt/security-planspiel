@@ -6,6 +6,7 @@ enumeration test helpers); the consolidated report is exercised on the mini conf
 import json
 import subprocess
 import sys
+import warnings
 from fractions import Fraction
 
 import pytest
@@ -15,7 +16,7 @@ from planspiel.config import FinalIndexWeights
 from planspiel.enumerate import ResultStore, enumerate_tier
 from planspiel.report import format_console, pareto_front, summarize_tier
 from planspiel.rounding import exact_to_json
-from planspiel.validate import ConfigError
+from planspiel.validate import ConfigError, ConfigWarning, HandCalcWarning
 from tests.support import REPO_ROOT, harness
 from tests.test_enumeration import _brute_pareto, _brute_records, _entry, _outcome, _without_rank
 
@@ -279,6 +280,19 @@ def test_main_reports_a_hand_calc_issue_as_a_failed_check_not_as_invalid_input(t
     assert code == 1
     assert "FEHLER" not in captured.err
     assert "hand_calc.kz_slope" in captured.out
+
+
+def test_report_hides_hand_calc_warnings_but_keeps_the_other_config_warnings(tmp_path):
+    path = _slope_17_7_mini(tmp_path)
+    raw = json.loads(path.read_text(encoding="utf-8"))
+    raw["waves"][0]["kz_bonus"] = 5
+    path.write_text(json.dumps(raw, ensure_ascii=False), encoding="utf-8")
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        balance.build_balance_report(path, MINI_CONTENT, tiers=["low"], layers="static", paths=True)
+    categories = {type(w.message) for w in caught}
+    assert HandCalcWarning not in categories
+    assert ConfigWarning in categories
 
 
 def test_baseline_may_be_a_non_hand_calculable_config(tmp_path, capsys):

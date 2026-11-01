@@ -13,14 +13,12 @@ The enumerations (static stores, summaries, swap layers, tier tables) are cached
 and swap layers are computed with one worker process per tier.
 """
 import functools
-import warnings
 from pathlib import Path
 from typing import Dict
 
 from planspiel import enumerate as enum
 from planspiel import parallel, report, rules
 from planspiel.config import load_config
-from planspiel.validate import HandCalcWarning
 from tests.support import CONFIG_PATH, CONTENT_DIR
 
 TIER_JOBS = 3
@@ -45,9 +43,7 @@ def _key(path) -> str:
 
 @functools.lru_cache(maxsize=None)
 def _load(key: str):
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore", HandCalcWarning)
-        return load_config(Path(key))
+    return load_config(Path(key))
 
 
 def load_balance_config(path):

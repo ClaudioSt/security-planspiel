@@ -159,8 +159,16 @@ def _tier_swap_blocks(cfg, tier, store, static_summary, swap_summary, swap_layer
     }
 
 
+def _lenient_call(worker: Callable, config_path: str, tier_name: str):
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", HandCalcWarning)
+        return worker(config_path, tier_name, hand_calc_level=HAND_CALC_LEVEL)
+
+
 def _lenient(worker: Callable) -> Callable:
-    return functools.partial(worker, hand_calc_level=HAND_CALC_LEVEL)
+    """Worker for `parallel.map_tiers` that loads at HAND_CALC_LEVEL; the hand-calc findings are judged by the report,
+    every other config warning stays visible."""
+    return functools.partial(_lenient_call, worker)
 
 
 def build_balance_report(

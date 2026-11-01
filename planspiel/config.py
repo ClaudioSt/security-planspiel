@@ -151,7 +151,7 @@ def read_raw_config(path: Path) -> Dict:
 
 
 def check_config(raw: Dict, source: str, hand_calc_level: str = "error") -> None:
-    from planspiel.validate import ConfigError, HandCalcWarning, validate
+    from planspiel.validate import ConfigError, ConfigWarning, HandCalcWarning, validate
 
     issues = validate(raw, hand_calc_level=hand_calc_level)
     errors = [issue for issue in issues if issue.level == "error"]
@@ -159,7 +159,8 @@ def check_config(raw: Dict, source: str, hand_calc_level: str = "error") -> None
         raise ConfigError(errors, source)
     for issue in issues:
         if issue.level == "warning":
-            warnings.warn(f"{issue.code} {issue.path}: {issue.message}", HandCalcWarning, stacklevel=3)
+            category = HandCalcWarning if issue.code.startswith("hand_calc.") else ConfigWarning
+            warnings.warn(f"{issue.code} {issue.path}: {issue.message}", category, stacklevel=3)
 
 
 def load_config(path: Path, hand_calc_level: str = "error") -> Config:
