@@ -474,6 +474,18 @@ def test_main_reports_unreadable_input_instead_of_a_partial_verdict(tmp_path, ca
     assert "Gesamturteil" not in captured.out
 
 
+def test_main_reports_a_crash_with_exit_code_2_not_as_a_failed_check(capsys, monkeypatch):
+    def crash(*_args, **_kwargs):
+        raise KeyError("content key")
+
+    monkeypatch.setattr(balance, "build_balance_report", crash)
+    code = balance.main(_args())
+    captured = capsys.readouterr()
+    assert code == 2
+    assert "FEHLER" in captured.err and "Traceback" in captured.err and "KeyError" in captured.err
+    assert "Gesamturteil" not in captured.out
+
+
 def test_main_with_baseline_prints_the_diff_and_the_before_after_table(tmp_path, capsys):
     baseline = _edited_mini(tmp_path)
     out = tmp_path / "out"

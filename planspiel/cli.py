@@ -171,17 +171,28 @@ def _gate_command(
     jobs: int = 1,
 ) -> int:
     from planspiel.config import load_config
-    from planspiel.gate import format_gate_report, gate_tier
 
     if narrow and not paths:
         parser.error("--narrow gehört zu --paths.")
-    cfg = load_config(Path(config))
-    names = tiers or list(cfg.budget_tiers)
-    unknown = [name for name in names if name not in cfg.budget_tiers]
-    if unknown:
-        parser.error(f"Unbekanntes Budget-Tier '{unknown[0]}'. Verfügbar: {', '.join(cfg.budget_tiers)}.")
-    if paths:
-        return _gate_paths_command(config, names, narrow, jobs)
+    # Exit 1 is the verdict "NICHT bestanden"; an unreadable or invalid config (ConfigError is a ValueError) and errors
+    # re-raised from the tier workers exit with 2.
+    try:
+        cfg = load_config(Path(config))
+        names = tiers or list(cfg.budget_tiers)
+        unknown = [name for name in names if name not in cfg.budget_tiers]
+        if unknown:
+            parser.error(f"Unbekanntes Budget-Tier '{unknown[0]}'. Verfügbar: {', '.join(cfg.budget_tiers)}.")
+        if paths:
+            return _gate_paths_command(config, names, narrow, jobs)
+        return _gate_static_command(cfg, names)
+    except (OSError, ValueError) as error:
+        print(f"FEHLER: {error}", file=sys.stderr)
+        return 2
+
+
+def _gate_static_command(cfg, names: list[str]) -> int:
+    from planspiel.gate import format_gate_report, gate_tier
+
     all_passed = True
     for name in names:
         result = gate_tier(cfg, name)

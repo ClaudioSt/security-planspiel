@@ -15,6 +15,7 @@ import functools
 import json
 import sys
 import time
+import traceback
 import warnings
 from fractions import Fraction
 from pathlib import Path
@@ -670,6 +671,10 @@ def main(argv=None) -> int:
             )
     except (OSError, ValueError) as error:
         print(f"FEHLER: {error}", file=sys.stderr)
+        return 2
+    except Exception:  # a crash is no verdict: exit 1 stays reserved for "check failed"
+        print("FEHLER: Abbruch des Berichts", file=sys.stderr)
+        print(traceback.format_exc(), file=sys.stderr)
         return 2
 
     text = format_balance_report(report)

@@ -1,4 +1,5 @@
 """Overspend trim-back gate (RULE-04, D-17, D-24): closure, required X and gate result against brute force."""
+import json
 import random
 from array import array
 
@@ -283,6 +284,24 @@ def test_gate_command_rejects_an_unknown_tier():
     with pytest.raises(SystemExit) as raised:
         main(["gate", "--config", str(MINI), "--tier", "nope"])
     assert raised.value.code == 2
+
+
+@pytest.mark.parametrize("extra", [(), ("--paths",)], ids=["static", "paths"])
+def test_gate_command_reports_an_invalid_config_with_exit_code_2(tmp_path, capsys, extra):
+    raw = json.loads(MINI.read_text(encoding="utf-8"))
+    raw["attacks"]["exfil"]["kz_at_full_damage"] = -8  # KZ slope 17/7: a hand-calc error
+    broken = tmp_path / "broken.json"
+    broken.write_text(json.dumps(raw, ensure_ascii=False), encoding="utf-8")
+    code = main(["gate", "--config", str(broken), *extra])
+    captured = capsys.readouterr()
+    assert code == 2
+    assert "FEHLER" in captured.err and "hand_calc.kz_slope" in captured.err
+    assert "Überziehungs-Gate:" not in captured.out
+
+
+def test_gate_command_reports_a_missing_config_with_exit_code_2(tmp_path, capsys):
+    assert main(["gate", "--config", str(tmp_path / "missing.json")]) == 2
+    assert "FEHLER" in capsys.readouterr().err
 
 
 _GATE_CACHE = {}
