@@ -18,7 +18,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 3: Content Source & Veiling** - All German prose in one content source keyed by config id, veiled vs revealed attack texts, clue matrix (completed 2026-10-19)
 - [x] **Phase 4: Print Pipeline & Attack Worksheets** - Non-interactive, reproducible LaTeX → PDF build; generated Angriff 1–3 worksheets proven equal to the simulation (completed 2026-10-22)
 - [x] **Phase 5: Player & Facilitator Print Material** - Measure/event/Budget Review cards, budget + RoS sheets, tracking sheet, "So funktioniert eine Welle", Welle 0, facilitator master sheet, veiling scan (completed 2026-10-26)
-- [ ] **Phase 6: Rebalance** - Calibrate X and all values by full enumeration against design principles 1–4, then regenerate all print material
+- [x] **Phase 6: Rebalance** - Calibrate X and all values by full enumeration against design principles 1–4, then regenerate all print material (completed 2026-11-01)
 - [ ] **Phase 7: Session Flow & Handoff** - Revised schedule with debrief, "Was ist neu", legacy files archived, docs updated, timed dry run
 
 ## Phase Details
@@ -262,7 +262,7 @@ Plans:
 - Review `booklet.MAX_PENALTY_ROWS` (12 today: X = 9 KZ je angefangene 10.000 €, ⌈100 ÷ 9⌉ rows) against the calibrated X and raise it together with a new RoS-page layout proof if X falls below 9 (a smaller X adds rows and stops the build with `ERROR print.model`). Review `booklet.MAX_WINDOWS` (2 today, about 2 mm to spare on the tracking page) the same way: a third change window or a fourth wave needs a new layout proof.
 - Remove the `≈` approximations on the master sheet once no slope is non-terminating (BAL-02).
 
-**Plans**: 9/10 plans executed
+**Plans**: 10/10 plans complete
 
 Plans:
 **Wave 1**
@@ -291,7 +291,7 @@ Plans:
 
 **Wave 6** *(blocked on Wave 5 completion)*
 
-- [ ] 06-10-PLAN.md — BAL-05: pre-flight D-04 gate, adopt the approved candidate, flip defaults, final-index wording/weight row and booklet clue column, single re-pin of goldens, regenerate the print set (wave 6)
+- [x] 06-10-PLAN.md — BAL-05: pre-flight D-04 gate, adopt the approved candidate, flip defaults, final-index wording/weight row and booklet clue column, single re-pin of goldens, regenerate the print set (wave 6)
 
 **Research flag**: yes. Topics: calibration method (trim-back sweep over cached per-combo tuples instead of re-enumerating), concrete metrics and thresholds for BAL-06…09 (dominance, "near-mandatory", quartile placement, spread range), Final-Index rescaling.
 
@@ -322,5 +322,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 3 
 | 3. Content Source & Veiling | 3/3 | Complete    | 2026-10-19 |
 | 4. Print Pipeline & Attack Worksheets | 6/6 | Complete    | 2026-10-22 |
 | 5. Player & Facilitator Print Material | 16/16 | Complete    | 2026-10-26 |
-| 6. Rebalance | 9/10 | In Progress|  |
+| 6. Rebalance | 10/10 | Complete   | 2026-11-01 |
 | 7. Session Flow & Handoff | 0/TBD | Not started | - |

@@ -4,17 +4,17 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: 6
 current_phase_name: Rebalance
-status: executing
-stopped_at: Phase 6 context gathered
-last_updated: "2026-11-01T17:43:13.042Z"
-last_activity: 2026-10-28
-last_activity_desc: Phase 6 execution started
+status: verifying
+stopped_at: Completed 06-10-PLAN.md
+last_updated: "2026-11-01T21:31:01.632Z"
+last_activity: 2026-11-01
+last_activity_desc: Plan 06-10 complete
 progress:
   total_phases: 7
-  completed_phases: 5
+  completed_phases: 6
   total_plans: 50
-  completed_plans: 49
-  percent: 71
+  completed_plans: 50
+  percent: 86
 ---
 
 # Project State
@@ -28,12 +28,12 @@ See: .planning/PROJECT.md (updated 2026-10-27)
 
 ## Current Position
 
-Phase: 6 (Rebalance) — EXECUTING
+Phase: 6 (Rebalance) — all plans executed, verification pending
 Plan: 10 of 10
-Status: Ready to execute
-Last activity: 2026-10-28 — Phase 6 execution started
+Status: Phase complete — ready for verification
+Last activity: 2026-11-01 — Plan 06-10 complete (candidate adopted, goldens re-pinned, print set regenerated)
 
-Progress: [███████░░░] 71% (5 of 7 phases)
+Progress: [█████████░] 86% (6 of 7 phases)
 
 ## Performance Metrics
 
@@ -107,6 +107,7 @@ Progress: [███████░░░] 71% (5 of 7 phases)
 | Phase 06 P07 | 55min | 3 tasks | 15 files |
 | Phase 06 P08 | 190min | 3 tasks | 9 files |
 | Phase 06 P09 | 7h | 4 tasks | 6 files |
+| Phase 06 P10 | 5h | 3 tasks | 75 files |
 
 ## Accumulated Context
 
@@ -187,6 +188,7 @@ Recent decisions affecting current work:
 - [Phase 06-07]: Today's clue-derived good start is top quartile only in low (FI 77 / swap-layer KZ 81); medium 58/64 and high 62/69 miss it; all-in-C is top quartile everywhere; require_mapping stays False until 06-10
 - [Phase 06]: [06-08] Balance report: static layer skips swap-dependent blocks (choices, strategies, rewarding) and labels them not computed; input errors exit 2, verdict 0/1; baseline report built with the candidate's Final-Index weights
 - [Phase 06-09]: D-04 approved 2026-11-01 (verbatim: Freigeben): start-lowered trim, X = 3, k = 10, thresholds unchanged, candidate config/content adopted in 06-10
+- [Phase 06-10]: D-04-approved candidate adopted byte for byte; hand-calc findings are errors and the clue mapping is required by default; Final-Index printed as KZ + k x RoS2 (k = 10) without provisional label; Budget Review page proven for 34 penalty rows — Phase 6 adoption
 
 ### Pending Todos
 
@@ -209,6 +211,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-11-01T17:42:39.178Z
-Stopped at: Phase 6 context gathered
-Resume file: .planning/phases/06-rebalance/06-CONTEXT.md
+Last session: 2026-11-01T21:30:54.005Z
+Stopped at: Completed 06-10-PLAN.md
+Resume file: None
