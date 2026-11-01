@@ -146,7 +146,11 @@ def test_cap_line_sits_between_the_cases_heading_and_fall_one(loaded):
 
 
 def test_real_cap_line_reads_threshold_cap_and_upper_bound(real):
-    assert "Schwelle: 23 · Kappung: 8 · Obergrenze: 23 + 8 = 31" in real[2]["angriff-1_ransomware"]
+    cfg = load_config(CONFIG_PATH)
+    wave = cfg.waves[0]
+    cap = cfg.attacks[wave.attack_id].mitigation_cap
+    line = f"Schwelle: {wave.e_threshold} · Kappung: {cap} · Obergrenze: {wave.e_threshold} + {cap} = {wave.e_threshold + cap}"
+    assert line in real[2]["angriff-1_ransomware"]
 
 
 def test_a_threshold_change_reaches_the_sheet_without_a_template_change(tmp_path):

@@ -82,11 +82,11 @@ def test_swap_legal(wave1, end, dropped, incoming, expected):
 @pytest.mark.parametrize(
     ("wave1", "end", "dropped", "incoming", "credit"),
     [
-        pytest.param({"M6": 1}, {"M2": 2}, "M6", "M2", 10, id="dearer-incoming-credit-is-dropped-init"),
+        pytest.param({"M6": 1}, {"M2": 2}, "M6", "M2", 16, id="dearer-incoming-credit-is-dropped-init"),
         pytest.param({"M5": 3}, {"M8": 2}, "M5", "M8", 36, id="cheaper-incoming-credit-capped-no-refund"),
         pytest.param({"M3": 1}, {"M6": 2}, "M3", "M6", 24, id="equal-init"),
         pytest.param({"M10": 3}, {"M1": 1}, "M10", "M1", 30, id="cheaper-incoming-again"),
-        pytest.param({"M6": 1}, {"M6": 3, "M2": 2}, "M6", "M2", 10, id="credit-uses-wave-1-level"),
+        pytest.param({"M6": 1}, {"M6": 3, "M2": 2}, "M6", "M2", 16, id="credit-uses-wave-1-level"),
     ],
 )
 def test_swap_credit_is_capped_at_both_inits(real, wave1, end, dropped, incoming, credit):
@@ -96,7 +96,7 @@ def test_swap_credit_is_capped_at_both_inits(real, wave1, end, dropped, incoming
 def test_team_pays_max_zero_of_the_difference(real):
     wave1, end = {"M6": 1}, {"M2": 2}
     paid = rules.compute_costs(end, real.measures, 0)[0] - rules.swap_credit(real.measures, wave1, "M6", "M2", end)
-    assert paid == 40
+    assert paid == 34
     wave1, end = {"M5": 3}, {"M8": 2}
     paid = rules.compute_costs(end, real.measures, 0)[0] - rules.swap_credit(real.measures, wave1, "M5", "M8", end)
     assert paid == 0
@@ -199,10 +199,10 @@ def _kurswechsel_event(raw):
 
 
 @pytest.mark.parametrize("path", [CONFIG_PATH, MINI], ids=["real", "mini"])
-def test_both_configs_validate_with_the_one_known_warning(path):
+def test_both_configs_validate_without_any_issue(path):
     raw = _raw(path)
     assert _issues(raw) == []
-    assert [(i.code, i.path) for i in _issues(raw, "warning")] == [("hand_calc.kz_slope", "attacks.exfil")]
+    assert _issues(raw, "warning") == []
     assert raw["events"]["wave_1"][0]["type"] == "kurswechsel"
 
 

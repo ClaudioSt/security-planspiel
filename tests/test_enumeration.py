@@ -343,7 +343,7 @@ def test_write_summary_is_utf8_lf_and_roundtrips(mini, tmp_path):
 
 def test_format_console_labels(mini):
     text = format_console(summarize_tier(mini, "low", enumerate_tier(mini, "low")))
-    for label in ("Pareto-Front", "im Budget", "über Budget", "Final-Index (vorläufig)", "Perzentile"):
+    for label in ("Pareto-Front", "im Budget", "über Budget", "Final-Index", "Perzentile"):
         assert label in text
     assert text.splitlines()[0].startswith("Referenzplan ohne Change-Fenster-Züge")
 

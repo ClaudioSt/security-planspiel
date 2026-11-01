@@ -72,7 +72,7 @@ def test_unit_trap_kilo_euro_ledger_versus_euro_default():
 
 def test_penalty_params_from_config():
     cfg = harness.load_config()
-    assert rules.penalty_params(cfg.final_events) == (9, 10)
+    assert rules.penalty_params(cfg.final_events) == (3, 10)
 
 
 def test_penalty_params_requires_a_budget_review_event():
@@ -93,10 +93,12 @@ def test_apply_final_events_over_budget_applies_the_penalty_once():
 
 def test_apply_final_events_clamps_after_the_penalty():
     cfg = harness.load_config()
-    assert rules.apply_final_events(cfg.final_events, {}, -1, 5)[0] == 0
+    x, _ = rules.penalty_params(cfg.final_events)
+    tiers = dict((remaining, delta) for remaining, delta in cfg.final_events[0].params["tiers"])
+    assert rules.apply_final_events(cfg.final_events, {}, -1, x - 1)[0] == 0
     assert rules.apply_final_events(cfg.final_events, {}, -890, 100)[0] == 0
-    assert rules.apply_final_events(cfg.final_events, {}, 25, 50)[0] == 55
-    assert rules.apply_final_events(cfg.final_events, {}, 75, 98)[0] == 100
+    assert rules.apply_final_events(cfg.final_events, {}, 25, 50)[0] == 50 + tiers[25]
+    assert rules.apply_final_events(cfg.final_events, {}, 75, 100 - tiers[75] + 1)[0] == 100
 
 
 def test_final_event_description_keeps_its_format():
@@ -110,9 +112,9 @@ def test_evaluate_plan_all_l3_low_is_over_budget_and_floored():
     x, step = rules.penalty_params(cfg.final_events)
     rec = rules.evaluate_plan(cfg, "low", {m: 3 for m in cfg.measure_ids})
     remaining = rec["costs"]["budget_available"] - rec["costs"]["total"]
-    assert remaining == -890
+    assert remaining < 0
     assert rec["over_budget"] is True
-    assert rec["final_events"][0]["kz_delta"] == -x * 89
+    assert rec["final_events"][0]["kz_delta"] == -x * started_steps(-remaining, step)
     assert rec["kz_final"] == 0
 
 
@@ -197,8 +199,8 @@ def test_kernel_carries_kz_pre_review_and_remaining_on_golden_cases(tier):
 
 
 def test_real_and_mini_config_declare_the_penalty():
-    for path in (CONFIG_PATH, MINI):
-        assert _penalty(_raw(path)) == {"kz_per_step": 9, "step": 10}
+    assert _penalty(_raw(CONFIG_PATH)) == {"kz_per_step": 3, "step": 10}
+    assert _penalty(_raw(MINI)) == {"kz_per_step": 9, "step": 10}
 
 
 def test_missing_overspend_penalty_is_an_error():
@@ -253,10 +255,11 @@ def test_overspend_penalty_keys_are_required(key):
     assert errors[0].path == f"final_events[0].overspend_penalty.{key}"
 
 
-def test_step_other_than_ten_thousand_euro_is_only_a_warning():
+def test_step_other_than_ten_thousand_euro_is_a_hand_calc_finding():
     raw = _raw()
     _penalty(raw)["step"] = 5
-    issues = validate(raw)
+    assert [i.level for i in validate(raw) if i.code == "hand_calc.penalty_step"] == ["error"]
+    issues = validate(raw, hand_calc_level="warning")
     assert _errors(issues) == []
     codes = {issue.code for issue in _warnings(issues)}
     assert "hand_calc.penalty_step" in codes
@@ -271,9 +274,8 @@ def test_shipped_configs_have_no_errors_and_no_penalty_warning(path):
     assert "hand_calc.penalty_step" not in {issue.code for issue in issues}
 
 
-def test_real_config_still_has_exactly_one_warning():
-    warnings = _warnings(validate(_raw()))
-    assert [warning.code for warning in warnings] == ["hand_calc.kz_slope"]
+def test_real_config_has_no_warning():
+    assert _warnings(validate(_raw())) == []
 
 
 def test_large_penalty_is_not_a_validator_warning():
@@ -281,7 +283,7 @@ def test_large_penalty_is_not_a_validator_warning():
     _penalty(raw)["kz_per_step"] = 40
     issues = validate(raw)
     assert _errors(issues) == []
-    assert {issue.code for issue in _warnings(issues)} == {"hand_calc.kz_slope"}
+    assert _warnings(issues) == []
 
 
 def test_readme_documents_linear_penalty():

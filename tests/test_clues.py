@@ -63,7 +63,7 @@ def test_a_single_clue_for_an_attack_is_too_few():
 
 def test_an_attack_without_any_clue_is_too_few():
     kept = tuple(clue for clue in CLUES if clue.attack != "exfil")
-    assert _codes(check_clues(CFG, TEXTS, kept)) == [("clues.too_few", "clues.exfil")]
+    assert _codes(check_clues(CFG, TEXTS, kept, require_mapping=False)) == [("clues.too_few", "clues.exfil")]
 
 
 def test_two_clues_from_the_same_document_are_a_single_source():
@@ -169,14 +169,14 @@ def test_a_clue_for_an_attack_outside_the_waves_is_unknown():
 
 def test_the_attack_ids_come_from_the_waves_not_from_a_fixed_list():
     shortened = dataclasses.replace(CFG, waves=CFG.waves[:2])
-    issues = check_clues(shortened, TEXTS, CLUES)
+    issues = check_clues(shortened, TEXTS, CLUES, require_mapping=False)
     assert _codes(issues) == [("clues.unknown_attack", "clues[5]"), ("clues.unknown_attack", "clues[6]")]
 
 
 def test_an_additional_wave_demands_its_own_clues():
     wave = dataclasses.replace(CFG.waves[0], wave_id=4, attack_id="ransomware")
     longer = dataclasses.replace(CFG, waves=[*CFG.waves, wave])
-    assert check_clues(longer, TEXTS, CLUES) == []
+    assert check_clues(longer, TEXTS, CLUES, require_mapping=False) == []
 
 
 @pytest.mark.parametrize("why", ["", "   "])

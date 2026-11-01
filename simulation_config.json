@@ -1,21 +1,21 @@
 {
   "default_budget_tier": "medium",
   "base_cia": {"c": 10, "i": 10, "a": 10},
-  "final_index": {"weight_kz": 1, "weight_ros": 1},
+  "final_index": {"weight_kz": 1, "weight_ros": 10},
   "budget_tiers": {
     "low": {
-      "budget": 350,
-      "kz_start": 50,
+      "budget": 370,
+      "kz_start": 39,
       "severity_multiplier": 1.0
     },
     "medium": {
-      "budget": 400,
-      "kz_start": 42,
+      "budget": 390,
+      "kz_start": 36,
       "severity_multiplier": 1.0
     },
     "high": {
-      "budget": 450,
-      "kz_start": 34,
+      "budget": 405,
+      "kz_start": 33,
       "severity_multiplier": 1.0
     }
   },
@@ -28,11 +28,11 @@
         "i": 0.4,
         "a": 0.2
       },
-      "e_threshold": 23,
+      "e_threshold": 22,
       "bonus_measures": [
         {"measure": "M3", "min_level": 2, "bonus": 6},
-        {"measure": "M4", "min_level": 2, "bonus": 6},
-        {"measure": "M6", "min_level": 2, "bonus": 3}
+        {"measure": "M4", "min_level": 2, "bonus": 5},
+        {"measure": "M6", "min_level": 2, "bonus": 4}
       ]
     },
     {
@@ -46,7 +46,7 @@
       "e_threshold": 20,
       "bonus_measures": [
         {"measure": "M5", "min_level": 2, "bonus": 9},
-        {"measure": "M7", "min_level": 2, "bonus": 6}
+        {"measure": "M7", "min_level": 2, "bonus": 3}
       ]
     },
     {
@@ -57,11 +57,11 @@
         "i": 0.3,
         "a": 0.2
       },
-      "e_threshold": 25,
+      "e_threshold": 24,
       "bonus_measures": [
-        {"measure": "M1", "min_level": 2, "bonus": 8},
+        {"measure": "M1", "min_level": 2, "bonus": 4},
         {"measure": "M2", "min_level": 2, "bonus": 6},
-        {"measure": "M8", "min_level": 2, "bonus": 9}
+        {"measure": "M8", "min_level": 2, "bonus": 3}
       ]
     }
   ],
@@ -69,8 +69,8 @@
     "ransomware": {
       "base_severity": 8,
       "s_unit": 20,
-      "kz_at_full_damage": -6,
-      "kz_at_full_mitigation": 10,
+      "kz_at_full_damage": -8,
+      "kz_at_full_mitigation": 8,
       "cia_impact": {"c": -2, "i": -2, "a": -1},
       "mitigation_cap": 8,
       "allow_recovery": true
@@ -78,8 +78,8 @@
     "ot": {
       "base_severity": 10,
       "s_unit": 32,
-      "kz_at_full_damage": -5,
-      "kz_at_full_mitigation": 7,
+      "kz_at_full_damage": -6,
+      "kz_at_full_mitigation": 8,
       "cia_impact": {"c": -1, "i": -2, "a": -3},
       "mitigation_cap": 10,
       "allow_recovery": true
@@ -87,8 +87,8 @@
     "exfil": {
       "base_severity": 7,
       "s_unit": 20,
-      "kz_at_full_damage": -7,
-      "kz_at_full_mitigation": 10,
+      "kz_at_full_damage": -6,
+      "kz_at_full_mitigation": 8,
       "cia_impact": {"c": -3, "i": -1, "a": 0},
       "mitigation_cap": 7,
       "allow_recovery": false
@@ -153,9 +153,9 @@
       "name": "Security Awareness & Training",
       "levels": {
         "0": {"cia": {"c": 0, "i": 0, "a": 0}, "init": 0, "opex": 0},
-        "1": {"cia": {"c": 2, "i": 1, "a": 1}, "init": 10, "opex": 2},
-        "2": {"cia": {"c": 3, "i": 2, "a": 2}, "init": 24, "opex": 6},
-        "3": {"cia": {"c": 5, "i": 3, "a": 3}, "init": 40, "opex": 10}
+        "1": {"cia": {"c": 2, "i": 1, "a": 1}, "init": 16, "opex": 2},
+        "2": {"cia": {"c": 3, "i": 2, "a": 2}, "init": 30, "opex": 6},
+        "3": {"cia": {"c": 5, "i": 3, "a": 3}, "init": 46, "opex": 10}
       },
       "dependencies": []
     },
@@ -163,9 +163,9 @@
       "name": "Vulnerability & Patch Management",
       "levels": {
         "0": {"cia": {"c": 0, "i": 0, "a": 0}, "init": 0, "opex": 0},
-        "1": {"cia": {"c": 2, "i": 3, "a": 2}, "init": 20, "opex": 4},
-        "2": {"cia": {"c": 4, "i": 5, "a": 3}, "init": 44, "opex": 8},
-        "3": {"cia": {"c": 6, "i": 7, "a": 4}, "init": 76, "opex": 14}
+        "1": {"cia": {"c": 0, "i": 1, "a": 0}, "init": 20, "opex": 4},
+        "2": {"cia": {"c": 2, "i": 3, "a": 1}, "init": 44, "opex": 8},
+        "3": {"cia": {"c": 4, "i": 5, "a": 2}, "init": 76, "opex": 14}
       },
       "dependencies": [
         {"level": 3, "requires": [{"measure": "M2", "min_level": 1}]}
@@ -230,14 +230,14 @@
         "type": "checklist_tier",
         "measures": ["M1", "M2", "M4", "M5", "M7"],
         "min_level": 1,
-        "tiers": [[0, -15], [1, -5], [2, 0], [3, 0], [4, 5], [5, 15]]
+        "tiers": [[0, -2], [1, -1], [2, 0], [3, 1], [4, 2], [5, 3]]
       },
       {
         "id": "kritische_schwachstelle",
         "name": "Kritische Schwachstelle im System",
         "type": "measure_level_tier",
         "measure": "M7",
-        "tiers": {"0": -5, "1": 0, "2": 3, "3": 7}
+        "tiers": {"0": -3, "1": 0, "2": 0, "3": 4}
       }
     ],
     "wave_3": [
@@ -245,8 +245,8 @@
         "id": "exzellenz_bonus",
         "name": "Exzellenz-Bonus",
         "type": "level_bonus_per_measure",
-        "level": 3,
-        "kz_per_measure": 5
+        "level": 2,
+        "kz_per_measure": 3
       },
       {
         "id": "nervige_authentifizierung",
@@ -256,7 +256,7 @@
           {"measure": "M1", "min_level": 2},
           {"measure": "M6", "level_eq": 0}
         ],
-        "kz_delta": -10
+        "kz_delta": -6
       }
     ]
   },
@@ -265,8 +265,8 @@
       "id": "budget_review",
       "name": "Budget Review",
       "type": "final_budget_tier",
-      "tiers": [[0, 0], [25, 5], [50, 10], [75, 15]],
-      "overspend_penalty": {"kz_per_step": 9, "step": 10}
+      "tiers": [[0, 0], [25, 9], [50, 18], [75, 27]],
+      "overspend_penalty": {"kz_per_step": 3, "step": 10}
     }
   ],
   "practice": {
@@ -300,40 +300,198 @@
   },
   "reference_plans": {
     "low": {
-      "start": {"M1": 0, "M2": 0, "M3": 0, "M4": 1, "M5": 0, "M6": 3, "M7": 1, "M8": 0, "M9": 3, "M10": 1},
+      "start": {"M1": 0, "M2": 0, "M3": 0, "M4": 1, "M5": 0, "M6": 2, "M7": 1, "M8": 1, "M9": 3, "M10": 2},
       "windows": [
         {
-          "selection": {"M1": 0, "M2": 0, "M3": 0, "M4": 0, "M5": 2, "M6": 3, "M7": 1, "M8": 0, "M9": 3, "M10": 1},
-          "swap": ["M4", "M5"]
+          "selection": {"M1": 0, "M2": 0, "M3": 0, "M4": 1, "M5": 1, "M6": 2, "M7": 1, "M8": 0, "M9": 3, "M10": 2},
+          "swap": ["M8", "M5"]
         },
         {
-          "selection": {"M1": 0, "M2": 0, "M3": 0, "M4": 0, "M5": 2, "M6": 0, "M7": 1, "M8": 0, "M9": 3, "M10": 1}
+          "selection": {"M1": 0, "M2": 0, "M3": 0, "M4": 1, "M5": 1, "M6": 0, "M7": 1, "M8": 0, "M9": 3, "M10": 2}
         }
       ]
     },
     "medium": {
-      "start": {"M1": 0, "M2": 0, "M3": 0, "M4": 1, "M5": 0, "M6": 0, "M7": 2, "M8": 1, "M9": 3, "M10": 3},
+      "start": {"M1": 0, "M2": 0, "M3": 0, "M4": 1, "M5": 0, "M6": 3, "M7": 1, "M8": 1, "M9": 2, "M10": 3},
       "windows": [
         {
-          "selection": {"M1": 0, "M2": 0, "M3": 0, "M4": 0, "M5": 1, "M6": 0, "M7": 2, "M8": 1, "M9": 3, "M10": 3},
+          "selection": {"M1": 0, "M2": 0, "M3": 0, "M4": 0, "M5": 1, "M6": 3, "M7": 1, "M8": 1, "M9": 2, "M10": 3},
           "swap": ["M4", "M5"]
         },
         {
-          "selection": {"M1": 0, "M2": 0, "M3": 0, "M4": 0, "M5": 1, "M6": 0, "M7": 1, "M8": 1, "M9": 3, "M10": 3}
+          "selection": {"M1": 0, "M2": 0, "M3": 0, "M4": 0, "M5": 0, "M6": 3, "M7": 1, "M8": 1, "M9": 2, "M10": 3}
         }
       ]
     },
     "high": {
-      "start": {"M1": 0, "M2": 0, "M3": 0, "M4": 1, "M5": 2, "M6": 3, "M7": 0, "M8": 0, "M9": 3, "M10": 3},
+      "start": {"M1": 0, "M2": 0, "M3": 0, "M4": 1, "M5": 2, "M6": 0, "M7": 1, "M8": 1, "M9": 2, "M10": 3},
       "windows": [
         {
-          "selection": {"M1": 0, "M2": 0, "M3": 0, "M4": 0, "M5": 2, "M6": 3, "M7": 0, "M8": 2, "M9": 3, "M10": 3},
-          "swap": ["M4", "M8"]
+          "selection": {"M1": 0, "M2": 0, "M3": 0, "M4": 0, "M5": 2, "M6": 1, "M7": 1, "M8": 1, "M9": 2, "M10": 3},
+          "swap": ["M4", "M6"]
         },
         {
-          "selection": {"M1": 0, "M2": 0, "M3": 0, "M4": 0, "M5": 2, "M6": 0, "M7": 0, "M8": 2, "M9": 3, "M10": 3}
+          "selection": {"M1": 0, "M2": 0, "M3": 1, "M4": 0, "M5": 2, "M6": 1, "M7": 1, "M8": 1, "M9": 2, "M10": 3}
         }
       ]
+    }
+  },
+  "reference_strategies": {
+    "low": {
+      "good": {
+        "kind": "good",
+        "start": {"M1": 0, "M2": 2, "M3": 2, "M4": 2, "M5": 2, "M6": 1, "M7": 0, "M8": 0, "M9": 0, "M10": 0},
+        "windows": [
+          {
+            "selection": {"M1": 0, "M2": 2, "M3": 2, "M4": 0, "M5": 2, "M6": 1, "M7": 1, "M8": 0, "M9": 0, "M10": 0},
+            "swap": ["M4", "M7"]
+          }
+        ]
+      },
+      "mediocre": {
+        "kind": "mediocre",
+        "start": {"M1": 0, "M2": 1, "M3": 2, "M4": 1, "M5": 1, "M6": 2, "M7": 1, "M8": 1, "M9": 0, "M10": 2},
+        "windows": [
+          {
+            "selection": {"M1": 1, "M2": 1, "M3": 2, "M4": 1, "M5": 1, "M6": 2, "M7": 0, "M8": 1, "M9": 0, "M10": 2},
+            "swap": ["M7", "M1"]
+          }
+        ]
+      },
+      "bad_ignore": {
+        "kind": "bad",
+        "start": {"M1": 0, "M2": 0, "M3": 0, "M4": 0, "M5": 0, "M6": 0, "M7": 0, "M8": 0, "M9": 3, "M10": 0},
+        "windows": [
+          {
+            "selection": {"M1": 0, "M2": 0, "M3": 0, "M4": 0, "M5": 0, "M6": 0, "M7": 0, "M8": 0, "M9": 0, "M10": 3},
+            "swap": ["M9", "M10"]
+          }
+        ]
+      },
+      "bad_all_in": {
+        "kind": "bad",
+        "start": {"M1": 0, "M2": 2, "M3": 0, "M4": 2, "M5": 0, "M6": 0, "M7": 0, "M8": 0, "M9": 0, "M10": 0},
+        "windows": [
+          {
+            "selection": {"M1": 0, "M2": 2, "M3": 0, "M4": 0, "M5": 0, "M6": 0, "M7": 0, "M8": 0, "M9": 1, "M10": 0},
+            "swap": ["M4", "M9"]
+          }
+        ]
+      },
+      "bad_hoard": {
+        "kind": "bad",
+        "start": {"M1": 0, "M2": 0, "M3": 0, "M4": 0, "M5": 0, "M6": 1, "M7": 0, "M8": 0, "M9": 0, "M10": 0},
+        "windows": [
+          {
+            "selection": {"M1": 0, "M2": 0, "M3": 0, "M4": 0, "M5": 0, "M6": 0, "M7": 0, "M8": 0, "M9": 0, "M10": 1},
+            "swap": ["M6", "M10"]
+          }
+        ]
+      }
+    },
+    "medium": {
+      "good": {
+        "kind": "good",
+        "start": {"M1": 1, "M2": 2, "M3": 2, "M4": 2, "M5": 2, "M6": 0, "M7": 0, "M8": 0, "M9": 0, "M10": 0},
+        "windows": [
+          {
+            "selection": {"M1": 1, "M2": 2, "M3": 0, "M4": 2, "M5": 2, "M6": 0, "M7": 1, "M8": 0, "M9": 0, "M10": 0},
+            "swap": ["M3", "M7"]
+          }
+        ]
+      },
+      "mediocre": {
+        "kind": "mediocre",
+        "start": {"M1": 1, "M2": 1, "M3": 2, "M4": 0, "M5": 2, "M6": 0, "M7": 0, "M8": 0, "M9": 3, "M10": 0},
+        "windows": [
+          {
+            "selection": {"M1": 1, "M2": 1, "M3": 0, "M4": 0, "M5": 2, "M6": 3, "M7": 0, "M8": 0, "M9": 3, "M10": 0},
+            "swap": ["M3", "M6"]
+          }
+        ]
+      },
+      "bad_ignore": {
+        "kind": "bad",
+        "start": {"M1": 0, "M2": 0, "M3": 0, "M4": 0, "M5": 0, "M6": 0, "M7": 0, "M8": 0, "M9": 3, "M10": 0},
+        "windows": [
+          {
+            "selection": {"M1": 0, "M2": 0, "M3": 0, "M4": 0, "M5": 0, "M6": 0, "M7": 0, "M8": 0, "M9": 0, "M10": 3},
+            "swap": ["M9", "M10"]
+          }
+        ]
+      },
+      "bad_all_in": {
+        "kind": "bad",
+        "start": {"M1": 0, "M2": 2, "M3": 0, "M4": 2, "M5": 0, "M6": 0, "M7": 0, "M8": 0, "M9": 0, "M10": 0},
+        "windows": [
+          {
+            "selection": {"M1": 0, "M2": 2, "M3": 0, "M4": 0, "M5": 0, "M6": 0, "M7": 0, "M8": 0, "M9": 1, "M10": 0},
+            "swap": ["M4", "M9"]
+          }
+        ]
+      },
+      "bad_hoard": {
+        "kind": "bad",
+        "start": {"M1": 0, "M2": 0, "M3": 0, "M4": 0, "M5": 0, "M6": 1, "M7": 0, "M8": 0, "M9": 0, "M10": 0},
+        "windows": [
+          {
+            "selection": {"M1": 0, "M2": 0, "M3": 0, "M4": 0, "M5": 0, "M6": 0, "M7": 0, "M8": 0, "M9": 0, "M10": 1},
+            "swap": ["M6", "M10"]
+          }
+        ]
+      }
+    },
+    "high": {
+      "good": {
+        "kind": "good",
+        "start": {"M1": 1, "M2": 2, "M3": 2, "M4": 2, "M5": 2, "M6": 1, "M7": 0, "M8": 0, "M9": 0, "M10": 0},
+        "windows": [
+          {
+            "selection": {"M1": 1, "M2": 2, "M3": 2, "M4": 0, "M5": 2, "M6": 1, "M7": 1, "M8": 0, "M9": 0, "M10": 0},
+            "swap": ["M4", "M7"]
+          }
+        ]
+      },
+      "mediocre": {
+        "kind": "mediocre",
+        "start": {"M1": 1, "M2": 1, "M3": 1, "M4": 0, "M5": 2, "M6": 2, "M7": 2, "M8": 0, "M9": 1, "M10": 2},
+        "windows": [
+          {
+            "selection": {"M1": 1, "M2": 1, "M3": 1, "M4": 1, "M5": 2, "M6": 2, "M7": 2, "M8": 0, "M9": 1, "M10": 0},
+            "swap": ["M10", "M4"]
+          }
+        ]
+      },
+      "bad_ignore": {
+        "kind": "bad",
+        "start": {"M1": 0, "M2": 0, "M3": 0, "M4": 0, "M5": 0, "M6": 0, "M7": 0, "M8": 0, "M9": 3, "M10": 0},
+        "windows": [
+          {
+            "selection": {"M1": 0, "M2": 0, "M3": 0, "M4": 0, "M5": 0, "M6": 0, "M7": 0, "M8": 0, "M9": 0, "M10": 3},
+            "swap": ["M9", "M10"]
+          }
+        ]
+      },
+      "bad_all_in": {
+        "kind": "bad",
+        "start": {"M1": 0, "M2": 2, "M3": 0, "M4": 2, "M5": 0, "M6": 0, "M7": 0, "M8": 0, "M9": 0, "M10": 0},
+        "windows": [
+          {
+            "selection": {"M1": 0, "M2": 2, "M3": 0, "M4": 0, "M5": 0, "M6": 0, "M7": 0, "M8": 0, "M9": 1, "M10": 0},
+            "swap": ["M4", "M9"]
+          }
+        ]
+      },
+      "bad_hoard": {
+        "kind": "bad",
+        "start": {"M1": 0, "M2": 0, "M3": 0, "M4": 0, "M5": 0, "M6": 1, "M7": 0, "M8": 0, "M9": 0, "M10": 0},
+        "windows": [
+          {
+            "selection": {"M1": 0, "M2": 0, "M3": 0, "M4": 0, "M5": 0, "M6": 0, "M7": 0, "M8": 0, "M9": 0, "M10": 1},
+            "swap": ["M6", "M10"]
+          }
+        ]
+      }
     }
   }
 }

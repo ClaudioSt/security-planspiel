@@ -79,8 +79,10 @@ def test_tier_rows_equal_the_config_in_config_order(loaded):
     assert booklet.planning.tier_header[:2] == (labels["tier"], labels["available_budget"])
 
 
-def test_the_real_tier_table_prints_low_with_350000_and_kz_50(real):
-    assert real[2].planning.tier_rows[0] == ("Low", "350.000 €", "50")
+def test_the_real_tier_table_starts_with_the_low_tier_of_the_config(real):
+    cfg, _, booklet = real
+    low = cfg.budget_tiers["low"]
+    assert booklet.planning.tier_rows[0] == ("Low", fmt.format_money(low.budget * 1000), str(low.kz_start))
 
 
 def test_the_anticipated_sum_line_multiplies_opex_by_the_wave_count_and_has_no_other_digit(loaded):
@@ -186,19 +188,22 @@ def test_the_penalty_table_equals_review_penalty_rows(loaded):
 
 
 def test_the_real_overspend_table_has_exactly_the_proven_row_count(real):
-    assert MAX_PENALTY_ROWS == 12
-    assert len(real[2].ros.penalty_rows) == MAX_PENALTY_ROWS
-    assert real[2].ros.penalty_rows[0] == ("1 – 10.000 €", "−9")
-    assert real[2].ros.penalty_rows[-1][1] == "−108"
+    cfg, _, booklet = real
+    kz_per_step, step_k = rules.penalty_params(cfg.final_events)
+    rows = booklet.ros.penalty_rows
+    assert MAX_PENALTY_ROWS == -(-100 // kz_per_step)
+    assert len(rows) == MAX_PENALTY_ROWS
+    assert rows[0] == (f"1 – {fmt.format_money(step_k * 1000)}", f"{MINUS}{kz_per_step}")
+    assert rows[-1][1] == f"{MINUS}{kz_per_step * MAX_PENALTY_ROWS}"
 
 
 def test_a_smaller_penalty_step_adds_rows_and_stops_the_build(tmp_path):
     raw = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
-    raw["final_events"][0]["overspend_penalty"]["kz_per_step"] = 5
+    raw["final_events"][0]["overspend_penalty"]["kz_per_step"] = 2
     path = tmp_path / "config.json"
     path.write_text(json.dumps(raw, ensure_ascii=False, indent=2), encoding="utf-8", newline="\n")
     cfg = load_config(path)
-    assert len(review_text.penalty_rows(*rules.penalty_params(cfg.final_events))) == 20
+    assert len(review_text.penalty_rows(*rules.penalty_params(cfg.final_events))) == 50
     texts = load_texts(CONTENT_DIR / "texte.toml")
     with pytest.raises(PrintModelError, match="MAX_PENALTY_ROWS"):
         build_team_booklet(cfg, texts)

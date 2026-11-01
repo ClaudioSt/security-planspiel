@@ -128,7 +128,7 @@ def test_missing_keys_are_reported():
     assert "schema.keys" in _codes(_with_block(block))
 
 
-# --- real config: the three approved reference paths (checkpoint answer: Low 2, Medium 1H, High 3) -------------
+# --- real config: the three reference paths re-chosen in 06-09 and approved at D-04 --------------------------------
 
 TIERS = ("low", "medium", "high")
 REAL_IDS = tuple(f"M{number}" for number in range(1, 11))
@@ -141,22 +141,22 @@ def _levels(**levels):
 # Approved structure only (D-22): start, the Kurswechsel swap with its window selection, one voluntary move.
 APPROVED = {
     "low": {
-        "start": _levels(M4=1, M6=3, M7=1, M9=3, M10=1),
-        "swap": ("M4", "M5"),
-        "swapped": _levels(M5=2, M6=3, M7=1, M9=3, M10=1),
-        "moved": _levels(M5=2, M7=1, M9=3, M10=1),
+        "start": _levels(M4=1, M6=2, M7=1, M8=1, M9=3, M10=2),
+        "swap": ("M8", "M5"),
+        "swapped": _levels(M4=1, M5=1, M6=2, M7=1, M9=3, M10=2),
+        "moved": _levels(M4=1, M5=1, M7=1, M9=3, M10=2),
     },
     "medium": {
-        "start": _levels(M4=1, M7=2, M8=1, M9=3, M10=3),
+        "start": _levels(M4=1, M6=3, M7=1, M8=1, M9=2, M10=3),
         "swap": ("M4", "M5"),
-        "swapped": _levels(M5=1, M7=2, M8=1, M9=3, M10=3),
-        "moved": _levels(M5=1, M7=1, M8=1, M9=3, M10=3),
+        "swapped": _levels(M5=1, M6=3, M7=1, M8=1, M9=2, M10=3),
+        "moved": _levels(M6=3, M7=1, M8=1, M9=2, M10=3),
     },
     "high": {
-        "start": _levels(M4=1, M5=2, M6=3, M9=3, M10=3),
-        "swap": ("M4", "M8"),
-        "swapped": _levels(M5=2, M6=3, M8=2, M9=3, M10=3),
-        "moved": _levels(M5=2, M8=2, M9=3, M10=3),
+        "start": _levels(M4=1, M5=2, M7=1, M8=1, M9=2, M10=3),
+        "swap": ("M4", "M6"),
+        "swapped": _levels(M5=2, M6=1, M7=1, M8=1, M9=2, M10=3),
+        "moved": _levels(M3=1, M5=2, M6=1, M7=1, M8=1, M9=2, M10=3),
     },
 }
 

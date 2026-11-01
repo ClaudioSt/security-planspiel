@@ -1,4 +1,4 @@
-"""BAL-02: the hand-calculability findings of the validator can be raised to errors (`hand_calc_level`)."""
+"""BAL-02: the hand-calculability findings of the validator are errors by default (`hand_calc_level`, D-03)."""
 import copy
 import json
 
@@ -36,7 +36,7 @@ def _level_of(issues, code):
 
 
 HAND_CALC_MUTATIONS = [
-    pytest.param(_set(["attacks", "ot", "kz_at_full_damage"], -6), "hand_calc.kz_slope", id="kz-slope"),
+    pytest.param(_set(["attacks", "exfil", "kz_at_full_damage"], -7), "hand_calc.kz_slope", id="kz-slope"),
     pytest.param(_set(["attacks", "ransomware", "base_severity"], 9), "hand_calc.severity_cap", id="severity-cap"),
     pytest.param(_set(["budget_tiers", "low", "severity_multiplier"], 1.1), "hand_calc.severity_multiplier", id="severity-multiplier"),
     pytest.param(
@@ -53,7 +53,7 @@ HAND_CALC_MUTATIONS = [
 @pytest.mark.parametrize(("mutate", "code"), HAND_CALC_MUTATIONS)
 def test_hand_calc_code_follows_the_level(mutate, code):
     raw = _mutated(mutate)
-    assert _level_of(validate(raw), code) == ["warning"]
+    assert _level_of(validate(raw), code) == ["error"]
     assert _level_of(validate(raw, hand_calc_level="warning"), code) == ["warning"]
     assert _level_of(validate(raw, hand_calc_level="error"), code) == ["error"]
 
@@ -97,7 +97,7 @@ def test_final_index_weights_of_the_form_kz_plus_k_ros_are_fine():
 def test_bad_final_index_weights_yield_exactly_one_finding(weights):
     raw = _mutated(_set(["final_index"], weights))
     findings = [i for i in validate(raw) if i.code == "hand_calc.final_index_weights"]
-    assert [(f.level, f.path) for f in findings] == [("warning", "final_index")]
+    assert [(f.level, f.path) for f in findings] == [("error", "final_index")]
 
 
 @pytest.mark.parametrize("path", [CONFIG_PATH, MINI], ids=["real", "mini"])
@@ -105,40 +105,39 @@ def test_todays_final_index_weights_are_fine(path):
     assert [i for i in validate(_raw(path)) if i.code == "hand_calc.final_index_weights"] == []
 
 
-def test_default_call_on_the_real_config_is_unchanged():
-    issues = validate(_raw())
-    assert [(i.level, i.code, i.path) for i in issues] == [("warning", "hand_calc.kz_slope", "attacks.exfil")]
+def test_default_level_is_error():
+    assert validate(_raw()) == validate(_raw(), hand_calc_level="error")
 
 
 def _errors(issues):
     return [issue for issue in issues if issue.level == "error"]
 
 
-def _exfil_one_decimal(raw):
-    raw["attacks"]["exfil"]["kz_at_full_damage"] = -5
-    raw["attacks"]["exfil"]["kz_at_full_mitigation"] = 9
+def _exfil_non_terminating(raw):
+    raw["attacks"]["exfil"]["kz_at_full_damage"] = -7
 
 
-def test_real_config_in_error_mode_has_only_the_exfil_slope():
-    errors = _errors(validate(_raw(), hand_calc_level="error"))
+def test_real_config_has_no_hand_calc_issue_in_either_mode():
+    assert validate(_raw()) == []
+    assert validate(_raw(), hand_calc_level="warning") == []
+
+
+def test_exfil_with_a_non_terminating_slope_is_an_error_by_default():
+    raw = _mutated(_exfil_non_terminating)
+    assert raw["attacks"]["exfil"]["mitigation_cap"] == 7
+    errors = _errors(validate(raw))
     assert [(issue.code, issue.path) for issue in errors] == [("hand_calc.kz_slope", "attacks.exfil")]
-    assert "17/7" in errors[0].message
+    assert "15/7" in errors[0].message
     assert "Welle 3" in errors[0].message
 
 
-def test_exfil_with_one_decimal_slope_has_no_issue_in_error_mode():
-    raw = _mutated(_exfil_one_decimal)
-    assert raw["attacks"]["exfil"]["mitigation_cap"] == 7
-    assert validate(raw, hand_calc_level="error") == []
-
-
-def test_cli_strict_gate_accepts_the_one_decimal_variant_only(tmp_path):
+def test_cli_strict_gate_accepts_the_real_config_only(tmp_path):
     from planspiel.cli import main
 
     config_file = tmp_path / "candidate_config.json"
-    config_file.write_text(json.dumps(_mutated(_exfil_one_decimal)), encoding="utf-8")
-    assert main(["validate", "--config", str(config_file), "--strict"]) == 0
-    assert main(["validate", "--config", str(CONFIG_PATH), "--strict"]) == 1
+    config_file.write_text(json.dumps(_mutated(_exfil_non_terminating)), encoding="utf-8")
+    assert main(["validate", "--config", str(CONFIG_PATH), "--strict"]) == 0
+    assert main(["validate", "--config", str(config_file), "--strict"]) == 1
 
 
 @pytest.mark.slow

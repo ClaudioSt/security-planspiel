@@ -54,11 +54,11 @@ def mini():
 # --- config ---------------------------------------------------------------------------------------------------
 
 
-@pytest.mark.parametrize("path", [CONFIG_PATH, MINI], ids=["real", "mini"])
-def test_both_configs_carry_the_weights_one_and_one(path):
+@pytest.mark.parametrize(("path", "k"), [(CONFIG_PATH, 10), (MINI, 1)], ids=["real", "mini"])
+def test_both_configs_carry_the_weights_of_the_form_kz_plus_k_ros(path, k):
     raw = json.loads(path.read_text(encoding="utf-8"))
-    assert raw["final_index"] == {"weight_kz": 1, "weight_ros": 1}
-    assert load_config(path).final_index == ONE
+    assert raw["final_index"] == {"weight_kz": 1, "weight_ros": k}
+    assert load_config(path).final_index == FinalIndexWeights(Fraction(1), Fraction(k))
 
 
 def test_final_index_precedes_practice_in_the_config_fields():
@@ -71,9 +71,10 @@ def test_final_index_precedes_practice_in_the_config_fields():
 
 
 def _issues(mutate):
+    """Schema errors of the mutated config; the hand-calc finding on the weights is tested in test_hand_calc_level."""
     raw = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
     mutate(raw)
-    return [issue for issue in validate(raw) if issue.level == "error"]
+    return [issue for issue in validate(raw, hand_calc_level="warning") if issue.level == "error"]
 
 
 def _delete_block(raw):
@@ -248,7 +249,7 @@ def test_balance_report_reads_the_config_weights(tmp_path):
 def test_analyze_resolves_weights_from_the_given_config(tmp_path, capsys):
     results = tmp_path / "results.json"
     results.write_text(json.dumps(RESULTS), encoding="utf-8")
-    heavy = _write_config(tmp_path, MINI, {"weight_kz": 2, "weight_ros": 1})
+    heavy = _write_config(tmp_path, MINI, {"weight_kz": 1, "weight_ros": 2})
 
     analyze.main(["--input", str(results), "--config", str(MINI)])
     plain_out = capsys.readouterr().out
@@ -268,7 +269,9 @@ def test_analyze_without_config_uses_the_repository_config(tmp_path, capsys, mon
     plain_out = capsys.readouterr().out
     assert "Final-Index: min 55,00, max 90,00" in plain_out
 
-    monkeypatch.setattr(analyze, "DEFAULT_CONFIG_PATH", _write_config(tmp_path, CONFIG_PATH, {"weight_kz": 2, "weight_ros": 1}))
+    real = load_config(CONFIG_PATH)
+    weighted = dataclasses.replace(real, final_index=FinalIndexWeights(Fraction(2), Fraction(1)))
+    monkeypatch.setattr(analyze, "load_config", lambda path: weighted)
     analyze.main(["--input", str(results)])
     assert "Final-Index: min 110,00, max 180,00" in capsys.readouterr().out
 

@@ -139,7 +139,8 @@ def test_balance_runs_with_canonical_semantics():
     assert result.returncode in (0, 1), stderr
     assert "Traceback" not in stderr
     stdout = result.stdout.decode("utf-8")
-    assert "Final-Index (vorläufig)" in stdout
+    assert "Final-Index" in stdout
+    assert "vorläufig" not in stdout
     assert "Referenzplan ohne Change-Fenster-Züge" in stdout
     assert "Gesamturteil" in stdout
     assert "Score=" not in stdout

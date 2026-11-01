@@ -2,6 +2,7 @@ import copy
 import json
 import subprocess
 import sys
+import warnings
 from fractions import Fraction
 
 import pytest
@@ -28,16 +29,22 @@ def _warnings(issues):
     return [issue for issue in issues if issue.level == "warning"]
 
 
-def test_real_config_has_no_errors_and_one_slope_warning():
-    issues = validate(_raw())
-    assert _errors(issues) == []
-    warnings = _warnings(issues)
-    assert len(warnings) == 1
-    warning = warnings[0]
-    assert warning.code == "hand_calc.kz_slope"
-    assert warning.path == "attacks.exfil"
-    assert "Welle 3" in warning.message
-    assert "17/7" in warning.message
+def test_real_config_has_no_issues_at_all():
+    assert validate(_raw()) == []
+
+
+def test_the_slope_of_the_old_third_wave_is_a_hand_calc_error_by_default():
+    raw = _raw()
+    raw["attacks"]["exfil"]["kz_at_full_damage"] = -7
+    raw["attacks"]["exfil"]["kz_at_full_mitigation"] = 10
+    issues = validate(raw)
+    assert _warnings(issues) == []
+    errors = _errors(issues)
+    assert [issue.code for issue in errors] == ["hand_calc.kz_slope"]
+    assert errors[0].path == "attacks.exfil"
+    assert "Welle 3" in errors[0].message
+    assert "17/7" in errors[0].message
+    assert [issue.level for issue in validate(raw, hand_calc_level="warning")] == ["warning"]
 
 
 def test_mini_config_has_no_errors():
@@ -213,7 +220,7 @@ WARNING_MUTATIONS = [
 def test_hand_calc_issue_is_a_warning_not_an_error(mutate, code):
     raw = copy.deepcopy(_raw())
     mutate(raw)
-    issues = validate(raw)
+    issues = validate(raw, hand_calc_level="warning")
     assert _errors(issues) == [], [(issue.code, issue.path) for issue in _errors(issues)]
     assert code in {issue.code for issue in _warnings(issues)}
 
@@ -256,20 +263,51 @@ def test_load_config_lists_every_error(tmp_path):
     assert "ref.unknown_attack" in str(excinfo.value)
 
 
-def test_load_config_warns_about_hand_calculability():
-    with pytest.warns(HandCalcWarning, match="hand_calc.kz_slope"):
+def _old_exfil_slope(raw):
+    raw["attacks"]["exfil"]["kz_at_full_damage"] = -7
+    raw["attacks"]["exfil"]["kz_at_full_mitigation"] = 10
+
+
+def test_load_config_accepts_the_real_config_without_any_warning():
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
         load_config(CONFIG_PATH)
 
 
-def test_cli_validate_real_config_exits_zero_with_one_warning(capsys):
+def test_load_config_rejects_a_slope_that_is_not_hand_calculable(tmp_path):
+    broken = _write_config(tmp_path, _old_exfil_slope)
+    with pytest.raises(ConfigError) as excinfo:
+        load_config(broken)
+    assert "hand_calc.kz_slope" in str(excinfo.value)
+
+
+def test_load_config_still_warns_about_other_warnings(tmp_path):
+    other = _write_config(tmp_path, _set(["waves", 0, "kz_bonus"], 5))
+    with pytest.warns(HandCalcWarning, match="schema.removed_key"):
+        load_config(other)
+
+
+def test_cli_validate_real_config_exits_zero_without_issues(capsys):
     assert main(["validate", "--config", str(CONFIG_PATH)]) == 0
     out = capsys.readouterr().out
-    assert "WARN hand_calc.kz_slope attacks.exfil" in out
-    assert "0 Fehler, 1 Warnung(en)" in out
+    assert "WARN" not in out and "ERROR" not in out
+    assert "0 Fehler, 0 Warnung(en)" in out
 
 
-def test_cli_validate_strict_fails_on_warnings():
-    assert main(["validate", "--config", str(CONFIG_PATH), "--strict"]) == 1
+def test_cli_validate_strict_passes_the_real_config():
+    assert main(["validate", "--config", str(CONFIG_PATH), "--strict"]) == 0
+
+
+def test_cli_validate_strict_fails_on_warnings(tmp_path):
+    other = _write_config(tmp_path, _set(["waves", 0, "kz_bonus"], 5))
+    assert main(["validate", "--config", str(other)]) == 0
+    assert main(["validate", "--config", str(other), "--strict"]) == 1
+
+
+def test_cli_validate_reports_a_hand_calc_violation_as_error(tmp_path, capsys):
+    broken = _write_config(tmp_path, _old_exfil_slope)
+    assert main(["validate", "--config", str(broken)]) == 1
+    assert "ERROR hand_calc.kz_slope attacks.exfil" in capsys.readouterr().out
 
 
 def test_cli_validate_broken_config_exits_one(tmp_path, capsys):
@@ -298,7 +336,7 @@ def _run(args):
 def test_module_entry_point_validates_default_config():
     result = _run(["-m", "planspiel", "validate"])
     assert result.returncode == 0, result.stderr.decode("utf-8", errors="replace")
-    assert "17/7" in result.stdout.decode("utf-8")
+    assert "0 Fehler, 0 Warnung(en)" in result.stdout.decode("utf-8")
 
 
 def test_simulate_script_refuses_broken_config(tmp_path):

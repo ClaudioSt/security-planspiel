@@ -125,14 +125,15 @@ def test_the_real_audit_rows_read_as_designed():
     cfg = load_config(CONFIG_PATH)
     texts = load_texts(CONTENT_DIR / "texte.toml")
     effect = effect_rows(next(event for event in _wave_events(cfg) if event.id == "oem_audit"), cfg, texts)
-    assert [row.covers for row in effect.rows] == [(0,), (1,), (2, 3), (4,), (5,)]
-    assert [row.value for row in effect.rows] == [-15, -5, 0, 5, 15]
+    assert [row.covers for row in effect.rows] == [(0,), (1,), (2,), (3,), (4,), (5,)]
+    assert [row.value for row in effect.rows] == [-2, -1, 0, 1, 2, 3]
     assert [row.text for row in effect.rows] == [
-        "0 erfüllt → KZ −15",
-        "1 erfüllt → KZ −5",
-        "2–3 erfüllt → KZ ±0",
-        "4 erfüllt → KZ +5",
-        "5 erfüllt → KZ +15",
+        "0 erfüllt → KZ −2",
+        "1 erfüllt → KZ −1",
+        "2 erfüllt → KZ ±0",
+        "3 erfüllt → KZ +1",
+        "4 erfüllt → KZ +2",
+        "5 erfüllt → KZ +3",
     ]
 
 
@@ -229,7 +230,7 @@ def test_the_real_and_condition_names_both_clauses():
     when_true, otherwise = effect_rows(event, cfg, texts).rows
     assert "M1" in when_true.text and "mindestens auf Level 2" in when_true.text
     assert "M6" in when_true.text and "auf Level 0" in when_true.text
-    assert when_true.text.endswith("KZ −10")
+    assert when_true.text.endswith("KZ −6")
     assert otherwise.text.endswith("KZ ±0")
 
 
@@ -345,10 +346,10 @@ def test_the_review_rows_read_inclusive_boundaries_and_the_overspend_rule():
     effect = effect_rows(cfg.final_events[0], cfg, texts)
     assert [row.text for row in effect.rows] == [
         "0 – 24.999 € → KZ ±0",
-        "ab 25.000 € → KZ +5",
-        "ab 50.000 € → KZ +10",
-        "ab 75.000 € → KZ +15",
-        "Überzogen: −9 KZ je angefangene 10.000 €",
+        "ab 25.000 € → KZ +9",
+        "ab 50.000 € → KZ +18",
+        "ab 75.000 € → KZ +27",
+        "Überzogen: −3 KZ je angefangene 10.000 €",
     ]
 
 

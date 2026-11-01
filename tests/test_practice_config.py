@@ -353,8 +353,8 @@ def test_a_config_without_the_block_validates_as_before():
     raw = _raw()
     del raw["practice"]
     assert _errors(validate(raw)) == []
-    assert [issue.code for issue in validate(raw) if issue.level == "warning"] == ["hand_calc.kz_slope"]
+    assert validate(raw) == []
 
 
-def test_the_block_adds_no_warning_beyond_the_known_slope_warning():
-    assert [issue.code for issue in validate(_raw()) if issue.level == "warning"] == ["hand_calc.kz_slope"]
+def test_the_block_adds_no_issue_at_all():
+    assert validate(_raw()) == []

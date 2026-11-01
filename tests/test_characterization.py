@@ -83,7 +83,8 @@ def test_golden_covers_required_categories(tier):
     empty = next(c for c in cases if "edge:empty" in c["tags"])
     assert empty["expected"]["ros"] is None
 
-    assert any(t.startswith("census:tie_w3:") for t in tags), "wave-3 .5 tie missing (D-23)"
+    # The tuned slopes have one decimal, so no plan of the real config ends on a .5 tie any more; the rounding rule is
+    # covered by the tie config of tests/support/ties.py (D-23).
     for remaining in (-1, 0, 25, 50, 75):
         assert f"census:remaining_{remaining}" in tags
 

@@ -9,6 +9,7 @@ import pytest
 from planspiel import rules
 from tests.support import CONFIG_PATH, REPO_ROOT, harness
 from tests.support.digest import compute_digest
+from tests.support.ties import NEGATIVE_TIE_EVENT, tie_codes, write_tie_config
 
 TIERS = ("low", "medium", "high")
 MINI = REPO_ROOT / "tests" / "fixtures" / "mini_config.json"
@@ -60,7 +61,7 @@ def test_budget_ledger_equality_stays_in_budget():
 def test_apply_final_events_boundary_is_inclusive():
     cfg = harness.load_config()
     kz, records = rules.apply_final_events(cfg.final_events, {}, 25, 50)
-    assert kz == 55
+    assert kz == 50 + dict((remaining, delta) for remaining, delta in cfg.final_events[0].params["tiers"])[25]
     assert len(records) == 1
     assert list(records[0]) == ["id", "name", "effect_description", "kz_delta"]
 
@@ -73,7 +74,8 @@ def test_apply_final_events_negative_remaining_budget():
 
 def test_apply_final_events_clamps():
     cfg = harness.load_config()
-    assert rules.apply_final_events(cfg.final_events, {}, 75, 98)[0] == 100
+    top = cfg.final_events[0].params["tiers"][-1][1]
+    assert rules.apply_final_events(cfg.final_events, {}, 75, 100 - top + 1)[0] == 100
 
 
 @pytest.mark.parametrize("tier", TIERS)
@@ -124,29 +126,12 @@ def test_kernel_equals_evaluate_plan_on_random_real_codes(tier):
 
 @pytest.mark.parametrize("tier", TIERS)
 def test_kernel_equals_evaluate_plan_on_negative_tie_override(tier, tmp_path):
-    raw = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
-    override = copy.deepcopy(raw)
-    override["events"]["wave_3"].append(
-        {
-            "id": "test_negative_tie",
-            "name": "Test negative tie",
-            "type": "and_condition",
-            "clauses": [{"measure": "M6", "min_level": 0}],
-            "kz_delta": -7,
-        }
-    )
-    path = tmp_path / "simulation_config.json"
-    path.write_text(json.dumps(override, ensure_ascii=False), encoding="utf-8")
-
-    cfg = harness.load_config(path)
+    cfg = harness.load_config(write_tie_config(tmp_path, [NEGATIVE_TIE_EVENT]))
     kernel = rules.TierKernel(cfg, tier)
-    tie_cases = [
-        case for case in _golden_cases(tier) if any(tag.startswith("census:tie_w3:") for tag in case["tags"])
-    ]
-    assert tie_cases
-    for case in tie_cases:
-        selection = harness.selection_of(cfg, case["code"])
-        assert kernel.evaluate(selection) == _expected(cfg, tier, selection), case["code"]
+    codes = tie_codes(cfg, tier, count=3, positive=False) + tie_codes(cfg, tier, count=3, positive=True)
+    for code in codes:
+        selection = harness.selection_of(cfg, code)
+        assert kernel.evaluate(selection) == _expected(cfg, tier, selection), code
 
 
 def test_kernel_memoization_never_changes_a_result():

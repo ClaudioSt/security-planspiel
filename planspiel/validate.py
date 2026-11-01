@@ -106,7 +106,7 @@ REFERENCE_STRATEGY_KINDS = ("good", "mediocre", "bad")
 
 
 class _Validator:
-    def __init__(self, raw: dict, hand_calc_level: str = "warning"):
+    def __init__(self, raw: dict, hand_calc_level: str = "error"):
         if hand_calc_level not in HAND_CALC_LEVELS:
             raise ValueError(f"hand_calc_level muss warning oder error sein, nicht {hand_calc_level!r}")
         self.raw = raw
@@ -922,5 +922,5 @@ class _Validator:
                     )
 
 
-def validate(raw: dict, hand_calc_level: str = "warning") -> List[Issue]:
+def validate(raw: dict, hand_calc_level: str = "error") -> List[Issue]:
     return _Validator(raw, hand_calc_level).run()

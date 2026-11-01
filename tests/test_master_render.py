@@ -107,7 +107,7 @@ def test_every_wave_section_starts_on_a_new_page(real, sheet):
 def test_the_clue_matrix_is_split_per_attack_and_holds_every_clue(real, sheet):
     source = real[3][master.MASTER_JOB]
     quotes = [entry.quote for group in sheet.clue_groups for entry in group.rows]
-    assert len(quotes) == 14
+    assert len(quotes) == len(load_clues(CONTENT_DIR / "clues.toml"))
     for quote in quotes:
         assert render.tex_escape(quote) in source
     for group in sheet.clue_groups:

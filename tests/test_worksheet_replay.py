@@ -62,8 +62,8 @@ def test_wave_one_case_three_without_recovery(real):
     assert result.total_bonus == 6
     assert result.gr == 26
     assert result.case == 3
-    assert result.damage_before_eur == 100_000
-    assert result.damage_eur == 100_000
+    assert result.damage_before_eur == 80_000
+    assert result.damage_eur == 80_000
     assert result.kz_attack == 0
     assert result.change == 0
 
@@ -71,12 +71,12 @@ def test_wave_one_case_three_without_recovery(real):
 def test_wave_one_case_two_with_strong_recovery_level(real):
     _, sheets = real
     result = replay_steps(sheets[0], Fraction(20), {"M3": 2, "M4": 3, "M6": 0}, 0)
-    assert result.total_bonus == 12
-    assert result.gr == 32
+    assert result.total_bonus == 11
+    assert result.gr == 31
     assert result.case == 2
     assert result.damage_eur == 0
-    assert result.kz_attack == 10
-    assert result.change == 10
+    assert result.kz_attack == 8
+    assert result.change == 8
 
 
 def test_wave_one_case_one_with_recovery_discount(real):
@@ -86,8 +86,8 @@ def test_wave_one_case_one_with_recovery_discount(real):
     assert result.case == 1
     assert result.damage_before_eur == 160_000
     assert result.damage_eur == 144_000
-    assert result.kz_attack == -6
-    assert result.change == -6
+    assert result.kz_attack == -8
+    assert result.change == -8
 
 
 def test_bounds_of_case_three_belong_to_case_one_and_two(real):
@@ -141,8 +141,8 @@ def test_replay_wave_is_e_step_plus_steps(real):
 def test_event_kz_bounds_on_the_real_config(real):
     cfg, _ = real
     assert event_kz_bounds(cfg, 1) == range(0, 1)
-    assert event_kz_bounds(cfg, 2) == range(-20, 23)
-    assert event_kz_bounds(cfg, 3) == range(-10, 51)
+    assert event_kz_bounds(cfg, 2) == range(-5, 8)
+    assert event_kz_bounds(cfg, 3) == range(-6, 31)
 
 
 def test_event_kz_bounds_rejects_unknown_event_types(real):

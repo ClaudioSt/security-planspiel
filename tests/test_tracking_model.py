@@ -26,6 +26,7 @@ from planspiel.cards import printed_strings
 from planspiel.config import load_config
 from planspiel.eventtext import EFFECT_KINDS
 from planspiel.printmodel import PrintModelError
+from planspiel.review_text import penalty_rows
 from planspiel.rules import Path, Window
 from planspiel.texts import PREWAVE_SHEETS, PreAttackView, load_texts
 from tests.support import CONFIG_PATH, CONTENT_DIR, MINI_CONTENT_DIR, REPO_ROOT
@@ -348,10 +349,19 @@ def test_filling_the_printed_rows_reproduces_evaluate_path(world, path, tier):
     assert sum(result.damages) == record["total_damage"]
 
 
+def _printed_overspend_row(cfg, overspend_k):
+    """The KZ value of the row of the printed overspend table that contains the overspend (in whole euros)."""
+    over_eur = overspend_k * 1000
+    for from_eur, to_eur, kz in penalty_rows(*rules.penalty_params(cfg.final_events)):
+        if from_eur <= over_eur <= to_eur:
+            return kz
+    raise AssertionError("overspend beyond the printed table")
+
+
 @pytest.mark.parametrize(
     ("path", "expected_review"),
     [
-        pytest.param(Path(_selection(level=1, M1=2, M2=2, M3=2)), -99, id="overspend-row-of-the-printed-table"),
+        pytest.param(Path(_selection(level=1, M1=2, M2=2, M3=2)), None, id="overspend-row-of-the-printed-table"),
         pytest.param(Path(_selection(level=3)), -rules.KZ_MAX, id="all-level-three-clamps-both-ends"),
     ],
 )
@@ -360,6 +370,8 @@ def test_overspend_and_both_clamps_follow_the_printed_tables(world, path, expect
     record = rules.evaluate_path(cfg, "low", path)
     result = replay_tracking(cfg, "low", path, *_worksheet_inputs(record), texts)
     assert result.remaining_final < 0 and result.remaining_final == record["costs"]["remaining"]
+    if expected_review is None:
+        expected_review = _printed_overspend_row(cfg, -result.remaining_final)
     assert result.kz_review == expected_review
     assert result.kz_final == record["kz_final"]
     assert list(result.kz_after) == [wave["kz_after"] for wave in record["waves"]]

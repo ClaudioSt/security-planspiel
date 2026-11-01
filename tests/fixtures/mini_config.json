@@ -110,8 +110,8 @@
     "exfil": {
       "base_severity": 7,
       "s_unit": 20,
-      "kz_at_full_damage": -7,
-      "kz_at_full_mitigation": 10,
+      "kz_at_full_damage": -5,
+      "kz_at_full_mitigation": 9,
       "cia_impact": {
         "c": -3,
         "i": -1,

@@ -123,13 +123,15 @@ def test_the_budget_review_the_final_table_and_welle_zero_follow_the_waves(print
             assert squash(cell) in tail, cell
 
 
-def test_every_final_index_is_marked_provisional(printed_set, sheet, content):
+def test_every_final_index_is_printed_exactly_with_the_weight_row(printed_set, sheet, content):
     pages = _pages(printed_set)
     page = pages[_first_page_with(pages, sheet.final_title, start=1)]
-    provisional = squash(content.texts.get("sheets.spielleitung.final_index_provisional"))
-    assert page.count(provisional) >= len(sheet.tiers)
+    assert "vorläufig" not in page
     for result in sheet.tiers:
+        assert squash(result.ros) in page
         assert squash(result.final_index) in page
+    assert squash(sheet.final_weight_label) in page
+    assert squash(sheet.final_weight_value) in page
 
 
 def test_the_clue_matrix_lists_every_clue(printed_set, sheet):

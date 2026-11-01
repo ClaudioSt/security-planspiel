@@ -140,12 +140,12 @@ def test_kurswechsel_may_be_switched_off_for_plain_evaluation(real):
 def test_downgrade_keeps_init_sunk_and_lowers_opex_from_the_next_wave(real):
     got = run(real, "1111311111", "1111111111")
     costs = got["costs"]
-    assert costs["init"] == 276
+    assert costs["init"] == 282
     assert costs["window_costs"] == [0]
     assert costs["opex_by_wave"] == [43, 33, 33]
-    assert costs["security_spend"] == 385
+    assert costs["security_spend"] == 391
     static = rules.evaluate_plan(real, "medium", sel(real, "1111311111"))
-    assert static["costs"]["security_spend"] == 405
+    assert static["costs"]["security_spend"] == 411
     assert got["waves"][0]["cia"] == static["waves"][0]["cia"]
     assert got["waves"][1]["cia"] == rules.compute_cia(sel(real, "1111111111"), real.measures, real.base_cia)
     assert got["selections"][0] == sel(real, "1111311111")
@@ -155,9 +155,9 @@ def test_downgrade_keeps_init_sunk_and_lowers_opex_from_the_next_wave(real):
 def test_add_costs_the_init_of_the_chosen_level(real):
     got = run(real, "0000000000", "0000020000")
     costs = got["costs"]
-    assert costs["window_costs"] == [24]
+    assert costs["window_costs"] == [30]
     assert costs["opex_by_wave"] == [0, 6, 6]
-    assert costs["security_spend"] == 36
+    assert costs["security_spend"] == 42
 
 
 def test_upgrade_costs_the_init_difference(real):
@@ -165,7 +165,7 @@ def test_upgrade_costs_the_init_difference(real):
     costs = got["costs"]
     assert costs["window_costs"] == [0, 60]
     assert costs["opex_by_wave"] == [33, 33, 55]
-    assert costs["security_spend"] == 387
+    assert costs["security_spend"] == 393
 
 
 def test_cancel_refunds_nothing_and_stops_opex(real):
@@ -173,14 +173,14 @@ def test_cancel_refunds_nothing_and_stops_opex(real):
     costs = got["costs"]
     assert costs["window_costs"] == [0, 0]
     assert costs["opex_by_wave"] == [33, 33, 31]
-    assert costs["init"] == 206
+    assert costs["init"] == 212
 
 
 def test_unlimited_moves_and_events_follow_the_selection_in_force(real):
     got = run(real, "0000000000", "1101101000")
     assert got["costs"]["window_costs"] == [126]
     oem = next(event for event in got["waves"][1]["events"] if event["id"] == "oem_audit")
-    assert oem["kz_delta"] == 15
+    assert oem["kz_delta"] == 3
     assert got["waves"][0]["events"][1]["opex_delta"] == 0
     assert got["waves"][0]["events"][1]["id"] == "operative_unterstuetzung"
 
@@ -229,13 +229,13 @@ def test_window_cost_is_zero_for_equal_levels_and_never_negative(real):
 def test_swap_carries_the_credit_of_the_dropped_measure(real):
     got = run(real, KURS_START, ("1000032320", ("M10", "M1")))
     assert got["costs"]["window_costs"] == [0]
-    assert got["costs"]["security_spend"] == 385
+    assert got["costs"]["security_spend"] == 391
     assert got["windows"] == [{"swap": ("M10", "M1"), "cost": 0}]
 
 
 def test_swap_pays_only_the_surplus_and_counts_as_own_spend(real):
     got = run(real, KURS_START, ("2000002323", ("M6", "M1")))
-    assert got["costs"]["window_costs"] == [20]
+    assert got["costs"]["window_costs"] == [14]
     assert got["costs"]["security_spend"] == 417
     expected = rules.ros(rules.base_losses(real.waves, real.attacks), got["total_damage"], 417)
     assert got["ros"] == expected

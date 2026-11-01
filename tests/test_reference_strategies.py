@@ -77,9 +77,10 @@ def test_the_loader_exposes_the_block_and_defaults_to_empty(tmp_path):
     assert load_config(path).reference_strategies == {}
 
 
-def test_the_real_config_has_no_block_yet():
-    assert "reference_strategies" not in json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
-    assert load_config(CONFIG_PATH).reference_strategies == {}
+def test_the_real_config_carries_the_block():
+    block = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))["reference_strategies"]
+    assert block
+    assert load_config(CONFIG_PATH).reference_strategies == block
 
 
 def test_reference_strategies_sits_after_reference_plans_and_practice_stays_last():

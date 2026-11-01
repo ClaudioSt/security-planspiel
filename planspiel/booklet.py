@@ -21,10 +21,10 @@ from planspiel.review_text import _tier_value_text, format_eur, penalty_rows, ti
 from planspiel.texts import PreAttackView, Texts
 
 BOOKLET_JOB = "spieler-teamheft"
-# Rows of today's overspend table (X = 9 KZ per started step): rows until the penalty alone reaches the KZ cap of 100,
-# ceil(100 / 9) = 12. The Budget Review page is proven (pdf test, fill report) for at most this many rows. Phase 6
-# calibrates X; a smaller X adds rows, so the constant is reviewed together with a new layout proof of that page.
-MAX_PENALTY_ROWS = 12
+# Rows of the overspend table (calibrated X = 3 KZ per started step): rows until the penalty alone reaches the KZ cap
+# of 100, ceil(100 / 3) = 34. The Budget Review page is proven (pdf test, fill report) for at most this many rows. A
+# smaller X adds rows, so the constant is reviewed together with a new layout proof of that page.
+MAX_PENALTY_ROWS = 34
 EN_DASH = "–"
 
 # The tracking sheet (PRINT-08): rows in calculation order. `remaining` closes the wave columns; the Budget Review

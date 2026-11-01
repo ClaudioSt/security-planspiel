@@ -301,10 +301,10 @@ def format_candidate(candidate: Candidate, cfg) -> str:
         f"Gesamtschaden {format_money(review.total_damage_eur)}, eigene Kosten {_eur_k(review.own_spend_k)}, "
         f"Restbudget {_eur_k(review.remaining_k)}, im Budget: {'nein' if review.over_budget else 'ja'}"
     )
-    ros_text = "nicht definiert" if review.ros is None else format_approx(review.ros)
+    ros_text = "nicht definiert" if review.ros is None else format_number(rules.ros_two_decimals(review.ros))
     lines.append(
-        f"RoS {ros_text}; Final-Index {format_approx(final_index)} (vorläufig, Gewichte KZ "
-        f"{format_number(weights.weight_kz)} und RoS {format_number(weights.weight_ros)})"
+        f"RoS {ros_text}; Final-Index {format_number(final_index)} (Gewichte KZ "
+        f"{format_number(weights.weight_kz)}, RoS {format_number(weights.weight_ros)})"
     )
     return "\n".join(lines)
 

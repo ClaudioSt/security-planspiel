@@ -221,7 +221,7 @@ narrative = "Ihr werdet von einem Softwarehersteller informiert: In einem von eu
 3 = "Patch routiniert, mit Nachweis/Reporting"
 
 [events.exzellenz_bonus]
-narrative = "Maßnahmen, die nachweislich „enterprise-ready“ umgesetzt sind, erhöhen das Vertrauen. Für jede auf höchstem Niveau betriebene Kontrolle gibt es einen Bonus auf eure Kundenzufriedenheit."
+narrative = "Maßnahmen, die nachweislich „enterprise-ready“ umgesetzt sind, erhöhen das Vertrauen. Für jede auf gehobenem Niveau betriebene Kontrolle gibt es einen Bonus auf eure Kundenzufriedenheit."
 
 [events.nervige_authentifizierung]
 narrative = "Ihr zieht die Zugriffskontrollen an, aber die Belegschaft wurde nicht vorbereitet. Die Folge sind viele Support-Tickets und Frust - intern entsteht der Eindruck, dass Security die Arbeit blockiert."
@@ -558,8 +558,8 @@ final_own_spend = "Eigene Kosten (Init, OPEX, Init-Differenzen)"
 final_total_damage = "Summe der Schäden"
 final_ros = "RoS"
 final_index = "Final-Index"
-final_index_provisional = "vorläufig"
-final_index_note = "Der Final-Index ist ein Vergleichswert der Spielleitung und gilt vorläufig, bis die Gewichte nach der Neubalancierung feststehen."
+final_index_weight = "Gewicht k des RoS im Final-Index"
+final_index_note = "Der Final-Index ist der Vergleichswert der Spielleitung für das Debriefing: KZ am Ende plus k mal RoS, der RoS vorher auf zwei Nachkommastellen gerundet."
 welle0_title = "Lösungsschlüssel der Übungswelle"
 welle0_intro = "Alle Zwischenwerte des Übungsbeispiels, in Rechenreihenfolge."
 clues_title = "Hinweis-Matrix für die Discovery-Phase"
@@ -569,8 +569,10 @@ clue_head_document = "Dokument"
 clue_head_section = "Abschnitt"
 clue_head_quote = "Zitat"
 clue_head_why = "Warum es hinweist"
+clue_head_measures = "Maßnahmen (Gewicht)"
 clue_section_anfrage_mail_lage = "Lage"
 clue_section_audit_mail_einleitung = "Einleitung"
+clue_section_zeitungsartikel = "Ticker"
 
 [story.steckbrief]
 doc_title = "MECHTECH GmbH: Unternehmenssteckbrief"

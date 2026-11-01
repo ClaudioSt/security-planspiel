@@ -66,12 +66,12 @@ def test_load_config_returns_config_object():
 def test_evaluate_plan_empty_selection_medium():
     cfg = load_config(CONFIG_PATH)
     rec = evaluate_plan(cfg, "medium", _selection(cfg, 0))
-    assert rec["kz_final"] == 19
-    assert [w["kz_after"] for w in rec["waves"]] == [36, 11, 4]
+    assert rec["kz_final"] == 38
+    assert [w["kz_after"] for w in rec["waves"]] == [28, 17, 11]
     assert rec["total_damage"] == 620
     assert rec["costs"]["total"] == 0
-    assert rec["costs"]["budget_available"] == 380
-    assert rec["final_events"][0]["kz_delta"] == 15
+    assert rec["costs"]["budget_available"] == 370
+    assert rec["final_events"][0]["kz_delta"] == 27
     assert rec["ros"] is None
     assert rec["over_budget"] is False
 
@@ -81,5 +81,5 @@ def test_evaluate_plan_all_l3_low_is_over_budget_with_final_event_penalty():
     x, _ = penalty_params(cfg.final_events)
     rec = evaluate_plan(cfg, "low", _selection(cfg, 3))
     assert rec["over_budget"] is True
-    assert rec["final_events"][0]["kz_delta"] == -x * 89
+    assert rec["final_events"][0]["kz_delta"] == -x * 88
     assert rec["kz_final"] == 0

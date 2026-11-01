@@ -58,16 +58,16 @@ def test_values_equal_the_simulation_at_the_two_outer_cases(cfg):
 def test_real_wave_1_ransomware(real):
     constants = worksheet_constants(real, real.waves[0])
     assert (constants.w_c, constants.w_i, constants.w_a) == (Fraction(2, 5), Fraction(2, 5), Fraction(1, 5))
-    assert constants.lower == 23
+    assert constants.lower == 22
     assert constants.reduction_cap == 8
-    assert constants.upper == 31
+    assert constants.upper == 30
     assert constants.unit_eur == 20000
     assert constants.case_1_damage_eur == 160000
     assert constants.case_2_damage_eur == 0
-    assert constants.kz_case_1 == -6
-    assert constants.kz_case_2 == 10
+    assert constants.kz_case_1 == -8
+    assert constants.kz_case_2 == 8
     assert constants.slope == 2
-    assert constants.bonus_rows == (BonusRow("M3", 2, 6), BonusRow("M4", 2, 6), BonusRow("M6", 2, 3))
+    assert constants.bonus_rows == (BonusRow("M3", 2, 6), BonusRow("M4", 2, 5), BonusRow("M6", 2, 4))
     assert constants.with_recovery is True
     assert constants.recovery_measure == "M4"
     assert constants.recovery_rows == (
@@ -81,19 +81,19 @@ def test_real_wave_2_ot(real):
     assert constants.upper == 30
     assert constants.unit_eur == 32000
     assert constants.case_1_damage_eur == 320000
-    assert constants.slope == Fraction(6, 5)
+    assert constants.slope == Fraction(7, 5)
     assert constants.with_recovery is True
 
 
 def test_real_wave_3_exfil_has_no_recovery(real):
     constants = worksheet_constants(real, real.waves[2])
     assert constants.reduction_cap == 7
-    assert constants.upper == 32
-    assert constants.slope == Fraction(17, 7)
+    assert constants.upper == 31
+    assert constants.slope == 2
     assert constants.with_recovery is False
     assert constants.recovery_measure is None
     assert constants.recovery_rows == ()
-    assert constants.bonus_rows == (BonusRow("M1", 2, 8), BonusRow("M2", 2, 6), BonusRow("M8", 2, 9))
+    assert constants.bonus_rows == (BonusRow("M1", 2, 4), BonusRow("M2", 2, 6), BonusRow("M8", 2, 3))
 
 
 def test_a_wave_without_bonus_measures_has_no_bonus_rows():

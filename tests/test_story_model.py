@@ -272,7 +272,7 @@ def test_headings_keep_their_stored_case(real):
 def test_every_clue_quote_is_in_the_model_of_its_source_document(real):
     _, _, documents = real
     clues = load_clues(CONTENT_DIR / "clues.toml")
-    assert len(clues) == 14
+    assert len(clues) == (CONTENT_DIR / "clues.toml").read_text(encoding="utf-8").count("[[clue]]")
     by_doc = _by_doc(documents)
     for clue in clues:
         document = _clue_document(clue.source)

@@ -111,10 +111,11 @@ def test_the_sheet_has_one_section_per_wave_and_one_result_per_tier(sheet, cfg):
 
 def test_the_spielleitung_texts_are_required_keys_and_digit_free(cfg, texts):
     keys = [key for key in SHEET_KEYS if key.startswith("sheets.spielleitung.")]
-    assert "sheets.spielleitung.final_index_provisional" in keys
+    assert "sheets.spielleitung.final_index_weight" in keys
+    assert "sheets.spielleitung.clue_head_measures" in keys
+    assert "sheets.spielleitung.final_index_provisional" not in keys
     assert set(keys) <= required_keys(cfg)
     assert [issue for issue in check_coverage(cfg, texts) if issue.path.startswith("sheets.spielleitung")] == []
-    assert texts.get("sheets.spielleitung.final_index_provisional") == "vorläufig"
     for key, text in texts.strings("sheets.spielleitung"):
         assert not any(char.isnumeric() for char in text), key
 
@@ -160,9 +161,10 @@ def test_parameters_equal_the_worksheet_constants(sheet, cfg, texts):
             assert recovery == texts.get("sheets.spielleitung.recovery_not_allowed")
 
 
-def test_the_non_terminating_slope_of_wave_three_carries_the_approximation(sheet):
-    slope = dict(sheet.waves[2].parameters.rows)[master_text("param_slope")]
-    assert "× 17 ÷ 7" in slope and "≈ 2,43" in slope
+def test_every_slope_of_the_tuned_config_is_a_one_decimal_factor_without_approximation(sheet):
+    for section in sheet.waves:
+        slope = dict(section.parameters.rows)[master_text("param_slope")]
+        assert "≈" not in slope and "÷" not in slope, slope
 
 
 def test_the_bonus_table_has_the_reasons_of_the_revealed_view(sheet, cfg, texts):
@@ -208,10 +210,9 @@ def test_the_check_table_covers_every_whole_gr_step_and_equals_the_replay(sheet,
             assert row[1] == fmt.format_money((constants.upper - step) * constants.unit_eur)
 
 
-def test_only_the_third_wave_shows_approximations_in_its_check_table(sheet):
+def test_no_wave_shows_approximations_in_its_check_table(sheet):
     flags = [any("≈" in cell for row in section.checks.table_rows for cell in row) for section in sheet.waves]
-    assert flags == [False, False, True]
-    assert sheet.waves[2].checks.table_rows[0][2] == "≈ −4,57"
+    assert flags == [False, False, False]
 
 
 # ---- event schedule -----------------------------------------------------------------------------------------------
@@ -343,7 +344,6 @@ def test_the_budget_review_section_equals_the_event_rows(sheet, cfg, texts):
 
 def test_the_final_table_equals_the_trace_and_the_config_weights(sheet, cfg, traces):
     weights = cfg.final_index
-    provisional = master_text("final_index_provisional")
     for result, (name, trace) in zip(sheet.tiers, traces.items()):
         review = trace.review
         index = rules.final_index(review.kz_final, review.ros, weights.weight_kz, weights.weight_ros)
@@ -353,13 +353,14 @@ def test_the_final_table_equals_the_trace_and_the_config_weights(sheet, cfg, tra
         assert result.own_spend == fmt.format_money(review.own_spend_k * 1000)
         assert result.total_damage == fmt.format_money(review.total_damage_eur)
         assert result.remaining == fmt.format_money(review.remaining_k * 1000)
-        assert result.ros == fmt.format_approx(review.ros)
-        assert result.final_index == f"{fmt.format_approx(index)} ({provisional})"
+        assert result.ros == fmt.format_number(rules.ros_two_decimals(review.ros))
+        assert result.final_index == fmt.format_number(index)
     assert tuple(row.key for row in sheet.final_rows) == master.FINAL_ROW_IDS
     assert len(sheet.final_rows) == 7
     for row in sheet.final_rows:
         assert len(row.values) == len(cfg.budget_tiers)
-    assert all(value.endswith(f"({provisional})") for value in _row(sheet.final_rows, "final_index").values)
+    assert sheet.final_weight_label == master_text("final_index_weight")
+    assert sheet.final_weight_value == fmt.format_number(weights.weight_ros)
 
 
 def test_the_final_index_uses_the_weights_of_the_config(cfg, texts, clues, tmp_path):
@@ -398,12 +399,16 @@ def test_the_welle_zero_key_equals_the_printed_example(sheet, cfg, texts):
 def test_the_clue_matrix_equals_the_facilitator_view(sheet, cfg, texts, clues):
     rows = FacilitatorView(cfg, texts, clues).clue_matrix()
     flat = [
-        (group.title, entry.number, entry.document, entry.section, entry.quote, entry.why)
+        (group.title, entry.number, entry.document, entry.section, entry.quote, entry.why, entry.measures)
         for group in sheet.clue_groups
         for entry in group.rows
     ]
-    assert flat == [(row.title, str(row.number), row.document, row.section, row.quote, row.why) for row in rows]
-    assert len(flat) == 14
+    assert flat == [
+        (row.title, str(row.number), row.document, row.section, row.quote, row.why, row.measures) for row in rows
+    ]
+    assert len(flat) == len(clues)
+    assert sheet.clue_header[5] == master_text("clue_head_measures")
+    assert any(entry.measures for group in sheet.clue_groups for entry in group.rows)
     assert [group.title for group in sheet.clue_groups] == list(dict.fromkeys(row.title for row in rows))
 
 
@@ -463,31 +468,18 @@ def printed_payload(sheet) -> dict:
     }
 
 
-def _golden_final_index_row() -> list:
-    golden = json.loads((GOLDEN_DIR / "answer_keys.json").read_text(encoding="utf-8"))
-    return golden["final"]["final_index"]
-
-
-# 06-10: remove the substitution below and the two tests after it in the task of the D-04 re-pin.
-# The Final-Index formula (BAL-03, D-15) moves exactly one pinned field, `final.final_index`. It is taken from the golden
-# file itself, so every other field stays strictly compared and --update-golden cannot rewrite or drop that row.
 def test_every_printed_answer_key_is_pinned(sheet, update_golden, golden_report):
-    payload = printed_payload(sheet)
-    payload["final"]["final_index"] = _golden_final_index_row()
-    check_golden(GOLDEN_DIR / "answer_keys.json", payload, update_golden, golden_report)
+    check_golden(GOLDEN_DIR / "answer_keys.json", printed_payload(sheet), update_golden, golden_report)
 
 
-@pytest.mark.xfail(strict=True, reason="Zeile wird in 06-10 nach D-04 einmal neu gepinnt")
-def test_final_index_row_matches_golden(sheet):
-    assert printed_payload(sheet)["final"]["final_index"] == _golden_final_index_row()
-
-
-def test_interim_real_config_index_is_kz_plus_two_decimal_ros(cfg, traces):
+def test_committed_index_is_kz_plus_k_times_two_decimal_ros(cfg, traces):
     raw = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
-    assert raw["final_index"] == {"weight_kz": 1, "weight_ros": 1}
+    k = raw["final_index"]["weight_ros"]
+    assert raw["final_index"]["weight_kz"] == 1
+    assert isinstance(k, int) and not isinstance(k, bool) and k >= 1
     for name, trace in traces.items():
         review = trace.review
-        expected = review.kz_final + Fraction(round_half_away_frac(review.ros * 100), 100)
+        expected = review.kz_final + k * Fraction(round_half_away_frac(review.ros * 100), 100)
         index = rules.final_index(
             review.kz_final, review.ros, cfg.final_index.weight_kz, cfg.final_index.weight_ros
         )

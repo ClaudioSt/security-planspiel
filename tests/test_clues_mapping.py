@@ -79,9 +79,9 @@ def test_bonus_importance_adds_up_over_waves():
     assert rules.bonus_importance(longer)[m4.measure] == m4.bonus * slope + m4.bonus * slope3
 
 
-def test_the_mini_importance_order_is_m1_m2_m4_m6():
+def test_the_mini_importance_order_is_m1_then_m2_tied_with_m4_then_m6():
     importance = rules.bonus_importance(CFG)
-    assert sorted(importance, key=lambda m: -importance[m]) == ["M1", "M2", "M4", "M6"]
+    assert importance["M1"] > importance["M2"] == importance["M4"] > importance["M6"]
 
 
 # ---- loading --------------------------------------------------------------------------------------------------
@@ -156,28 +156,31 @@ def test_the_mapped_mini_clues_pass_with_and_without_the_requirement():
     assert _mapped(CLUES) == []
 
 
-def test_the_real_content_without_mapping_passes_the_default_check():
+def test_the_real_content_carries_the_mapping_and_passes_the_default_check():
     cfg = load_config(REPO_ROOT / "simulation_config.json")
     texts = load_texts(REPO_ROOT / "content" / "texte.toml")
     clues = load_clues(REPO_ROOT / "content" / "clues.toml")
-    assert all(clue.measures == () and clue.weight == 0 for clue in clues)
+    mapped = [clue for clue in clues if clue.measures]
+    assert mapped and all(1 <= clue.weight <= 3 for clue in mapped)
+    assert all(clue.weight == 0 for clue in clues if not clue.measures)
     assert check_clues(cfg, texts, clues) == []
+    assert check_clues(cfg, texts, clues, require_mapping=True) == []
 
 
 def test_an_unknown_measure_is_reported_even_without_the_requirement():
     clues = _replace(0, measures=("M99",))
-    assert _codes(check_clues(CFG, TEXTS, clues)) == [("clues.unknown_measure", "clues[1]")]
+    assert _codes(check_clues(CFG, TEXTS, clues, require_mapping=False)) == [("clues.unknown_measure", "clues[1]")]
 
 
 @pytest.mark.parametrize("weight", [0, 4, -1])
 def test_a_weight_outside_one_to_three_with_measures_is_bad(weight):
     clues = _replace(0, weight=weight)
-    assert _codes(check_clues(CFG, TEXTS, clues)) == [("clues.bad_weight", "clues[1]")]
+    assert _codes(check_clues(CFG, TEXTS, clues, require_mapping=False)) == [("clues.bad_weight", "clues[1]")]
 
 
 def test_a_weight_without_measures_is_bad():
     clues = _replace(2, weight=1)
-    assert _codes(check_clues(CFG, TEXTS, clues)) == [("clues.bad_weight", "clues[3]")]
+    assert _codes(check_clues(CFG, TEXTS, clues, require_mapping=False)) == [("clues.bad_weight", "clues[3]")]
 
 
 def test_clues_on_non_bonus_measures_raise_nothing():
@@ -189,7 +192,7 @@ def test_clues_on_non_bonus_measures_raise_nothing():
 def test_a_bonus_measure_without_support_is_reported():
     clues = _replace(1, measures=(), weight=0)
     assert _codes(_mapped(clues)) == [("clues.unsupported_bonus", "clues.measures.M6")]
-    assert check_clues(CFG, TEXTS, clues) == []
+    assert check_clues(CFG, TEXTS, clues, require_mapping=False) == []
 
 
 def test_a_bonus_measure_with_a_single_weak_clue_is_unsupported():
@@ -198,16 +201,12 @@ def test_a_bonus_measure_with_a_single_weak_clue_is_unsupported():
 
 
 def test_a_less_important_measure_outranking_a_more_important_one_is_not_graduated():
-    clues = _replace(0, weight=3)
-    clues = tuple(
-        dataclasses.replace(clue, measures=("M4", "M6"), weight=2) if index == 1 else clue
-        for index, clue in enumerate(clues)
-    )
-    # M4 scores 5 (3 + 2), M6 2, M1 5, M2 3: M2 is more important than M4 but scores less.
-    assert clue_scores(clues) == {"M4": 5, "M6": 2, "M1": 5, "M2": 3}
+    clues = _replace(1, weight=3)
+    # M6 scores 3, M4 2, M1 5, M2 3: M4 is more important than M6 but scores less.
+    assert clue_scores(clues) == {"M4": 2, "M6": 3, "M1": 5, "M2": 3}
     issues = _mapped(clues)
-    assert _codes(issues) == [("clues.not_graduated", "clues.measures.M2")]
-    assert "M4" in issues[0].message
+    assert _codes(issues) == [("clues.not_graduated", "clues.measures.M4")]
+    assert "M6" in issues[0].message
 
 
 def test_equal_scores_for_different_importance_are_graduated():

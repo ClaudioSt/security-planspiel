@@ -130,6 +130,7 @@ class ClueEntry:
     section: str
     quote: str
     why: str
+    measures: str
 
 
 @dataclass(frozen=True)
@@ -168,11 +169,13 @@ class MasterSheet:
     final_note: str
     final_header: tuple[str, ...]
     final_rows: tuple[AnswerKeyRow, ...]
+    final_weight_label: str
+    final_weight_value: str
     welle0: Optional[WelleZeroKey]
     bonus_title: str
     clues_title: str
     clues_intro: str
-    clue_header: tuple[str, str, str, str, str]
+    clue_header: tuple[str, str, str, str, str, str]
     clue_groups: tuple[ClueGroup, ...]
 
     def printed_fragments(self) -> tuple[str, ...]:
@@ -400,8 +403,8 @@ def _tier_results(cfg: Config, traces: dict[str, rules.PathTrace], words: dict) 
                 kz_final=str(review.kz_final),
                 own_spend=fmt.format_money(review.own_spend_k * 1000),
                 total_damage=fmt.format_money(review.total_damage_eur),
-                ros=DASH if review.ros is None else fmt.format_approx(review.ros),
-                final_index=f"{fmt.format_approx(index)} ({words['final_index_provisional']})",
+                ros=DASH if review.ros is None else fmt.format_number(rules.ros_two_decimals(review.ros)),
+                final_index=fmt.format_number(index),
             )
         )
     return tuple(results)
@@ -442,7 +445,9 @@ def _welle_zero(cfg: Config, view: RevealView, words: dict) -> Optional[WelleZer
 def _clue_groups(cfg: Config, texts: Texts, clues: tuple[Clue, ...]) -> tuple[ClueGroup, ...]:
     groups: dict[str, list[ClueEntry]] = {}
     for row in FacilitatorView(cfg, texts, clues).clue_matrix():
-        groups.setdefault(row.title, []).append(ClueEntry(str(row.number), row.document, row.section, row.quote, row.why))
+        groups.setdefault(row.title, []).append(
+            ClueEntry(str(row.number), row.document, row.section, row.quote, row.why, row.measures)
+        )
     return tuple(ClueGroup(title, tuple(entries)) for title, entries in groups.items())
 
 
@@ -509,13 +514,15 @@ def build_master_sheet(cfg: Config, texts: Texts, clues: tuple[Clue, ...]) -> Op
         final_note=words["final_index_note"],
         final_header=(words["final_head"], *tier_names),
         final_rows=_final_rows(words, results),
+        final_weight_label=words["final_index_weight"],
+        final_weight_value=fmt.format_number(cfg.final_index.weight_ros),
         welle0=_welle_zero(cfg, view, words),
         bonus_title=words["bonus_title"],
         clues_title=words["clues_title"],
         clues_intro=words["clues_intro"],
         clue_header=(
             words["clue_head_nr"], words["clue_head_document"], words["clue_head_section"],
-            words["clue_head_quote"], words["clue_head_why"],
+            words["clue_head_quote"], words["clue_head_why"], words["clue_head_measures"],
         ),
         clue_groups=_clue_groups(cfg, texts, clues),
     )

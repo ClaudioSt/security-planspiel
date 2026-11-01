@@ -89,9 +89,10 @@ _SPIELLEITUNG_KEYS = (
     "key_kz_before", "key_kz_unclamped", "key_kz_after", "key_own_opex", "key_window_cost", "key_external_budget",
     "key_external_opex", "key_remaining", "review_intro", "review_x", "review_step", "final_title", "final_intro",
     "final_head", "final_remaining", "final_review_delta", "final_kz", "final_own_spend", "final_total_damage",
-    "final_ros", "final_index", "final_index_provisional", "final_index_note", "welle0_title", "welle0_intro",
+    "final_ros", "final_index", "final_index_weight", "final_index_note", "welle0_title", "welle0_intro",
     "clues_title", "clues_intro", "clue_head_nr", "clue_head_document", "clue_head_section", "clue_head_quote",
-    "clue_head_why", "clue_section_anfrage_mail_lage", "clue_section_audit_mail_einleitung",
+    "clue_head_why", "clue_head_measures", "clue_section_anfrage_mail_lage", "clue_section_audit_mail_einleitung",
+    "clue_section_zeitungsartikel",
 )
 
 SHEET_KEYS = (
@@ -670,7 +671,7 @@ def _source_strings(texts: Texts, source: str) -> list[str] | None:
     return None
 
 
-def check_clues(cfg: Config, texts: Texts, clues: tuple[Clue, ...], require_mapping: bool = False) -> list[Issue]:
+def check_clues(cfg: Config, texts: Texts, clues: tuple[Clue, ...], require_mapping: bool = True) -> list[Issue]:
     """Mindestens zwei wörtliche Hinweise aus zwei Vorab-Dokumenten je Angriff der Wellen (VEIL-03, D-17, D-18).
 
     Mit `require_mapping` muss außerdem die Maßnahmen-Zuordnung vollständig und nach Wichtigkeit gestaffelt sein.

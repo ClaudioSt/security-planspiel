@@ -17,12 +17,42 @@ def _fmt(value) -> str:
     return str(int(value)) if float(value).is_integer() else str(value)
 
 
-def _strategy_cases(cfg):
-    from planspiel.balance import define_strategies
+# The 27 named sample plans of the pinned samples (formerly `balance_analysis.define_strategies`, which 06-08 replaced by
+# the data-driven reference strategies). Same plans for every tier; the tag name is part of the golden contract.
+STRATEGY_CODES = (
+    ("Smart Basis", "0111111000"),
+    ("Ransomware Fokus L1", "0121011000"),
+    ("Minimum Viable", "0111011000"),
+    ("Balanced L1", "1111111000"),
+    ("Suboptimal Cloud", "0011010022"),
+    ("Nur Backup", "0002000000"),
+    ("Keine Detection", "1001111000"),
+    ("Alles L1 breit", "1111111100"),
+    ("OT Fokus Low", "0111211000"),
+    ("Optimal Balanced", "1222021100"),
+    ("Defense Depth", "1222021000"),
+    ("Ransomware Focus", "0222021100"),
+    ("OT Protection", "0211212100"),
+    ("Suboptimal Mix", "1111111022"),
+    ("Exfil Defense", "2211011200"),
+    ("Nur L2 Core", "0222000000"),
+    ("Awareness Heavy", "1111121100"),
+    ("Maximum Coverage", "2222122100"),
+    ("Realistic Max", "2222122100"),
+    ("Strong Defense", "1222222100"),
+    ("OT Festung", "1222222000"),
+    ("Balanced High", "2222121100"),
+    ("Suboptimal Overkill", "1222111022"),
+    ("Alles L1 High", "1111111111"),
+    ("Cloud Fokus High", "1122011033"),
+    ("Supply Chain Heavy", "2211111300"),
+    ("Nur Detection High", "1331011000"),
+)
 
-    for strategies in define_strategies().values():
-        for strategy in strategies:
-            yield harness.code_of(cfg, strategy.selection), f"strategy:{strategy.name}"
+
+def _strategy_cases(cfg):
+    for name, code in STRATEGY_CODES:
+        yield code, f"strategy:{name}"
 
 
 def _edge_cases(cfg):

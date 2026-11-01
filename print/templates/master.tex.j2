@@ -170,6 +170,12 @@
 \BLOCK{endfor}
 \end{tabularx}\endgroup\par
 \vspace{1mm}
+\noindent\begingroup\small\setlength{\tabcolsep}{4pt}\begin{tabularx}{\linewidth}{|L|C{30mm}|}
+\hline
+\rowcolor{mhplight}\textrowtop{}\VAR{sheet.final_weight_label}\textrowend{} & \textrowtop{}\textbf{\VAR{sheet.final_weight_value}}\textrowend{} \
+\hline
+\end{tabularx}\endgroup\par
+\vspace{1mm}
 \hint{\VAR{sheet.final_note}}
 \hint{\VAR{sheet.approx_hint}}
 \pagereport
@@ -200,12 +206,12 @@
 \BLOCK{endif}
 \step{\VAR{group.title}}
 \vspace{1mm}
-\noindent\begingroup\small\setlength{\tabcolsep}{3pt}\begin{tabularx}{\linewidth}{|C{7mm}|>{\raggedright\arraybackslash}p{55mm}|L|L|}
+\noindent\begingroup\small\setlength{\tabcolsep}{3pt}\begin{tabularx}{\linewidth}{|C{7mm}|>{\raggedright\arraybackslash}p{50mm}|L|L|C{22mm}|}
 \hline
-\rowcolor{mhpblue}\small\hdrs{\VAR{sheet.clue_header[0]}} & \small\hdrs{\VAR{sheet.clue_header[1]} / \VAR{sheet.clue_header[2]}} & \small\hdrs{\VAR{sheet.clue_header[3]}} & \small\hdrs{\VAR{sheet.clue_header[4]}} \\
+\rowcolor{mhpblue}\small\hdrs{\VAR{sheet.clue_header[0]}} & \small\hdrs{\VAR{sheet.clue_header[1]} / \VAR{sheet.clue_header[2]}} & \small\hdrs{\VAR{sheet.clue_header[3]}} & \small\hdrs{\VAR{sheet.clue_header[4]}} & \small\hdrs{\VAR{sheet.clue_header[5]}} \\
 \hline
 \BLOCK{for row in group.rows}
-\textrowtop{}\VAR{row.number}\textrowend{} & \textrowtop{}\textbf{\VAR{row.document}}\newline{} \VAR{row.section}\textrowend{} & \textrowtop{}\VAR{row.quote}\textrowend{} & \textrowtop{}\VAR{row.why}\textrowend{} \\
+\textrowtop{}\VAR{row.number}\textrowend{} & \textrowtop{}\textbf{\VAR{row.document}}\newline{} \VAR{row.section}\textrowend{} & \textrowtop{}\VAR{row.quote}\textrowend{} & \textrowtop{}\VAR{row.why}\textrowend{} & \textrowtop{}\VAR{row.measures}\textrowend{} \\
 \hline
 \BLOCK{endfor}
 \end{tabularx}\endgroup\par

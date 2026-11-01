@@ -93,10 +93,8 @@ def test_load_config_rejects_prose(tmp_path, mutate, path):
     assert "schema.prose_in_config" in str(error.value)
 
 
-def test_real_config_is_clean_with_one_slope_warning():
-    issues = validate(_raw(CONFIG_PATH))
-    assert [i for i in issues if i.level == "error"] == []
-    assert [i.code for i in issues if i.level == "warning"] == ["hand_calc.kz_slope"]
+def test_real_config_is_clean():
+    assert validate(_raw(CONFIG_PATH)) == []
 
 
 def test_compute_bonus_reduction_returns_an_int():
@@ -135,9 +133,9 @@ def test_removed_numbers_map_to_config_params():
         ("oem_audit", "measures", ["M1", "M2", "M4", "M5", "M7"]),
         ("oem_audit", "min_level", 1),
         ("kritische_schwachstelle", "measure", "M7"),
-        ("exzellenz_bonus", "level", 3),
-        ("exzellenz_bonus", "kz_per_measure", 5),
-        ("nervige_authentifizierung", "kz_delta", -10),
+        ("exzellenz_bonus", "level", 2),
+        ("exzellenz_bonus", "kz_per_measure", 3),
+        ("nervige_authentifizierung", "kz_delta", -6),
     ]
     for event_id, key, expected in ledger:
         assert _params(cfg, event_id)[key] == expected, (event_id, key)

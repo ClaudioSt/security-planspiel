@@ -20,14 +20,14 @@ from tests.support import CONFIG_PATH, CONTENT_DIR, MINI_CONTENT_DIR, REPO_ROOT,
 
 MINI = REPO_ROOT / "tests" / "fixtures" / "mini_config.json"
 
-EXEMPT = "1111111123"
-EXEMPT_TRIM_M10 = "1111111121"
-EXEMPT_TRIM_M9 = "1111111113"
-EXEMPT_LOW = "1111111113"
-EXEMPT_LOW_TRIM_M10 = "1111111111"
-KURS_START = "0000032323"
-KURS_SWAPPED = "0002032320"
-KURS_SWAPPED_TRIM_M8 = "0002032120"
+EXEMPT = "1211111211"
+EXEMPT_TRIM_M2 = "1111111211"
+EXEMPT_TRIM_M8 = "1211111111"
+EXEMPT_LOW = "1111112211"
+EXEMPT_LOW_TRIM_M8 = "1111112111"
+KURS_START = "0010032223"
+KURS_SWAPPED = "0012032220"
+KURS_SWAPPED_TRIM_M8 = "0012032120"
 
 
 @pytest.fixture(scope="module")
@@ -51,17 +51,17 @@ def review_delta(record):
 
 
 def test_exempt_plan_trimmed_in_window_two_returns_within_budget(real):
-    got = run(real, "medium", EXEMPT, EXEMPT, EXEMPT_TRIM_M10)
-    assert got["costs"]["remaining"] == 7
+    got = run(real, "medium", EXEMPT, EXEMPT, EXEMPT_TRIM_M2)
+    assert got["costs"]["remaining"] == 5
     assert got["over_budget"] is False
     assert review_delta(got) == 0
-    assert got["costs"]["init"] == 266
+    assert got["costs"]["init"] == 262
     assert got["costs"]["window_costs"] == [0, 0]
-    assert got["costs"]["opex_by_wave"] == [45, 45, 37]
+    assert got["costs"]["opex_by_wave"] == [43, 43, 37]
 
 
-def test_exempt_plan_alternative_trim_of_m9_is_enough(real):
-    got = run(real, "medium", EXEMPT, EXEMPT, EXEMPT_TRIM_M9)
+def test_exempt_plan_alternative_trim_of_m8_is_enough(real):
+    got = run(real, "medium", EXEMPT, EXEMPT, EXEMPT_TRIM_M8)
     assert got["costs"]["remaining"] == 3
     assert got["over_budget"] is False
     assert review_delta(got) == 0
@@ -71,28 +71,28 @@ def test_exempt_plan_untrimmed_is_over_budget_by_the_event(real):
     got = rules.evaluate_path(real, "medium", rules.Path(sel(real, EXEMPT)))
     assert got["costs"]["remaining"] == -1
     assert got["over_budget"] is True
-    assert review_delta(got) == -9
+    assert review_delta(got) == -3
 
 
 def test_static_reference_penalises_the_overrun_and_cannot_decide_rule_05(real):
     reference = harness.evaluate(real, "medium", sel(real, EXEMPT))
     assert reference["final_events"][0]["id"] == "budget_review"
-    assert reference["final_events"][0]["kz_delta"] == -9
-    assert review_delta(run(real, "medium", EXEMPT, EXEMPT, EXEMPT_TRIM_M10)) == 0
+    assert reference["final_events"][0]["kz_delta"] == -3
+    assert review_delta(run(real, "medium", EXEMPT, EXEMPT, EXEMPT_TRIM_M2)) == 0
 
 
 def test_partial_trim_that_stays_over_budget_is_still_penalised(real):
-    got = run(real, "low", EXEMPT_LOW, EXEMPT_LOW, EXEMPT_LOW_TRIM_M10)
-    assert got["costs"]["remaining"] == -9
+    got = run(real, "low", EXEMPT_LOW, EXEMPT_LOW, EXEMPT_LOW_TRIM_M8)
+    assert got["costs"]["remaining"] == -5
     assert got["over_budget"] is True
-    assert review_delta(got) == -9
+    assert review_delta(got) == -3
 
 
 def test_forced_swap_alone_leaves_the_team_over_budget(real):
     got = run(real, "medium", KURS_START, (KURS_SWAPPED, ("M10", "M4")))
     assert got["costs"]["window_costs"] == [0]
-    assert got["costs"]["remaining"] == -11
-    assert review_delta(got) == -18
+    assert got["costs"]["remaining"] == -3
+    assert review_delta(got) == -3
 
 
 def test_forced_swap_plus_window_two_trim_returns_within_budget(real):
@@ -175,10 +175,8 @@ def test_budget_cut_before_the_last_wave_does_not_warn():
 
 
 @pytest.mark.parametrize("path", [CONFIG_PATH, MINI], ids=["real", "mini"])
-def test_shipped_configs_have_exactly_the_known_slope_warning(path):
-    issues = validate(_raw(path))
-    assert _errors(issues) == []
-    assert [issue.code for issue in _warnings(issues)] == ["hand_calc.kz_slope"]
+def test_shipped_configs_validate_without_any_issue(path):
+    assert validate(_raw(path)) == []
 
 
 def test_sparprogramm_rule_text_states_the_end_check_and_the_window():

@@ -11,24 +11,35 @@ attack = "ransomware"
 source = "story.steckbrief.it_ot_landschaft.saas_cloud.bullets"
 quote = "Cloud-Backup: Veeam für Office-Daten (monatliche Sicherung)"
 why = "Nur monatliche Sicherung, nur der Office-Daten: nach einem Verschlüsselungsangriff gäbe es kaum aktuelle Wiederherstellungspunkte."
+measures = ["M4"]
+weight = 2
+
 
 [[clue]]
 attack = "ransomware"
 source = "story.anfrage_mail.lage.paragraphs"
 quote = "Wir haben einen Virenscanner und Backups, aber keine strukturierte Security-Strategie."
 why = "Nur klassischer Virenschutz und Backups: weder Erkennung auf den Endgeräten noch ein geübter Wiederanlauf."
+measures = ["M3", "M4"]
+weight = 1
+
 
 [[clue]]
 attack = "ransomware"
 source = "story.zeitungsartikel.bericht_vorfall.ablauf.paragraphs"
 quote = "Wir hatten kein funktionierendes Backup-Konzept"
 why = "Der Artikel zeigt, was fehlende Wiederherstellung nach einem Erpresserangriff bedeutet."
+measures = ["M4"]
+weight = 2
+
 
 [[clue]]
 attack = "ransomware"
 source = "story.zeitungsartikel.bericht_vorfall.headline"
 quote = "Erpresser legen Zulieferer tagelang lahm"
 why = "Erpressung mit Stillstand: das Muster des ersten Angriffs, ohne den Begriff zu nennen."
+measures = []
+weight = 0
 
 # Angriff 2: OT-Störung
 
@@ -37,30 +48,44 @@ attack = "ot"
 source = "story.steckbrief.it_ot_landschaft.ot_produktion.bullets"
 quote = "Office-IT und OT/Produktion nutzen dasselbe LAN (kein separates OT-Netz)"
 why = "Kein getrenntes Produktionsnetz: ein Vorfall im Büro erreicht die Fertigung."
+measures = ["M5"]
+weight = 3
+
 
 [[clue]]
 attack = "ot"
 source = "story.steckbrief.betrieb_service.bullets"
 quote = "Patch-/Update-Praxis in der Produktion: Umsetzung im Rahmen verfügbarer Wartungsfenster"
 why = "Produktionssysteme werden nur in seltenen Wartungsfenstern gepatcht: bekannte Schwachstellen bleiben lange offen."
+measures = ["M7"]
+weight = 2
+
 
 [[clue]]
 attack = "ot"
 source = "story.zeitungsartikel.meldung_audit.paragraphs"
 quote = "bis zur sauberen Trennung von Büro- und Fertigungsnetzen"
 why = "Der OEM verlangt die Netztrennung: ein Hinweis, dass die Produktion das Ziel ist."
+measures = ["M5"]
+weight = 2
+
 
 [[clue]]
 attack = "ot"
 source = "story.zeitungsartikel.bericht_vorfall.folgen.paragraphs"
 quote = "Drei Fertigungslinien standen still"
 why = "Der Artikel zeigt einen Produktionsausfall als Folge."
+measures = []
+weight = 0
+
 
 [[clue]]
 attack = "ot"
 source = "story.audit_mail.nachweise.bullets"
 quote = "OT-Segmentierung"
 why = "Die Audit-Checkliste fragt direkt nach der Segmentierung der Produktionsnetze."
+measures = ["M5"]
+weight = 1
 
 # Angriff 3: Datenexfiltration
 
@@ -69,27 +94,98 @@ attack = "exfil"
 source = "story.steckbrief.betrieb_service.bullets"
 quote = "Remote-Zugänge durch fünf Lieferanten (u. a. MES, CAD, IT)"
 why = "Mehrere externe Zugänge in sensible Systeme: Lieferanten sind ein möglicher Weg nach innen."
+measures = ["M8"]
+weight = 1
+
 
 [[clue]]
 attack = "exfil"
 source = "story.steckbrief.it_ot_landschaft.saas_cloud.bullets"
 quote = "Lieferanten-Portal: extern erreichbare Web-Applikation"
 why = "Eine aus dem Internet erreichbare Anwendung mit Lieferantenzugang ist ein Einfallstor."
+measures = ["M8"]
+weight = 1
+
 
 [[clue]]
 attack = "exfil"
 source = "story.anfrage_mail.lage.paragraphs"
 quote = "wissen wir auch nicht genau, wer aktuell überall administrativen Zugriff auf unsere Systeme hat"
 why = "Unklare, nicht kontrollierte Zugriffsrechte: wer Zugriff hat, kann Daten abziehen."
+measures = ["M1"]
+weight = 2
+
 
 [[clue]]
 attack = "exfil"
 source = "story.zeitungsartikel.meldung_audit.paragraphs"
 quote = "Supply Chain Security ist geschäftskritisch"
 why = "Der OEM betont die Sicherheit der Lieferkette, der dritte Angriff läuft über sie."
+measures = ["M8"]
+weight = 1
+
 
 [[clue]]
 attack = "exfil"
 source = "story.audit_mail.einleitung.paragraphs"
 quote = "insb. Datenverlust, Supply-Chain-Angriffe"
 why = "Der OEM nennt Angriffe über die Lieferkette ausdrücklich als Bedrohung."
+measures = []
+weight = 0
+
+
+[[clue]]
+attack = "ransomware"
+source = "story.zeitungsartikel.bericht_vorfall.ablauf.paragraphs"
+quote = "Einbruch über eine gefälschte E-Mail, die ein Mitarbeiter in der Buchhaltung öffnete"
+why = "Der Angriff beginnt bei einem Menschen: wer nicht gelernt hat, solche Nachrichten zu erkennen, öffnet sie."
+measures = ["M6"]
+weight = 2
+
+[[clue]]
+attack = "ransomware"
+source = "story.zeitungsartikel.bericht_vorfall.ablauf.paragraphs"
+quote = "Der klassische Virenschutz des Unternehmens schlug nicht rechtzeitig Alarm"
+why = "Der Virenschutz allein erkennt den Angriff am Endgerät nicht: es fehlt die verhaltensbasierte Erkennung."
+measures = ["M3"]
+weight = 3
+
+[[clue]]
+attack = "exfil"
+source = "story.zeitungsartikel.bericht_vorfall.ablauf.paragraphs"
+quote = "Erst nach Stunden bemerkte die IT ungewöhnliche Aktivitäten im Netz"
+why = "Ohne zentrale Protokollierung und Auswertung fällt abfließender Datenverkehr erst spät auf."
+measures = ["M2"]
+weight = 3
+
+[[clue]]
+attack = "exfil"
+source = "story.steckbrief.betrieb_service.bullets"
+quote = "gemeinsam genutzte Admin-Konten für Server- und Netzwerkkomponenten"
+why = "Geteilte Administratorkonten sind nicht zuordenbar: wer sie hat, kann unbemerkt Daten abziehen."
+measures = ["M1"]
+weight = 2
+
+[[clue]]
+attack = "ot"
+source = "story.zeitungsartikel.bericht_vorfall.ablauf.paragraphs"
+quote = "Zentrale Systeme waren zudem seit Monaten nicht mehr aktualisiert worden"
+why = "Seit Monaten ungepatchte Systeme sind bekannte Einfallstore."
+measures = ["M7"]
+weight = 1
+
+[[clue]]
+attack = "ransomware"
+source = "story.zeitungsartikel.ticker"
+quote = "Verdächtige E-Mail stoppt Fertigung"
+why = "Eine einzelne verdächtige Nachricht reicht, um die Fertigung zu stoppen."
+measures = ["M6"]
+weight = 1
+
+[[clue]]
+attack = "exfil"
+source = "story.steckbrief.betrieb_service.bullets"
+quote = "Sicherheitsbetrieb: SIEM/EDR nicht als feste Plattformkomponenten genannt"
+why = "Weder zentrale Auswertung von Protokollen noch Erkennung auf den Endgeräten ist als feste Komponente vorhanden."
+measures = ["M2", "M3"]
+weight = 2

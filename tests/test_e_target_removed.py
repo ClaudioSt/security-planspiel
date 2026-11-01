@@ -11,17 +11,10 @@ from planspiel.config import BudgetTier, Wave, load_config
 from planspiel.rules import clamp_kz, wave_kz_change
 from planspiel.validate import validate
 from tests.support import CONFIG_PATH, REPO_ROOT, harness
+from tests.support.ties import NEGATIVE_TIE_EVENT, tie_codes, tie_total, write_tie_config
 
 MINI = REPO_ROOT / "tests" / "fixtures" / "mini_config.json"
 REMOVED_RECORD_KEYS = {"e_target", "e_reached", "kz_delta_e_target"}
-
-NEGATIVE_TIE_EVENT = {
-    "id": "test_negative_tie",
-    "name": "Test negative tie",
-    "type": "and_condition",
-    "clauses": [{"measure": "M6", "min_level": 0}],
-    "kz_delta": -7,
-}
 
 
 def _raw(path=CONFIG_PATH):
@@ -45,13 +38,6 @@ def _write(tmp_path, raw):
 def _golden_cases(tier):
     path = REPO_ROOT / "tests" / "golden" / f"characterization_{tier}.json"
     return json.loads(path.read_text(encoding="utf-8"))["cases"]
-
-
-def _tie_code():
-    for case in _golden_cases("medium"):
-        if any(tag.startswith("census:tie_w3:") and tag.endswith("/0") for tag in case["tags"]):
-            return case["code"]
-    raise AssertionError("no wave-3 tie case with event KZ 0")
 
 
 def _evaluate(cfg, tier, code):
@@ -139,30 +125,29 @@ def test_records_carry_no_e_target_data(tier):
 def test_empty_selection_medium_without_e_target():
     cfg = harness.load_config()
     record = _evaluate(cfg, "medium", "0" * len(cfg.measures))
-    assert [wave["kz_after"] for wave in record["waves"]] == [36, 11, 4]
-    assert record["kz_final"] == 19
+    assert [wave["kz_after"] for wave in record["waves"]] == [28, 17, 11]
+    assert record["kz_final"] == 38
     assert record["total_damage"] == 620
-    assert record["final_events"][0]["kz_delta"] == 15
+    assert record["final_events"][0]["kz_delta"] == 27
 
 
-def test_positive_tie_rounds_up():
-    cfg = harness.load_config()
-    waves = _evaluate(cfg, "medium", _tie_code())["waves"]
+def test_positive_tie_rounds_up(tmp_path):
+    cfg = harness.load_config(write_tie_config(tmp_path))
+    waves = _evaluate(cfg, "medium", tie_codes(cfg, "medium", positive=True)[0])["waves"]
     wave3 = waves[2]
-    assert wave3["capped_reduction"] == Fraction(7, 2)
-    assert wave3["kz_delta_attack"] == Fraction(3, 2)
-    assert wave3["kz_after"] == clamp_kz(waves[1]["kz_after"] + 2)
+    total = tie_total(wave3)
+    assert total > 0 and total % 1 == Fraction(1, 2)
+    assert wave3["kz_after"] == clamp_kz(waves[1]["kz_after"] + total + Fraction(1, 2))
 
 
 def test_negative_tie_rounds_down_with_test_only_event(tmp_path):
-    raw = copy.deepcopy(_raw())
-    raw["events"]["wave_3"].append(copy.deepcopy(NEGATIVE_TIE_EVENT))
-    cfg = harness.load_config(_write(tmp_path, raw))
-    waves = _evaluate(cfg, "medium", _tie_code())["waves"]
+    cfg = harness.load_config(write_tie_config(tmp_path, [NEGATIVE_TIE_EVENT]))
+    waves = _evaluate(cfg, "medium", tie_codes(cfg, "medium", positive=False)[0])["waves"]
     wave3 = waves[2]
-    assert wave3["kz_delta_attack"] == Fraction(3, 2)
-    assert _event_kz(wave3) == -7
-    assert wave3["kz_after"] == clamp_kz(waves[1]["kz_after"] - 6)
+    total = tie_total(wave3)
+    assert total < 0 and total % 1 == Fraction(1, 2)
+    assert any(event["id"] == "test_negative_tie" for event in wave3["events"])
+    assert wave3["kz_after"] == clamp_kz(waves[1]["kz_after"] + total - Fraction(1, 2))
 
 
 def test_clamp_happens_after_rounding(tmp_path):

@@ -167,7 +167,7 @@ def test_format_candidate_prints_the_German_worksheet_numbers(mini, medians):
     text = refpaths.format_candidate(candidate, mini)
     for label in (
         "Tier medium", "Mechanik-Punkte", "Start:", "Welle 1", "Welle 3", "E-Wert", "Bonus", "GR", "Fall",
-        "Schaden", "KZ-Änderung", "KZ ", "Restbudget", "Budget Review", "KZ final", "RoS", "Final-Index", "vorläufig",
+        "Schaden", "KZ-Änderung", "KZ ", "Restbudget", "Budget Review", "KZ final", "RoS", "Final-Index", "Gewichte KZ",
     ):
         assert label in text, label
     swap = candidate.path.windows[0].swap
@@ -179,7 +179,7 @@ def test_cli_prints_candidate_blocks_for_one_tier(mini, medians, capsys):
     out = capsys.readouterr().out
     assert code == 0
     assert "Referenzpfade Tier medium" in out
-    assert "Kandidat 1" in out and "Final-Index" in out and "vorläufig" in out
+    assert "Kandidat 1" in out and "Final-Index" in out and "vorläufig" not in out
 
 
 def test_cli_without_tier_covers_every_tier_and_survives_an_empty_one(mini, capsys):

@@ -12,7 +12,7 @@ PERCENTILES = (0, 5, 25, 50, 75, 95, 100)
 DEFAULT_TOP_K = 10
 CONSOLE_TOP_LINES = 3
 SUMMARY_FILENAME = "simulation_summary_{tier}.json"
-FINAL_INDEX_STATUS = "vorläufig (Gewichte bis zur Neuskalierung in Phase 6)"
+FINAL_INDEX_STATUS = "Final-Index = KZ + k · RoS, RoS auf zwei Nachkommastellen gerundet, Gewichte aus final_index"
 REFERENCE_LAYER = "referenz"
 REFERENCE_LABEL = "Referenzplan ohne Change-Fenster-Züge"
 SWAP_LAYER = "tausch"
@@ -270,7 +270,7 @@ def format_console(summary: Dict) -> str:
     for key, label in (
         ("kz_final", "Top nach End-KZ"),
         ("ros", "Top nach RoS"),
-        ("final_index", "Top nach Final-Index (vorläufig)"),
+        ("final_index", "Top nach Final-Index"),
     ):
         lines.append("")
         lines.append(f"{label} (K={summary['top_k']}, erste {CONSOLE_TOP_LINES}):")
@@ -280,7 +280,7 @@ def format_console(summary: Dict) -> str:
     for key, label in (
         ("kz_final", "Top im Budget nach End-KZ"),
         ("ros", "Top im Budget nach RoS"),
-        ("final_index", "Top im Budget nach Final-Index (vorläufig)"),
+        ("final_index", "Top im Budget nach Final-Index"),
     ):
         lines.append("")
         lines.append(f"{label} (K={summary['top_k']}, erste {CONSOLE_TOP_LINES}):")
