@@ -1,0 +1,19 @@
+# Verbotene Begriffe für verhüllte Texte (D-13b) und Ausnahmen für Story- und Event-Texte (D-20).
+# Die Liste ist per Test auf die Entscheidung D-13b festgenagelt; eine Änderung braucht eine bewusste Testanpassung.
+# substrings: Treffer, wenn der Begriff irgendwo im Text steht (deckt Komposita, Umlaut- und ASCII-Formen ab).
+# tokens: Treffer nur als ganzes Wort (zu kurz für Teilstring-Suche).
+# compounds: Paare, die nacheinander stehen müssen (OT-Störung in jeder Binde-/Leerzeichenform).
+# Angriffs-IDs aus der Config kommen zur Laufzeit dazu: ab fünf Buchstaben als Teilstring, sonst als ganzes Wort.
+
+substrings = [
+  "ransomware", "verschlüssel", "verschluessel", "lösegeld", "loesegeld", "erpress",
+  "phishing", "emotet", "exfil", "datendiebstahl", "darknet", "sinumerik",
+]
+tokens = ["sps", "apt"]
+compounds = [["ot", "stör"], ["ot", "stoer"]]
+
+# D-20: Das Domänenwort OT und der Stamm Erpress* sind in Story- und Event-Texten erlaubt, in verhüllten
+# Angriffsschlüsseln nie. OT-Störung bleibt als Kompositum auch dort verboten.
+[story_exceptions]
+tokens = ["ot"]
+substrings = ["erpress"]
