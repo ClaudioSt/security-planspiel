@@ -181,6 +181,18 @@ def test_iqr_tier_difference_passes_at_exactly_the_limit():
     assert spread.check_iqr(spreads) == []
 
 
+def test_a_subset_of_tiers_skips_only_the_comparisons_between_tiers():
+    spreads = _good()
+    spreads["low"] = spreads["low"]._replace(best_static=90, median_static=50, iqr_static=13)
+    spreads["high"] = spreads["high"]._replace(best_static=98, median_static=60, iqr_static=18, p5_p95_static=51)
+    full = spread.check_spread(spreads)
+    partial = spread.check_spread(spreads, cross_tier=False)
+    assert any("Tiers liegen" in line for line in full) and any("Unterschied" in line for line in full)
+    assert not any("Tiers liegen" in line or "Unterschied" in line for line in partial)
+    assert any("Breite p5 bis p95" in line and "51" in line for line in partial)
+    assert spread.check_iqr(spreads, cross_tier=False) == []
+
+
 def test_width_above_the_limit_names_tier_and_layer():
     spreads = _good()
     spreads["high"] = spreads["high"]._replace(p5_p95_static=51)

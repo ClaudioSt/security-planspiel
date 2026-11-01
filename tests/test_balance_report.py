@@ -243,6 +243,31 @@ def test_index_weights_override_changes_only_final_index_based_values(static_rep
     assert new_block["configured_weights"] == old_block["configured_weights"]
 
 
+NOT_COMPUTED_TIERS = "nicht berechnet (nur über alle Tiers)"
+
+
+def test_a_subset_of_tiers_does_not_judge_the_comparisons_between_tiers():
+    report = balance.build_balance_report(MINI, MINI_CONTENT, tiers=["low"], layers="all", paths=True)
+    cross = report["cross_tier"]
+    for name in ("choices", "final_index", "calibration"):
+        assert cross[name]["passed"] is None and cross[name]["data"] is None, name
+        assert cross[name]["note"] == NOT_COMPUTED_TIERS
+    assert cross["spread"]["passed"] in (True, False)
+    assert cross["spread"]["note"] == balance.SPREAD_SUBSET_NOTE
+    names = [check["name"] for check in report["verdict"]["checks"]]
+    assert "Kalibrierung von X" not in names and "Final-Index" not in names
+    text = balance.format_balance_report(report)
+    assert NOT_COMPUTED_TIERS in text and balance.SPREAD_SUBSET_NOTE in text
+    assert not any("Empfohlenes X" in metric for metric, *_ in balance.compare_reports(report, report))
+
+
+def test_the_full_tier_set_judges_the_comparisons_between_tiers(full_report):
+    cross = full_report["cross_tier"]
+    for name in ("spread", "choices", "final_index", "calibration"):
+        assert cross[name]["passed"] in (True, False), name
+        assert "note" not in cross[name]
+
+
 def test_unknown_tier_is_rejected():
     with pytest.raises(ValueError, match="nope"):
         balance.build_balance_report(MINI, MINI_CONTENT, tiers=["nope"])

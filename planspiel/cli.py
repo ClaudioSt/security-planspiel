@@ -183,7 +183,7 @@ def _gate_command(
         if unknown:
             parser.error(f"Unbekanntes Budget-Tier '{unknown[0]}'. Verfügbar: {', '.join(cfg.budget_tiers)}.")
         if paths:
-            return _gate_paths_command(config, names, narrow, jobs)
+            return _gate_paths_command(config, names, narrow, jobs, set(names) == set(cfg.budget_tiers))
         return _gate_static_command(cfg, names)
     except (OSError, ValueError) as error:
         print(f"FEHLER: {error}", file=sys.stderr)
@@ -203,7 +203,7 @@ def _gate_static_command(cfg, names: list[str]) -> int:
     return 0 if all_passed else 1
 
 
-def _gate_paths_command(config: str, names: list[str], narrow: bool, jobs: int) -> int:
+def _gate_paths_command(config: str, names: list[str], narrow: bool, jobs: int, all_tiers: bool = True) -> int:
     import functools
 
     from planspiel import gate, parallel
@@ -220,10 +220,13 @@ def _gate_paths_command(config: str, names: list[str], narrow: bool, jobs: int) 
             print()
             if family != gate.NARROW_FAMILY:
                 all_passed = all_passed and result.passed
-    calibration = gate.calibrate(
-        {name: results[name][0] for name in names}, {name: results[name][1] for name in names}
-    )
-    print(gate.format_calibration(calibration))
+    if all_tiers:  # X is the maximum over all tiers (D-13); a subset of the tiers cannot calibrate it
+        calibration = gate.calibrate(
+            {name: results[name][0] for name in names}, {name: results[name][1] for name in names}
+        )
+        print(gate.format_calibration(calibration))
+    else:
+        print("Kalibrierung von X: nicht berechnet (nur über alle Tiers)")
     print()
     print("Überziehungs-Gate: bestanden" if all_passed else "Überziehungs-Gate: NICHT bestanden")
     return 0 if all_passed else 1

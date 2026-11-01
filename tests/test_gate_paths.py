@@ -569,6 +569,14 @@ def test_gate_paths_prints_static_families_and_calibration(capsys):
     assert out.rstrip().endswith("Überziehungs-Gate: bestanden")
 
 
+def test_gate_paths_on_a_subset_of_tiers_does_not_calibrate(capsys):
+    code, out = _run(capsys, "--paths", "--tier", "low")
+    assert code == 0
+    assert "Empfohlenes X" not in out
+    assert "Kalibrierung von X: nicht berechnet (nur über alle Tiers)" in out
+    assert out.rstrip().endswith("Überziehungs-Gate: bestanden")
+
+
 def test_gate_paths_exit_code_follows_the_static_and_family_verdicts(capsys, tmp_path):
     text = MINI.read_text(encoding="utf-8").replace('"kz_per_step": 9', '"kz_per_step": 1')
     assert text != MINI.read_text(encoding="utf-8")

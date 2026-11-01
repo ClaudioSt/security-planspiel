@@ -41,6 +41,10 @@ MISSING = "<missing>"
 LAYERS = ("static", "all")
 NOT_COMPUTED_SWAP = "nicht berechnet (nur mit --layers all)"
 NOT_COMPUTED_PATHS = "nicht berechnet (nur mit --paths)"
+NOT_COMPUTED_TIERS = "nicht berechnet (nur über alle Tiers)"
+SPREAD_SUBSET_NOTE = (
+    "Vergleich zwischen den Tiers (Korridor, Unterschied des Interquartilsabstands): " + NOT_COMPUTED_TIERS
+)
 SOURCE_CONFIG = "Konfiguration"
 SOURCE_CANDIDATE = "Kandidat"
 REPORT_JSON = "balance_report.json"
@@ -244,8 +248,14 @@ def build_balance_report(
         blocks["spread_input"] = _info(spreads[tier])
         tier_blocks[tier] = {name: blocks[name] for name in TIER_BLOCK_LABELS}
 
-    cross: Dict[str, Dict] = {"spread": _checked(spread.check_spread(spreads), spreads)}
-    if swap:
+    # Blocks that compare tiers (or pool them, or take the maximum over them) say nothing on a subset of the tiers.
+    all_tiers = set(names) == set(cfg.budget_tiers)
+    cross: Dict[str, Dict] = {"spread": _checked(spread.check_spread(spreads, cross_tier=all_tiers), spreads)}
+    if not all_tiers:
+        cross["spread"]["note"] = SPREAD_SUBSET_NOTE
+    if swap and not all_tiers:
+        cross["choices"] = _skipped(NOT_COMPUTED_TIERS)
+    elif swap:
         choice_blocks = {tier: tier_blocks[tier]["choices"]["data"] for tier in names}
         per_tier_lines = {line for tier in names for line in tier_blocks[tier]["choices"]["failures"]}
         cross_failures = [line for line in choices.check_choices(choice_blocks) if line not in per_tier_lines]
@@ -255,10 +265,14 @@ def build_balance_report(
         )
     else:
         cross["choices"] = _skipped(NOT_COMPUTED_SWAP)
-    cross["final_index"] = _final_index_result(stores, weights, cfg.final_index)
+    cross["final_index"] = (
+        _final_index_result(stores, weights, cfg.final_index) if all_tiers else _skipped(NOT_COMPUTED_TIERS)
+    )
     cross["hand_calc"] = _issue_block(validate(raw, hand_calc_level="error"))
     cross["clue_mapping"] = _issue_block(check_clues(cfg, texts, clues, require_mapping=True))
-    if paths:
+    if paths and not all_tiers:
+        cross["calibration"] = _skipped(NOT_COMPUTED_TIERS)
+    elif paths:
         cross["calibration"] = _calibration_block(
             gate.calibrate(
                 {tier: gate_results[tier][0] for tier in names}, {tier: gate_results[tier][1] for tier in names}
@@ -389,7 +403,9 @@ def _format_tier(tier: str, blocks: Dict[str, Dict]) -> List[str]:
 
 def _format_cross(cross: Dict[str, Dict]) -> List[str]:
     lines = ["", "=" * 100, "Über alle Tiers", "=" * 100]
-    lines.extend(_section(CROSS_BLOCK_LABELS["spread"], spread.format_spread(cross["spread"]["data"]), cross["spread"]))
+    block = cross["spread"]
+    body = "\n".join([spread.format_spread(block["data"])] + ([block["note"]] if "note" in block else []))
+    lines.extend(_section(CROSS_BLOCK_LABELS["spread"], body, block))
 
     block = cross["choices"]
     body = ""
@@ -423,7 +439,8 @@ def _format_cross(cross: Dict[str, Dict]) -> List[str]:
 
     if "calibration" in cross:
         block = cross["calibration"]
-        lines.extend(_section(CROSS_BLOCK_LABELS["calibration"], gate.format_calibration(block["data"]), block))
+        body = "" if block["data"] is None else gate.format_calibration(block["data"])
+        lines.extend(_section(CROSS_BLOCK_LABELS["calibration"], body, block))
     return lines
 
 
@@ -560,7 +577,7 @@ def _metrics(report: Dict) -> Dict[Tuple[str, str], object]:
         found[("Konfiguriertes k der Konfigurationsdatei (nur zur Information)", "-")] = block["configured_weights"][
             "weight_ros"
         ]
-    if "calibration" in cross:
+    if "calibration" in cross and cross["calibration"]["data"] is not None:
         found[("Empfohlenes X (Maximum + 1)", "-")] = cross["calibration"]["data"].recommended_x
     return found
 

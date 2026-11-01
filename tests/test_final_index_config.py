@@ -231,9 +231,9 @@ def test_dump_record_takes_the_weights(mini):
 
 def test_balance_report_reads_the_config_weights(tmp_path):
     content = REPO_ROOT / "tests" / "fixtures" / "mini_content"
-    plain = balance.build_balance_report(MINI, content, tiers=["low"])
+    plain = balance.build_balance_report(MINI, content)
     heavy_path = _write_config(tmp_path, MINI, {"weight_kz": 1, "weight_ros": 2})
-    heavy = balance.build_balance_report(heavy_path, content, tiers=["low"])
+    heavy = balance.build_balance_report(heavy_path, content)
 
     def top_final_index(report):
         summary = report["tiers"]["low"]["distribution"]["data"]["static"]

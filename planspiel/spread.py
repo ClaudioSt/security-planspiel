@@ -135,9 +135,9 @@ def check_best_band(spreads: Spreads) -> List[str]:
     return failures
 
 
-def check_iqr(spreads: Spreads) -> List[str]:
+def check_iqr(spreads: Spreads, cross_tier: bool = True) -> List[str]:
     """Der Interquartilsabstand der End-KZ im Budget liegt je Tier in [IQR_MIN, IQR_MAX], die Tiers unterscheiden sich
-    um höchstens IQR_TIER_DIFF."""
+    um höchstens IQR_TIER_DIFF (nur mit `cross_tier`)."""
     failures: List[str] = []
     for label, suffix in _LAYERS:
         values = _values(spreads, "iqr", suffix)
@@ -147,7 +147,7 @@ def check_iqr(spreads: Spreads) -> List[str]:
                     f"Tier {tier}: Interquartilsabstand der End-KZ im Budget auf der {label} ist {iqr} "
                     f"(erlaubt: {IQR_MIN} bis {IQR_MAX})"
                 )
-        window = _window(values)
+        window = _window(values) if cross_tier else None
         if window is not None and window[1] - window[0] > IQR_TIER_DIFF:
             low, high, low_tier, high_tier = window
             failures.append(
@@ -194,11 +194,18 @@ CRITERIA: Tuple[Callable[[Spreads], List[str]], ...] = (
 )
 
 
-def check_spread(spreads_by_tier: Spreads) -> List[str]:
-    """Deutsche Fehlerzeilen aller Kriterien; leer, wenn BAL-09 in jedem Tier erfüllt ist."""
+def check_spread(spreads_by_tier: Spreads, cross_tier: bool = True) -> List[str]:
+    """Deutsche Fehlerzeilen aller Kriterien; leer, wenn BAL-09 in jedem Tier erfüllt ist. Ohne `cross_tier` (Lauf über
+    eine Teilmenge der Tiers) fallen die Vergleiche zwischen den Tiers weg (Korridor, Unterschied des
+    Interquartilsabstands), die auf der Teilmenge nichts aussagen."""
     failures: List[str] = []
     for criterion in CRITERIA:
-        failures.extend(criterion(spreads_by_tier))
+        if criterion is check_corridor and not cross_tier:
+            continue
+        if criterion is check_iqr:
+            failures.extend(check_iqr(spreads_by_tier, cross_tier))
+        else:
+            failures.extend(criterion(spreads_by_tier))
     return failures
 
 
