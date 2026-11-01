@@ -256,6 +256,42 @@ def test_malformed_config_raises_instead_of_a_partial_verdict(tmp_path):
         balance.build_balance_report(broken, MINI_CONTENT)
 
 
+def _slope_17_7_mini(tmp_path):
+    """Mini config whose exfil KZ slope is 17/7 (a hand-calc error, but otherwise a valid config)."""
+    raw = json.loads(MINI.read_text(encoding="utf-8"))
+    raw["attacks"]["exfil"]["kz_at_full_damage"] = -8
+    path = tmp_path / "slope.json"
+    path.write_text(json.dumps(raw, ensure_ascii=False), encoding="utf-8")
+    return path
+
+
+def test_hand_calc_block_fails_for_a_non_hand_calculable_config(tmp_path):
+    report = balance.build_balance_report(_slope_17_7_mini(tmp_path), MINI_CONTENT, tiers=["low"], layers="static")
+    block = report["cross_tier"]["hand_calc"]
+    assert block["passed"] is False
+    assert any("hand_calc.kz_slope" in line and "17/7" in line for line in block["failures"])
+    assert report["verdict"]["passed"] is False
+
+
+def test_main_reports_a_hand_calc_issue_as_a_failed_check_not_as_invalid_input(tmp_path, capsys):
+    code = balance.main(["--config", str(_slope_17_7_mini(tmp_path)), "--content-dir", str(MINI_CONTENT), "--tier", "low"])
+    captured = capsys.readouterr()
+    assert code == 1
+    assert "FEHLER" not in captured.err
+    assert "hand_calc.kz_slope" in captured.out
+
+
+def test_baseline_may_be_a_non_hand_calculable_config(tmp_path, capsys):
+    baseline = _slope_17_7_mini(tmp_path)
+    code = balance.main(
+        _args("--tier", "low", "--baseline-config", str(baseline), "--baseline-content-dir", str(MINI_CONTENT))
+    )
+    printed = capsys.readouterr().out
+    assert code in (0, 1)
+    assert "attacks.exfil.kz_at_full_damage" in printed
+    assert "Kennzahlen vorher → nachher" in printed
+
+
 def test_missing_clue_file_raises(tmp_path):
     with pytest.raises(FileNotFoundError):
         balance.build_balance_report(MINI, tmp_path)

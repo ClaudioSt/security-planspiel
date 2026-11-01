@@ -187,17 +187,17 @@ def enumerate_swap_layer(cfg, tier_name: str) -> Dict:
     }
 
 
-def store_worker(config_path: str, tier_name: str) -> ResultStore:
+def store_worker(config_path: str, tier_name: str, hand_calc_level: str = "error") -> ResultStore:
     from pathlib import Path
 
     from planspiel.config import load_config
 
-    return enumerate_tier(load_config(Path(config_path)), tier_name)
+    return enumerate_tier(load_config(Path(config_path), hand_calc_level), tier_name)
 
 
-def swap_layer_worker(config_path: str, tier_name: str) -> Dict:
+def swap_layer_worker(config_path: str, tier_name: str, hand_calc_level: str = "error") -> Dict:
     from pathlib import Path
 
     from planspiel.config import load_config
 
-    return enumerate_swap_layer(load_config(Path(config_path)), tier_name)
+    return enumerate_swap_layer(load_config(Path(config_path), hand_calc_level), tier_name)

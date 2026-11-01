@@ -572,11 +572,11 @@ def gate_paths_tier(cfg, tier_name: str, tables=None, narrow: bool = False) -> D
     return results
 
 
-def paths_worker(config_path: str, tier_name: str, narrow: bool = False):
+def paths_worker(config_path: str, tier_name: str, narrow: bool = False, hand_calc_level: str = "error"):
     """Prozess-Worker für `parallel.map_tiers`: statisches Gate und Pfad-Familien eines Tiers."""
     from planspiel.config import load_config
 
-    cfg = load_config(Path(config_path))
+    cfg = load_config(Path(config_path), hand_calc_level)
     return gate_tier(cfg, tier_name), gate_paths_tier(cfg, tier_name, narrow=narrow)
 
 

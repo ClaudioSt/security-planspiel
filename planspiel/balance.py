@@ -11,6 +11,7 @@ Tausch-Schicht und alles, was von ihr abhängt. Das Pfad-Gate mit Kalibrierung v
 """
 import argparse
 import dataclasses
+import functools
 import json
 import sys
 import time
@@ -44,6 +45,8 @@ SOURCE_CANDIDATE = "Kandidat"
 REPORT_JSON = "balance_report.json"
 REPORT_TEXT = "balance_report.txt"
 COMPARISON_NOTE = "Final-Index-Kennzahlen beider Spalten mit k der Kandidatenkonfiguration"
+# Hand-calc findings are judged by the "Handrechnung" block, so the report loads them as warnings instead of aborting.
+HAND_CALC_LEVEL = "warning"
 
 TIER_BLOCK_LABELS = {
     "distribution": "Verteilung",
@@ -156,6 +159,10 @@ def _tier_swap_blocks(cfg, tier, store, static_summary, swap_summary, swap_layer
     }
 
 
+def _lenient(worker: Callable) -> Callable:
+    return functools.partial(worker, hand_calc_level=HAND_CALC_LEVEL)
+
+
 def build_balance_report(
     config_path,
     content_dir,
@@ -179,7 +186,7 @@ def build_balance_report(
     raw = read_raw_config(config_path)
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", HandCalcWarning)
-        cfg = load_config(config_path)
+        cfg = load_config(config_path, HAND_CALC_LEVEL)
     names = list(tiers) if tiers else list(cfg.budget_tiers)
     unknown = [name for name in names if name not in cfg.budget_tiers]
     if unknown:
@@ -192,11 +199,11 @@ def build_balance_report(
     swap = layers == "all"
 
     say("Statische Enumeration")
-    stores = parallel.map_tiers(store_worker, config_path, names, jobs)
+    stores = parallel.map_tiers(_lenient(store_worker), config_path, names, jobs)
     static_summaries = {tier: summarize_tier(cfg_eval, tier, stores[tier]) for tier in names}
     if paths:
         say("Statisches Gate und Pfad-Gate")
-        gate_results = parallel.map_tiers(gate.paths_worker, config_path, names, jobs)
+        gate_results = parallel.map_tiers(_lenient(gate.paths_worker), config_path, names, jobs)
     else:
         say("Statisches Gate")
         gate_results = {tier: (gate.gate_tier(cfg, tier, stores[tier]), None) for tier in names}
@@ -204,7 +211,7 @@ def build_balance_report(
     swap_summaries: Dict[str, Dict] = {}
     if swap:
         say("Tausch-Schicht")
-        swap_layers = parallel.map_tiers(swap_layer_worker, config_path, names, jobs)
+        swap_layers = parallel.map_tiers(_lenient(swap_layer_worker), config_path, names, jobs)
         swap_summaries = {tier: summarize_swap_layer(cfg_eval, tier, swap_layers[tier]) for tier in names}
 
     tier_blocks: Dict[str, Dict[str, Dict]] = {}
@@ -633,7 +640,7 @@ def main(argv=None) -> int:
     try:
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", HandCalcWarning)
-            candidate = load_config(Path(args.config))
+            candidate = load_config(Path(args.config), HAND_CALC_LEVEL)
         unknown = [name for name in args.tier or [] if name not in candidate.budget_tiers]
         if unknown:
             parser.error(f"Unbekanntes Budget-Tier '{unknown[0]}'. Verfügbar: {', '.join(candidate.budget_tiers)}.")

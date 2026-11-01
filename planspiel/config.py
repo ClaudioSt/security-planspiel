@@ -150,10 +150,10 @@ def read_raw_config(path: Path) -> Dict:
     return json.loads(path.read_text(encoding="utf-8"), parse_float=Fraction)
 
 
-def check_config(raw: Dict, source: str) -> None:
+def check_config(raw: Dict, source: str, hand_calc_level: str = "error") -> None:
     from planspiel.validate import ConfigError, HandCalcWarning, validate
 
-    issues = validate(raw)
+    issues = validate(raw, hand_calc_level=hand_calc_level)
     errors = [issue for issue in issues if issue.level == "error"]
     if errors:
         raise ConfigError(errors, source)
@@ -162,9 +162,10 @@ def check_config(raw: Dict, source: str) -> None:
             warnings.warn(f"{issue.code} {issue.path}: {issue.message}", HandCalcWarning, stacklevel=3)
 
 
-def load_config(path: Path) -> Config:
+def load_config(path: Path, hand_calc_level: str = "error") -> Config:
+    """`hand_calc_level="warning"` loads a config whose only defects are hand-calc findings (for reports that judge them)."""
     raw = read_raw_config(path)
-    check_config(raw, str(path))
+    check_config(raw, str(path), hand_calc_level)
     from planspiel.validate import scale_factors
 
     ws, rs = scale_factors(raw)
