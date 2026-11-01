@@ -6,7 +6,7 @@ current_phase: 6
 current_phase_name: Rebalance
 status: executing
 stopped_at: Phase 6 context gathered
-last_updated: "2026-11-01T17:42:46.734Z"
+last_updated: "2026-11-01T17:43:13.042Z"
 last_activity: 2026-10-28
 last_activity_desc: Phase 6 execution started
 progress:
@@ -186,6 +186,7 @@ Recent decisions affecting current work:
 - [Phase 06-07]: Clue score = sum of clue weights, importance = bonus x KZ slope, graduation I(a)>I(b) => S(a)>=S(b), floors 2 and 4; placement on both populations (static Final-Index, swap-layer KZ); proposals for D-04
 - [Phase 06-07]: Today's clue-derived good start is top quartile only in low (FI 77 / swap-layer KZ 81); medium 58/64 and high 62/69 miss it; all-in-C is top quartile everywhere; require_mapping stays False until 06-10
 - [Phase 06]: [06-08] Balance report: static layer skips swap-dependent blocks (choices, strategies, rewarding) and labels them not computed; input errors exit 2, verdict 0/1; baseline report built with the candidate's Final-Index weights
+- [Phase 06-09]: D-04 approved 2026-11-01 (verbatim: Freigeben): start-lowered trim, X = 3, k = 10, thresholds unchanged, candidate config/content adopted in 06-10
 
 ### Pending Todos
 
