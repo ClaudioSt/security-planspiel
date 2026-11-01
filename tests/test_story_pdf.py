@@ -42,7 +42,8 @@ def _pdf(printed_set, job):
 
 
 def test_the_clue_matrix_has_the_expected_size():
-    assert len(CLUES) == 14
+    assert len(CLUES) == 21
+    assert len(CLUES) == (CONTENT_DIR / "clues.toml").read_text(encoding="utf-8").count("[[clue]]")
 
 
 @pytest.mark.parametrize("number", range(1, len(CLUES) + 1), ids=lambda number: f"clue-{number:02d}")

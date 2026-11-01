@@ -4,8 +4,8 @@
 Facilitator-only: the sheet reads revealed texts (attack names, bonus reasons, the clue matrix) through `RevealView` and
 `FacilitatorView` and must never be handed to players; the `spielleitung-` job prefix keeps it out of the pre-wave
 veil scan (VEIL-02). Every number comes from `rules` (`worksheet_constants`, `path_trace`, `final_index`), `eventtext`,
-`review_text` and `practice`; this module only formats and orders. Values with no finite decimal form (the 17/7 slope,
-RoS, final index) are printed with `fmt.format_approx` and appear on this sheet only (D-26 Q6).
+`review_text` and `practice`; this module only formats and orders. The tuned config has one-decimal slopes and RoS is
+rounded by rule, so no value needs an approximation sign; `fmt.format_approx` stays as a guarded fallback (D-26 Q6).
 
 The answer keys follow the reference paths pinned in the config (`reference_plans`, 05-14): the build stops with a
 `PrintModelError` when a tier has no path, a path is illegal or over budget, or it lacks a voluntary move.
@@ -149,7 +149,6 @@ class MasterSheet:
     contents_title: str
     how_to_title: str
     how_to: tuple[str, ...]
-    approx_hint: str
     paths_title: str
     paths_intro: str
     path_start: str
@@ -494,7 +493,6 @@ def build_master_sheet(cfg: Config, texts: Texts, clues: tuple[Clue, ...]) -> Op
         contents_title=words["contents_title"],
         how_to_title=words["how_to_title"],
         how_to=tuple(words["how_to"]),
-        approx_hint=words["approx_hint"],
         paths_title=words["paths_title"],
         paths_intro=words["paths_intro"],
         path_start=words["path_start"],

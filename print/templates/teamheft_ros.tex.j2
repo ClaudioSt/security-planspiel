@@ -36,20 +36,20 @@
 \hline
 \BLOCK{for row in booklet.ros.budget_rows}
 \BLOCK{if row.note}\rowcolor{mhplight}\BLOCK{endif}
-\rowstrutbig{}\VAR{row.label}\BLOCK{if row.note}\newline\textcolor{mhpgrey}{\small \VAR{row.note}}\BLOCK{endif}\rowpad{} & \\
+\rowstrutmid{}\VAR{row.label}\BLOCK{if row.note}\newline\textcolor{mhpgrey}{\small \VAR{row.note}}\BLOCK{endif}\rowpad{} & \\
 \hline
 \BLOCK{endfor}
-\rowcolor{mhplight}\rowstrutbig{}\textbf{\VAR{booklet.ros.remaining_line.label}}\newline\textcolor{mhpgrey}{\small \VAR{booklet.ros.remaining_line.note}}\rowpad{} & \\
+\rowcolor{mhplight}\rowstrutmid{}\textbf{\VAR{booklet.ros.remaining_line.label}}\newline\textcolor{mhpgrey}{\small \VAR{booklet.ros.remaining_line.note}}\rowpad{} & \\
 \hline
 \end{tabularx}
 
-\vspace{4mm}
+\vspace{2mm}
 \noindent\begin{tabularx}{\linewidth}{|Z|Z|}
 \hline
 \rowcolor{mhpblue}\hdr{\VAR{booklet.ros.tier_header[0]}} & \hdr{\VAR{booklet.ros.tier_header[1]}} \\
 \hline
 \BLOCK{for row in booklet.ros.tier_rows}
-\rowstrut{}\VAR{row[0]} & \VAR{row[1]} \\
+\rowstrutlookup{}\VAR{row[0]} & \VAR{row[1]} \\
 \hline
 \BLOCK{endfor}
 \end{tabularx}
@@ -63,8 +63,8 @@
 \hline
 \rowcolor{mhpblue}\hdr{\VAR{booklet.ros.penalty_header[0]}} & \hdr{\VAR{booklet.ros.penalty_header[1]}} \\
 \hline
-\BLOCK{for row in booklet.ros.penalty_rows[:booklet.ros.penalty_split]}
-\rowstrut{}\VAR{row[0]} & \VAR{row[1]} \\
+\BLOCK{for row in booklet.ros.penalty_rows[:booklet.ros.penalty_per_table]}
+\rowstrutlookup{}\VAR{row[0]} & \VAR{row[1]} \\
 \hline
 \BLOCK{endfor}
 \end{tabular}
@@ -74,8 +74,8 @@
 \hline
 \rowcolor{mhpblue}\hdr{\VAR{booklet.ros.penalty_header[0]}} & \hdr{\VAR{booklet.ros.penalty_header[1]}} \\
 \hline
-\BLOCK{for row in booklet.ros.penalty_rows[booklet.ros.penalty_split:]}
-\rowstrut{}\VAR{row[0]} & \VAR{row[1]} \\
+\BLOCK{for row in booklet.ros.penalty_rows[booklet.ros.penalty_per_table:]}
+\rowstrutlookup{}\VAR{row[0]} & \VAR{row[1]} \\
 \hline
 \BLOCK{endfor}
 \end{tabular}

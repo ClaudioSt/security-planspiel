@@ -137,11 +137,11 @@ def test_every_final_index_is_printed_exactly_with_the_weight_row(printed_set, s
 def test_the_clue_matrix_lists_every_clue(printed_set, sheet):
     text = "".join(_pages(printed_set))
     entries = [entry for group in sheet.clue_groups for entry in group.rows]
-    assert len(entries) == 14
+    assert len(entries) == len(load_clues(CONTENT_DIR / "clues.toml"))
     for group in sheet.clue_groups:
         assert squash(group.title) in text
     for entry in entries:
-        for part in (entry.document, entry.section, entry.quote, entry.why):
+        for part in (entry.document, entry.section, entry.quote, entry.why, entry.measures):
             assert squash(part) in text, part
 
 
@@ -151,18 +151,9 @@ def test_every_model_fragment_is_in_the_pdf_text(printed_set, sheet):
         assert squash(fragment) in text, f"{fragment!r} fehlt im PDF"
 
 
-def test_the_approximation_sign_is_in_the_master_pdf_and_in_no_other_pdf(printed_set):
-    assert "≈" in pdf_text(printed_set.out_a / f"{JOB}.pdf")
+def test_the_approximation_sign_is_in_no_pdf(printed_set):
     for pdf in sorted(printed_set.out_a.glob("*.pdf")):
-        if pdf.stem != JOB:
-            assert "≈" not in pdf_text(pdf), pdf.name
-
-
-def test_every_page_with_an_approximation_explains_it(printed_set, sheet):
-    hint = squash(sheet.approx_hint)
-    for number, page in enumerate(_pages(printed_set), start=1):
-        if "≈" in page:
-            assert hint in page, f"Seite {number}: ≈ ohne Hinweis"
+        assert "≈" not in pdf_text(pdf), pdf.name
 
 
 def test_build_log_shows_no_missing_glyph_and_no_overfull_line(printed_set):

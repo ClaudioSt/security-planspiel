@@ -25,6 +25,8 @@ BOOKLET_JOB = "spieler-teamheft"
 # of 100, ceil(100 / 3) = 34. The Budget Review page is proven (pdf test, fill report) for at most this many rows. A
 # smaller X adds rows, so the constant is reviewed together with a new layout proof of that page.
 MAX_PENALTY_ROWS = 34
+# The overspend table is printed as this many side-by-side lookup tables (teamheft_ros.tex.j2), filled left to right.
+PENALTY_TABLES = 2
 EN_DASH = "–"
 
 # The tracking sheet (PRINT-08): rows in calculation order. `remaining` closes the wave columns; the Budget Review
@@ -96,7 +98,7 @@ class RosPage:
     penalty_intro: str
     penalty_header: tuple[str, str]
     penalty_rows: tuple[tuple[str, str], ...]
-    penalty_split: int  # rows of the left table; the right one holds the rest
+    penalty_per_table: int  # rows of the first and second table; the last one holds the rest
 
     def printed_fragments(self) -> tuple[str, ...]:
         return _fragments(self)
@@ -285,7 +287,7 @@ def _ros_page(cfg: Config, texts: Texts) -> RosPage:
         penalty_intro=words["penalty_intro"],
         penalty_header=(words["overspend_header"], words["kz_change"]),
         penalty_rows=penalty,
-        penalty_split=(len(penalty) + 1) // 2,
+        penalty_per_table=-(-len(penalty) // PENALTY_TABLES),
     )
 
 

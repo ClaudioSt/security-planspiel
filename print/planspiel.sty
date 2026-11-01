@@ -121,9 +121,13 @@
 \newcommand{\hdr}[1]{\color{white}\bfseries\rule[-1.5mm]{0pt}{5mm}#1}
 % Taller write-in rows (10 mm) for the calculation tables of the booklet, and a centred stretch column.
 \newcommand{\rowstrutbig}{\rule[-3.3mm]{0pt}{10mm}}
+% Write-in rows of 8.5 mm for the Budget Review page, which also holds the long overspend lookup table.
+\newcommand{\rowstrutmid}{\rule[-2.8mm]{0pt}{8.5mm}}
 \newcolumntype{Z}{>{\centering\arraybackslash}X}
 % Compact write-in rows (6 mm) and a left-aligned stretch column for the dense tracking sheet of the booklet.
 \newcommand{\rowstrutgrid}{\rule[-2mm]{0pt}{6mm}}
+% Read-only lookup rows (no writing) for long tables such as the overspend table of the Budget Review page.
+\newcommand{\rowstrutlookup}{\rule[-0.8mm]{0pt}{4mm}}
 \newcommand{\hdrs}[1]{\color{white}\bfseries\rule[-1mm]{0pt}{3.8mm}#1}
 \newcolumntype{L}{>{\raggedright\arraybackslash}X}
 % Text cells of the wave explainer tables: \textrowtop leaves 1.6 mm clear above the first line of 9 pt text, \textrowend 1.5 mm below the

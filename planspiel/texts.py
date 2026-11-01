@@ -78,7 +78,7 @@ _WELLE_KEYS = (
 )
 
 _SPIELLEITUNG_KEYS = (
-    "title", "notice", "intro", "gr_legend", "contents_title", "how_to_title", "how_to", "approx_hint", "paths_title", "paths_intro",
+    "title", "notice", "intro", "gr_legend", "contents_title", "how_to_title", "how_to", "paths_title", "paths_intro",
     "path_start", "path_window", "path_swap", "params_title", "param_weights", "param_unit", "param_slope",
     "param_kz_full_damage", "param_kz_full_defence", "param_recovery", "recovery_allowed", "recovery_not_allowed",
     "bonus_title", "bonus_reason_head", "check_title", "check_case_head", "check_kz_head",

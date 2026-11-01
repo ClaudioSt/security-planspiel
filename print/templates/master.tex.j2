@@ -10,7 +10,6 @@
 \VAR{sheet.intro}\par
 \vspace{1mm}
 \textbf{\VAR{sheet.gr_legend}}\par
-\hint{\VAR{sheet.approx_hint}}
 
 \step{\VAR{sheet.contents_title}}
 \begingroup\small\setlength{\parskip}{0.6mm}
@@ -96,7 +95,6 @@
 \textrowtop{}\VAR{section.checks.table_header[2]}\textrowend{}\BLOCK{for row in section.checks.table_rows} & \VAR{row[2]}\BLOCK{endfor} \\
 \hline
 \end{tabularx}\endgroup\par
-\hint{\VAR{sheet.approx_hint}}
 
 \pagereport
 
@@ -132,7 +130,6 @@
 \hline
 \BLOCK{endfor}
 \end{tabularx}\endgroup\par
-\hint{\VAR{sheet.approx_hint}}
 \pagereport
 \BLOCK{endfor}
 
@@ -172,12 +169,11 @@
 \vspace{1mm}
 \noindent\begingroup\small\setlength{\tabcolsep}{4pt}\begin{tabularx}{\linewidth}{|L|C{30mm}|}
 \hline
-\rowcolor{mhplight}\textrowtop{}\VAR{sheet.final_weight_label}\textrowend{} & \textrowtop{}\textbf{\VAR{sheet.final_weight_value}}\textrowend{} \
+\rowcolor{mhplight}\textrowtop{}\VAR{sheet.final_weight_label}\textrowend{} & \textrowtop{}\textbf{\VAR{sheet.final_weight_value}}\textrowend{} \\
 \hline
 \end{tabularx}\endgroup\par
 \vspace{1mm}
 \hint{\VAR{sheet.final_note}}
-\hint{\VAR{sheet.approx_hint}}
 \pagereport
 \BLOCK{if sheet.welle0}
 
@@ -194,7 +190,6 @@
 \hline
 \BLOCK{endfor}
 \end{tabularx}\endgroup\par
-\hint{\VAR{sheet.approx_hint}}
 \pagereport
 \BLOCK{endif}
 \BLOCK{for group in sheet.clue_groups}
@@ -206,7 +201,7 @@
 \BLOCK{endif}
 \step{\VAR{group.title}}
 \vspace{1mm}
-\noindent\begingroup\small\setlength{\tabcolsep}{3pt}\begin{tabularx}{\linewidth}{|C{7mm}|>{\raggedright\arraybackslash}p{50mm}|L|L|C{22mm}|}
+\noindent\begingroup\small\setlength{\tabcolsep}{3pt}\begin{tabularx}{\linewidth}{|C{7mm}|>{\raggedright\arraybackslash}p{47mm}|L|L|C{19mm}|}
 \hline
 \rowcolor{mhpblue}\small\hdrs{\VAR{sheet.clue_header[0]}} & \small\hdrs{\VAR{sheet.clue_header[1]} / \VAR{sheet.clue_header[2]}} & \small\hdrs{\VAR{sheet.clue_header[3]}} & \small\hdrs{\VAR{sheet.clue_header[4]}} & \small\hdrs{\VAR{sheet.clue_header[5]}} \\
 \hline

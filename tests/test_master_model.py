@@ -210,6 +210,11 @@ def test_the_check_table_covers_every_whole_gr_step_and_equals_the_replay(sheet,
             assert row[1] == fmt.format_money((constants.upper - step) * constants.unit_eur)
 
 
+def test_no_printed_string_of_the_master_sheet_contains_an_approximation_sign(sheet):
+    assert [fragment for fragment in sheet.printed_fragments() if "≈" in fragment] == []
+    assert not hasattr(sheet, "approx_hint")
+
+
 def test_no_wave_shows_approximations_in_its_check_table(sheet):
     flags = [any("≈" in cell for row in section.checks.table_rows for cell in row) for section in sheet.waves]
     assert flags == [False, False, False]

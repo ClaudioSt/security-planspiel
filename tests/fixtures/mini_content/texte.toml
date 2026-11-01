@@ -358,7 +358,6 @@ how_to = [
     "Liegt die GR zwischen zwei Zeilen, rechnet das Team linear: Der Schaden fällt je GR-Punkt um den festen Betrag, die KZ steigt je GR-Punkt um die Steigung.",
     "Weicht ein Wert ab, folgt dem Lösungsschlüssel in Rechenreihenfolge, bis ihr die erste abweichende Zeile findet.",
 ]
-approx_hint = "≈: auf zwei Nachkommastellen gerundet, nur zur Kontrolle"
 paths_title = "Referenzpfade der Lösungsschlüssel"
 paths_intro = "Die Schlüssel folgen je Budget-Tier einem zulässigen Spielverlauf: Start, Maßnahmentausch des Kurswechsels und ein freiwilliger Zug im Change-Fenster danach. Ein Team mit anderer Auswahl hat andere Werte; die Prüfzeilen gelten für jedes Team."
 path_start = "Start"

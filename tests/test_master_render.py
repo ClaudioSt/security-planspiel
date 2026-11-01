@@ -122,8 +122,8 @@ def test_without_clues_the_matrix_stays_empty_but_the_sheet_builds():
     assert all(render.tex_escape(clue.quote) not in source for clue in clues)
 
 
-def test_the_approximation_sign_is_on_the_facilitator_sheet_only(real):
-    assert [job for job, source in real[3].items() if "≈" in source] == [master.MASTER_JOB]
+def test_the_approximation_sign_is_in_no_rendered_document(real):
+    assert [job for job, source in real[3].items() if "≈" in source] == []
 
 
 def test_the_master_sheet_is_outside_the_pre_wave_scan(real):
