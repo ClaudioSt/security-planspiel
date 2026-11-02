@@ -322,5 +322,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 3 
 | 3. Content Source & Veiling | 3/3 | Complete    | 2026-10-19 |
 | 4. Print Pipeline & Attack Worksheets | 6/6 | Complete    | 2026-10-22 |
 | 5. Player & Facilitator Print Material | 16/16 | Complete    | 2026-10-26 |
-| 6. Rebalance | 10/10 | Complete   | 2026-11-01 |
+| 6. Rebalance | 10/10 | Complete    | 2026-11-01 |
 | 7. Session Flow & Handoff | 0/TBD | Not started | - |
