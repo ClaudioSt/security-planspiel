@@ -62,6 +62,11 @@ No new game mechanics, no rebalance, no new print documents beyond the ones name
 - **D-25:** Pass rule for the dry run (the literal reading of ROADMAP success criterion 5): every wave block finishes within its planned minutes, the whole session finishes within the stated total (D-22), and the facilitator gets no help from the author. Each overrun, unclear point or calculation error recorded on the protocol (D-07) becomes a gap-closure item (D-06), unless the user explicitly accepts it at verification.
 - **D-26:** (clarifies D-14) "MHP state" means what was printed and played at the MHP workshop. Check the config at `1cfb2fa` against the printed MHP material in `final_documents/`, which still carries the MHP numbers until LEG-01. Where the two disagree, `content/mhp_baseline.json` takes the printed value, and the difference is recorded in RESEARCH.md.
 
+- **D-27:** Print-list quantities (D-23): the team count (3) goes into config. The planner proposes the copies per PDF for each team and for the facilitator, derived from the schedule. The user confirms them at a checkpoint before anything is printed.
+- **D-28:** Two wording issues in the current print material are fixed before the dry run. This is text only (`texte.toml`/templates), with no rule change. The Exzellenz-Bonus must say Level 2 **or higher**, and the event cards' "Nach Welle N" must match the wave page, where events are step 1 of the wave. This work belongs to FLOW-05's preparation, because the material has to be self-explanatory for the run.
+- **D-29:** "Was ist neu" also lists these items as rule changes, at the highest space priority (D-15): KZ is rounded once per wave, Init is paid on upgrades in the change window, the new Final-Index, and the event order within a wave.
+- **D-30:** (discretion resolved) `docs/folienkonzept_spielphasen_mechtech.md` is moved to `archive/`, since it is outdated in about 8 places (see RESEARCH §Q6d).
+
 ### Claude's Discretion
 - What happens to `docs/folienkonzept_spielphasen_mechtech.md`, which still mentions the E-target check: update it or move it to `archive/`.
 - The check of the MHP company profile deck and of the generated Audit-Mail and Steckbrief for outdated rules. The two story documents are generated now, so their checks run through `texte.toml` and the veil and text checks.
