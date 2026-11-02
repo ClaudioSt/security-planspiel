@@ -58,6 +58,41 @@ Filled in by the planner per task. The requirement-level map is:
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 
+### Per-task map (planner, 2026-11-02)
+
+| Plan / Task | Requirement | Automated command | Wave 0 file created by the task |
+|-------------|-------------|------------------|---------------------------------|
+| 07-01 T1 (RED) | LEG-01 | `uv run pytest tests/test_inventory.py tests/test_no_archive_references.py -q` (expected fail) | `tests/test_no_archive_references.py` |
+| 07-01 T2 | LEG-01 | `uv run pytest tests/test_inventory.py tests/test_no_archive_references.py -q` | — |
+| 07-01 T3 | LEG-01 | `uv run pytest -q -x` + absent-package check | — |
+| 07-02 T1 | FLOW-02 | `uv run pytest tests/test_session_schedule_config.py tests/test_practice_config.py tests/test_validate.py -q && uv run planspiel validate` | `tests/test_session_schedule_config.py` |
+| 07-02 T2 | FLOW-02 | `uv run pytest tests/test_schedule_model.py tests/test_texts_coverage.py tests/test_texts_digits.py -q && uv run planspiel texts` | `tests/test_schedule_model.py` |
+| 07-02 T3 | FLOW-02 | `uv run pytest -m pdf tests/test_master_pdf.py -q && uv run pytest -q -x` | — |
+| 07-03 T1 | FLOW-04 | `uv run pytest tests/test_baseline_isolation.py -q` | `tests/test_baseline_isolation.py` |
+| 07-03 T2 | FLOW-04 | `uv run pytest tests/test_was_neu_values.py tests/test_baseline_isolation.py -q` | `tests/test_was_neu_values.py` |
+| 07-03 T3 | FLOW-04 | `uv run pytest tests/test_baseline_isolation.py tests/test_print_stamp.py tests/test_print_gitattributes.py tests/test_was_neu_values.py -q && uv run pytest -q -x` | — |
+| 07-04 T1 | FLOW-03 | `uv run pytest tests/test_session_schedule_config.py tests/test_practice_config.py -q && uv run planspiel validate` | — |
+| 07-04 T2 | FLOW-03 | `uv run pytest tests/test_debrief_model.py tests/test_texts_coverage.py tests/test_texts_digits.py -q && uv run planspiel texts` | `tests/test_debrief_model.py` |
+| 07-04 T3 | FLOW-03 | `uv run pytest -m pdf tests/test_master_pdf.py -q && uv run pytest -q -x` | — |
+| 07-05 T1 | LEG-02 | checklist sections present + `uv run planspiel texts` | — |
+| 07-05 T2 (checkpoint) | LEG-02 | approval recorded in the checklist | — |
+| 07-06 T1 | FLOW-04 | `uv run pytest tests/test_was_neu_model.py tests/test_was_neu_values.py tests/test_baseline_isolation.py tests/test_texts_coverage.py tests/test_texts_digits.py -q && uv run planspiel texts` | `tests/test_was_neu_model.py` |
+| 07-06 T2 | FLOW-04 | `uv run pytest tests/test_master_render.py tests/test_schedule_model.py tests/test_print_cli.py tests/test_print_check.py tests/test_baseline_isolation.py -q` | — |
+| 07-06 T3 | FLOW-04 | `uv run pytest -m pdf tests/test_was_neu_pdf.py -q && uv run pytest -q -x` | `tests/test_was_neu_pdf.py` |
+| 07-07 T1 (RED) | LEG-02 | `uv run pytest tests/test_intro_deck.py -q` (expected fail) | `tests/test_intro_deck.py` |
+| 07-07 T2 | LEG-02 | `uv run pytest tests/test_intro_deck.py tests/test_inventory.py -q` | — |
+| 07-07 T3 (checkpoint) | LEG-02 | `uv run pytest tests/test_intro_deck.py -q` on the committed deck | — |
+| 07-08 T1 | FLOW-05 | `uv run pytest tests/test_probelauf_model.py tests/test_texts_coverage.py tests/test_texts_digits.py -q && uv run planspiel texts` | `tests/test_probelauf_model.py` |
+| 07-08 T2 | FLOW-05 | `uv run pytest -m pdf tests/test_probelauf_pdf.py -q` + schedule/render tests | `tests/test_probelauf_pdf.py` |
+| 07-08 T3 | FLOW-05 (D-28) | `uv run pytest tests/test_event_cards.py tests/test_event_text.py tests/test_master_model.py tests/test_wave_page.py -q` + card/master PDF tests | — |
+| 07-09 T1 (checkpoint) | FLOW-05 (D-27) | `uv run planspiel validate` + schedule tests | — |
+| 07-09 T2 | FLOW-05 | phase gate, `uv run planspiel print --check`, byte-identical rebuild | — |
+| 07-09 T3 (checkpoint) | FLOW-05 | `uv run planspiel print --check` | — |
+| 07-10 T1 (RED) / T2 | LEG-02 | `uv run pytest tests/test_readme_current.py` + the seven README anchor test files | `tests/test_readme_current.py` |
+| 07-11 T1 (RED) / T2 / T3 | LEG-02 | `uv run pytest tests/test_claude_md_current.py tests/test_e_target_removed.py -q && uv run pytest -q -x` | `tests/test_claude_md_current.py` |
+| 07-12 T1 / T3 | FLOW-05 | `uv run planspiel print --check`; record sections present | — |
+| 07-12 T2 (human action) | FLOW-05 | manual: dry run on 2026-11-25 | — |
+
 ---
 
 ## Wave 0 Requirements
@@ -67,7 +102,7 @@ Filled in by the planner per task. The requirement-level map is:
 - [ ] `tests/test_was_neu_model.py`, `tests/test_was_neu_pdf.py`, `tests/test_baseline_isolation.py` (FLOW-04)
 - [ ] `tests/test_probelauf_model.py`, `tests/test_probelauf_pdf.py` (FLOW-05)
 - [ ] `tests/test_no_archive_references.py`; update `test_inventory.py`, `test_environment.py`, `test_single_definition.py`; delete `test_legacy_generators_smoke.py`; retarget or retire `test_texts_migration.py` (LEG-01)
-- [ ] `tests/test_docs_current.py` (LEG-02)
+- [ ] `tests/test_readme_current.py` (07-10) and `tests/test_claude_md_current.py` (07-11) instead of one `tests/test_docs_current.py`, so the two LEG-02 doc plans run in parallel without sharing a file; `tests/test_intro_deck.py` (07-07) (LEG-02)
 
 No framework install needed.
 

@@ -308,7 +308,38 @@ Plans:
   4. README.md and CLAUDE.md describe the new pipeline and rules, with the print-sync section rewritten. The manually maintained intro deck, Audit-Mail and company profile contain no outdated rules.
   5. Someone who did not write the rules completes a timed dry run using only the material, and each wave fits the schedule.
 
-**Plans**: TBD
+**Plans**: 12 plans
+
+Plans:
+**Wave 1**
+
+- [ ] 07-01-PLAN.md — LEG-01: archive the 15 MHP files, the old generators, `pptx_output/`, the Excel calculator and the folienkonzept (D-30); inventory follows; no-archive-reference proof; Excel dependency dropped (wave 1)
+- [ ] 07-02-PLAN.md — FLOW-02: `session_schedule` config block (190 min, teams, print list) with validator; schedule and print-list page in the facilitator booklet (wave 1)
+- [ ] 07-03-PLAN.md — FLOW-04 (1/2): frozen MHP baseline `content/mhp_baseline.json` with provenance proof, old-to-new value diff, isolation, stamp input (wave 1)
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [ ] 07-04-PLAN.md — FLOW-03: debrief stage minutes in config; reaction → description → analysis → application question set as a booklet page (wave 2)
+- [ ] 07-05-PLAN.md — LEG-02 (1/4): intro-deck checklist and SC4 check of the manual documents, user approval (wave 2, checkpoint)
+
+**Wave 3** *(blocked on Wave 2 completion)*
+
+- [ ] 07-06-PLAN.md — FLOW-04 (2/2): one-page "Was ist neu" sheet `spielleitung-was-ist-neu` (rules, flow, material, values), baseline routed to one builder (wave 3)
+- [ ] 07-07-PLAN.md — LEG-02 (2/4): intro deck edited per the approved checklist, deck test, user review (wave 3, checkpoint)
+
+**Wave 4** *(blocked on Wave 3 completion)*
+
+- [ ] 07-08-PLAN.md — FLOW-05 (1/3): dry-run protocol `spielleitung-probelauf`; D-28 wording fixes (Exzellenz-Bonus, event-card header) (wave 4)
+
+**Wave 5** *(blocked on Wave 4 completion)*
+
+- [ ] 07-09-PLAN.md — FLOW-05 (2/3): print-list quantities confirmed (D-27), print set regenerated and committed once, physical print released (wave 5, checkpoint)
+- [ ] 07-10-PLAN.md — LEG-02 (3/4): README.md (German) rewritten for current rules, session flow and print pipeline (wave 5)
+- [ ] 07-11-PLAN.md — LEG-02 (4/4): root CLAUDE.md in English, codebase maps refreshed, `.claude/CLAUDE.md` regenerated (wave 5)
+
+**Wave 6** *(blocked on Wave 5 completion; calendar-bound: 2026-11-25)*
+
+- [ ] 07-12-PLAN.md — FLOW-05 (3/3): timed dry run with a test group, protocol transcribed, D-25 verdict and gap items (wave 6, checkpoint)
 
 ## Progress
 
