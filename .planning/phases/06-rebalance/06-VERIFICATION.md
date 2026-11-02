@@ -1,7 +1,7 @@
 ---
 phase: 06-rebalance
 verified: 2026-11-01T22:30:00Z
-status: human_needed
+status: passed
 score: 5/5 roadmap success criteria verified (9/9 requirements satisfied, 3 warnings open)
 behavior_unverified: 0
 overrides_applied: 0
@@ -103,3 +103,11 @@ No gap blocks the phase goal. Every roadmap success criterion and all nine BAL r
 
 _Verified: 2026-11-01_
 _Verifier: Claude (gsd-verifier)_
+
+## Human Verification Resolution (2026-11-02)
+
+- **Gate scope (WR-03):** user chose "Familie ergänzen". `tausch_fenster2` added (f3b4e79); fenster1/fenster2 restricted to legal starts. Real-config `planspiel gate --paths --jobs 3`: exit 0, tausch_fenster2 needs X = 1 in all tiers, configured X = 3 still calibrated. Goldens re-pinned (dc4c93d); static and tausch entries unchanged.
+- **Code review WR-01, WR-02, WR-04..WR-06:** fixed (see 06-REVIEW-FIX.md). Fast suite 2681 passed.
+- **Facilitator booklet pages 8-10, attack worksheets, M7 L1 card:** reviewed by the user, answer "Ok".
+
+Status changed from human_needed to passed.
