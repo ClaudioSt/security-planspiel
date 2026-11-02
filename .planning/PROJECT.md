@@ -38,9 +38,10 @@ Every balance decision is checked against these (measurable via full enumeration
 
 - ✓ Player & facilitator print material (PRINT-05..10, PRINT-12, VEIL-02, VEIL-04): `planspiel print` now builds the complete set of 13 PDFs into `final_documents/generated/` from config + content. It covers measure cards with a legend (A6 landscape, names-only veil profile), event and Budget Review cards with effect lines proven equal to `rules.evaluate_event`, and the team booklet (budget, RoS, Budget Review, tracking page in calculation order). It also includes the one-page "So funktioniert eine Welle", the four story documents with images, the Welle 0 worked example (Fall 3, bonus met/missed, recovery, exact half, clamp) and the facilitator overview with answer keys on user-approved reference paths. A two-layer veil scan (rendered `.tex` + PDF, metadata) gates every pre-wave document. UAT 8/8 passed on physical prints and SECURITY verified with 55 threats closed. Validated in Phase 5: Player & Facilitator Print Material. Answer keys, Welle 0 and the overspend table are pinned to the current values and must be re-chosen after Phase 6.
 
+- ✓ Rebalanced config verified by full enumeration (BAL-01..09): overspend gate on the static plans and the move paths (swap layer, window 1/2 from legal starts, mandatory swap + window-2 move) with X = 3 calibrated as max + 1; hand-calc findings are errors (one-decimal KZ slopes); 0.85 filter dropped and Final-Index `KZ + 10 × RoS₂` with k from the pooled IQR; consolidated balance report (`balance_analysis.py`) with top-K, Pareto fronts, verdicts and baseline comparison; design-principle checks for choices, reference strategies (clue-derived good start in the top quartile), rewarding play and spread all pass; tuned values approved at D-04 (2026-11-01) and adopted with regenerated print set, goldens and reference paths. Validated in Phase 6: Rebalance. Legacy hand-maintained docx/pptx in `final_documents/` still carry old numbers until Phase 7 (LEG-01).
+
 ### Active
 
-- [ ] Rebalanced config verified by full enumeration after the rule changes
 - [ ] Flow fits the afternoon: wave 1 no longer overruns. The worked example (Welle 0) and the printed tracking sheet exist since Phase 5. Timing is still unproven until the next live run.
 
 ### Out of Scope
@@ -146,4 +147,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-10-27 after Phase 5 (Player & Facilitator Print Material)*
+*Last updated: 2026-11-02 after Phase 6 (Rebalance)*
