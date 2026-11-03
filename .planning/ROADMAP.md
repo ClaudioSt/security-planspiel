@@ -308,7 +308,7 @@ Plans:
   4. README.md and CLAUDE.md describe the new pipeline and rules, with the print-sync section rewritten. The manually maintained intro deck, Audit-Mail and company profile contain no outdated rules.
   5. Someone who did not write the rules completes a timed dry run using only the material, and each wave fits the schedule.
 
-**Plans**: 7/12 plans executed
+**Plans**: 8/12 plans executed
 
 Plans:
 **Wave 1**
@@ -329,7 +329,7 @@ Plans:
 
 **Wave 4** *(blocked on Wave 3 completion)*
 
-- [ ] 07-08-PLAN.md — FLOW-05 (1/3): dry-run protocol `spielleitung-probelauf`; D-28 wording fixes (Exzellenz-Bonus, event-card header) (wave 4)
+- [x] 07-08-PLAN.md — FLOW-05 (1/3): dry-run protocol `spielleitung-probelauf`; D-28 wording fixes (Exzellenz-Bonus, event-card header) (wave 4)
 
 **Wave 5** *(blocked on Wave 4 completion)*
 
@@ -357,4 +357,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 3 
 | 4. Print Pipeline & Attack Worksheets | 6/6 | Complete    | 2026-10-22 |
 | 5. Player & Facilitator Print Material | 16/16 | Complete    | 2026-10-26 |
 | 6. Rebalance | 10/10 | Complete    | 2026-11-01 |
-| 7. Session Flow & Handoff | 7/12 | In Progress|  |
+| 7. Session Flow & Handoff | 8/12 | In Progress|  |
