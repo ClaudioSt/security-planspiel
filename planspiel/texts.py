@@ -198,6 +198,14 @@ WAS_NEU_KEYS = (
     *(f"sheets.was_neu.material.{name}" for name in WAS_NEU_MATERIAL_IDS),
 )
 
+_PROBELAUF_KEYS = (
+    "title", "notice", "intro", "head_block", "head_planned", "head_span", "head_start", "head_actual", "head_questions",
+    "head_errors", "total_label", "pass_title", "pass_wave_lead", "pass_wave_practice", "pass_wave_tail", "pass_rules",
+    "help_title", "observer_label", "date_label",
+)
+# Required only when the config carries a session_schedule, like the schedule texts (FLOW-05).
+PROBELAUF_KEYS = tuple(f"sheets.probelauf.{name}" for name in _PROBELAUF_KEYS)
+
 PRACTICE_KEYS = tuple(
     f"practice.{name}"
     for name in (
@@ -387,6 +395,7 @@ def required_keys(cfg: Config) -> set[str]:
             if audience.audience_of(row.job) != audience.REVEALED:
                 keys.add(f"sheets.ablauf.print.{row.job}")
         keys.update(WAS_NEU_KEYS)
+        keys.update(PROBELAUF_KEYS)
         if cfg.session_schedule.debrief_stages:
             keys.update(DEBRIEF_KEYS)
             keys.update(DEBRIEF_PROMPT_KEYS)

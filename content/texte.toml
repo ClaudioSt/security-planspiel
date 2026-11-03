@@ -1064,3 +1064,28 @@ lines = [
 
 [story.audit_mail.fusszeile]
 lines = ["Tel: +49-711-12345| k.hoffmann@premium-oem.com"]
+
+[sheets.probelauf]
+title = "Probelauf-Protokoll"
+notice = "Nur für die Spielleitung – nicht an Teams ausgeben"
+intro = "Die Spielleitung führt den Ablauf allein nach den ausgedruckten Unterlagen. Die beobachtende Person trägt für jeden Block ein, wann er begann, wie lange er dauerte, was unklar war und wo sich ein Rechenfehler zeigte."
+head_block = "Block"
+head_planned = "Geplant (Min.)"
+head_span = "Minuten ab Start"
+head_start = "Beginn (Uhrzeit)"
+head_actual = "Tatsächlich (Min.)"
+head_questions = "Fragen oder unklare Stellen"
+head_errors = "Rechenfehler"
+total_label = "Geplante Gesamtdauer (Min.)"
+pass_title = "Bestanden, wenn"
+pass_wave_lead = "Jeder Wellenblock"
+pass_wave_practice = "auch die"
+pass_wave_tail = "endet in seiner geplanten Zeit."
+pass_rules = [
+    "Die ganze Sitzung endet innerhalb der geplanten Gesamtdauer.",
+    "Die Spielleitung bekommt keine Hilfe von der Autorin oder dem Autor des Spiels.",
+    "Jede Überschreitung, jede unklare Stelle und jeder Rechenfehler, der hier steht, wird zu einer Aufgabe für die Überarbeitung, es sei denn, sie wird bei der Abnahme ausdrücklich akzeptiert.",
+]
+help_title = "Hilfe-Protokoll: Wann und wobei wurde geholfen?"
+observer_label = "Beobachtende Person"
+date_label = "Datum"
