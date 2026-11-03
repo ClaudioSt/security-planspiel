@@ -202,7 +202,7 @@
       "dependencies": []
     }
   },
-  "_comment_events": "Quelle: final_documents/Events_Security-Game.pptx (9 Folien). 'Backup & Recovery' (Folie 1) ist nicht separat aufgeführt, da identisch mit der M4-Recovery-Mechanik auf Angriffsebene (attacks.*.allow_recovery + measures.M4.levels.*.recovery: 0.10/0.30/0.50 -> Endschaden x 0.90/0.70/0.50).",
+  "_comment_events": "Quelle: mhp_print_material_2026-07/Events_Security-Game.pptx (9 Folien). 'Backup & Recovery' (Folie 1) ist nicht separat aufgeführt, da identisch mit der M4-Recovery-Mechanik auf Angriffsebene (attacks.*.allow_recovery + measures.M4.levels.*.recovery: 0.10/0.30/0.50 -> Endschaden x 0.90/0.70/0.50).",
   "events": {
     "wave_1": [
       {
@@ -297,6 +297,39 @@
       "tiers": {"0": -4, "1": -2, "2": 1, "3": 3}
     },
     "selection": {"M1": 0, "M2": 0, "M3": 0, "M4": 1, "M5": 0, "M6": 0, "M7": 0, "M8": 2, "M9": 2, "M10": 1}
+  },
+  "session_schedule": {
+    "total_minutes": 190,
+    "teams": 3,
+    "persons_per_team": 5,
+    "blocks": [
+      {"id": "intro", "minutes": 10},
+      {"id": "break_1", "minutes": 5},
+      {"id": "story_groups", "minutes": 25},
+      {"id": "wave_0", "minutes": 15, "wave": 0},
+      {"id": "measures_budget", "minutes": 30},
+      {"id": "break_2", "minutes": 15},
+      {"id": "wave_1", "minutes": 20, "wave": 1},
+      {"id": "wave_2", "minutes": 20, "wave": 2},
+      {"id": "wave_3", "minutes": 20, "wave": 3},
+      {"id": "closing", "minutes": 10},
+      {"id": "debrief", "minutes": 20}
+    ],
+    "print_list": [
+      {"job": "angriff-1_ransomware", "per_team": 1, "facilitator": 1},
+      {"job": "angriff-2_ot", "per_team": 1, "facilitator": 1},
+      {"job": "angriff-3_exfil", "per_team": 1, "facilitator": 1},
+      {"job": "spieler-massnahmenkarten", "per_team": 1, "facilitator": 1},
+      {"job": "spieler-eventkarten", "per_team": 1, "facilitator": 1},
+      {"job": "spieler-teamheft", "per_team": 1, "facilitator": 1},
+      {"job": "spieler-so-funktioniert-eine-welle", "per_team": 1, "facilitator": 1},
+      {"job": "spieler-unternehmenssteckbrief", "per_team": 1, "facilitator": 1},
+      {"job": "spieler-zeitungsartikel", "per_team": 1, "facilitator": 1},
+      {"job": "spieler-anfrage-mail", "per_team": 1, "facilitator": 1},
+      {"job": "spieler-audit-mail", "per_team": 1, "facilitator": 1},
+      {"job": "uebung-welle-0", "per_team": 1, "facilitator": 1},
+      {"job": "spielleitung-uebersicht", "per_team": 0, "facilitator": 1}
+    ]
   },
   "reference_plans": {
     "low": {

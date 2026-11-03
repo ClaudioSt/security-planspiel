@@ -29,6 +29,12 @@ REQUIRED_EVENT_PARAMS = {
     "final_budget_tier": ("tiers", "overspend_penalty"),
 }
 
+SCHEDULE_KEYS = ("total_minutes", "teams", "persons_per_team", "blocks", "print_list")
+SCHEDULE_BLOCK_KEYS = ("id", "minutes", "wave")
+PRINT_ROW_KEYS = ("job", "per_team", "facilitator")
+SNAKE_ID = re.compile(r"[a-z][a-z0-9_]*")
+PRINT_JOB = re.compile(r"[a-z0-9][a-z0-9_-]*")
+
 PRACTICE_KEYS = ("kz_start", "budget", "attack", "wave", "event", "selection")
 PRACTICE_EVENT_TYPES = ("checklist_tier", "measure_level_tier", "level_bonus_per_measure", "and_condition")
 
@@ -227,6 +233,8 @@ class _Validator:
         self.check_hand_calc()
         if "practice" in raw:
             self.check_practice(raw["practice"], attacks, measures)
+        if "session_schedule" in raw:
+            self.check_session_schedule(raw["session_schedule"], raw.get("waves"))
         if "reference_plans" in raw:
             self.check_reference_plans(raw["reference_plans"], measures)
         if "reference_strategies" in raw:
@@ -589,6 +597,97 @@ class _Validator:
             self.error("schema.tiers_order", path, f"Stufenminima müssen streng aufsteigend sein, gefunden {minima}")
         if first_minimum is not None and minima and minima[0] != first_minimum:
             self.error("schema.tiers_order", path, f"erstes Stufenminimum muss {first_minimum} sein, gefunden {minima[0]}")
+
+    def check_session_schedule(self, block: Any, waves: Any) -> None:
+        """Ablaufplan und Druckliste (D-01, D-22, D-27): nur Zahlen und IDs, Prosa steht in content/texte.toml."""
+        path = "session_schedule"
+        if not self.container(block, dict, path):
+            return
+        for key in block:
+            if key not in SCHEDULE_KEYS:
+                self.error("schema.keys", f"{path}.{key}", f"Unbekannter Schlüssel '{key}' im Ablaufplan")
+        total = self.int_field(block, "total_minutes", path, lo=1)
+        self.int_field(block, "teams", path, lo=1)
+        self.int_field(block, "persons_per_team", path, lo=1)
+
+        wave_ids = {
+            wave["id"] for wave in waves
+            if isinstance(wave, dict) and isinstance(wave.get("id"), int) and not isinstance(wave.get("id"), bool)
+        } if isinstance(waves, list) else set()
+        blocks = self.field(block, "blocks", path)
+        if blocks is not None and self.container(blocks, list, f"{path}.blocks"):
+            self.check_schedule_blocks(blocks, total, wave_ids)
+        print_list = self.field(block, "print_list", path)
+        if print_list is not None and self.container(print_list, list, f"{path}.print_list"):
+            self.check_print_list(print_list)
+
+    def check_schedule_blocks(self, blocks: list, total: Optional[int], wave_ids: set) -> None:
+        path = "session_schedule.blocks"
+        seen_ids: set = set()
+        seen_waves: set = set()
+        minutes_sum = 0
+        sum_known = True
+        for index, item in enumerate(blocks):
+            item_path = f"{path}[{index}]"
+            if not self.container(item, dict, item_path):
+                sum_known = False
+                continue
+            for key in item:
+                if key not in SCHEDULE_BLOCK_KEYS:
+                    self.error("schema.keys", f"{item_path}.{key}", f"Unbekannter Schlüssel '{key}' im Ablaufblock")
+            block_id = self.field(item, "id", item_path)
+            if block_id is not None:
+                if not isinstance(block_id, str) or not SNAKE_ID.fullmatch(block_id):
+                    self.error("schedule.id", f"{item_path}.id", f"Block-ID {block_id!r} muss snake_case sein")
+                elif block_id in seen_ids:
+                    self.error("schedule.id", f"{item_path}.id", f"Block-ID '{block_id}' kommt doppelt vor")
+                else:
+                    seen_ids.add(block_id)
+            minutes = self.int_field(item, "minutes", item_path, lo=1)
+            if minutes is None:
+                sum_known = False
+            else:
+                minutes_sum += minutes
+            if "wave" in item:
+                wave = self.int_value(item["wave"], f"{item_path}.wave")
+                if wave is not None:
+                    if wave != 0 and wave not in wave_ids:
+                        self.error("schedule.wave_block", f"{item_path}.wave", f"Welle {wave} gibt es in der Konfiguration nicht")
+                    elif wave in seen_waves:
+                        self.error("schedule.wave_block", f"{item_path}.wave", f"Welle {wave} hat mehr als einen Block")
+                    else:
+                        seen_waves.add(wave)
+        for wave_id in sorted(wave_ids - seen_waves):
+            self.error("schedule.wave_block", path, f"Welle {wave_id} hat keinen Block im Ablaufplan")
+        if sum_known and total is not None and minutes_sum != total:
+            self.error("schedule.sum", path, f"Die Blöcke ergeben {minutes_sum} Minuten, total_minutes ist {total}")
+
+    def check_print_list(self, rows: list) -> None:
+        path = "session_schedule.print_list"
+        seen: set = set()
+        for index, item in enumerate(rows):
+            item_path = f"{path}[{index}]"
+            if not self.container(item, dict, item_path):
+                continue
+            for key in item:
+                if key not in PRINT_ROW_KEYS:
+                    self.error("schema.keys", f"{item_path}.{key}", f"Unbekannter Schlüssel '{key}' in der Druckliste")
+            job = self.field(item, "job", item_path)
+            if job is not None:
+                if not isinstance(job, str) or not PRINT_JOB.fullmatch(job):
+                    self.error("schedule.print_job", f"{item_path}.job", f"Dokumentname {job!r} darf nur a-z, 0-9, _ und - enthalten")
+                    job = None
+                elif job in seen:
+                    self.error("schedule.print_job", f"{item_path}.job", f"Dokument '{job}' steht doppelt in der Druckliste")
+                else:
+                    seen.add(job)
+            per_team = self.int_field(item, "per_team", item_path, lo=0)
+            self.int_field(item, "facilitator", item_path, lo=0)
+            if job is not None and job.startswith("spielleitung-") and per_team:
+                self.error(
+                    "schedule.print_veil", f"{item_path}.per_team",
+                    f"Das Spielleitungs-Dokument '{job}' darf nicht an die Teams gehen",
+                )
 
     def check_practice(self, block: Any, attacks: dict, measures: dict) -> None:
         """Welle 0 (D-12): own attack, wave, event and example selection that must stay invisible to waves 1-3."""

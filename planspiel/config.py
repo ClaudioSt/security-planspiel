@@ -82,6 +82,32 @@ class Practice:
 
 
 @dataclass
+class ScheduleBlock:
+    id: str
+    minutes: int
+    wave: Optional[int] = None
+
+
+@dataclass
+class PrintRow:
+    job: str
+    per_team: int
+    facilitator: int
+
+
+@dataclass
+class SessionSchedule:
+    """Session schedule and print list: read only by the facilitator print models (schedule, booklet, protocol) and
+    the intro-deck test (persons_per_team), never by rules or enumeration."""
+
+    total_minutes: int
+    teams: int
+    persons_per_team: int
+    blocks: tuple[ScheduleBlock, ...]
+    print_list: tuple[PrintRow, ...]
+
+
+@dataclass
 class FinalIndexWeights:
     """Weights of the facilitator-side final index (D-23); the single source for reports and printed answer keys."""
 
@@ -105,6 +131,7 @@ class Config:
     reference_plans: Dict[str, Dict] = field(default_factory=dict)
     reference_strategies: Dict[str, Dict] = field(default_factory=dict)
     practice: Optional[Practice] = None
+    session_schedule: Optional[SessionSchedule] = None
 
     @property
     def measure_ids(self) -> List[str]:
@@ -225,6 +252,23 @@ def load_config(path: Path, hand_calc_level: str = "error") -> Config:
             selection=dict(block["selection"]),
         )
 
+    session_schedule = None
+    if "session_schedule" in raw:
+        block = raw["session_schedule"]
+        session_schedule = SessionSchedule(
+            total_minutes=block["total_minutes"],
+            teams=block["teams"],
+            persons_per_team=block["persons_per_team"],
+            blocks=tuple(
+                ScheduleBlock(id=item["id"], minutes=item["minutes"], wave=item.get("wave"))
+                for item in block["blocks"]
+            ),
+            print_list=tuple(
+                PrintRow(job=item["job"], per_team=item["per_team"], facilitator=item["facilitator"])
+                for item in block["print_list"]
+            ),
+        )
+
     return Config(
         default_budget_tier=raw["default_budget_tier"],
         budget_tiers=budget_tiers,
@@ -241,6 +285,7 @@ def load_config(path: Path, hand_calc_level: str = "error") -> Config:
             weight_ros=Fraction(raw["final_index"]["weight_ros"]),
         ),
         practice=practice,
+        session_schedule=session_schedule,
         reference_plans=dict(raw.get("reference_plans", {})),
         reference_strategies=dict(raw.get("reference_strategies", {})),
     )
