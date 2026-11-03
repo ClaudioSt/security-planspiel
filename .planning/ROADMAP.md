@@ -314,7 +314,7 @@ Plans:
 **Wave 1**
 
 - [ ] 07-01-PLAN.md — LEG-01: archive the 15 MHP files, the old generators, `pptx_output/`, the Excel calculator and the folienkonzept (D-30); inventory follows; no-archive-reference proof; Excel dependency dropped (wave 1)
-- [ ] 07-02-PLAN.md — FLOW-02: `session_schedule` config block (190 min, teams, print list) with validator; schedule and print-list page in the facilitator booklet (wave 1)
+- [ ] 07-02-PLAN.md — FLOW-02: `session_schedule` config block (190 min, teams, persons per team, print list) with validator; schedule and print-list page in the facilitator booklet (wave 1)
 - [ ] 07-03-PLAN.md — FLOW-04 (1/2): frozen MHP baseline `content/mhp_baseline.json` with provenance proof, old-to-new value diff, isolation, stamp input (wave 1)
 
 **Wave 2** *(blocked on Wave 1 completion)*
@@ -333,13 +333,16 @@ Plans:
 
 **Wave 5** *(blocked on Wave 4 completion)*
 
-- [ ] 07-09-PLAN.md — FLOW-05 (2/3): print-list quantities confirmed (D-27), print set regenerated and committed once, solo wave-1 timing (D-32), physical print released (wave 5, checkpoint)
 - [ ] 07-10-PLAN.md — LEG-02 (3/4): README.md (German) rewritten for current rules, session flow and print pipeline (wave 5)
 - [ ] 07-11-PLAN.md — LEG-02 (4/4): root CLAUDE.md in English, codebase maps refreshed, `.claude/CLAUDE.md` regenerated (wave 5)
 
-**Wave 6** *(blocked on Wave 5 completion; calendar-bound: 2026-11-25)*
+**Wave 6** *(blocked on Wave 5 completion)*
 
-- [ ] 07-12-PLAN.md — FLOW-05 (3/3): timed dry run with a test group, protocol transcribed, D-25 verdict and gap items (wave 6, checkpoint)
+- [ ] 07-09-PLAN.md — FLOW-05 (2/3): print-list quantities confirmed (D-27), print set regenerated and committed per release candidate, solo timing of measure selection and wave 1 (D-32, D-34), physical print released (wave 6, checkpoint)
+
+**Wave 7** *(blocked on Wave 6 completion; calendar-bound: 2026-11-25)*
+
+- [ ] 07-12-PLAN.md — FLOW-05 (3/3): timed dry run with a test group, protocol transcribed, D-25 verdict and gap items (wave 7, checkpoint)
 
 ## Progress
 
