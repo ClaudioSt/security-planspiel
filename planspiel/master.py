@@ -18,6 +18,7 @@ from planspiel import eventtext, fmt, practice, refpaths, rules
 from planspiel.cards import printed_strings
 from planspiel.config import Config, Wave
 from planspiel.printmodel import PrintModelError
+from planspiel.schedule import SchedulePage, build_schedule_page
 from planspiel.texts import Clue, FacilitatorView, RevealView, Texts
 
 MASTER_JOB = "spielleitung-uebersicht"
@@ -176,15 +177,18 @@ class MasterSheet:
     clues_intro: str
     clue_header: tuple[str, str, str, str, str, str]
     clue_groups: tuple[ClueGroup, ...]
+    schedule: Optional[SchedulePage]
 
     def printed_fragments(self) -> tuple[str, ...]:
         """Every string of the sheet that ends up on the paper, without duplicates and without empty strings."""
         found = [
             text
             for field in dataclasses.fields(self)
-            if field.name != "job"
+            if field.name not in ("job", "schedule")
             for text in printed_strings(getattr(self, field.name))
         ]
+        if self.schedule is not None:  # its block ids are keys, not printed text
+            found += self.schedule.printed_fragments()
         return tuple(dict.fromkeys(text for text in found if text))
 
 
@@ -523,4 +527,5 @@ def build_master_sheet(cfg: Config, texts: Texts, clues: tuple[Clue, ...]) -> Op
             words["clue_head_quote"], words["clue_head_why"], words["clue_head_measures"],
         ),
         clue_groups=_clue_groups(cfg, texts, clues),
+        schedule=build_schedule_page(cfg, texts),
     )

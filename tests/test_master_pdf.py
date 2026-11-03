@@ -78,6 +78,33 @@ def test_page_one_lists_the_reference_paths(printed_set, sheet):
             assert squash(window) in first
 
 
+def test_the_schedule_and_print_list_precede_the_waves(printed_set, sheet):
+    pages = _pages(printed_set)
+    schedule_page = _first_page_with(pages, sheet.schedule.title, start=1)
+    assert schedule_page == 1
+    ranges, _ = _section_pages(pages, sheet)
+    first_wave = ranges[0][0]
+    assert first_wave > schedule_page
+    text = "".join(pages[schedule_page:first_wave])
+    for text_part in (sheet.schedule.title, sheet.schedule.intro, sheet.schedule.total_label,
+                      sheet.schedule.total_value, sheet.schedule.print_title, sheet.schedule.print_intro,
+                      sheet.schedule.teams_label, sheet.schedule.teams_value,
+                      *sheet.schedule.header, *sheet.schedule.print_header):
+        assert squash(text_part) in text, text_part
+    for row in sheet.schedule.rows:
+        for part in (row.label, row.minutes, row.start, row.end, row.direction):
+            assert squash(part) in text, (row.block_id, part)
+    for row in sheet.schedule.print_rows:
+        for part in (row.label, row.file, row.per_team, row.facilitator, row.total):
+            assert squash(part) in text, (row.file, part)
+
+
+def test_the_contents_list_names_the_schedule(printed_set, sheet):
+    first = _pages(printed_set)[0]
+    assert squash(sheet.schedule.title) in first
+    assert squash(sheet.schedule.print_title) in first
+
+
 def test_every_wave_section_starts_on_its_own_page_with_its_parts(printed_set, sheet):
     pages = _pages(printed_set)
     ranges, _ = _section_pages(pages, sheet)

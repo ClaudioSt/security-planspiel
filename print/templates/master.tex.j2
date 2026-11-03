@@ -13,6 +13,10 @@
 
 \step{\VAR{sheet.contents_title}}
 \begingroup\small\setlength{\parskip}{0.6mm}
+\BLOCK{if sheet.schedule}
+\VAR{sheet.schedule.title}\par
+\VAR{sheet.schedule.print_title}\par
+\BLOCK{endif}
 \BLOCK{for section in sheet.waves}
 \VAR{section.title}\par
 \BLOCK{endfor}
@@ -45,6 +49,41 @@
 \BLOCK{endfor}
 \end{tabularx}\endgroup\par
 \pagereport
+\BLOCK{if sheet.schedule}
+
+\clearpage
+\attacktitle{\VAR{sheet.schedule.title}}
+{\small{} \VAR{sheet.schedule.intro}\par}
+\vspace{1mm}
+\noindent\begingroup\footnotesize\setlength{\tabcolsep}{3pt}\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{32mm}|C{11mm}|C{16mm}|C{14mm}|L|}
+\hline
+\rowcolor{mhpblue}\BLOCK{for cell in sheet.schedule.header}\hdrs{\VAR{cell}}\BLOCK{if not loop.last} & \BLOCK{endif}\BLOCK{endfor} \\
+\hline
+\BLOCK{for row in sheet.schedule.rows}
+\textrowtop{}\textbf{\VAR{row.label}}\textrowend{} & \textrowtop{}\VAR{row.minutes}\textrowend{} & \textrowtop{}\VAR{row.start}\,\textendash\,\VAR{row.end}\textrowend{} & \textrowtop{}\textrowend{} & \textrowtop{}\VAR{row.direction}\textrowend{} \\
+\hline
+\BLOCK{endfor}
+\textrowtop{}\textbf{\VAR{sheet.schedule.total_label}}\textrowend{} & \textrowtop{}\textbf{\VAR{sheet.schedule.total_value}}\textrowend{} & \textrowtop{}\textrowend{} & \textrowtop{}\textrowend{} & \textrowtop{}\textrowend{} \\
+\hline
+\end{tabularx}\endgroup\par
+\pagereport
+
+\clearpage
+\step{\VAR{sheet.schedule.print_title}}
+{\small{} \VAR{sheet.schedule.print_intro}\par}
+{\small{} \VAR{sheet.schedule.teams_label}: \textbf{\VAR{sheet.schedule.teams_value}}\par}
+\vspace{1mm}
+\noindent\begingroup\footnotesize\setlength{\tabcolsep}{3pt}\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{44mm}|L|C{14mm}|C{20mm}|C{14mm}|}
+\hline
+\rowcolor{mhpblue}\BLOCK{for cell in sheet.schedule.print_header}\hdrs{\VAR{cell}}\BLOCK{if not loop.last} & \BLOCK{endif}\BLOCK{endfor} \\
+\hline
+\BLOCK{for row in sheet.schedule.print_rows}
+\textrowtop{}\VAR{row.label}\textrowend{} & \textrowtop{}\VAR{row.file}\textrowend{} & \textrowtop{}\VAR{row.per_team}\textrowend{} & \textrowtop{}\VAR{row.facilitator}\textrowend{} & \textrowtop{}\textbf{\VAR{row.total}}\textrowend{} \\
+\hline
+\BLOCK{endfor}
+\end{tabularx}\endgroup\par
+\pagereport
+\BLOCK{endif}
 \BLOCK{for section in sheet.waves}
 
 \clearpage
