@@ -158,6 +158,15 @@ _ABLAUF_KEYS = (
 # Required only when the config carries a session_schedule, so the mini fixture needs no schedule texts.
 ABLAUF_KEYS = tuple(f"sheets.ablauf.{name}" for name in _ABLAUF_KEYS)
 
+_DEBRIEF_KEYS = (
+    "title", "intro", "guide_label", "questions_label", "prompts_label", "minutes_unit", "compare_title",
+    "compare_intro", "compare_head_team", "compare_head_kz", "compare_head_ros", "compare_head_final_index",
+    "team_label", "clue_pointer", "total_label",
+)
+# Required only when the config carries debrief_stages; stage and prompt keys follow the config ids (FLOW-03).
+DEBRIEF_KEYS = tuple(f"sheets.debrief.{name}" for name in _DEBRIEF_KEYS)
+DEBRIEF_PROMPT_KEYS = tuple(f"sheets.debrief.prompts.{name}" for name in ("compare", "clues", "window"))
+
 PRACTICE_KEYS = tuple(
     f"practice.{name}"
     for name in (
@@ -346,6 +355,11 @@ def required_keys(cfg: Config) -> set[str]:
         for row in cfg.session_schedule.print_list:
             if audience.audience_of(row.job) != audience.REVEALED:
                 keys.add(f"sheets.ablauf.print.{row.job}")
+        if cfg.session_schedule.debrief_stages:
+            keys.update(DEBRIEF_KEYS)
+            keys.update(DEBRIEF_PROMPT_KEYS)
+            for stage in cfg.session_schedule.debrief_stages:
+                keys.update({f"sheets.debrief.stages.{stage.id}.title", f"sheets.debrief.stages.{stage.id}.questions"})
     return keys
 
 

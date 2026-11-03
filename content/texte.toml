@@ -646,6 +646,55 @@ spieler-audit-mail = "Audit-Mail"
 uebung-welle-0 = "Übungsblatt"
 spielleitung-uebersicht = "Spielleitungsheft"
 
+[sheets.debrief]
+title = "Debriefing"
+intro = "Besprecht den Verlauf in dieser festen Reihenfolge: erst die Reaktion, dann die Beschreibung, dann die Analyse, zuletzt die Anwendung. Es gibt kein Blatt für die Teams. Lest die Fragen vor und lasst die Teams antworten. Die Richtzeiten der Stufen füllen zusammen den Debriefing-Block des Ablaufplans."
+guide_label = "Richtzeit"
+questions_label = "Fragen"
+prompts_label = "Datenimpuls"
+minutes_unit = "Min."
+compare_title = "Vergleichstabelle"
+compare_intro = "Tragt je Team KZ und RoS aus dem Teamheft ein und berechnet den Final-Index wie im Abschnitt zum Endergebnis. Die Tabelle ist leer und dient als Schreibfläche für den Vergleich."
+compare_head_team = "Team"
+compare_head_kz = "KZ"
+compare_head_ros = "RoS"
+compare_head_final_index = "Final-Index"
+team_label = "Team"
+clue_pointer = "Siehe"
+total_label = "Summe der Richtzeiten"
+
+[sheets.debrief.prompts]
+compare = "Vergleicht die Teams nach KZ, RoS und Final-Index (Tabelle unten)."
+clues = "Welche Hinweise in den Unterlagen hättet ihr vorab lesen können?"
+window = "Was hättet ihr in einem Change-Fenster anders gemacht?"
+
+[sheets.debrief.stages.reaction]
+title = "Reaktion"
+questions = [
+    "Wie geht es euch nach den Wellen?",
+    "Welcher Moment hat euch am meisten überrascht?",
+]
+
+[sheets.debrief.stages.description]
+title = "Beschreibung"
+questions = [
+    "Was habt ihr vor den Wellen entschieden, und warum?",
+    "Wie hat sich eure Kundenzufriedenheit von Welle zu Welle entwickelt?",
+]
+
+[sheets.debrief.stages.analysis]
+title = "Analyse"
+questions = [
+    "Welche Entscheidung hat am meisten gebracht, welche am wenigsten?",
+]
+
+[sheets.debrief.stages.application]
+title = "Anwendung"
+questions = [
+    "Welche Maßnahme würdet ihr in eurem Unternehmen zuerst umsetzen, und warum?",
+    "Wo trefft ihr im Alltag echte Abwägungen zwischen Vertraulichkeit, Integrität und Verfügbarkeit?",
+]
+
 [story.steckbrief]
 doc_title = "MECHTECH GmbH: Unternehmenssteckbrief"
 
