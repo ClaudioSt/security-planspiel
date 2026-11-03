@@ -1,7 +1,6 @@
 """Every game formula is defined exactly once, in planspiel/rules.py (FOUND-03).
 
-D-29 exception: `generate_attack_calculator.py` re-encodes the wave formulas as Excel formulas and
-stays untouched until Phase 7 / LEG-01, so the three `generate_*.py` scripts are excluded from every scan.
+The legacy `generate_*.py` scripts were archived in Phase 7 (LEG-01) and are outside every scan.
 """
 import ast
 from collections import defaultdict

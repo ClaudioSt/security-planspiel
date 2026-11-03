@@ -1,14 +1,13 @@
-"""Treue der Migration nach content/texte.toml (D-04, D-05, D-13a, D-14, D-27, D-28)."""
-import ast
+"""Treue der Migration nach content/texte.toml (D-04, D-05, D-13a, D-14, D-27, D-28).
 
+The generator-fidelity tests were retired in Phase 7 (LEG-01) after the migration was complete.
+"""
 import pytest
 
 from planspiel.cli import main
 from planspiel.config import load_config
 from planspiel.texts import check_texts, load_content
-from tests.support import CONFIG_PATH, CONTENT_DIR, REPO_ROOT
-
-LEVEL_PREFIXES = ("Grundschutz: ", "Besser: ", "Premium: ")
+from tests.support import CONFIG_PATH, CONTENT_DIR
 
 BONUS_REASONS = {
     ("ransomware", "M3"): "EDR/XDR erkennt Ransomware früh",
@@ -33,45 +32,8 @@ ALLOWLIST_PINNED = {
 }
 
 
-def _measure_meta(script):
-    """MEASURE_META per AST lesen, ohne das Legacy-Modul zu importieren."""
-    source = (REPO_ROOT / script).read_text(encoding="utf-8")
-    for node in ast.parse(source).body:
-        if isinstance(node, ast.Assign) and any(getattr(t, "id", "") == "MEASURE_META" for t in node.targets):
-            return ast.literal_eval(node.value)
-    raise AssertionError(f"MEASURE_META fehlt in {script}")
-
-
-PPTX_META = _measure_meta("generate_pptx_cards.py")
-TEMPLATE_META = _measure_meta("generate_from_template.py")
 CONTENT = load_content(CONTENT_DIR)
 TEXTS = CONTENT.texts
-
-
-def _strip_prefix(text):
-    for prefix in LEVEL_PREFIXES:
-        if text.startswith(prefix):
-            return text[len(prefix):]
-    return text
-
-
-def test_measure_ids_match_the_config():
-    assert set(PPTX_META) == set(load_config(CONFIG_PATH).measures)
-    assert set(TEXTS.subtree("measures")) == set(PPTX_META)
-
-
-@pytest.mark.parametrize("measure_id", sorted(PPTX_META))
-def test_measure_texts_are_carried_one_to_one(measure_id):
-    pptx = PPTX_META[measure_id]
-    template = TEMPLATE_META[measure_id]
-    base = f"measures.{measure_id}"
-    assert TEXTS.get(f"{base}.focus") == pptx["focus"]
-    assert TEXTS.get(f"{base}.description") == pptx["description"]
-    for level in (1, 2, 3):
-        assert TEXTS.get(f"{base}.levels_desc.{level}") == pptx["levels_desc"][level]
-        simple = TEXTS.get(f"{base}.levels_simple.{level}")
-        assert simple == template["levels_simple"][level]
-        assert simple == _strip_prefix(pptx["levels_simple"][level])
 
 
 def test_revealed_attack_names_are_the_worksheet_names():
