@@ -6,6 +6,10 @@ sees it: `Config` has no baseline field, and only `render.py` and `cli.py` may i
 
 The loader never chooses a path from content and never opens the printed MHP files (only the provenance test does).
 Facilitator-only: the sheet is for people who ran the MHP version, never for players.
+
+The second half of the module builds the one-page sheet (FLOW-04, D-12..D-15): rule, flow and material rows are texte
+prose plus numbers generated from the config; the value rows are the grouped `value_changes`, formatted here (the diff
+itself stays raw). `render.py` is the only caller that hands the baseline to a builder.
 """
 import json
 from dataclasses import dataclass
@@ -13,9 +17,11 @@ from fractions import Fraction
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
-from planspiel import rules
+from planspiel import fmt, review_text, rules
 from planspiel.config import Config
 from planspiel.printmodel import PrintModelError
+from planspiel.schedule import wave_label
+from planspiel.texts import WAS_NEU_FLOW_IDS, WAS_NEU_MATERIAL_IDS, WAS_NEU_RULE_IDS, RevealView, Texts
 
 BASELINE_FILE = "mhp_baseline.json"
 BASELINE_GROUPS = ("budget_tiers", "base_cia", "waves", "attacks", "measures", "events", "budget_review")
@@ -423,10 +429,15 @@ def _overspend(spec: Dict[str, Any]) -> Optional[Tuple[Any, ...]]:
     return None
 
 
-def _review_changes(cfg: Config, baseline: Baseline) -> List[ValueChange]:
+def _review_event(cfg: Config):
     event = next((e for e in cfg.final_events if e.type == "final_budget_tier"), None)
     if event is None:
         raise PrintModelError("Die Konfiguration hat kein Budget-Review-Ereignis")
+    return event
+
+
+def _review_changes(cfg: Config, baseline: Baseline) -> List[ValueChange]:
+    event = _review_event(cfg)
     old = baseline.budget_review
     out: List[ValueChange] = []
     _emit(out, "budget_review", (), "tiers", old.get("tiers"), event.params["tiers"])
@@ -456,3 +467,347 @@ def value_changes(cfg: Config, baseline: Baseline) -> Tuple[ValueChange, ...]:
     for group in BASELINE_GROUPS:
         changes.extend(extractors[group](cfg, baseline))
     return tuple(changes)
+
+
+# --- the one-page sheet ---------------------------------------------------------------------------------------------
+
+WAS_NEU_JOB = "spielleitung-was-ist-neu"
+SHEET = "was_neu"
+RULE_IDS = WAS_NEU_RULE_IDS
+FLOW_IDS = WAS_NEU_FLOW_IDS
+MATERIAL_IDS = WAS_NEU_MATERIAL_IDS
+VALUE_GROUP_ORDER = BASELINE_GROUPS  # display order of the value rows
+# D-15: the value table shrinks first. Calibrated against the worst-case page proof in tests/test_was_neu_pdf.py.
+MAX_VALUE_ROWS = 20
+# Rows kept longest when the table is capped: budgets, KZ start and thresholds (meaning-changed rows always rank first).
+_FIRST_TIER_FIELDS = ("budget", "kz_start")
+_KZ_END_FIELDS = ("kz_at_full_damage", "kz_at_full_mitigation")
+_CIA_FIELDS = ("cia", "weights", "cia_impact", "base_cia")
+_SIGNED_FIELDS = (*_KZ_END_FIELDS, "kz_delta", "kz_per_measure")
+_MONEY_FIELDS = ("budget", "init", "opex")
+_SIGNED_MONEY_FIELDS = ("budget_delta", "opex_per_measure")
+SEPARATOR = " / "
+CIA_SEPARATOR = " · "
+
+
+@dataclass(frozen=True)
+class RuleRow:
+    heading: str
+    text: str
+
+
+@dataclass(frozen=True)
+class ValueRow:
+    """One printed row of the value table; `flag` is the mark of a changed meaning ("" when only the number changed)."""
+
+    label: str
+    old: str
+    new: str
+    flag: str
+
+
+@dataclass(frozen=True)
+class WasNeuSheet:
+    job: str
+    title: str
+    notice: str
+    intro: str
+    rules_title: str
+    rules: Tuple[RuleRow, ...]
+    flow_title: str
+    flow: Tuple[str, ...]
+    material_title: str
+    material: Tuple[str, ...]
+    values_title: str
+    values_header: Tuple[str, str, str]
+    values: Tuple[ValueRow, ...]
+    values_more: str
+    flag_note: str
+
+    def printed_fragments(self) -> Tuple[str, ...]:
+        """Every string of the sheet that ends up on the paper, without duplicates and without empty strings."""
+        found: List[str] = [self.title, self.notice, self.intro, self.rules_title, self.flow_title, self.material_title]
+        for rule in self.rules:
+            found += [rule.heading, rule.text]
+        found += [*self.flow, *self.material, self.values_title, *self.values_header]
+        for row in self.values:
+            found += [row.label, row.old, row.new, row.flag]
+        found += [self.values_more, self.flag_note]
+        return tuple(dict.fromkeys(text for text in found if text))
+
+
+def _number(value: Any) -> str:
+    return fmt.format_number(value)
+
+
+def _triple(values: Any) -> str:
+    return "/".join(_number(value) for value in values)
+
+
+def _overspend_text(spec: Optional[Tuple[Any, ...]], parts: Dict[str, str]) -> str:
+    if spec is None:
+        return parts["removed"]
+    if spec[0] == "flat":
+        return f"{fmt.format_signed(spec[1])} {parts['kz']} {parts['flat']}"
+    return f"{fmt.format_signed(-spec[1])} {parts['kz']} {parts['per_started']} {fmt.format_money(spec[2] * 1000)}"
+
+
+def _generic(value: Any, parts: Dict[str, str]) -> str:
+    if isinstance(value, bool):
+        return parts["yes"] if value else parts["no"]
+    if isinstance(value, (int, Fraction, float)):
+        return _number(value)
+    if isinstance(value, tuple):
+        return SEPARATOR.join(_generic(item, parts) for item in value)
+    return str(value)
+
+
+def _value_text(field: str, value: Any, parts: Dict[str, str]) -> str:
+    """One old or new value as the sheet prints it (a missing value is handled by the caller)."""
+    if field in _MONEY_FIELDS:
+        return fmt.format_money(value * 1000)
+    if field in _SIGNED_MONEY_FIELDS:
+        return f"{fmt.format_signed(value * 1000)} €"
+    if field in _SIGNED_FIELDS:
+        return fmt.format_signed(value)
+    if field == "recovery":
+        return fmt.format_percent(value)
+    if field in _CIA_FIELDS:
+        return _triple(value)
+    if field == "allow_recovery":
+        return parts["yes"] if value else parts["no"]
+    if field == "level":
+        return f"{parts['from_level']} {_number(value)}"
+    if field == "tiers":
+        return SEPARATOR.join(fmt.format_signed(delta) for _, delta in value)
+    if field == "boundary":
+        return parts["boundary_inclusive"] if value == INCLUSIVE else parts["boundary_above"]
+    if field == "overspend":
+        return _overspend_text(value, parts)
+    return _generic(value, parts)
+
+
+def _tiers_text(old: Any, new: Any, parts: Dict[str, str]) -> Tuple[str, str]:
+    """Budget Review tiers as KZ values; with moved lower bounds each value carries its bound."""
+    if [minimum for minimum, _ in old] == [minimum for minimum, _ in new]:
+        return tuple(SEPARATOR.join(fmt.format_signed(kz) for _, kz in tiers) for tiers in (old, new))
+    return tuple(
+        SEPARATOR.join(
+            f"{parts['tier_from']} {fmt.format_money(minimum * 1000)}: {fmt.format_signed(kz)}" for minimum, kz in tiers
+        )
+        for tiers in (old, new)
+    )
+
+
+class _Builder:
+    """Turns grouped `ValueChange`s into printed rows; unchanged members of a grouped row are read from the config."""
+
+    def __init__(self, cfg: Config, words: Dict[str, Any]) -> None:
+        self.cfg = cfg
+        self.parts = words["parts"]
+        self.fields = words["fields"]
+        self.wave_word = words["wave_label"]
+        self.attack_wave = {wave.attack_id: wave.wave_id for wave in cfg.waves}
+
+    def key(self, change: ValueChange) -> Tuple[Any, ...]:
+        group, subject, field = change.group, change.subject, change.field
+        if group == "budget_tiers":
+            return (group, field)
+        if group == "base_cia":
+            return (group,)
+        if group == "waves":
+            return (group, subject[0], field)
+        if group == "attacks":
+            return (group, self.attack_wave[subject[0]], "kz_ends" if field in _KZ_END_FIELDS else field)
+        if group == "measures":
+            return (group, subject[0], field)
+        if group == "events":
+            return (group, subject[0])
+        return (group, field)
+
+    def priority(self, key: Tuple[Any, ...]) -> bool:
+        return (key[0] == "budget_tiers" and key[1] in _FIRST_TIER_FIELDS) or (
+            key[0] == "waves" and key[2] == "e_threshold"
+        )
+
+    def _pair(self, field: str, old: Any, new: Any) -> Tuple[str, str]:
+        return (
+            self.parts["added"] if old is None else _value_text(field, old, self.parts),
+            self.parts["removed"] if new is None else _value_text(field, new, self.parts),
+        )
+
+    def _joined(self, field: str, pairs: List[Tuple[Any, Any]], separator: str = SEPARATOR) -> Tuple[str, str]:
+        texts = [self._pair(field, old, new) for old, new in pairs]
+        return separator.join(old for old, _ in texts), separator.join(new for _, new in texts)
+
+    def _wave_label(self, wave: int) -> str:
+        return f"{self.wave_word} {_number(wave)}"
+
+    def row(self, key: Tuple[Any, ...], members: List[ValueChange]) -> Tuple[str, str, str]:
+        return getattr(self, f"_{key[0]}")(key, members)
+
+    def _budget_tiers(self, key, members):
+        field = key[1]
+        by_tier = {change.subject[0]: change for change in members}
+        pairs = []
+        for name, tier in self.cfg.budget_tiers.items():
+            change = by_tier.get(name)
+            pairs.append((change.old, change.new) if change else (getattr(tier, field),) * 2)
+        names = SEPARATOR.join(name.capitalize() for name in self.cfg.budget_tiers)
+        return (f"{self.fields[field]} ({names})", *self._joined(field, pairs))
+
+    def _base_cia(self, key, members):
+        return (self.fields["base_cia"], *self._pair("base_cia", members[0].old, members[0].new))
+
+    def _waves(self, key, members):
+        _, wave_id, field = key
+        label = f"{self.fields[field]}, {self._wave_label(wave_id)}"
+        if len(members[0].subject) == 1:
+            return (label, *self._pair(field, members[0].old, members[0].new))
+        wave = next(wave for wave in self.cfg.waves if wave.wave_id == wave_id)
+        current = {bonus.measure: getattr(bonus, field) for bonus in wave.bonus_measures}
+        by_measure = {change.subject[1]: change for change in members}
+        measures = [*current, *(measure for measure in by_measure if measure not in current)]
+        pairs = [
+            (by_measure[m].old, by_measure[m].new) if m in by_measure else (current[m], current[m]) for m in measures
+        ]
+        return (f"{label} ({SEPARATOR.join(measures)})", *self._joined(field, pairs))
+
+    def _attacks(self, key, members):
+        _, wave_id, field = key
+        label = f"{self.fields[field]}, {self._wave_label(wave_id)}"
+        if field != "kz_ends":
+            return (label, *self._pair(field, members[0].old, members[0].new))
+        attack = self.cfg.attacks[members[0].subject[0]]
+        by_field = {change.field: change for change in members}
+        pairs = [
+            (by_field[name].old, by_field[name].new) if name in by_field else (getattr(attack, name),) * 2
+            for name in _KZ_END_FIELDS
+        ]
+        return (label, *self._joined("kz_delta", pairs))
+
+    def _measures(self, key, members):
+        _, measure_id, field = key
+        measure = self.cfg.measures[measure_id]
+        by_level = {change.subject[1]: change for change in members}
+        levels = sorted(level for level in measure.levels if level > 0)
+        pairs = []
+        for level in levels:
+            if level in by_level:
+                pairs.append((by_level[level].old, by_level[level].new))
+            else:
+                info = measure.levels[level]
+                value = _plain(_cia(info.cia) if field == "cia" else getattr(info, field))
+                pairs.append((value, value))
+        shown = SEPARATOR.join(_number(level) for level in levels)
+        label = f"{measure_id} {measure.name}, {self.fields[field]} ({self.parts['level']} {shown})"
+        return (label, *self._joined(field, pairs, CIA_SEPARATOR if field == "cia" else SEPARATOR))
+
+    def _events(self, key, members):
+        event = next(e for events in self.cfg.events.values() for e in events if e.id == key[1])
+        label = f"{event.name}, {SEPARATOR.join(self.fields[change.field] for change in members)}"
+        pairs = [self._pair(change.field, change.old, change.new) for change in members]
+        return label, SEPARATOR.join(old for old, _ in pairs), SEPARATOR.join(new for _, new in pairs)
+
+    def _budget_review(self, key, members):
+        field, change = key[1], members[0]
+        label = f"{_review_event(self.cfg).name}, {self.fields['review_tiers' if field == 'tiers' else field]}"
+        if field == "tiers":
+            return (label, *_tiers_text(change.old, change.new, self.parts))
+        return (label, *self._pair(field, change.old, change.new))
+
+
+def _value_rows(
+    cfg: Config, changes: Tuple[ValueChange, ...], words: Dict[str, Any]
+) -> Tuple[Tuple[ValueRow, ...], bool]:
+    """The grouped value rows in display order, capped at `MAX_VALUE_ROWS` by priority (D-15); True if rows were cut."""
+    builder = _Builder(cfg, words)
+    groups: Dict[Tuple[Any, ...], List[ValueChange]] = {}
+    for change in changes:
+        groups.setdefault(builder.key(change), []).append(change)
+    ranked = []
+    for index, (key, members) in enumerate(groups.items()):
+        meaning = any(change.meaning_changed for change in members)
+        label, old, new = builder.row(key, members)
+        row = ValueRow(label, old, new, words["flag_mark"] if meaning else "")
+        order = (VALUE_GROUP_ORDER.index(members[0].group), index)
+        ranked.append((0 if meaning or builder.priority(key) else 1, order, row))
+    by_priority = sorted(ranked, key=lambda item: (item[0], item[1]))[:MAX_VALUE_ROWS]
+    kept = sorted(by_priority, key=lambda item: item[1])
+    return tuple(row for _, _, row in kept), len(ranked) > MAX_VALUE_ROWS
+
+
+def _rule_suffix(rule_id: str, cfg: Config, parts: Dict[str, str]) -> str:
+    """The numbers of a rule row, generated from the config (D-13)."""
+    if rule_id == "overspend":
+        spec = ("per_step", *rules.penalty_params(cfg.final_events))
+        return f" {_overspend_text(spec, parts)} {parts['over_budget']}."
+    if rule_id == "review_boundary":
+        return f" {review_text.boundary_text(_review_event(cfg).params['tiers'])}"
+    if rule_id == "final_index":
+        weights = cfg.final_index
+        kz, ros = _number(weights.weight_kz), _number(weights.weight_ros)
+        return f" {kz} {fmt.TIMES} {parts['kz']} + {ros} {fmt.TIMES} {parts['ros']}."
+    return ""
+
+
+def build_was_neu_sheet(cfg: Config, texts: Texts, baseline: Optional[Baseline]) -> Optional[WasNeuSheet]:
+    """The "Was ist neu" sheet; None without a `session_schedule` (mini config) or without a baseline file (D-14)."""
+    schedule = cfg.session_schedule
+    if schedule is None or baseline is None:
+        return None
+    view = RevealView(cfg, texts)
+    words, ablauf, debrief = view.sheet(SHEET), view.sheet("ablauf"), view.sheet("debrief")
+    parts = words["parts"]
+    unit = debrief["minutes_unit"]
+
+    rule_rows = tuple(
+        RuleRow(
+            heading=words["rules"][rule_id]["heading"],
+            text=words["rules"][rule_id]["text"] + _rule_suffix(rule_id, cfg, parts),
+        )
+        for rule_id in RULE_IDS
+    )
+
+    practice = next((block for block in schedule.blocks if block.wave == 0), None)
+    debrief_block = next((block for block in schedule.blocks if block.id == "debrief"), None)
+    if practice is None or debrief_block is None:
+        raise PrintModelError("Der Ablaufplan braucht einen Block für die Übungswelle (Welle 0) und einen Block 'debrief'")
+    wave_minutes = SEPARATOR.join(_number(m) for m in sorted({block.minutes for block in schedule.blocks if block.wave}))
+    flow = words["flow"]
+    flow_rows = (
+        flow["whiteboard"],
+        f"{wave_label(ablauf, practice.wave)}: {flow['welle0']}",
+        f"{flow['debrief']} {parts['see']} {debrief['title']} ({_number(debrief_block.minutes)} {unit}).",
+        f"{flow['schedule']} {parts['see']} {ablauf['title']} "
+        f"({_number(schedule.total_minutes)} {unit} {parts['total']}, {parts['per_wave']} {wave_minutes} {unit}).",
+    )
+
+    material = words["material"]
+    material_rows = (
+        material["generated"],
+        material["veil"],
+        f"{material['clues']} {view.sheet('spielleitung')['clues_title']}",
+        material["teamheft"],
+        f"{material['wave_page']} {view.sheet('welle')['title']}",
+        material["practice"],
+    )
+
+    values, left_out = _value_rows(cfg, value_changes(cfg, baseline), words)
+    return WasNeuSheet(
+        job=WAS_NEU_JOB,
+        title=words["title"],
+        notice=words["notice"],
+        intro=words["intro"],
+        rules_title=words["rules_title"],
+        rules=rule_rows,
+        flow_title=words["flow_title"],
+        flow=flow_rows,
+        material_title=words["material_title"],
+        material=material_rows,
+        values_title=words["values_title"],
+        values_header=(words["values_head_item"], words["values_head_old"], words["values_head_new"]),
+        values=values,
+        values_more=words["values_more"] if left_out else "",
+        flag_note=words["flag_note"] if any(row.flag for row in values) else "",
+    )

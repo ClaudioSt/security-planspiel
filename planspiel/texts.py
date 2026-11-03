@@ -167,6 +167,37 @@ _DEBRIEF_KEYS = (
 DEBRIEF_KEYS = tuple(f"sheets.debrief.{name}" for name in _DEBRIEF_KEYS)
 DEBRIEF_PROMPT_KEYS = tuple(f"sheets.debrief.prompts.{name}" for name in ("compare", "clues", "window"))
 
+_WAS_NEU_KEYS = (
+    "title", "notice", "intro", "rules_title", "flow_title", "material_title", "values_title", "values_head_item",
+    "values_head_old", "values_head_new", "values_more", "flag_mark", "flag_note", "wave_label",
+)
+# Ids of the rule, flow and material rows and the words of the value table; the keys follow these tuples (FLOW-04, D-13).
+WAS_NEU_RULE_IDS = (
+    "levelwechsel", "kurswechsel", "downgrade", "init_window", "overspend", "sparprogramm", "ros", "review_boundary",
+    "e_target", "rounding", "final_index", "event_order",
+)
+WAS_NEU_FLOW_IDS = ("whiteboard", "welle0", "debrief", "schedule")
+WAS_NEU_MATERIAL_IDS = ("generated", "veil", "clues", "teamheft", "wave_page", "practice")
+WAS_NEU_PART_IDS = (
+    "kz", "per_started", "over_budget", "flat", "from_level", "level", "removed", "added", "yes", "no",
+    "boundary_above", "boundary_inclusive", "see", "total", "per_wave", "tier_from", "ros",
+)
+WAS_NEU_FIELD_IDS = (
+    "budget", "kz_start", "severity_multiplier", "base_cia", "e_threshold", "weights", "bonus", "min_level", "kz_ends",
+    "base_severity", "s_unit", "mitigation_cap", "allow_recovery", "cia_impact", "cia", "init", "opex", "recovery",
+    "level", "kz_per_measure", "kz_delta", "budget_delta", "opex_per_measure", "tiers", "measures", "measure",
+    "clauses", "review_tiers", "boundary", "overspend",
+)
+# Required only when the config carries a session_schedule, like the schedule texts.
+WAS_NEU_KEYS = (
+    *(f"sheets.was_neu.{name}" for name in _WAS_NEU_KEYS),
+    *(f"sheets.was_neu.parts.{name}" for name in WAS_NEU_PART_IDS),
+    *(f"sheets.was_neu.fields.{name}" for name in WAS_NEU_FIELD_IDS),
+    *(f"sheets.was_neu.rules.{name}.{part}" for name in WAS_NEU_RULE_IDS for part in ("heading", "text")),
+    *(f"sheets.was_neu.flow.{name}" for name in WAS_NEU_FLOW_IDS),
+    *(f"sheets.was_neu.material.{name}" for name in WAS_NEU_MATERIAL_IDS),
+)
+
 PRACTICE_KEYS = tuple(
     f"practice.{name}"
     for name in (
@@ -355,6 +386,7 @@ def required_keys(cfg: Config) -> set[str]:
         for row in cfg.session_schedule.print_list:
             if audience.audience_of(row.job) != audience.REVEALED:
                 keys.add(f"sheets.ablauf.print.{row.job}")
+        keys.update(WAS_NEU_KEYS)
         if cfg.session_schedule.debrief_stages:
             keys.update(DEBRIEF_KEYS)
             keys.update(DEBRIEF_PROMPT_KEYS)

@@ -695,6 +695,135 @@ questions = [
     "Wo trefft ihr im Alltag echte Abwägungen zwischen Vertraulichkeit, Integrität und Verfügbarkeit?",
 ]
 
+[sheets.was_neu]
+title = "Was ist neu: Änderungen seit der MHP-Runde"
+notice = "Nur für die Spielleitung – nicht an Teams ausgeben"
+intro = "Dieses Blatt ist für Spielleitungen, die die MHP-Runde geleitet haben. Es fasst zusammen, was sich seitdem bei den Regeln, im Ablauf, im Material und bei den Werten geändert hat."
+rules_title = "Regeländerungen"
+flow_title = "Änderungen im Ablauf"
+material_title = "Neues Material"
+values_title = "Geänderte Werte"
+values_head_item = "Wert"
+values_head_old = "MHP-Runde"
+values_head_new = "Jetzt"
+values_more = "Weitere Änderungen stehen auf den Karten und Arbeitsblättern."
+flag_mark = "*"
+flag_note = "* Hier hat sich nicht nur die Zahl geändert, sondern auch die Bedeutung der Regel."
+wave_label = "Welle"
+
+[sheets.was_neu.parts]
+kz = "KZ"
+per_started = "je angefangene"
+over_budget = "über dem Budget"
+flat = "pauschal"
+from_level = "ab Level"
+level = "Level"
+removed = "entfällt"
+added = "neu"
+yes = "ja"
+no = "nein"
+boundary_above = "gilt erst über der Grenze"
+boundary_inclusive = "gilt ab der Grenze einschließlich"
+see = "Siehe im Spielleitungsheft:"
+total = "insgesamt"
+per_wave = "je Welle"
+tier_from = "ab"
+ros = "RoS"
+
+[sheets.was_neu.fields]
+budget = "Tier-Budget"
+kz_start = "KZ-Start"
+severity_multiplier = "Schadensfaktor"
+base_cia = "Basis-CIA"
+e_threshold = "Schwelle"
+weights = "Gewichte C / I / A"
+bonus = "Bonus je Maßnahme"
+min_level = "Mindestlevel des Bonus"
+kz_ends = "KZ bei vollem Schaden / voller Abwehr"
+base_severity = "Grundschwere"
+s_unit = "Schaden je Schwerepunkt"
+mitigation_cap = "Obergrenze der Reduktion"
+allow_recovery = "Recovery erlaubt"
+cia_impact = "CIA-Wirkung des Angriffs"
+cia = "CIA"
+init = "Init"
+opex = "OPEX"
+recovery = "Recovery-Faktor"
+level = "Level"
+kz_per_measure = "KZ je Maßnahme"
+kz_delta = "KZ"
+budget_delta = "Budget-Änderung"
+opex_per_measure = "OPEX je Maßnahme"
+tiers = "Ergebnisstufen"
+measures = "Maßnahmen"
+measure = "Maßnahme"
+clauses = "Bedingungen"
+review_tiers = "Restbudget-Stufen"
+boundary = "Grenzen der Stufen"
+overspend = "Überziehung"
+
+[sheets.was_neu.rules.levelwechsel]
+heading = "Levelwechsel und Maßnahmentausch"
+text = "Levelwechsel heißt: dieselbe Maßnahme auf einem anderen Level. Kündigen ist ein Levelwechsel auf das niedrigste Level, Hinzufügen ein eigener Zug. Maßnahmentausch heißt: eine Maßnahme raus, eine andere rein. Den Begriff Maßnahmenwechsel der MHP-Runde gibt es nicht mehr."
+
+[sheets.was_neu.rules.kurswechsel]
+heading = "Kurswechsel"
+text = "Das Event erlaubt im Change-Fenster danach genau einen Pflicht-Maßnahmentausch: Eine aktive Maßnahme fällt weg, eine bisher inaktive kommt auf frei gewähltem Level hinzu. Der Kunde trägt deren Init bis zur Höhe der weggefallenen Maßnahme."
+
+[sheets.was_neu.rules.downgrade]
+heading = "Herabstufen"
+text = "Im Change-Fenster dürfen Teams Level senken oder Maßnahmen kündigen. Init wird nie erstattet, die OPEX sinken erst ab der nächsten Welle."
+
+[sheets.was_neu.rules.init_window]
+heading = "Init bei Hochstufung"
+text = "Wer im Change-Fenster ein Level erhöht oder eine Maßnahme hinzufügt, zahlt die Init-Differenz netto und sofort. Wirkung und OPEX zählen ab der nächsten Welle."
+
+[sheets.was_neu.rules.overspend]
+heading = "Überziehung"
+text = "Statt eines pauschalen Abzugs kostet das Überziehen am Ende des Spiels"
+
+[sheets.was_neu.rules.sparprogramm]
+heading = "Sparprogramm"
+text = "Rutscht ein Team durch das Sparprogramm ins Minus, zählt erst der Stand am Ende. Im Change-Fenster danach kann es durch Herabstufen oder Kündigen zurück ins Budget kommen."
+
+[sheets.was_neu.rules.ros]
+heading = "RoS ohne Event-Effekte"
+text = "In die RoS gehen nur die eigenen Kosten ein: Init, OPEX und Init-Differenzen. Budget- und OPEX-Effekte von Events zählen weder als Abzug noch als Rabatt."
+
+[sheets.was_neu.rules.review_boundary]
+heading = "Budget-Review-Stufen"
+text = "Die Stufen gelten ab der genannten Grenze einschließlich:"
+
+[sheets.was_neu.rules.e_target]
+heading = "E-Ziel"
+text = "Es gibt keinen KZ-Bonus oder -Malus mehr für das Erreichen eines E-Ziels. Auf dem Papier ist dafür nichts mehr zu tun."
+
+[sheets.was_neu.rules.rounding]
+heading = "Rundung der KZ"
+text = "Die KZ-Änderung einer Welle wird genau einmal gerundet, halbe Werte vom Betrag weg, und danach auf die Skala begrenzt."
+
+[sheets.was_neu.rules.final_index]
+heading = "Neuer Final-Index"
+text = "Der Final-Index vergleicht die Teams. Die RoS wird vorher auf Hundertstel gerundet. Er rechnet:"
+
+[sheets.was_neu.rules.event_order]
+heading = "Events zuerst"
+text = "Events sind der erste Schritt jeder Welle, vor dem Angriff."
+
+[sheets.was_neu.flow]
+whiteboard = "Das Whiteboard entfällt: Teams halten Budget, Maßnahmen und Rechnungen im Teamheft und auf den Arbeitsblättern fest."
+welle0 = "Neu ist eine Übungswelle vor der ersten echten Welle. Die Teams rechnen ein Beispiel gemeinsam durch."
+debrief = "Neu ist ein festes Debriefing mit Fragen und Datenimpulsen, geordnet in Stufen von der Reaktion bis zur Anwendung."
+schedule = "Der Ablauf folgt einem festen Plan mit Blöcken und Minutenangaben."
+
+[sheets.was_neu.material]
+generated = "Alle Druckunterlagen sind jetzt generierte PDFs und ersetzen die Word- und PowerPoint-Dateien der MHP-Runde. Die Druckliste im Ablaufplan nennt die Menge je Datei."
+veil = "Angriffe bleiben bis zu ihrer Welle verdeckt: Das Arbeitsblatt nennt den Angriff erst, wenn er trifft. Die Rechenregeln sind von Anfang an offen."
+clues = "Die Hinweismatrix zeigt, welche Stelle der Unterlagen auf welchen Angriff hinweist. Ihr findet sie im Spielleitungsheft unter:"
+teamheft = "Das Teamheft führt durch die Planung und enthält die Tracking-Seite je Welle sowie die Seite zur RoS."
+wave_page = "Gebt vor der Übungswelle die Erklärseite aus:"
+practice = "Das Übungsblatt rechnet die Übungswelle mit allen Schritten vor."
+
 [story.steckbrief]
 doc_title = "MECHTECH GmbH: Unternehmenssteckbrief"
 
