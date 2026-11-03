@@ -45,14 +45,14 @@ Filled in by the planner per task. The requirement-level map is:
 |-------------|----------|-----------|-------------------|-------------|--------|
 | FLOW-02 | blocks sum to total 190; wave 1 = 20; debrief 15..20; no whiteboard block; teams 3 and persons_per_team 5 (D-19 source for the deck); block invisible to rules; validator rejects broken blocks | unit | `uv run pytest tests/test_session_schedule_config.py -q` | ❌ W0 | ⬜ pending |
 | FLOW-02..05 | phase-7 prose (sheets.ablauf, sheets.debrief, sheets.was_neu, sheets.probelauf, changed eventkarten/labels keys) has no number word for a count; ALLOWED list with reasons | unit | `uv run pytest tests/test_texts_number_words.py -q` | ❌ W0 (07-02, extended by 07-04, 07-06, 07-08) | ⬜ pending |
-| FLOW-02 | schedule rows (labels/direction from texte, cumulative minutes, empty clock column, print list ⊆ rendered jobs, team count from config) | unit | `uv run pytest tests/test_schedule_model.py tests/test_master_model.py -q` | ❌ W0 / ✅ extend | ⬜ pending |
+| FLOW-02 | schedule rows (labels/direction from texte, cumulative minutes, empty clock column, print-list jobs = rendered jobs (bijection; no pinned row count), team count from config; wave_0 row "Übungswelle (Welle 0)") | unit | `uv run pytest tests/test_schedule_model.py tests/test_master_model.py -q` | ❌ W0 / ✅ extend | ⬜ pending |
 | FLOW-02 | schedule + print-list pages fit, stamp | pdf | `uv run pytest -m pdf tests/test_master_pdf.py -q` | ✅ extend | ⬜ pending |
 | FLOW-03 | four stages in order, 2–3 questions each, guide minutes sum to the debrief block, clue-matrix prompt | unit | `uv run pytest tests/test_debrief_model.py -q` | ❌ W0 | ⬜ pending |
 | FLOW-03 | debrief page fits in booklet | pdf | `uv run pytest -m pdf tests/test_master_pdf.py -q` | ✅ extend | ⬜ pending |
 | FLOW-04 | diff-driven value rows, all rule topics (D-13 + D-29), numbers from config, no attack names | unit | `uv run pytest tests/test_was_neu_model.py -q` | ❌ W0 | ⬜ pending |
 | FLOW-04 | baseline isolation + provenance against 1cfb2fa + printed-override record checked against the printed MHP file (Events_Security-Game.pptx slide 9, in final_documents/ or archive/, D-26) | unit | `uv run pytest tests/test_baseline_isolation.py tests/test_print_stamp.py -q` | ❌ W0 / ✅ extend | ⬜ pending |
 | FLOW-04 | exactly one page, no overfull | pdf | `uv run pytest -m pdf tests/test_was_neu_pdf.py -q` | ❌ W0 | ⬜ pending |
-| FLOW-05 | protocol rows = schedule blocks with planned minutes; wording fixes D-28 | unit | `uv run pytest tests/test_probelauf_model.py -q` | ❌ W0 | ⬜ pending |
+| FLOW-05 | protocol rows = schedule blocks with planned minutes; the practice row and the wave pass rule both read "Übungswelle (Welle 0)"; wording fixes D-28 | unit | `uv run pytest tests/test_probelauf_model.py -q` | ❌ W0 | ⬜ pending |
 | FLOW-05 | protocol one page | pdf | `uv run pytest -m pdf tests/test_probelauf_pdf.py -q` | ❌ W0 | ⬜ pending |
 | LEG-01 | inventory at new locations; no build/package reference to `archive/` or retired files | unit | `uv run pytest tests/test_inventory.py tests/test_no_archive_references.py -q` | ✅ update / ❌ W0 | ⬜ pending |
 | LEG-02 | README anchors pass; README/CLAUDE.md describe `planspiel print`, `--check`, order config → README → texte → print; CLAUDE.md English, paper-only flow, no "Whiteboard"; no stale `.claude/CLAUDE.md` text | unit | `uv run pytest tests/test_readme_current.py tests/test_claude_md_current.py -q` (+ existing README anchor tests) | ❌ W0 | ⬜ pending |
@@ -61,14 +61,14 @@ Filled in by the planner per task. The requirement-level map is:
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 
-### Per-task map (planner, 2026-11-02; revised 2026-11-03 after the second plan check)
+### Per-task map (planner, 2026-11-02; revised 2026-11-03 after the second plan check and the final plan check)
 
 Waves: 1 = 07-01, 07-02, 07-03; 2 = 07-04, 07-05; 3 = 07-06, 07-07; 4 = 07-08; 5 = 07-10, 07-11; 6 = 07-09; 7 = 07-12.
 
 | Plan / Task | Requirement | Automated command | Wave 0 file created by the task |
 |-------------|-------------|------------------|---------------------------------|
 | 07-01 T1 (RED) | LEG-01 | `uv run pytest tests/test_inventory.py tests/test_no_archive_references.py -q` (expected fail) | `tests/test_no_archive_references.py` |
-| 07-01 T2 | LEG-01 | `uv run pytest tests/test_inventory.py tests/test_no_archive_references.py tests/test_texts_migration.py tests/test_single_definition.py -q` (generator-coupled tests retired before the move) | — |
+| 07-01 T2 | LEG-01 | `uv run pytest tests/test_inventory.py tests/test_no_archive_references.py tests/test_texts_migration.py tests/test_single_definition.py -q` (generator-coupled tests retired before the move) + deck-comment retarget check on `tests/fixtures/mini_config.json` and `planspiel/rules.py` (the `simulation_config.json` comment: 07-02 T1 acceptance) | — |
 | 07-01 T3 (last; shared uv.lock/.venv) | LEG-01 | own files + `tests/test_environment.py` + validate/texts + absent-package check | — |
 | 07-02 T1 | FLOW-02 | `uv run pytest tests/test_session_schedule_config.py tests/test_practice_config.py tests/test_validate.py -q && uv run planspiel validate` (incl. `persons_per_team`) | `tests/test_session_schedule_config.py` |
 | 07-02 T2 | FLOW-02 | `uv run pytest tests/test_schedule_model.py tests/test_texts_number_words.py tests/test_texts_coverage.py tests/test_texts_digits.py -q && uv run planspiel texts` | `tests/test_schedule_model.py`, `tests/test_texts_number_words.py` |
