@@ -308,7 +308,7 @@ Plans:
   4. README.md and CLAUDE.md describe the new pipeline and rules, with the print-sync section rewritten. The manually maintained intro deck, Audit-Mail and company profile contain no outdated rules.
   5. Someone who did not write the rules completes a timed dry run using only the material, and each wave fits the schedule.
 
-**Plans**: 3/12 plans executed
+**Plans**: 4/12 plans executed
 
 Plans:
 **Wave 1**
@@ -319,7 +319,7 @@ Plans:
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 07-04-PLAN.md — FLOW-03: debrief stage minutes in config; reaction → description → analysis → application question set as a booklet page (wave 2)
+- [x] 07-04-PLAN.md — FLOW-03: debrief stage minutes in config; reaction → description → analysis → application question set as a booklet page (wave 2)
 - [ ] 07-05-PLAN.md — LEG-02 (1/4): intro-deck checklist and SC4 check of the manual documents, user approval (wave 2, checkpoint)
 
 **Wave 3** *(blocked on Wave 2 completion)*
@@ -357,4 +357,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 3 
 | 4. Print Pipeline & Attack Worksheets | 6/6 | Complete    | 2026-10-22 |
 | 5. Player & Facilitator Print Material | 16/16 | Complete    | 2026-10-26 |
 | 6. Rebalance | 10/10 | Complete    | 2026-11-01 |
-| 7. Session Flow & Handoff | 3/12 | In Progress|  |
+| 7. Session Flow & Handoff | 4/12 | In Progress|  |
