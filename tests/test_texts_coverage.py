@@ -83,6 +83,11 @@ MUTATIONS = [
     ),
     ("orphan top-level", lambda d: _put(d, "foo.bar", "x"), [("texts.orphan_key", "foo.bar")]),
     ("missing sheet label", lambda d: _delete(d, "sheets.labels.sum"), [("texts.missing_key", "sheets.labels.sum")]),
+    (
+        "missing level suffix",
+        lambda d: _delete(d, "sheets.eventkarten.level_or_higher"),
+        [("texts.missing_key", "sheets.eventkarten.level_or_higher")],
+    ),
     ("orphan sheet key", lambda d: _put(d, "sheets.angriff.extra", "x"), [("texts.orphan_key", "sheets.angriff.extra")]),
     (
         "orphan story doc",

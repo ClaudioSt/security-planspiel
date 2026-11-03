@@ -106,7 +106,10 @@ def _level_tier(event: Event, cfg: Config, view: PreAttackView, words: dict, eve
 
 def _level_bonus(event: Event, words: dict) -> EventEffect:
     params = event.params
-    text = f"{words['per_measure_at_level']} {params['level']}: {_kz(words, params['kz_per_measure'])}"
+    text = (
+        f"{words['per_measure_at_level']} {params['level']} {words['level_or_higher']}: "
+        f"{_kz(words, params['kz_per_measure'])}"
+    )
     return EventEffect(event.id, EFFECT_KINDS[event.type], None, (EffectRow(text, params["kz_per_measure"], ()),))
 
 

@@ -49,6 +49,7 @@ _KARTEN_KEYS = (
 
 _EVENTKARTEN_KEYS = (
     "review_header", "kz", "fulfilled", "each_at_least", "level_of_measure", "per_measure_at_level",
+    "level_or_higher",
     "condition_if", "condition_and", "level_equals", "otherwise", "total_budget", "opex_costs",
     "per_active_measure", "kurswechsel_window", "tier_heading", "tier_from", "overspend_label", "per_started",
 )

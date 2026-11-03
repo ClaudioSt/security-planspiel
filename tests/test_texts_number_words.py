@@ -12,7 +12,10 @@ from tests.support import CONTENT_DIR
 NUMBER_WORDS = ("eins", "zwei", "drei", "vier", "fünf", "sechs", "sieben", "acht", "neun", "zehn", "elf", "zwölf")
 # (key, phrase) -> reason; a phrase is the matched number word as it stands in the text.
 ALLOWED: dict[tuple[str, str], str] = {}
-PHASE7_PREFIXES = ("sheets.ablauf", "sheets.debrief", "sheets.was_neu", "sheets.probelauf")
+PHASE7_PREFIXES = (
+    "sheets.ablauf", "sheets.debrief", "sheets.was_neu", "sheets.probelauf",
+    "sheets.eventkarten.level_or_higher", "sheets.labels.event_after_wave",
+)
 
 _PATTERN = re.compile(r"(?<![^\W\d_])(" + "|".join(NUMBER_WORDS) + r")(?![^\W\d_])", re.IGNORECASE)
 

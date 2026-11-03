@@ -16,6 +16,7 @@ from planspiel.cards import (
 from planspiel.config import load_config
 from planspiel.eventtext import effect_rows
 from planspiel.texts import PreAttackView, load_content, load_texts
+from planspiel.wave_page import build_wave_page
 from tests.support import CONFIG_PATH, CONTENT_DIR, MINI_CONTENT_DIR, REPO_ROOT
 
 TEMPLATES = REPO_ROOT / "print" / "templates"
@@ -103,10 +104,27 @@ def test_an_event_card_carries_header_title_texts_and_generated_effect_lines(loa
 def test_the_real_header_numbers_are_the_wave_keys(real):
     _, _, deck, _ = real
     assert [card.header for card in deck.cards[:-1]] == [
-        "Event: Nach Welle 1", "Event: Nach Welle 1",
-        "Event: Nach Welle 2", "Event: Nach Welle 2", "Event: Nach Welle 2",
-        "Event: Nach Welle 3", "Event: Nach Welle 3",
+        "Event in Welle 1", "Event in Welle 1",
+        "Event in Welle 2", "Event in Welle 2", "Event in Welle 2",
+        "Event in Welle 3", "Event in Welle 3",
     ]
+
+
+def test_no_event_header_says_after_the_wave(real):
+    """D-28: events are step 1 of their wave, so the header must not read as if they came after it."""
+    _, _, deck, _ = real
+    assert all("Nach" not in card.header for card in deck.cards[:-1])
+
+
+def test_the_header_uses_the_wave_word_of_the_wave_page_whose_first_step_is_the_events(real):
+    cfg, texts, deck, _ = real
+    page = build_wave_page(cfg, texts)
+    assert page.steps[0].key == "events"
+    assert "der Welle" in page.steps[0].text
+    wave_word = PreAttackView(cfg, texts).sheet("tracking")["wave"]
+    for card in deck.cards[:-1]:
+        before_number = card.header.rsplit(" ", 1)[0]
+        assert before_number.endswith(wave_word)
 
 
 def test_the_review_card_carries_tiers_and_the_overspend_rule(loaded):

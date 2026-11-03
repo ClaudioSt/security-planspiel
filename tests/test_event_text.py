@@ -13,7 +13,7 @@ from planspiel.config import Event, load_config
 from planspiel.eventtext import EFFECT_KINDS, EffectRow, EventEffect, effect_rows, event_wave
 from planspiel.printmodel import PrintModelError
 from planspiel.review_text import _tier_value_text, tier_rows
-from planspiel.texts import PreAttackView, load_texts
+from planspiel.texts import PreAttackView, load_texts, required_keys
 from tests.support import CONFIG_PATH, CONTENT_DIR, MINI_CONTENT_DIR, REPO_ROOT
 
 MINI = REPO_ROOT / "tests" / "fixtures" / "mini_config.json"
@@ -187,7 +187,8 @@ def test_level_bonus_row_scales_with_the_number_of_measures_at_that_level(loaded
     for event in _of_type(cfg, "level_bonus_per_measure"):
         (row,) = effect_rows(event, cfg, texts).rows
         level = event.params["level"]
-        assert row.text == f"Je Maßnahme auf Level {level}: KZ {_tier_value_text(row.value)}"
+        # D-28: rules.count_measures_at_level counts measures at or above the level, so the line says "oder höher".
+        assert row.text == f"Je Maßnahme auf Level {level} oder höher: KZ {_tier_value_text(row.value)}"
         for count in range(len(cfg.measures) + 1):
             selection = _with_levels(cfg, list(cfg.measures)[:count], level)
             assert rules.evaluate_event(event, selection)[0] == count * row.value
@@ -367,3 +368,8 @@ def test_the_overspend_rule_follows_the_config(loaded):
     assert overspend.text == "Überzogen: −5 KZ je angefangene 20.000 €"
     assert overspend.value == -5
 
+
+
+def test_level_or_higher_is_a_required_text_key_for_every_config(loaded):
+    cfg, _ = loaded
+    assert "sheets.eventkarten.level_or_higher" in required_keys(cfg)
