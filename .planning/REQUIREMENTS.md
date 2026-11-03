@@ -51,7 +51,7 @@
 ### Session Flow (FLOW)
 
 - [x] **FLOW-01**: A worked example "Welle 0" (fictional practice incident, generated from the rules module and golden-tested) is run before wave 1
-- [ ] **FLOW-02**: The session schedule is revised: whiteboard step removed, wave 1 fits 20 min, a 15–20 min debrief slot is included, total still one afternoon
+- [x] **FLOW-02**: The session schedule is revised: whiteboard step removed, wave 1 fits 20 min, a 15–20 min debrief slot is included, total still one afternoon
 - [ ] **FLOW-03**: A debrief question set (reaction → description → analysis → application) is part of the facilitator material
 - [ ] **FLOW-04**: A "Was ist neu" sheet summarizes rule changes for facilitators who ran the MHP version
 - [ ] **FLOW-05**: A timed dry run by someone who did not write the rules confirms the material is self-explanatory and waves fit the schedule
@@ -152,7 +152,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PRINT-11 | Phase 4 | Complete |
 | PRINT-12 | Phase 5 | Complete |
 | FLOW-01 | Phase 5 | Complete |
-| FLOW-02 | Phase 7 | Pending |
+| FLOW-02 | Phase 7 | Complete |
 | FLOW-03 | Phase 7 | Pending |
 | FLOW-04 | Phase 7 | Pending |
 | FLOW-05 | Phase 7 | Pending |
