@@ -308,14 +308,14 @@ Plans:
   4. README.md and CLAUDE.md describe the new pipeline and rules, with the print-sync section rewritten. The manually maintained intro deck, Audit-Mail and company profile contain no outdated rules.
   5. Someone who did not write the rules completes a timed dry run using only the material, and each wave fits the schedule.
 
-**Plans**: 2/12 plans executed
+**Plans**: 3/12 plans executed
 
 Plans:
 **Wave 1**
 
 - [x] 07-01-PLAN.md — LEG-01: archive the 15 MHP files, the old generators, `pptx_output/`, the Excel calculator and the folienkonzept (D-30); inventory follows; no-archive-reference proof; Excel dependency dropped (wave 1)
 - [x] 07-02-PLAN.md — FLOW-02: `session_schedule` config block (190 min, teams, persons per team, print list) with validator; schedule and print-list page in the facilitator booklet (wave 1)
-- [ ] 07-03-PLAN.md — FLOW-04 (1/2): frozen MHP baseline `content/mhp_baseline.json` with provenance proof, old-to-new value diff, isolation, stamp input (wave 1)
+- [x] 07-03-PLAN.md — FLOW-04 (1/2): frozen MHP baseline `content/mhp_baseline.json` with provenance proof, old-to-new value diff, isolation, stamp input (wave 1)
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
@@ -357,4 +357,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 3 
 | 4. Print Pipeline & Attack Worksheets | 6/6 | Complete    | 2026-10-22 |
 | 5. Player & Facilitator Print Material | 16/16 | Complete    | 2026-10-26 |
 | 6. Rebalance | 10/10 | Complete    | 2026-11-01 |
-| 7. Session Flow & Handoff | 2/12 | In Progress|  |
+| 7. Session Flow & Handoff | 3/12 | In Progress|  |
