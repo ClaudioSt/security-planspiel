@@ -107,6 +107,10 @@ OPERAND_ATTRIBUTES = {
     "kz_per_step",
 }
 
+# Modules that read raw parameter values only to compare and show them, never to compute a result: the Was-ist-neu
+# diff lists old and new values of the config (FLOW-04). Any arithmetic on an operand still belongs in rules.
+OPERAND_READERS = {"planspiel/was_neu.py"}
+
 ROOT_SCRIPT_MODULES = {"simulate_outcomes", "analyze_simulation_results", "balance_analysis"}
 
 
@@ -150,7 +154,7 @@ def test_no_formula_operands_outside_rules_and_config():
     checked = sorted((REPO_ROOT / "planspiel").rglob("*.py")) + [REPO_ROOT / w for w in WRAPPERS]
     offenders = []
     for path in checked:
-        if _rel(path) in (RULES, CONFIG):
+        if _rel(path) in (RULES, CONFIG, *OPERAND_READERS):
             continue
         for node in ast.walk(_parse(path)):
             if isinstance(node, ast.Attribute) and node.attr in OPERAND_ATTRIBUTES:
