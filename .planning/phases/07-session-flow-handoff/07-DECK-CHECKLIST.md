@@ -81,8 +81,14 @@ None found. Search terms: see the previous section (profile deck and VWI deck, b
 
 ## Approval
 
-Verdict: (pending)
-Date: (pending)
-Requested changes: (pending)
-Decisions: (a) pending, (b) pending, (c) pending, (d) pending, (e1) pending, (e2) pending
+Verdict: "Freigeben" (verbatim answer of the user; approved as written, with all recommendations)
+Date: 2026-11-03
+Requested changes: none. No slide row was changed; the table above is the contract for 07-07 and its deck test.
+Decisions:
+- (a) Slide-1 date: remove.
+- (b) Flow-overview vehicle: option (1). Unhide and rewrite slide 28 as the six-phase flow overview (Welle 0 appears only as the phase "Übungswelle", no attack names, no budget figure, no minute figures), delete slide 36.
+- (c) Team size: config-sourced "Beratungsteam aus 5 Personen" composed from `session_schedule.persons_per_team`; 07-07 pins the composed string against config in the deck test. No figure-free override.
+- (d) Phishing / Malware / Supply Chain Attack on slides 19 and 21: keep as generic teaching examples.
+- (e1) Slide-23 copy error (measure categories described with the threat texts): fix, yes.
+- (e2) Change-Fenster sentence on slide 34: no.
 Other deck findings: none, no outcome line needed.
