@@ -84,10 +84,11 @@ Filled in by the planner per task. The requirement-level map is:
 | 07-07 T3 (checkpoint) | LEG-02 | `uv run pytest tests/test_intro_deck.py -q` on the committed deck | — |
 | 07-08 T1 | FLOW-05 | `uv run pytest tests/test_probelauf_model.py tests/test_texts_coverage.py tests/test_texts_digits.py -q && uv run planspiel texts` | `tests/test_probelauf_model.py` |
 | 07-08 T2 | FLOW-05 | `uv run pytest -m pdf tests/test_probelauf_pdf.py -q` + schedule/render tests | `tests/test_probelauf_pdf.py` |
-| 07-08 T3 | FLOW-05 (D-28) | `uv run pytest tests/test_event_cards.py tests/test_event_text.py tests/test_master_model.py tests/test_wave_page.py -q` + card/master PDF tests | — |
+| 07-08 T3 | FLOW-05 (D-28) | `uv run pytest tests/test_event_cards.py tests/test_event_text.py tests/test_master_model.py tests/test_wave_page.py tests/test_texts_coverage.py -q` + card/master PDF tests | — |
 | 07-09 T1 (checkpoint) | FLOW-05 (D-27) | `uv run planspiel validate` + schedule tests | — |
-| 07-09 T2 | FLOW-05 | phase gate, `uv run planspiel print --check`, byte-identical rebuild | — |
-| 07-09 T3 (checkpoint) | FLOW-05 | `uv run planspiel print --check` | — |
+| 07-09 T2 | FLOW-05 | phase gate; build via explicit `uv run planspiel print` action step; verify non-mutating: `uv run planspiel print --check`, clean `git status`, `tests/test_print_check.py` | — |
+| 07-09 T3 (human action) | FLOW-05 (D-32) | `07-WAVE1-TIMING.md` exists with `## Timing` and a WITHIN/OVERRUN verdict | — |
+| 07-09 T4 (checkpoint) | FLOW-05 | `uv run planspiel print --check` + WITHIN verdict in `07-WAVE1-TIMING.md` | — |
 | 07-10 T1 (RED) / T2 | LEG-02 | `uv run pytest tests/test_readme_current.py` + the seven README anchor test files | `tests/test_readme_current.py` |
 | 07-11 T1 (RED) / T2 / T3 | LEG-02 | `uv run pytest tests/test_claude_md_current.py tests/test_e_target_removed.py -q && uv run pytest -q -x` | `tests/test_claude_md_current.py` |
 | 07-12 T1 / T3 | FLOW-05 | `uv run planspiel print --check`; record sections present | — |
@@ -112,7 +113,8 @@ No framework install needed.
 
 | Behavior | Requirement | Why Manual | Test Instructions |
 |----------|-------------|------------|-------------------|
-| Timed dry run: waves within planned minutes, total within 190, no author help (D-25) | FLOW-05 | Human timing with a test group | Non-author facilitator runs the full game on 2026-11-25; author fills `spielleitung-probelauf.pdf` |
+| Solo wave-1 timing before the print release (D-32) | FLOW-05 | One person plays wave 1 by hand | 07-09 T3: wave 1 with only the generated material, timed against `session_schedule` wave_1; OVERRUN blocks the release and goes to gap closure |
+| Timed dry run: every wave block, Welle 0 included, within planned minutes, total within 190, no author help (D-25) | FLOW-05 | Human timing with a test group | Non-author facilitator runs the full game on 2026-11-25; author fills `spielleitung-probelauf.pdf` |
 | Print-list quantities confirmed (D-27) | FLOW-02 | User decision | Checkpoint before printing |
 | Physical print review | FLOW-02..05 | Layout on paper | Print the set, check each new page |
 | Intro deck checklist approval and result review (D-18) | LEG-02 | User approval, PowerPoint rendering | Approve checklist before edits; open deck after edits |

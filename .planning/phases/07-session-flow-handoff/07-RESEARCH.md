@@ -633,19 +633,21 @@ Phase 7 contains a move/rename (LEG-01).
 | A7 | `07-DRYRUN.md` as the recording artifact | Q9 | naming only |
 | A8 | MHP order was Angriff → Events (Budget.docx rows, "Nach Welle N", timing table) and the current order is Events → Angriff | Q7, Pitfall 7 | "Was ist neu" flow row may be wrong or unnecessary; confirm with the user |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **Print-list quantities and team count** (D-23).
+All items below were resolved in plan-phase by D-22..D-33 (07-CONTEXT.md) or by a named plan.
+
+1. **Print-list quantities and team count** (D-23). RESOLVED — D-27 (team count 3 in `session_schedule.teams`; the planner proposes the copies in 07-02 and the user confirms them at the 07-09 Task 1 checkpoint before printing) and D-22 (stated total 190 min).
    - Known: three teams of five, single-sided printing, 13 current PDFs (+2 new).
    - Unclear: copies per team for each document (one per team or one per person: story documents, Teamheft, cards), whether the attack worksheet is one per team per wave, and whether `teams` should be in config for the debrief comparison table.
    - Recommendation: ask the user in plan-phase; encode the answer only in config; avoid a `teams` key unless the comparison table needs rows.
-2. **Exzellenz-Bonus wording** ("auf Level 2" vs rule "ab Level 2") and **event timing wording** ("Nach Welle N" vs events first). Fix the card/wave-page texts in this phase (one extra `texte.toml` edit, no mechanics change) or leave them to the dry run?
-3. **Workshop date** (July vs September) for PROJECT.md and the "Was ist neu" source note.
-4. **Items beyond D-13 for "Was ist neu":** KZ rounding once per wave, Init on upgrades in change windows, Exzellenz-Bonus condition, Final-Index, event order. Include? (Recommended: yes, as one-line rows in the rule category; they are the changes a former MHP facilitator will otherwise hit during the run.)
-5. **`test_texts_migration` fate** and **dropping `openpyxl`** (recommended: retire the generator-reading tests, drop `openpyxl`, keep `python-pptx`).
-6. **`docs/folienkonzept_spielphasen_mechtech.md`:** archive (recommended) or update.
-7. **Intro deck slide 28/36:** use the hidden slide 28 (SPIELPHASEN) as the new flow overview and unhide it, delete slide 36, versus rebuilding slide 36. The six-step flow needs a new shape (not run text only).
-8. **Schedule page placement:** one page with print list or two (decided by the fill report); and whether the first page's contents list gets the new sections.
+2. **Exzellenz-Bonus wording** ("auf Level 2" vs rule "ab Level 2") and **event timing wording** ("Nach Welle N" vs events first). Fix the card/wave-page texts in this phase (one extra `texte.toml` edit, no mechanics change) or leave them to the dry run? RESOLVED — D-28 (fixed in this phase, text only, literal "oder höher"; implemented in 07-08 Task 3).
+3. **Workshop date** (July vs September) for PROJECT.md and the "Was ist neu" source note. RESOLVED — D-33 (the sheet says "MHP-Runde" without a date; the July/September conflict is not resolved in Phase 7).
+4. **Items beyond D-13 for "Was ist neu":** KZ rounding once per wave, Init on upgrades in change windows, Exzellenz-Bonus condition, Final-Index, event order. Include? (Recommended: yes, as one-line rows in the rule category; they are the changes a former MHP facilitator will otherwise hit during the run.) RESOLVED — D-29 (included at the highest space priority; implemented in 07-06 `RULE_IDS`).
+5. **`test_texts_migration` fate** and **dropping `openpyxl`** (recommended: retire the generator-reading tests, drop `openpyxl`, keep `python-pptx`). RESOLVED — 07-01 Task 3 (generator-fidelity tests retired, the Excel dependency dropped, python-pptx kept for the D-18 deck edit); 07-02 and later plans build on the slimmer suite.
+6. **`docs/folienkonzept_spielphasen_mechtech.md`:** archive (recommended) or update. RESOLVED — D-30 (moved to `archive/historical_docs/` in 07-01 Task 2).
+7. **Intro deck slide 28/36:** use the hidden slide 28 (SPIELPHASEN) as the new flow overview and unhide it, delete slide 36, versus rebuilding slide 36. The six-step flow needs a new shape (not run text only). RESOLVED — D-19 fixes the outcome (flow overview without attack names and budget figure); the vehicle is decision (b) of the 07-05 checklist approved by the user, implemented in 07-07.
+8. **Schedule page placement:** one page with print list or two (decided by the fill report); and whether the first page's contents list gets the new sections. RESOLVED — Claude's discretion per CONTEXT (page layout and position): 07-02 Task 3 places the schedule right after page 1, keeps the print list on the same page unless the fill report overflows (then its own page), and adds both titles to the contents list; 07-04 Task 3 adds the debrief title.
 
 ## Environment Availability
 

@@ -333,7 +333,7 @@ Plans:
 
 **Wave 5** *(blocked on Wave 4 completion)*
 
-- [ ] 07-09-PLAN.md — FLOW-05 (2/3): print-list quantities confirmed (D-27), print set regenerated and committed once, physical print released (wave 5, checkpoint)
+- [ ] 07-09-PLAN.md — FLOW-05 (2/3): print-list quantities confirmed (D-27), print set regenerated and committed once, solo wave-1 timing (D-32), physical print released (wave 5, checkpoint)
 - [ ] 07-10-PLAN.md — LEG-02 (3/4): README.md (German) rewritten for current rules, session flow and print pipeline (wave 5)
 - [ ] 07-11-PLAN.md — LEG-02 (4/4): root CLAUDE.md in English, codebase maps refreshed, `.claude/CLAUDE.md` regenerated (wave 5)
 

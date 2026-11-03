@@ -67,6 +67,10 @@ No new game mechanics, no rebalance, no new print documents beyond the ones name
 - **D-29:** "Was ist neu" also lists these items as rule changes, at the highest space priority (D-15): KZ is rounded once per wave, Init is paid on upgrades in the change window, the new Final-Index, and the event order within a wave.
 - **D-30:** (discretion resolved) `docs/folienkonzept_spielphasen_mechtech.md` is moved to `archive/`, since it is outdated in about 8 places (see RESEARCH §Q6d).
 
+- **D-31:** (plan-check, 2026-11-02) The phase may use 12 plans for 6 requirements. Each plan carries exactly one requirement ID, so nothing is batched. FLOW-04, FLOW-05 and LEG-02 are split along user checkpoints and file conflicts. The user approved this.
+- **D-32:** Before the print release (07-09), someone plays wave 1 alone with the generated material and times it, as a checkpoint. The result is recorded. An overrun past the planned wave minutes is fixed before the 2026-11-25 dry run.
+- **D-33:** The "Was ist neu" sheet calls the earlier run "MHP-Runde" and gives no date. The conflict between July and September is not resolved in this phase. RESEARCH open questions are resolved by D-22..D-33.
+
 ### Claude's Discretion
 - What happens to `docs/folienkonzept_spielphasen_mechtech.md`, which still mentions the E-target check: update it or move it to `archive/`.
 - The check of the MHP company profile deck and of the generated Audit-Mail and Steckbrief for outdated rules. The two story documents are generated now, so their checks run through `texte.toml` and the veil and text checks.
