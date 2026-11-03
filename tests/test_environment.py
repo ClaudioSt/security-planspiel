@@ -1,4 +1,5 @@
 import importlib.metadata
+import importlib.util
 import subprocess
 import sys
 from pathlib import Path
@@ -27,8 +28,8 @@ def test_interpreter_is_project_venv():
 
 def test_pinned_packages():
     assert importlib.metadata.version("pytest") == "9.1.1"
-    assert importlib.metadata.version("openpyxl") == "3.1.5"
     assert importlib.metadata.version("python-pptx") == "1.0.2"
+    assert importlib.util.find_spec("openpyxl") is None
 
 
 def test_planspiel_is_the_repo_package():
