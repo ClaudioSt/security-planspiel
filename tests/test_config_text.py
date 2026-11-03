@@ -54,7 +54,7 @@ def test_utf8_stdio_helper():
     assert result.stdout.decode("utf-8").strip() == "OT-Störung − ≥ €"
 
 
-ID_KEYS = {"id", "measure", "measures", "attack_id", "type", "default_budget_tier"}
+ID_KEYS = {"id", "measure", "measures", "attack_id", "type", "default_budget_tier", "job"}
 
 TRANSLITERATION_PATTERNS = tuple(
     re.compile(stem, re.IGNORECASE)
