@@ -10,7 +10,7 @@ import unicodedata
 from dataclasses import dataclass
 from pathlib import Path
 
-from planspiel import rules
+from planspiel import audience, rules
 from planspiel.config import Config, Wave
 from planspiel.review_text import format_eur
 from planspiel.validate import Issue
@@ -149,6 +149,14 @@ SHEET_KEYS = (
     *(f"sheets.spielleitung.{name}" for name in _SPIELLEITUNG_KEYS),
     *(f"sheets.labels.{name}" for name in _SHEET_LABELS),
 )
+
+_ABLAUF_KEYS = (
+    "title", "intro", "head_block", "head_minutes", "head_span", "head_clock", "head_direction", "wave_label",
+    "practice_label", "total_label", "print_title", "print_intro", "print_head_label", "print_head_file",
+    "print_head_team", "print_head_facilitator", "print_head_total", "print_attack_sheet", "teams_label",
+)
+# Required only when the config carries a session_schedule, so the mini fixture needs no schedule texts.
+ABLAUF_KEYS = tuple(f"sheets.ablauf.{name}" for name in _ABLAUF_KEYS)
 
 PRACTICE_KEYS = tuple(
     f"practice.{name}"
@@ -329,6 +337,15 @@ def required_keys(cfg: Config) -> set[str]:
         keys.update(PRACTICE_KEYS)
         keys.update(f"practice.bonus_reasons.{bonus.measure}" for bonus in cfg.practice.wave.bonus_measures)
         keys.update(_event_keys("practice.event", cfg.practice.event))
+    if cfg.session_schedule is not None:
+        keys.update(ABLAUF_KEYS)
+        for block in cfg.session_schedule.blocks:
+            keys.add(f"sheets.ablauf.blocks.{block.id}.direction")
+            if block.wave is None:
+                keys.add(f"sheets.ablauf.blocks.{block.id}.label")
+        for row in cfg.session_schedule.print_list:
+            if audience.audience_of(row.job) != audience.REVEALED:
+                keys.add(f"sheets.ablauf.print.{row.job}")
     return keys
 
 

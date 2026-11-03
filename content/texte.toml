@@ -573,6 +573,79 @@ clue_section_anfrage_mail_lage = "Lage"
 clue_section_audit_mail_einleitung = "Einleitung"
 clue_section_zeitungsartikel = "Ticker"
 
+[sheets.ablauf]
+title = "Ablaufplan der Veranstaltung"
+intro = "Dauer jedes Blocks und die Minuten ab Start. Tragt in die leere Spalte die Uhrzeit ein, sobald ihr den Start kennt. Die Anweisung sagt, was ihr in diesem Block tut."
+head_block = "Block"
+head_minutes = "Dauer (Min.)"
+head_span = "Minuten ab Start"
+head_clock = "Uhrzeit"
+head_direction = "Anweisung"
+wave_label = "Welle"
+practice_label = "Übungswelle"
+total_label = "Gesamtdauer (Min.)"
+print_title = "Druckliste"
+print_intro = "Pro Datei steht, wie oft ihr sie ausdruckt: je Team und für die Spielleitung. Die Arbeitsblätter der Angriffe gebt ihr erst zu Beginn ihrer Welle an die Teams."
+print_head_label = "Dokument"
+print_head_file = "Datei"
+print_head_team = "Je Team"
+print_head_facilitator = "Spielleitung"
+print_head_total = "Gesamt"
+print_attack_sheet = "Arbeitsblatt Welle"
+teams_label = "Anzahl Teams"
+
+[sheets.ablauf.blocks.intro]
+label = "Einführung"
+direction = "Zeigt die Einführungsfolien und bildet die Teams."
+
+[sheets.ablauf.blocks.break_1]
+label = "Pause"
+direction = "Pause. Legt währenddessen die Story-Unterlagen für jedes Team bereit."
+
+[sheets.ablauf.blocks.story_groups]
+label = "Story-Gruppenarbeit"
+direction = "Gebt jedem Team die Story-Unterlagen. Die Teams lesen, sammeln Hinweise und tauschen sich im Team aus."
+
+[sheets.ablauf.blocks.wave_0]
+direction = "Gebt das Übungsblatt und die Erklärseite So funktioniert eine Welle aus. Rechnet das Beispiel gemeinsam durch, bevor die erste echte Welle beginnt."
+
+[sheets.ablauf.blocks.measures_budget]
+label = "Maßnahmen und Budget"
+direction = "Gebt das Teamheft und die Maßnahmenkarten aus. Die Teams verhandeln ihr Budget-Tier und wählen ihre Maßnahmen."
+
+[sheets.ablauf.blocks.break_2]
+label = "Pause"
+direction = "Pause. Haltet die Arbeitsblätter der Angriffe zurück: Kein Team sieht sie vor dem Beginn seiner Welle."
+
+[sheets.ablauf.blocks.wave_1]
+direction = "Lest die Ereignisse dieser Welle vor und gebt ihre Eventkarten aus. Gebt erst jetzt das Arbeitsblatt dieser Welle aus, nie früher. Die Teams rechnen. Danach folgt innerhalb dieses Blocks das Change-Fenster mit dem Pflichttausch des Kurswechsels."
+
+[sheets.ablauf.blocks.wave_2]
+direction = "Lest die Ereignisse dieser Welle vor und gebt ihre Eventkarten aus. Gebt erst jetzt das Arbeitsblatt dieser Welle aus, nie früher. Die Teams rechnen. Danach folgt innerhalb dieses Blocks das Change-Fenster."
+
+[sheets.ablauf.blocks.wave_3]
+direction = "Lest die Ereignisse dieser Welle vor und gebt ihre Eventkarten aus. Gebt erst jetzt das Arbeitsblatt dieser Welle aus, nie früher. Die Teams rechnen. Danach folgt kein Change-Fenster mehr."
+
+[sheets.ablauf.blocks.closing]
+label = "Abschluss"
+direction = "Die Teams rechnen das Budget Review und die RoS-Seite im Teamheft aus. Sammelt die Ergebnisse ein."
+
+[sheets.ablauf.blocks.debrief]
+label = "Debriefing"
+direction = "Besprecht den Verlauf anhand der Fragen im Debriefing-Teil dieses Hefts."
+
+[sheets.ablauf.print]
+spieler-massnahmenkarten = "Maßnahmenkarten"
+spieler-eventkarten = "Eventkarten"
+spieler-teamheft = "Teamheft"
+spieler-so-funktioniert-eine-welle = "So funktioniert eine Welle"
+spieler-unternehmenssteckbrief = "Unternehmenssteckbrief"
+spieler-zeitungsartikel = "Zeitungsartikel"
+spieler-anfrage-mail = "Anfrage-Mail"
+spieler-audit-mail = "Audit-Mail"
+uebung-welle-0 = "Übungsblatt"
+spielleitung-uebersicht = "Spielleitungsheft"
+
 [story.steckbrief]
 doc_title = "MECHTECH GmbH: Unternehmenssteckbrief"
 
