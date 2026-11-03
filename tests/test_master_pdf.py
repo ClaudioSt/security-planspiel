@@ -150,6 +150,29 @@ def test_the_budget_review_the_final_table_and_welle_zero_follow_the_waves(print
             assert squash(cell) in tail, cell
 
 
+def test_the_debrief_page_follows_the_final_table_and_precedes_welle_zero(printed_set, sheet):
+    pages = _pages(printed_set)
+    _, review = _section_pages(pages, sheet)
+    debrief_page = _first_page_with(pages, sheet.debrief.title, start=review)
+    assert debrief_page > review
+    assert sum(squash(sheet.debrief.intro) in page for page in pages) == 1
+    assert _first_page_with(pages, sheet.welle0.title, start=review) > debrief_page
+    assert debrief_page < _first_page_with(pages, sheet.clues_intro, start=debrief_page)
+    text = pages[debrief_page]
+    parts = [sheet.debrief.title, sheet.debrief.intro, sheet.debrief.guide_label, sheet.debrief.questions_label,
+             sheet.debrief.prompts_label, sheet.debrief.compare_title, sheet.debrief.compare_intro,
+             sheet.debrief.total_label, sheet.debrief.total_value, *sheet.debrief.compare_header,
+             *sheet.debrief.compare_rows]
+    for section in sheet.debrief.stages:
+        parts += [section.title, section.guide, *section.questions, *section.prompts]
+    for part in parts:
+        assert squash(part) in text, part
+
+
+def test_the_contents_list_names_the_debrief(printed_set, sheet):
+    assert squash(sheet.debrief.title) in _pages(printed_set)[0]
+
+
 def test_every_final_index_is_printed_exactly_with_the_weight_row(printed_set, sheet, content):
     pages = _pages(printed_set)
     page = pages[_first_page_with(pages, sheet.final_title, start=1)]

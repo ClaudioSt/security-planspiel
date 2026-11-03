@@ -647,10 +647,10 @@ uebung-welle-0 = "Übungsblatt"
 spielleitung-uebersicht = "Spielleitungsheft"
 
 [sheets.debrief]
-title = "Debriefing"
+title = "Debriefing-Fragen"
 intro = "Besprecht den Verlauf in dieser festen Reihenfolge: erst die Reaktion, dann die Beschreibung, dann die Analyse, zuletzt die Anwendung. Es gibt kein Blatt für die Teams. Lest die Fragen vor und lasst die Teams antworten. Die Richtzeiten der Stufen füllen zusammen den Debriefing-Block des Ablaufplans."
 guide_label = "Richtzeit"
-questions_label = "Fragen"
+questions_label = "Frage"
 prompts_label = "Datenimpuls"
 minutes_unit = "Min."
 compare_title = "Vergleichstabelle"

@@ -22,6 +22,9 @@
 \BLOCK{endfor}
 \VAR{sheet.review.title}\par
 \VAR{sheet.final_title}\par
+\BLOCK{if sheet.debrief}
+\VAR{sheet.debrief.title}\par
+\BLOCK{endif}
 \BLOCK{if sheet.welle0}
 \VAR{sheet.welle0.title}\par
 \BLOCK{endif}
@@ -214,6 +217,39 @@
 \vspace{1mm}
 \hint{\VAR{sheet.final_note}}
 \pagereport
+\BLOCK{if sheet.debrief}
+
+\clearpage
+\attacktitle{\VAR{sheet.debrief.title}}
+{\small{} \VAR{sheet.debrief.intro}\par}
+\vspace{1mm}
+\begingroup\small\setlength{\parskip}{1mm}
+\BLOCK{for section in sheet.debrief.stages}
+\step{\VAR{section.title}}
+{\footnotesize{} \textbf{\VAR{sheet.debrief.guide_label}:} \VAR{section.guide}\par}
+\BLOCK{for text in section.questions}
+\noindent\hangindent=6mm\hangafter=1\textbf{\VAR{sheet.debrief.questions_label}:}\hspace{1.5mm}\VAR{text}\par
+\BLOCK{endfor}
+\BLOCK{for text in section.prompts}
+\noindent\hangindent=6mm\hangafter=1\textbf{\VAR{sheet.debrief.prompts_label}:}\hspace{1.5mm}\VAR{text}\par
+\BLOCK{endfor}
+\BLOCK{endfor}
+{\footnotesize{} \textbf{\VAR{sheet.debrief.total_label}:} \VAR{sheet.debrief.total_value}\par}
+\endgroup
+\step{\VAR{sheet.debrief.compare_title}}
+{\small{} \VAR{sheet.debrief.compare_intro}\par}
+\vspace{1mm}
+\noindent\begingroup\small\setlength{\tabcolsep}{3pt}\begin{tabularx}{\linewidth}{|L|C{34mm}|C{34mm}|C{34mm}|}
+\hline
+\rowcolor{mhpblue}\BLOCK{for cell in sheet.debrief.compare_header}\hdrs{\VAR{cell}}\BLOCK{if not loop.last} & \BLOCK{endif}\BLOCK{endfor} \\
+\hline
+\BLOCK{for row in sheet.debrief.compare_rows}
+\rule{0pt}{9mm}\textbf{\VAR{row}} & & & \\
+\hline
+\BLOCK{endfor}
+\end{tabularx}\endgroup\par
+\pagereport
+\BLOCK{endif}
 \BLOCK{if sheet.welle0}
 
 \clearpage
