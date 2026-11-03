@@ -764,7 +764,7 @@ overspend = "Überziehung"
 
 [sheets.was_neu.rules.levelwechsel]
 heading = "Levelwechsel und Maßnahmentausch"
-text = "Levelwechsel: dieselbe Maßnahme, anderes Level (Kündigen ist der Wechsel auf das niedrigste Level). Maßnahmentausch: eine Maßnahme raus, eine andere rein (früher Maßnahmenwechsel)."
+text = "Levelwechsel: dieselbe Maßnahme, anderes Level (auch Kündigen). Maßnahmentausch: eine Maßnahme raus, eine andere rein; ersetzt den alten Begriff der MHP-Runde."
 
 [sheets.was_neu.rules.kurswechsel]
 heading = "Kurswechsel"
