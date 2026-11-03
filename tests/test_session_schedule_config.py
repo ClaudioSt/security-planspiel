@@ -11,7 +11,7 @@ import json
 import pytest
 
 from planspiel import rules
-from planspiel.config import PrintRow, ScheduleBlock, SessionSchedule, load_config
+from planspiel.config import DebriefStage, PrintRow, ScheduleBlock, SessionSchedule, load_config
 from planspiel.validate import validate
 from tests.support import CONFIG_PATH
 
@@ -231,3 +231,46 @@ def test_three_teams_of_five_and_a_practice_wave_block(cfg):
     assert cfg.session_schedule.persons_per_team == 5
     assert cfg.practice is not None
     assert any(block.wave == 0 for block in cfg.session_schedule.blocks)
+
+
+# --- FLOW-03: debrief stage minutes (D-11) ---------------------------------------------------------------------
+
+DEBRIEF_STAGES = (("reaction", 3), ("description", 4), ("analysis", 8), ("application", 5))
+
+
+def test_the_debrief_stages_are_the_four_flow_03_stages_and_fill_the_debrief_block(cfg):
+    schedule = cfg.session_schedule
+    assert all(isinstance(stage, DebriefStage) for stage in schedule.debrief_stages)
+    assert tuple((stage.id, stage.minutes) for stage in schedule.debrief_stages) == DEBRIEF_STAGES
+    block = next(block for block in schedule.blocks if block.id == "debrief")
+    assert sum(stage.minutes for stage in schedule.debrief_stages) == block.minutes
+
+
+def test_a_schedule_without_stages_still_loads(tmp_path):
+    raw = _raw()
+    del raw["session_schedule"]["debrief_stages"]
+    assert _errors(raw) == []
+    assert _load(raw, tmp_path).session_schedule.debrief_stages == ()
+
+
+def test_stage_minutes_must_add_up_to_the_debrief_block():
+    raw = _mutated(lambda s: s["debrief_stages"][0].update(minutes=4))
+    assert "schedule.debrief_sum" in _codes(raw)
+
+
+def test_stages_need_a_debrief_block():
+    def drop(schedule):
+        schedule["blocks"] = [block for block in schedule["blocks"] if block["id"] != "debrief"]
+        schedule["total_minutes"] -= 20
+
+    assert "schedule.debrief_block" in _codes(_mutated(drop))
+
+
+def test_duplicate_and_malformed_stage_ids_are_rejected():
+    assert "schedule.id" in _codes(_mutated(lambda s: s["debrief_stages"][1].update(id="reaction")))
+    assert "schedule.id" in _codes(_mutated(lambda s: s["debrief_stages"][1].update(id="Second Stage")))
+
+
+def test_stage_minutes_must_be_positive_and_keys_known():
+    assert "schema.range" in _codes(_mutated(lambda s: s["debrief_stages"][0].update(minutes=0)))
+    assert "schema.keys" in _codes(_mutated(lambda s: s["debrief_stages"][0].update(label="x")))

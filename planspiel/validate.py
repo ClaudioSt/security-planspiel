@@ -29,7 +29,8 @@ REQUIRED_EVENT_PARAMS = {
     "final_budget_tier": ("tiers", "overspend_penalty"),
 }
 
-SCHEDULE_KEYS = ("total_minutes", "teams", "persons_per_team", "blocks", "print_list")
+SCHEDULE_KEYS = ("total_minutes", "teams", "persons_per_team", "blocks", "print_list", "debrief_stages")
+DEBRIEF_STAGE_KEYS = ("id", "minutes")
 SCHEDULE_BLOCK_KEYS = ("id", "minutes", "wave")
 PRINT_ROW_KEYS = ("job", "per_team", "facilitator")
 SNAKE_ID = re.compile(r"[a-z][a-z0-9_]*")
@@ -620,6 +621,55 @@ class _Validator:
         print_list = self.field(block, "print_list", path)
         if print_list is not None and self.container(print_list, list, f"{path}.print_list"):
             self.check_print_list(print_list)
+        stages = block.get("debrief_stages")
+        if stages is not None and self.container(stages, list, f"{path}.debrief_stages"):
+            debrief_minutes = None
+            if isinstance(blocks, list):
+                debrief_minutes = next(
+                    (
+                        item.get("minutes") for item in blocks
+                        if isinstance(item, dict) and item.get("id") == "debrief"
+                    ),
+                    None,
+                )
+            self.check_debrief_stages(stages, debrief_minutes)
+
+    def check_debrief_stages(self, stages: list, debrief_minutes: Any) -> None:
+        """Richtzeit je Debriefing-Stufe (D-11): Summe der Stufen = Dauer des Blocks 'debrief'."""
+        path = "session_schedule.debrief_stages"
+        seen: set = set()
+        stage_sum = 0
+        sum_known = True
+        for index, item in enumerate(stages):
+            item_path = f"{path}[{index}]"
+            if not self.container(item, dict, item_path):
+                sum_known = False
+                continue
+            for key in item:
+                if key not in DEBRIEF_STAGE_KEYS:
+                    self.error("schema.keys", f"{item_path}.{key}", f"Unbekannter Schlüssel '{key}' in der Debriefing-Stufe")
+            stage_id = self.field(item, "id", item_path)
+            if stage_id is not None:
+                if not isinstance(stage_id, str) or not SNAKE_ID.fullmatch(stage_id):
+                    self.error("schedule.id", f"{item_path}.id", f"Stufen-ID {stage_id!r} muss snake_case sein")
+                elif stage_id in seen:
+                    self.error("schedule.id", f"{item_path}.id", f"Stufen-ID '{stage_id}' kommt doppelt vor")
+                else:
+                    seen.add(stage_id)
+            minutes = self.int_field(item, "minutes", item_path, lo=1)
+            if minutes is None:
+                sum_known = False
+            else:
+                stage_sum += minutes
+        if not stages:
+            return
+        if not isinstance(debrief_minutes, int) or isinstance(debrief_minutes, bool):
+            self.error("schedule.debrief_block", path, "Debriefing-Stufen brauchen einen Ablaufblock mit der ID 'debrief'")
+        elif sum_known and stage_sum != debrief_minutes:
+            self.error(
+                "schedule.debrief_sum", path,
+                f"Die Stufen ergeben {stage_sum} Minuten, der Block 'debrief' dauert {debrief_minutes}",
+            )
 
     def check_schedule_blocks(self, blocks: list, total: Optional[int], wave_ids: set) -> None:
         path = "session_schedule.blocks"

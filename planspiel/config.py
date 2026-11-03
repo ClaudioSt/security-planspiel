@@ -96,6 +96,12 @@ class PrintRow:
 
 
 @dataclass
+class DebriefStage:
+    id: str
+    minutes: int
+
+
+@dataclass
 class SessionSchedule:
     """Session schedule and print list: read only by the facilitator print models (schedule, booklet, protocol) and
     the intro-deck test (persons_per_team), never by rules or enumeration."""
@@ -105,6 +111,7 @@ class SessionSchedule:
     persons_per_team: int
     blocks: tuple[ScheduleBlock, ...]
     print_list: tuple[PrintRow, ...]
+    debrief_stages: tuple[DebriefStage, ...] = ()
 
 
 @dataclass
@@ -266,6 +273,9 @@ def load_config(path: Path, hand_calc_level: str = "error") -> Config:
             print_list=tuple(
                 PrintRow(job=item["job"], per_team=item["per_team"], facilitator=item["facilitator"])
                 for item in block["print_list"]
+            ),
+            debrief_stages=tuple(
+                DebriefStage(id=item["id"], minutes=item["minutes"]) for item in block.get("debrief_stages", [])
             ),
         )
 

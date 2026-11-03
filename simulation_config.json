@@ -329,6 +329,12 @@
       {"job": "spieler-audit-mail", "per_team": 1, "facilitator": 1},
       {"job": "uebung-welle-0", "per_team": 1, "facilitator": 1},
       {"job": "spielleitung-uebersicht", "per_team": 0, "facilitator": 1}
+    ],
+    "debrief_stages": [
+      {"id": "reaction", "minutes": 3},
+      {"id": "description", "minutes": 4},
+      {"id": "analysis", "minutes": 8},
+      {"id": "application", "minutes": 5}
     ]
   },
   "reference_plans": {
