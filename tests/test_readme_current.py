@@ -28,6 +28,7 @@ RETIRED_TOKENS = (
     "Discovery-Signal",
     "Auswertungsvorlagen (2 Tabellen",
     "pptx_output",
+    "Whiteboard",
     "generate_pptx_cards",
     "generate_from_template",
     "generate_attack_calculator",

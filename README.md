@@ -5,7 +5,7 @@ Ein **konfigurationsgetriebenes IT-Security-Planspiel** für einen Automotive-Zu
 
 > **Wichtig:** Diese README hält sich **rein an die Funktion und das Spieldesign**.  
 > Es werden **keine festen Zahlenvorgaben** (Werte/Variablen) gemacht. **Alle Parameter stehen in `simulation_config.json`**; Dauern, Budgets, Strafen und Anzahlen (Wellen, Teams, Debriefing-Stufen) stehen dort oder auf der gedruckten Seite, nicht hier.  
-> Das Spiel wird mit Papier und Whiteboard gespielt. Das gesamte Druckmaterial wird aus Konfiguration und Texten **erzeugt** (siehe „Druckmaterial erzeugen“).
+> Das Spiel wird nur mit Papier gespielt. Das gesamte Druckmaterial wird aus Konfiguration und Texten **erzeugt** (siehe „Druckmaterial erzeugen“).
 
 ---
 
