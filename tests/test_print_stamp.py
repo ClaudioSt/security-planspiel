@@ -69,6 +69,7 @@ def repo(tmp_path):
     write(root, "simulation_config.json", "{}\n")
     write(root, "content/texte.toml", "a = 1\n")
     write(root, "content/clues.toml", "b = 1\n")
+    write(root, "content/mhp_baseline.json", "{}\n")
     write(root, "print/planspiel.sty", "% sty\n")
     write(root, "print/templates/a.tex.j2", "a\n")
     write(root, "content/assets/images/a.png", "png\n")
@@ -138,6 +139,18 @@ def test_the_clues_are_a_data_and_a_build_input():
     assert "content/clues.toml" in stamp.BUILD_INPUTS
 
 
+def test_the_baseline_is_a_data_and_a_build_input():
+    """content/mhp_baseline.json feeds the Was-ist-neu sheet, so a change moves the date and marks the tree (D-14)."""
+    assert "content/mhp_baseline.json" in stamp.DATA_INPUTS
+    assert "content/mhp_baseline.json" in stamp.BUILD_INPUTS
+
+
+def test_a_baseline_commit_moves_the_date(repo):
+    write(repo, "content/mhp_baseline.json", '{"schema": 1}\n')
+    commit_all(repo, "baseline", "2026-10-30T12:00:00+00:00")
+    assert stamp.input_date_utc(repo) == "2026-10-30"
+
+
 def test_a_clues_commit_moves_the_date(repo):
     write(repo, "content/clues.toml", "b = 2\n")
     commit_all(repo, "clues", "2026-10-29T12:00:00+00:00")
@@ -157,6 +170,7 @@ def test_clean_tree_is_not_dirty(repo):
         "planspiel/x.py",
         "content/texte.toml",
         "content/clues.toml",
+        "content/mhp_baseline.json",
         "print/planspiel.sty",
         "simulation_config.json",
         "uv.lock",

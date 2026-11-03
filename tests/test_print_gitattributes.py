@@ -25,6 +25,7 @@ def _attrs(path: str) -> dict:
         "print/templates/angriff.tex.j2",
         "print/templates/cards/skin.tex",
         "print/miktex-packages.txt",
+        "content/mhp_baseline.json",
     ],
 )
 def test_print_sources_are_normalised_to_lf(path):

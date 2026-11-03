@@ -4,8 +4,12 @@
 prove where it came from (the config at commit 1cfb2fa, plus the printed override), that the loader is strict, and that
 nothing but the "Was ist neu" builder can read it.
 """
+import ast
+import builtins
 import copy
+import dataclasses
 import json
+import pathlib
 import subprocess
 import xml.etree.ElementTree as ET
 import zipfile
@@ -13,8 +17,9 @@ from fractions import Fraction
 
 import pytest
 
+from planspiel.config import Config, load_config
 from planspiel.was_neu import BASELINE_FILE, Baseline, PrintedOverride, load_baseline
-from tests.support import CONTENT_DIR, REPO_ROOT
+from tests.support import CONFIG_PATH, CONTENT_DIR, REPO_ROOT
 
 BASELINE_PATH = CONTENT_DIR / BASELINE_FILE
 OLD_COMMIT = "1cfb2fa"
@@ -311,3 +316,66 @@ def test_the_baseline_holds_no_prose_outside_the_source_block():
 
     walk({k: v for k, v in raw.items() if k != "source"}, "")
     assert "archive/" not in BASELINE_PATH.read_text(encoding="utf-8")
+
+
+# --- isolation (D-14, T-07-10) -----------------------------------------------------------------------------------
+
+
+def _planspiel_sources():
+    return sorted((REPO_ROOT / "planspiel").glob("*.py"))
+
+
+def test_the_baseline_file_name_occurs_only_in_the_builder_and_the_stamp():
+    holders = {
+        source.name for source in _planspiel_sources() if "mhp_baseline" in source.read_text(encoding="utf-8")
+    }
+    assert holders == {"was_neu.py", "stamp.py"}
+
+
+def _imports_was_neu(tree):
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            if any(alias.name.split(".")[-1] == "was_neu" for alias in node.names):
+                return True
+        elif isinstance(node, ast.ImportFrom):
+            module = node.module or ""
+            if module.split(".")[-1] == "was_neu":
+                return True
+            if module in ("planspiel", "") and any(alias.name == "was_neu" for alias in node.names):
+                return True
+    return False
+
+
+def test_only_the_renderer_and_the_cli_may_import_the_builder():
+    importers = {
+        source.name
+        for source in _planspiel_sources()
+        if _imports_was_neu(ast.parse(source.read_text(encoding="utf-8")))
+    }
+    assert importers <= {"render.py", "cli.py"}
+
+
+def test_config_has_no_baseline_field():
+    names = [field.name for field in dataclasses.fields(Config)]
+    assert not [name for name in names if "baseline" in name or "mhp" in name]
+
+
+def test_load_config_never_reads_the_baseline(monkeypatch):
+    seen = []
+    real_read_text = pathlib.Path.read_text
+    real_open = builtins.open
+
+    def read_text(self, *args, **kwargs):
+        seen.append(str(self))
+        return real_read_text(self, *args, **kwargs)
+
+    def spy_open(file, *args, **kwargs):
+        seen.append(str(file))
+        return real_open(file, *args, **kwargs)
+
+    monkeypatch.setattr(pathlib.Path, "read_text", read_text)
+    monkeypatch.setattr(builtins, "open", spy_open)
+    first = load_config(CONFIG_PATH)
+    monkeypatch.undo()
+    assert seen and not [item for item in seen if "mhp_baseline" in item]
+    assert first == load_config(CONFIG_PATH)
