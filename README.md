@@ -1,140 +1,145 @@
 
 # CIA-Planspiel Automotive (deterministisch, konfigurierbar)
 
-Ein **konfigurationsgetriebenes IT‑Security‑Planspiel** für einen Automotive‑Zulieferer. Die Teilnehmenden agieren als Beratungsteams, **verhandeln ein Budget**, wählen **Sicherheitsmaßnahmen in drei Reifegraden (L1/L2/L3)**, reagieren auf **deterministische Events** und **Angriffe** und optimieren **Kundenzufriedenheit (KZ)**, **CIA‑Ziele** und **Return on Security (RoS)**.
+Ein **konfigurationsgetriebenes IT-Security-Planspiel** für einen Automotive-Zulieferer. Die Teilnehmenden agieren als Beratungsteams, **verhandeln ein Budget**, wählen **Sicherheitsmaßnahmen in Reifegraden (L1/L2/L3)**, reagieren auf **deterministische Events** und **Angriffe** und optimieren **Kundenzufriedenheit (KZ)**, **CIA-Ziele** und **Return on Security (RoS)**.
 
 > **Wichtig:** Diese README hält sich **rein an die Funktion und das Spieldesign**.  
-> Es werden **keine festen Zahlenvorgaben** (Werte/Variablen) gemacht. **Alle Parameter sind konfigurierbar**.  
-> Das Spiel ist so gestaltet, dass eine **Auswertung mit 1–2 Tabellen** genügt.
+> Es werden **keine festen Zahlenvorgaben** (Werte/Variablen) gemacht. **Alle Parameter stehen in `simulation_config.json`**; Dauern, Budgets, Strafen und Anzahlen (Wellen, Teams, Debriefing-Stufen) stehen dort oder auf der gedruckten Seite, nicht hier.  
+> Das Spiel wird mit Papier und Whiteboard gespielt. Das gesamte Druckmaterial wird aus Konfiguration und Texten **erzeugt** (siehe „Druckmaterial erzeugen“).
 
 ---
 
 ## Ziele & Lernwerte
 
-- **Determinismus statt Zufall:** Keine Würfel, keine Hidden‑Randomness. Alle Ergebnisse sind **vorhersehbar** aus **Konfiguration + Entscheidungen** ableitbar.
-- **Spieler‑Agency:** Entscheidungen haben **sichtbare, nachvollziehbare Effekte** (KZ, CIA‑Erfüllung, Schäden, RoS).
-- **Realitätsnähe:** Maßnahmen, Abhängigkeiten, Events und Angriffe spiegeln gängige Security‑Praxis in der **Fertigungs‑/OT‑ und SaaS‑Realität**.
-- **Einfach auswertbar:** Das Ergebnis lässt sich mit **max. zwei Tabellen** transparent darstellen.
+- **Determinismus statt Zufall:** Keine Würfel, keine Hidden-Randomness. Alle Ergebnisse sind **vorhersehbar** aus **Konfiguration + Entscheidungen** ableitbar.
+- **Spieler-Agency:** Entscheidungen haben **sichtbare, nachvollziehbare Effekte** (KZ, CIA-Erfüllung, Schäden, RoS).
+- **Realitätsnähe:** Maßnahmen, Abhängigkeiten, Events und Angriffe spiegeln gängige Security-Praxis in der **Fertigungs-/OT- und SaaS-Realität**.
+- **Von Hand rechenbar:** Alle Formeln sind linear; die Spielleitung rechnet am Arbeitsblatt live nach.
 
 ---
 
 ## Rollen
 
-- **Beratungsteams**: Treffen Budget‑ und Maßnahmenentscheidungen, reagieren auf Events/Angriffe, setzen Changes im Change‑Fenster um.
-- **Unternehmensvertreter (Facilitator)**: Spielt den Kunden, moderiert Discovery, setzt deterministische Trigger, erklärt Effekte.
-- Optional: **Attack/Rules Controller** (kann der Facilitator mit übernehmen).
+- **Beratungsteams:** Treffen Budget- und Maßnahmenentscheidungen, reagieren auf Events und Angriffe, setzen Changes im Change-Fenster um.
+- **Spielleitung (Facilitator):** Spielt den Kunden, führt durch den Ablauf (Ablaufplan im Spielleitungs-Heft), gibt die Angriffsarbeitsblätter erst zu Beginn ihrer Welle aus, rechnet mit den Teams nach und leitet das Debriefing.
+- Optional: **Attack/Rules Controller** (kann die Spielleitung mit übernehmen).
 
 ---
 
 ## Kernelemente (Objekte)
 
-- **Budget (B):** Punkte für Erst‑Invest (Init) und laufende Kosten (OPEX). Überziehung kostet linear KZ, siehe Budget Review.
-- **Kundenzufriedenheit (KZ):** Skala mit fester Klammerung (0…100), Effekte **linear und konfigurierbar**.
+- **Budget (B):** Punkte für Erst-Invest (Init) und laufende Kosten (OPEX). Der Budgetrahmen hängt vom Budget-Tier ab (`budget_tiers`). Überziehung kostet linear KZ, siehe Budget Review.
+- **Kundenzufriedenheit (KZ):** Skala mit fester Klammerung (0…100), Startwert je Tier, Effekte **linear und konfigurierbar**.
 - **Maßnahmen (L1/L2/L3):**  
-  - Attribute: `costInit`, `costOpex`, `cia={c,i,a}`, `mitigations` (gegen Angriffe), `eventEffects`, `dependencies`.
-  - **Level‑Intuition:** L1 = Basis (gering), L2 = Standard (mittel), L3 = erweitert (hoch). Stärkegrade sind **parametrierbar**.
-- **Wellen:** Jede Welle besitzt **Gewichte (wC,wI,wA)**, eine **E‑Schwelle** und **Angriffe** (Anzahl frei konfigurierbar).
-- **Events:** Regelbasierte Trigger (Zeit, Signale, Maßnahmen‑Level) mit klaren Effekten (Budget/KZ/Severity‑Mod/Faktoren).
-- **Discovery‑Signale:** Kontextscores (z. B. OT‑Dauerbetrieb, Auditdruck, SaaS‑Kritikalität, Lieferkette), die Gewichte/Angriffe/Erwartungen **deterministisch** steuern.
-- **Angriffe:** `baseSeverity`, `sUnit` (Schaden je Stufe), `kzUnit` (KZ‑Verlust je Stufe), `ciaImpactPerStep`, referenzierte Mitigations.
+  - Attribute je Level: Init-Kosten, OPEX, CIA-Beiträge; dazu die Abhängigkeiten der Maßnahme.
+  - **Level-Intuition:** L1 = Basis, L2 = Standard, L3 = erweitert. Stärkegrade sind **parametrierbar**.
+- **Wellen (`waves`):** Jede Welle besitzt **Gewichte (wC, wI, wA)**, eine **E-Schwelle**, **Bonusmaßnahmen** (`bonus_measures`, thematisch passende Maßnahmen mit einem Bonus ab einem Mindest-Level) und genau einen **Angriff**.
+- **Angriffe (`attacks`):** Grundschweregrad, Schaden je Stufe (`s_unit`), KZ-Änderung bei vollem Schaden und bei voller Abwehr (`kz_at_full_damage`, `kz_at_full_mitigation`), Deckel der Abwehr (`mitigation_cap`), CIA-Auswirkung (`cia_impact`) und ob Recovery wirkt (`allow_recovery`).
+- **Events (`events`):** Regelbasierte Karten je Welle mit klaren Effekten: KZ-Änderung, Budgetänderung, OPEX-Rabatt oder -Zuschlag je aktiver Maßnahme, Bonus je Maßnahme ab einem Level, Staffeln nach Maßnahmenlevel, Checklisten-Staffeln sowie der Kurswechsel (Pflicht-Maßnahmentausch im Change-Fenster).
+- **Abschluss-Event (`final_events`):** Das Budget Review mit Restbudget-Stufen und Überziehungsstrafe.
+- **Story:** Unternehmenssteckbrief, Anfrage- und Audit-Mail sowie Zeitungsartikel geben den Teams die Hinweise, die sie für ihre Planung brauchen.
 
 ---
 
-## Spielablauf (State‑Machine)
+## Spielablauf (State-Machine)
 
-1. **Discovery (Roleplay)**  
-   Teams stellen Fragen; der Facilitator beantwortet **kontextbezogen** (keine Lücken benennen).  
-   → Setze **Discovery‑Signale** (Skalen frei konfigurierbar).
-2. **Budgetverhandlung**  
-   Teams einigen sich auf ein Startbudget. **KZ‑Effekt** und **Erwartungen** sind regelbasiert (konfigurierbar).
-3. **Maßnahmenwahl**  
-   Teams wählen Maßnahmen und **Level**. **Abhängigkeiten** werden geprüft. **OPEX** wird notiert.
-4. **Welle**  
-   a) Events anwenden (Trigger)  
-   b) Angriffe deterministisch auflösen (siehe „Deterministische Auflösung“)  
-   c) **OPEX** zahlen & **Erholung** anwenden (falls konfiguriert)
-5. **Change‑Fenster**  
-   Levelwechsel, Kündigen, Hinzufügen (wirksam **ab der nächsten Welle**); nach der Kurswechsel‑Welle zusätzlich der Pflicht‑Maßnahmentausch.
-6. **Abschluss & Debrief**  
-   Einfache **Auswertung** (1–2 Tabellen) und Reflexion.
+Der Ablaufplan mit Blöcken, Dauern und Pausen steht in `session_schedule` und wird als Seite „Ablaufplan der Veranstaltung“ im Spielleitungs-Heft gedruckt; hier steht nur die Reihenfolge.
 
-> **Hinweis:** Anzahl Wellen, Events und Angriffe pro Welle sind **frei konfigurierbar**.
+1. **Einführung (Intro)**  
+   Das Intro-Deck erklärt Spielidee und Rollen.
+2. **Story und Gruppenarbeit**  
+   Teams lesen die Story-Dokumente und erarbeiten sich daraus ein Bild des Unternehmens. Die Spielleitung beantwortet Fragen **kontextbezogen** und benennt keine Lücken.
+3. **Welle 0 (Übung)**  
+   Ein durchgerechnetes Übungsbeispiel (`uebung-welle-0.pdf`) mit eigenen Werten aus dem Block `practice`; es zählt nicht für die Wertung.
+4. **Budgetverhandlung und Maßnahmenwahl**  
+   Teams einigen sich auf ein Budget-Tier, wählen Maßnahmen und **Level**. **Abhängigkeiten** werden geprüft, **OPEX** wird notiert.
+5. **Die Wellen**  
+   Jede Welle: a) Events anwenden, b) den Angriff deterministisch auflösen (siehe „Deterministische Auflösung“), c) **OPEX** zahlen und **Erholung** anwenden (falls konfiguriert).
+6. **Change-Fenster**  
+   Nach jeder Welle außer der letzten: Levelwechsel, Kündigen, Hinzufügen (wirksam **ab der nächsten Welle**); nach der Kurswechsel-Welle zusätzlich der Pflicht-Maßnahmentausch.
+7. **Abschluss und Budget Review**  
+   Einmal nach der letzten Welle: Restbudget-Bonus oder Überziehungsstrafe, danach Klammerung der KZ.
+8. **Debriefing**  
+   Feste Reihenfolge der Stufen (Reaktion, Beschreibung, Analyse, Anwendung) mit den Fragen der Seite „Debriefing-Fragen“ im Spielleitungs-Heft.
+
+> **Hinweis:** Anzahl der Wellen, Events und der Blöcke des Ablaufs sind in der Konfiguration festgelegt.
 
 ---
 
-## Discovery (Hinweis‑Logik, ohne „Lücken“ zu nennen)
+## Story, Hinweise und Schleier
 
-- **Signale**: Jedes Themenfeld (z. B. OT‑Betrieb, OEM‑Audit, SaaS‑Abhängigkeit, Lieferanteneinbindung, Schutz von IP) erhält einen **Kontextscore**.  
-- **Deterministische Effekte (konfigurierbar):**
-  - **Gewichts‑Deltas** je CIA‑Dimension (z. B. A höher bei OT‑Dauerbetrieb).
-  - **Angriffsselektion** (z. B. OT‑Störung/SaaS‑Outage/Exfiltration/Supply‑Chain).
-  - **Schwere‑ oder Erwartungs‑Mods** (z. B. Anhebung `baseSeverity` oder `kzUnit` für besonders kritische Themen).
-- **Mini‑Tipps**: Der Facilitator gibt **kontextuelle Hinweise** („Wiederanlauf steigert Lieferfähigkeit“), **ohne** konkrete Lücken zu benennen.
+- **Schleier:** Vor der Welle bleiben die Angriffe verschleiert. Den Namen und die genauen Werte eines Angriffs erfahren die Teams erst, wenn seine Welle läuft (Angriffsarbeitsblatt). Die Mechanik selbst ist immer transparent: Formeln, Gewichte und Schwellen sind offen.
+- **Hinweise statt Lücken:** Die Story-Dokumente enthalten Hinweise, die auf die späteren Angriffe zeigen, ohne eine Lücke zu benennen. Die **Hinweis-Matrix** im Spielleitungs-Heft zeigt, welcher Angriff aus welchen Dokumenten erschlossen werden kann.
+- **Pflege:** Die Zuordnung liegt in `content/clues.toml`. `uv run planspiel clues` zeigt die Matrix und prüft sie: Jeder Angriff braucht Hinweise aus mehreren Dokumenten.
+- **Mini-Tipps:** Die Spielleitung gibt **kontextuelle Hinweise** („Wiederanlauf steigert Lieferfähigkeit“), **ohne** konkrete Lücken zu benennen.
 
 ---
 
 ## Maßnahmen (L1/L2/L3) & Abhängigkeiten
 
-- **Level‑Wirkung (funktional):**
-  - **CIA‑Beiträge:** L1 < L2 < L3 (Steigerungskurven frei konfigurierbar).
-  - **Mitigation gegen Angriffe:** L1 = gering, L2 = mittel, L3 = hoch (z. B. –1/–2/–3; **Werte frei**).
+- **Level-Wirkung (funktional):**
+  - **CIA-Beiträge:** L1 < L2 < L3 (Steigerungskurven frei konfigurierbar). Die Summe der Beiträge über alle aktiven Maßnahmen ergibt das Team-CIA.
+  - **Bonus je Welle:** Jede Welle hat Bonusmaßnahmen, die ab einem Mindest-Level einen Bonus zur Gesamtreduktion beitragen.
 - **Abhängigkeiten (Beispiele, inhaltlich realistisch; Werte/Level frei):**
-  - EDR/XDR auf hohem Level verlangt ein Mindest‑Level bei SIEM/MDR.
-  - PAM auf hohem Level verlangt ein Mindest‑Level bei Asset‑/CMDB.
-  - Backups mit hohem Schutzgrad empfehlen Mindest‑Level bei DR/BCP.
-  - OT‑Allow‑Listing ist wirksamer in Kombination mit Netzsegmentierung.
+  - EDR/XDR auf hohem Level verlangt ein Mindest-Level bei SIEM/MDR.
+  - PAM auf hohem Level verlangt ein Mindest-Level bei Asset-/CMDB.
+  - Backups mit hohem Schutzgrad empfehlen Mindest-Level bei DR/BCP.
+  - OT-Allow-Listing ist wirksamer in Kombination mit Netzsegmentierung.
 - **Breite statt Monokultur:** Das Design belohnt **breite Abdeckung** über **einseitige Maximierung**.
 
 ---
 
 ## Events (regelbasiert)
 
-- **Trigger‑Typen:** Zeit/Welle, Discovery‑Signal, Maßnahme(n) vorhanden/nicht vorhanden, Team‑entscheidungsabhängig.  
-- **Effekt‑Typen:** `budgetDelta`, `kzDelta`, `severityMod` (global/targeted), `kzFactor`, `damageFactor`, `opexPenalty`, **oder** KZ‑Bonus bei Compliance‑Treffern.  
-- **Planbarkeit:** Alle Events ergeben sich **deterministisch** aus den Triggern – **keine Überraschungen** bei aufmerksamer Discovery & Planung.
+- **Trigger:** Welle, in der die Karte gezogen wird, und der Stand der Maßnahmen (aktiv oder nicht, Mindest-Level, Level-Staffel).  
+- **Effekt-Typen:** KZ-Änderung, Budgetänderung, OPEX-Rabatt je aktiver Maßnahme, KZ-Bonus je Maßnahme ab einem Level, Staffeln und Checklisten nach Maßnahmenlevel sowie der Kurswechsel.  
+- **Karten:** Jede Eventkarte nennt ihre Welle („Event in Welle N“).  
+- **Planbarkeit:** Alle Events ergeben sich **deterministisch** aus dem Stand der Maßnahmen, **keine Überraschungen** bei sorgfältiger Planung.
 
 ---
 
 ## Angriffe (konfigurierbar)
 
-- **Felder:** `id`, `name`, `targetCIA`, `baseSeverity`, `sUnit`, `kzUnit`, `ciaImpactPerStep={c,i,a}`, `mitigationRefs`.  
-- **Beispiele (Domänenbezug):** Ransomware (Office‑IT), Phishing/BEC, OT‑Netzstörung (MES/PLC), SaaS‑Outage, Datenexfiltration (IP), Supply‑Chain/CI‑CD.  
-- **Domänenlogik:** Jeder Angriff adressiert **primär** eines der CIA‑Ziele, kann aber **sekundäre** Effekte auf andere haben.
+- **Felder:** `base_severity`, `s_unit`, `kz_at_full_damage`, `kz_at_full_mitigation`, `mitigation_cap`, `cia_impact`, `allow_recovery`; je Welle zusätzlich Gewichte, E-Schwelle und Bonusmaßnahmen (`waves`).  
+- **Beispiele (Domänenbezug):** Ransomware (Office-IT), OT-Netzstörung (MES/PLC), Datenexfiltration (IP).  
+- **Domänenlogik:** Jeder Angriff adressiert **primär** eines der CIA-Ziele, kann aber **sekundäre** Effekte auf andere haben; die Gewichte der Welle bilden das ab.
 
 ---
 
 ## Deterministische Auflösung (Formeln, symbolisch)
 
-> Alle Variablen sind **konfigurierbar**; die Formeln bleiben **fix**.
+> Alle Variablen sind **konfigurierbar**; die Formeln bleiben **fix** und **linear**.
 
-- **Mitigation‑Summe:**  
-  `M_sum = min(MIT_CAP, Summe(Level‑Mitigations aller passenden Maßnahmen))`
-- **Endschwere:**  
-  `G = max(0, baseSeverity + Σ(eventSeverityMods) − M_sum)`
-- **Auswirkungen:**  
-  - **Schaden:** `Damage = G * sUnit * Π(damageFactors)`  
-  - **KZ:** `ΔKZ = − G * kzUnit * Π(kzFactors)` (Klammerung auf 0…100)  
-  - **CIA‑Mali:** je Stufe `G` nach Angriffsspezifikation (`ciaImpactPerStep`)
-- **Erholung (Ende Welle):** Optionaler **Recovery‑Faktor** (z. B. über Backups/DR) reduziert temporäre CIA‑Mali um einen **konfigurierbaren Anteil**.
+- **E-Wert:** `E-Wert = Team_C * wC + Team_I * wI + Team_A * wA`
+- **Gesamtbonus:** Summe der Boni der Bonusmaßnahmen der Welle, die ihr Mindest-Level erreichen.
+- **Gesamtreduktion:** `Gesamtreduktion = E-Wert + Gesamtbonus`
+- **Reduktion über Schwelle:**  
+  `Reduktion über Schwelle = min(mitigation_cap, max(0, Gesamtreduktion − e_threshold))`  
+  Das sind die Fälle des Arbeitsblatts: Fall 1 (Gesamtreduktion höchstens Schwelle: keine Reduktion), Fall 2 (zwischen Schwelle und Deckel) und Fall 3 (Deckel erreicht).
+- **Schweregrad:**  
+  `Schweregrad = max(0, base_severity * severity_multiplier − Reduktion über Schwelle)`
+- **Schaden:**  
+  `Schaden = Schweregrad * s_unit`, wenn der Angriff `allow_recovery` erlaubt, zusätzlich `* (1 − Recovery)`; Recovery ist der höchste Recovery-Wert (je Level in der Maßnahme) unter den aktiven Maßnahmen.
+- **KZ-Änderung des Angriffs (linear interpoliert):**  
+  `KZ-Delta = kz_at_full_damage + (Reduktion über Schwelle / mitigation_cap) * (kz_at_full_mitigation − kz_at_full_damage)`
+- **Rundung (wie auf Papier):** Die KZ-Änderung je Welle (Angriff + Events) wird genau einmal auf eine ganze Zahl gerundet, ab ,5 vom Betrag aufgerundet (+2,5 → +3, −2,5 → −3); danach wird die KZ auf 0–100 begrenzt. E-Wert, Gesamtreduktion, Reduktion über Schwelle und Schweregrad bleiben exakt; der Schaden bleibt exakt in ganzen Euro.
+- **Erholung (Ende Welle):** Der **Recovery-Wert** der Maßnahme (z. B. Backups/DR, je Level konfiguriert) reduziert den Schaden um einen **konfigurierbaren Anteil**, sofern der Angriff Recovery erlaubt.
 
 ---
 
-## Wellen‑Ziel (E‑Wert) & Scoring
+## Wellen-Ziel (E-Wert) & Scoring
 
-- **Team‑CIA:** `Team_C`, `Team_I`, `Team_A` = Summe der Maßnahmen‑CIA.  
-- **Gewichteter Erfüllungsgrad:**  
-  `E = Team_C * wC + Team_I * wI + Team_A * wA`
-- **E‑Schwelle:** pro Welle konfigurierbar; nur die Gesamtreduktion (E‑Wert + Gesamtbonus) oberhalb der Schwelle mindert den Angriff. Einen eigenen KZ‑Bonus/Malus für ein E‑Ziel gibt es nicht.
-- **Rundung (wie auf Papier):** Die KZ-Änderung je Welle (Angriff + Events) wird genau einmal auf eine ganze Zahl gerundet, ab ,5 vom Betrag aufgerundet (+2,5 → +3, −2,5 → −3); danach wird die KZ auf 0–100 begrenzt. E-Wert, Gesamtreduktion, Reduktion über Schwelle und Schweregrad bleiben exakt; der Schaden bleibt exakt in ganzen Euro.
+- **Team-CIA:** `Team_C`, `Team_I`, `Team_A` = Summe der Maßnahmen-CIA.  
+- **E-Schwelle:** pro Welle konfigurierbar; nur die Gesamtreduktion (E-Wert + Gesamtbonus) oberhalb der Schwelle mindert den Angriff. Einen eigenen KZ-Bonus/Malus für ein E-Ziel gibt es nicht.
 - **Return on Security (RoS):**
-Gesamtkosten  = eigene Sicherheitsausgaben = Σ Init + Σ Init‑Differenzen aus Hochstufungen und neuen Maßnahmen im Change‑Fenster + Σ OPEX je Welle (Level der jeweiligen Welle) + Kurswechsel‑Differenz
+Gesamtkosten  = eigene Sicherheitsausgaben = Σ Init + Σ Init-Differenzen aus Hochstufungen und neuen Maßnahmen im Change-Fenster + Σ OPEX je Welle (Level der jeweiligen Welle) + Kurswechsel-Differenz
 Verluste      = Sum(Damage über alle Angriffe)
 Vermeidete Verluste = Sum(Basisverluste ohne Mitigation) − Verluste
 RoS           = (Vermeidete Verluste − Gesamtkosten) / Gesamtkosten
 
-Nicht enthalten: Event‑Effekte auf Kosten oder Budget (Straf‑OPEX, OPEX‑Rabatte wie „Operative Unterstützung“, Budget‑Kürzungen wie „Sparprogramm“); sie zählen nur für das Budget.
+Nicht enthalten: Event-Effekte auf Kosten oder Budget (Straf-OPEX, OPEX-Rabatte wie „Operative Unterstützung“, Budget-Kürzungen wie „Sparprogramm“); sie zählen nur für das Budget.
 
-> **Einfach auswertbar:** Alle relevanten Größen (Kosten, Verluste, KZ, E) lassen sich in **1–2 Tabellen** zusammenfassen (siehe Vorlagen unten).
+- **Final-Index:** Der Vergleichswert für die Spielleitung über Teams und Tiers ist `weight_kz * KZ + weight_ros * RoS₂`; RoS₂ ist die RoS auf zwei Nachkommastellen gerundet (ab ,5 vom Betrag aufrunden). Die Gewichte stehen im Config-Block `final_index`; das Teamheft führt die RoS-Seite, das Debriefing vergleicht die Teams anhand von KZ, RoS und Final-Index.
 
 ---
 
@@ -159,7 +164,7 @@ Nicht enthalten: Event‑Effekte auf Kosten oder Budget (Straf‑OPEX, OPEX‑Ra
 - **Abhängigkeiten:** Hängen andere Maßnahmen von der wegfallenden ab, senkt oder kündigt das Team sie im selben Fenster passend, denn nach jedem Fenster müssen alle Abhängigkeiten gültig sein. Die Simulation senkt dafür minimal ab: jede betroffene Maßnahme auf das höchste Level, dessen Abhängigkeiten noch erfüllt sind.
 - **Kein Tausch möglich:** War in der Kurswechsel‑Welle keine oder jede Maßnahme aktiv, entfällt der Tausch für das Team. Normale Züge im Fenster bleiben erlaubt.
 - **Platzierung:** Es gibt höchstens einen Kurswechsel, und nicht in der letzten Welle, weil danach kein Change‑Fenster folgt.
-- **Überholter Kartentext:** Die MHP‑Karte mit der Erstattung der Differenz gilt nicht mehr; maßgeblich sind die Beschreibung in der Config und dieser Abschnitt.
+- **Maßgeblich:** Die Beschreibung des Events in der Config und dieser Abschnitt; die alte Erstattung der Differenz gibt es nicht mehr.
 
 ---
 
@@ -178,60 +183,82 @@ Nicht enthalten: Event‑Effekte auf Kosten oder Budget (Straf‑OPEX, OPEX‑Ra
 ## Spielbarkeit & Moderation
 
 - **Einfachheit wahren:**  
-- Beschränke Anzahl Maßnahmenkarten, Angriffe und Events auf ein **überschaubares Set** (alles konfigurierbar).  
-- **Transparenz**: Formeln und Trigger offenlegen; Effekte **kurz begründen** („B X − M Y + Event Z ⇒ G“).
-- **Discovery‑Hinweise:** Immer **kontextualisiert** (Zielbild), niemals **Lücke benennen**.
-- **Realitätsnähe:** OT‑Abhängigkeiten, SaaS‑Prozesse, Lieferkette, Identity/Logging/Backups in stimmigen Relationen halten (über Parameter).
+  - Beschränke Maßnahmenkarten, Angriffe und Events auf ein **überschaubares Set** (alles konfigurierbar).  
+  - **Transparenz:** Formeln und Trigger offenlegen; Effekte **kurz begründen** („E-Wert + Gesamtbonus − Schwelle ⇒ Reduktion ⇒ Schweregrad“).
+- **Hinweise:** Immer **kontextualisiert** (Zielbild), niemals **Lücke benennen**; der Schleier vor den Angriffen bleibt bis zu ihrer Welle bestehen.
+- **Realitätsnähe:** OT-Abhängigkeiten, SaaS-Prozesse, Lieferkette, Identity/Logging/Backups in stimmigen Relationen halten (über Parameter).
+- **Probelauf:** Vor der Veranstaltung führt die Spielleitung den Ablauf allein nach den ausgedruckten Unterlagen durch und trägt Zeiten, Unklarheiten und Rechenfehler in das Probelauf-Protokoll ein.
 
 ---
 
-## Auswertungsvorlagen (2 Tabellen genügen)
+## Spielmaterial (erzeugt)
 
-> Kopiere die Vorlagen und trage **nur eure Entscheidungen & Ergebnisse** ein (keine zusätzlichen Tools nötig).
+Alle Dateien liegen als PDF in `final_documents/generated/` und werden aus `simulation_config.json` und `content/texte.toml` erzeugt, nie von Hand gepflegt. Die Druckliste im Spielleitungs-Heft nennt je Datei, wie oft sie für jedes Team und für die Spielleitung gedruckt wird.
 
-### Tabelle 1 – Entscheidungen & Kosten (Team‑Übersicht)
-| Phase | Entscheidung | Maßnahme/Level | Init‑Kosten | OPEX/Welle | Begründung/Notizen |
-|---|---|---|---|---|---|
-| Discovery | Signale (Kurz) | – | – | – | z. B. OT‑Betrieb ausgeprägt, OEM‑Audit bald |
-| Budget | Startbudget | – | – | – | Trade‑off Erwartung/KZ |
-| Wellen‑Start | Maßnahmen‑Set | Mx L* … | Σ | Σ | Abhängigkeiten erfüllt? |
-| Change‑Fenster | Levelwechsel / Kündigen / Hinzufügen / Maßnahmentausch (Kurswechsel) | Mx L* → L* | Δ Init (netto, nie negativ) | neues OPEX ab nächster Welle | Abhängigkeiten erfüllt? |
+**Für die Teams:**
 
-### Tabelle 2 – Ergebnisse je Welle (E, KZ, Schäden, CIA)
-| Welle | Gewichte (wC/wI/wA) | Team‑CIA (C/I/A) | **E** | KZ Δ (Welle) | Angriffe (kurz) | Sum Schaden | CIA‑Mali (temporär) | Recovery angewandt? |
-|---|---|---|---:|---:|---|---:|---|---|
-| 1 | [ ] / [ ] / [ ] | [ ] / [ ] / [ ] | [ ] | [ ] | A1: G=…, A2: G=… | [ ] | C−… I−… A−… | Ja/Nein |
-| 2 | [ ] / [ ] / [ ] | [ ] / [ ] / [ ] | [ ] | [ ] | A1: G=…, A2: G=… | [ ] | C−… I−… A−… | Ja/Nein |
-| 3 | [ ] / [ ] / [ ] | [ ] / [ ] / [ ] | [ ] | [ ] | A1: G=…, A2: G=… | [ ] | C−… I−… A−… | Ja/Nein |
+- `spieler-teamheft.pdf`: Teamheft mit Budget und Planung, einer Tracking-Seite je Welle und der Seite zu RoS und Budget Review. Es ersetzt die früheren Auswertungstabellen.
+- `spieler-massnahmenkarten.pdf` und `spieler-eventkarten.pdf`: die Karten, Werte und Texte aus der Konfiguration.
+- `spieler-so-funktioniert-eine-welle.pdf`: die Erklärseite zum Ablauf einer Welle.
+- `spieler-unternehmenssteckbrief.pdf`, `spieler-anfrage-mail.pdf`, `spieler-audit-mail.pdf`, `spieler-zeitungsartikel.pdf`: die Story-Dokumente mit den Hinweisen.
+- `uebung-welle-0.pdf`: das durchgerechnete Übungsblatt für Welle 0.
+- `angriff-1_ransomware.pdf`, `angriff-2_ot.pdf`, `angriff-3_exfil.pdf`: die Angriffsarbeitsblätter mit den Rechenschritten der Auflösung. Sie werden erst zu Beginn ihrer Welle ausgegeben.
 
-> **Finale Kennzahlen (unter der Tabelle):**  
-> **Gesamtkosten:** [ ] **Gesamtverluste:** [ ] **Vermeidete Verluste:** [ ] **RoS:** [ ] **Finale KZ:** [ ]
+**Nur für die Spielleitung (nicht an Teams ausgeben):**
+
+- `spielleitung-uebersicht.pdf`: das Spielleitungs-Heft mit Ablaufplan, Druckliste, Kennwerten, Prüfzeilen, Lösungsschlüsseln, Debriefing-Fragen und der Hinweis-Matrix.
+- `spielleitung-was-ist-neu.pdf`: das Blatt „Was ist neu“ für Spielleitungen der MHP-Runde mit den geänderten Regeln, dem geänderten Ablauf, dem neuen Material und der Gegenüberstellung alter und neuer Werte. Die alten Werte stammen aus `content/mhp_baseline.json`, dem eingefrorenen Stand der MHP-Runde; nur dieses Blatt liest die Datei.
+- `spielleitung-probelauf.pdf`: das Probelauf-Protokoll.
 
 ---
 
 ## Parametrisierung (ohne feste Zahlen)
 
-> Alle Werte sind **frei wählbar** und sollten vor dem Spiel **einfach** auf einer Seite dokumentiert werden.
+> Alle Werte sind **frei wählbar** und stehen an einer Stelle: `simulation_config.json`.
 
-- **KZ‑Startwert**, **KZ‑Effekte** je Budgetspanne.  
-- **Gewichte pro Welle (wC,wI,wA)** und **E‑Schwellen**.  
-- **Mitigation‑Cap** pro Angriff, **Level‑Mitigation** (L1/L2/L3).  
-- **Überziehungsstrafe X** je angefangene Schrittweite (Budget Review).  
-- **Angriffswerte**: `baseSeverity`, `sUnit`, `kzUnit`, `ciaImpactPerStep`.  
-- **Event‑Trigger** und **Effekt‑Faktoren** (Budget/KZ/Severity/Straf‑OPEX).  
-- **Recovery‑Faktor** und Bedingungen (z. B. über Backups/DR).  
-- **Abhängigkeitsmatrix** für L3‑Maßnahmen.
+- **Budget-Tiers** (`budget_tiers`): Budget, KZ-Startwert und Schweregrad-Multiplikator je Tier.
+- **Wellen** (`waves`): Gewichte (wC, wI, wA), E-Schwelle und Bonusmaßnahmen.
+- **Angriffe** (`attacks`): Grundschweregrad, Schadenseinheit, KZ-Endpunkte, Deckel der Abwehr, CIA-Auswirkung, Recovery.
+- **Maßnahmen** (`measures`): Init, OPEX, CIA-Beiträge und Recovery je Level sowie die Abhängigkeitsmatrix.
+- **Events** (`events`) und **Abschluss-Event** (`final_events`): Effekte, Staffeln, Restbudget-Stufen und die Überziehungsstrafe `overspend_penalty` (X je angefangene Schrittweite).
+- **Final-Index** (`final_index`): Gewichte von KZ und RoS.
+- **Übung** (`practice`): die Werte des Übungsblatts für Welle 0.
+- **Veranstaltung** (`session_schedule`): Blöcke mit Dauern, Teamzahl, Personen je Team, Druckliste und Debriefing-Stufen.
+- **Referenzpläne** (`reference_plans`) und **Referenzstrategien** (`reference_strategies`): Grundlage der Lösungsschlüssel und der Balance-Prüfungen.
+- **Prosa** liegt in `content/texte.toml`; Ziffern in dieser Prosa sind nur erlaubt, wenn sie in `content/digit_allowlist.toml` stehen. `content/clues.toml` ordnet die Hinweise den Angriffen zu, `content/mhp_baseline.json` hält den eingefrorenen Stand der MHP-Runde.
 
-> **Empfehlung:** Beginne mit **wenigen** Maßnahmen/Angriffen/Events und **skalieren** bei Bedarf.
+> **Empfehlung:** Beginne mit **wenigen** Maßnahmen/Angriffen/Events und **skaliere** bei Bedarf.
+
+---
+
+## Druckmaterial erzeugen
+
+**Reihenfolge einer inhaltlichen Änderung:** `simulation_config.json` → `README.md` → `content/texte.toml` → `uv run planspiel print` → `uv run planspiel print --check` → `final_documents/generated/` committen. Zahlen stehen nur in der Konfiguration; die Texte und das Material ziehen nach.
+
+```
+uv run planspiel validate
+uv run planspiel texts
+uv run planspiel clues
+uv run planspiel print
+uv run planspiel print --check
+```
+
+- `validate` prüft die Konfiguration (Struktur, Handrechenbarkeit, Ablaufplan); `texts` prüft `content/texte.toml` (Abdeckung, Ziffern, Story-Regeln); `clues` zeigt und prüft die Hinweis-Matrix.
+- `print` baut alle PDFs (LaTeX, LuaLaTeX über MiKTeX) in `final_documents/generated/` und schreibt eine `manifest.json`. Jede Datei trägt einen Stand-Stempel („Stand Datum · Hash“); auf einem Arbeitsstand mit lokalen Änderungen an einer Eingabe endet er auf „+lokal“. Solche Stände sind nicht zum Committen gedacht.
+- `print --check` baut kein TeX, sondern prüft, ob die eingecheckten PDFs zum aktuellen Stand von Konfiguration, Texten und Vorlagen passen (Exit 0 aktuell, 1 veraltet, 2 Umgebungsfehler).
+- Die Angriffsarbeitsblätter, Kartensätze, das Übungsblatt und das Spielleitungs-Heft haben keinen zweiten, von Hand gepflegten Stand. Das Intro-Deck und die Firmenfolien in `final_documents/` sind Eingaben der Veranstaltung, keine erzeugten Dateien.
+- **Tests:** `uv run pytest` (schnell); Marker `pdf` baut echte PDFs (`uv run pytest -m pdf`), `slow` rechnet die volle Enumeration (`uv run pytest -m slow`), `balance` prüft die Design-Prinzipien einer Konfiguration (`uv run pytest tests -m balance`).
+- Die früheren Druckstände der MHP-Runde und die alten Generator-Skripte liegen unter `archive/` und gehen nicht in den Bau ein.
 
 ---
 
 ## Qualitätssicherung (ohne Zufall, ohne Komplexität)
 
 - **Determinismus prüfen:** Gleiche Inputs führen zu gleichen Outcomes.  
-- **Balance testen:** Keine einzelne Maßnahme/Strategie darf **dominant** sein.  
-- **Realitätscheck:** Mapping zu echten Szenarien (OT‑Stillstand, Exfil, SaaS‑Ausfall, Phishing, Supply‑Chain) plausibel?  
-- **Spielzeit & Verständlichkeit:** In einem Durchlauf sollte die Dokumentation **auf eine Seite + 2 Tabellen** passen.
+- **Balance testen:** Keine einzelne Maßnahme/Strategie darf **dominant** sein (siehe Balance-Bericht unten).  
+- **Realitätscheck:** Mapping zu echten Szenarien (OT-Stillstand, Exfil, Ransomware) plausibel?  
+- **Handrechnung:** Die Werte auf den Angriffsarbeitsblättern müssen von Hand nachrechenbar bleiben; das ist ein hartes Designkriterium.  
+- **Spielzeit & Verständlichkeit:** Der Probelauf bestätigt, dass der Ablaufplan trägt und die Unterlagen ohne Rückfragen reichen.
 
 ---
 
