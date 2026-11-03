@@ -211,15 +211,21 @@ def _flow_phases(content) -> list:
     ]
 
 
-def test_flow_overview_is_visible_and_lists_the_phases_in_order(slides, slide_texts, content):
-    assert slides[FLOW_SLIDE - 1]._element.get("show") != "0"
-    text = slide_texts[FLOW_SLIDE]
-    previous = -1
-    for phase in _flow_phases(content):
-        position = text.replace("-\n", "-").find(phase)
-        assert position > previous, phase
-        previous = position
-    assert [line for line in text.splitlines() if line.strip().isdigit()] == ["1", "2", "3", "4", "5", "6"]
+def _flow_columns(slide) -> list:
+    """(number, label) of every phase group on the flow slide, left to right."""
+    columns = []
+    for shape in slide.shapes:
+        if shape.shape_type == 6:
+            texts = [t for t in _texts_of(shape.shapes) if t.strip()]
+            assert len(texts) == 2, texts
+            columns.append((shape.left, texts[0], texts[1]))
+    return [(number, label) for _, number, label in sorted(columns)]
+
+
+def test_flow_overview_is_visible_and_lists_the_phases_in_order(slides, content):
+    slide = slides[FLOW_SLIDE - 1]
+    assert slide._element.get("show") != "0"
+    assert _flow_columns(slide) == [(str(i), phase) for i, phase in enumerate(_flow_phases(content), start=1)]
 
 
 def test_flow_overview_has_no_attack_name_no_amount_and_no_minutes(cfg, content, slide_texts):
