@@ -15,6 +15,7 @@ from planspiel.cards import build_event_deck, build_measure_deck
 from planspiel.master import build_master_sheet
 from planspiel.practice import build_practice_document
 from planspiel.printmodel import build_attack_sheets
+from planspiel.probelauf import build_probelauf_sheet
 from planspiel.story import Mail, Steckbrief, Zeitungsartikel, build_story_documents
 from planspiel.was_neu import build_was_neu_sheet
 from planspiel.wave_page import build_wave_page
@@ -136,6 +137,14 @@ def master_sheet(cfg, texts, env: jinja2.Environment, clues) -> Dict[str, str]:
     return {sheet.job: env.get_template("master.tex.j2").render(sheet=sheet)}
 
 
+def probelauf_sheet(cfg, texts, env: jinja2.Environment, clues) -> Dict[str, str]:
+    """The one-page dry-run protocol, rendered with probelauf.tex.j2; nothing without a session schedule."""
+    sheet = build_probelauf_sheet(cfg, texts)
+    if sheet is None:
+        return {}
+    return {sheet.job: env.get_template("probelauf.tex.j2").render(sheet=sheet)}
+
+
 STORY_TEMPLATES = {
     Steckbrief: "story_steckbrief.tex.j2",
     Zeitungsartikel: "story_zeitungsartikel.tex.j2",
@@ -168,7 +177,7 @@ def was_neu_sheet(cfg, texts, env: jinja2.Environment, baseline) -> Dict[str, st
 DocumentBuilder = Callable[..., Dict[str, str]]
 DOCUMENT_BUILDERS: Tuple[DocumentBuilder, ...] = (
     attack_worksheets, measure_cards, event_cards, team_booklet, wave_page, story_documents, practice_document,
-    master_sheet,
+    master_sheet, probelauf_sheet,
 )
 
 
