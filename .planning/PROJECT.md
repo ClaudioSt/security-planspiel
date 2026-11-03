@@ -2,7 +2,7 @@
 
 ## What This Is
 
-An offline, paper/whiteboard IT-security business game ("CIA-Planspiel Automotive") for student teams (3 teams × 5 people, one afternoon, ~3h). Teams act as consultants for the fictional automotive supplier MechTech: they negotiate a budget, pick security measures at levels L1–L3, and face deterministic events and three attack waves, optimizing customer satisfaction (KZ), CIA goal fulfilment and Return on Security (RoS). This repo holds the game design, the central parameter config and the Python tooling for simulation, balance checks and print-material generation — not a runtime for playing the game.
+An offline, paper-only IT-security business game ("CIA-Planspiel Automotive") for student teams (3 teams × 5 people, one afternoon, ~3h). Teams act as consultants for the fictional automotive supplier MechTech: they negotiate a budget, pick security measures at levels L1–L3, and face deterministic events and three attack waves, optimizing customer satisfaction (KZ), CIA goal fulfilment and Return on Security (RoS). This repo holds the game design, the central parameter config and the Python tooling for simulation, balance checks and print-material generation — not a runtime for playing the game.
 
 This project refines the game after its live run at the MHP workshop (2026-09): fix the rule issues participants hit, make the mechanics understandable, generate all print material from `simulation_config.json`, and rebalance.
 
@@ -93,7 +93,7 @@ Every balance decision is checked against these (measurable via full enumeration
 - **Hand-calculability**: all worksheet formulas stay linear and computable by hand — facilitators calculate live on paper
 - **Determinism**: same inputs → same outputs within a session; no randomness in outcomes. Scenario draw between sessions is allowed (v4, SCEN) — v1 code must not hard-code "exactly one scenario"
 - **Single source of truth**: every number comes from `simulation_config.json`; order of change is config → README → print material
-- **Format**: 3 teams × 5, one afternoon (~3h), paper/whiteboard — unchanged
+- **Format**: 3 teams × 5, one afternoon (~3h), paper only — unchanged
 - **Language**: game content/UI German; code, commits bodies, docs English (commit subject per user convention)
 - **Timeline**: no fixed next workshop date — refine at own pace
 - **Workflow**: TDD for simulation changes; balance verified by full enumeration, not only `balance_analysis.py`

@@ -4,7 +4,7 @@
 
 **CIA-Planspiel Automotive — Post-Workshop Refinement**
 
-An offline, paper/whiteboard IT-security business game ("CIA-Planspiel Automotive") for student teams (3 teams × 5 people, one afternoon, ~3h). Teams act as consultants for the fictional automotive supplier MechTech: they negotiate a budget, pick security measures at levels L1–L3, and face deterministic events and three attack waves, optimizing customer satisfaction (KZ), CIA goal fulfilment and Return on Security (RoS). This repo holds the game design, the central parameter config and the Python tooling for simulation, balance checks and print-material generation — not a runtime for playing the game.
+An offline, paper-only IT-security business game ("CIA-Planspiel Automotive") for student teams (3 teams × 5 people, one afternoon, ~3h). Teams act as consultants for the fictional automotive supplier MechTech: they negotiate a budget, pick security measures at levels L1–L3, and face deterministic events and three attack waves, optimizing customer satisfaction (KZ), CIA goal fulfilment and Return on Security (RoS). This repo holds the game design, the central parameter config and the Python tooling for simulation, balance checks and print-material generation — not a runtime for playing the game.
 
 This project refines the game after its live run at the MHP workshop (2026-09): fix the rule issues participants hit, make the mechanics understandable, generate all print material from `simulation_config.json`, and rebalance.
 
@@ -15,7 +15,7 @@ This project refines the game after its live run at the MHP workshop (2026-09): 
 - **Hand-calculability**: all worksheet formulas stay linear and computable by hand — facilitators calculate live on paper
 - **Determinism**: same inputs → same outputs within a session; no randomness in outcomes. Scenario draw between sessions is allowed (v4, SCEN) — v1 code must not hard-code "exactly one scenario"
 - **Single source of truth**: every number comes from `simulation_config.json`; order of change is config → README → print material
-- **Format**: 3 teams × 5, one afternoon (~3h), paper/whiteboard — unchanged
+- **Format**: 3 teams × 5, one afternoon (~3h), paper only — unchanged
 - **Language**: game content/UI German; code, commits bodies, docs English (commit subject per user convention)
 - **Timeline**: no fixed next workshop date — refine at own pace
 - **Workflow**: TDD for simulation changes; balance verified by full enumeration, not only `balance_analysis.py`
@@ -28,42 +28,57 @@ This project refines the game after its live run at the MHP workshop (2026-09): 
 
 ## Languages
 
-- Markdown — the vast majority of the repo (game design, rules, facilitator scripts, printable forms; ~30 top-level `.md` files plus `docs/`)
-- Python 3 — supporting scripts for simulation, balance-checking, and print-material generation (`simulate_outcomes.py`, `analyze_simulation_results.py`, `balance_analysis.py`, `generate_attack_calculator.py`, `generate_from_template.py`, `generate_pptx_cards.py`)
-- JSON — `simulation_config.json` (central parameter source), `sim_low.json` / `sim_med.json` (pre-generated simulation result dumps, gitignored variants also exist: `simulation_results*.json`)
+- Python 3.12, uv-managed (`.python-version`, `python-preference = "only-managed"`): the `planspiel` package, root wrapper scripts and the tests
+- LaTeX (LuaLaTeX) via Jinja2 templates in `print/templates/*.tex.j2` and `print/planspiel.sty`: the print material
+- TOML: `content/texte.toml` (all prose), `content/clues.toml`, `content/digit_allowlist.toml`, `content/giveaway_terms.toml`
+- JSON: `simulation_config.json` (single source of every number), `content/mhp_baseline.json` (frozen MHP-round values), `tests/golden/*.json`
+- Markdown: `README.md` (German rulebook) and `.planning/` artifacts
 
-## Runtime
+## Runtime and package management
 
-- Python 3.12, uv-managed (`.python-version`); dependencies pinned in `pyproject.toml` and locked in `uv.lock`; setup: `uv sync`; run everything via `uv run`.
-- `pyproject.toml` + `uv.lock` (uv_build, flat layout, console script `planspiel`); dev dependency pytest.
+- `pyproject.toml` + `uv.lock`; setup `uv sync`, run everything through `uv run` (never the PATH `python`)
+- Build backend `uv_build` (flat layout, `module-name = "planspiel"`); console script `planspiel = planspiel.cli:main`
+- LuaLaTeX from MiKTeX; the required packages are listed in `print/miktex-packages.txt`
+- `git` is a runtime dependency of `uv run planspiel print` (the stamp reads the commit date and the working-tree state of the inputs)
 
-## Frameworks
+## Dependencies
 
-- None — these are standalone scripts, not an application framework. No web framework, no CLI framework beyond stdlib `argparse`.
-- None detected. No `pytest`/`unittest` test files, no test config, no CI test runner found in the repo.
-- None — no bundler, linter config, formatter config, or task runner found (no `.eslintrc`, `Makefile`, `tox.ini`, etc.).
+- `jinja2==3.1.6`: strict-undefined template rendering of the print set (`planspiel/render.py`)
+- `python-pptx==1.0.2`: reads the hand-maintained intro deck in tests and the inventory check; the generator scripts that wrote decks are archived
+- `pytest==9.1.1` (dev group): test runner
+- `pypdf==6.19.0` (dev group): inspects built PDFs in the `pdf` tests
+- No Excel library any more (the calculator generator is archived)
 
-## Key Dependencies
+## Commands
 
-- `openpyxl` — used in `generate_attack_calculator.py` (imports `Workbook`, `Font`, `Alignment`, `Border`, `Side`, `PatternFill`, `Protection`, `DataBarRule`, `FormulaRule`, `DataValidation`, `get_column_letter`) to programmatically build the Excel attack-damage calculator (`angriff_berechnung.xlsx`)
-- `python-pptx` (import name `pptx`) — used in `generate_pptx_cards.py` (imports `Presentation`, `RGBColor`, `MSO_SHAPE`, `MSO_SHAPE_TYPE`, `PP_ALIGN`, `MSO_ANCHOR`, `Inches`, `Pt`) to generate measure/attack/event card decks as `.pptx` files
-- `simulate_outcomes.py` — `argparse`, `itertools`, `json`, `dataclasses`, `typing`, `copy`
-- `analyze_simulation_results.py` — `argparse`, `json`, `typing`; also does `from simulate_outcomes import (...)` (intra-repo dependency, not a package — both scripts must live in the same directory)
-- `balance_analysis.py` — stdlib only (`json`, `itertools`-style enumeration logic, `dataclasses`)
-- `generate_from_template.py` — uses `pathlib.Path`, `sys`, `json`, plus `python-pptx`/`openpyxl` depending on which template it targets (mixed generator script)
-- Git LFS — `.gitattributes` declares `filter=lfs diff=lfs merge=lfs` for `simulation_results.json`, `simulation_results_high.json`, `sim_high.json`. Note: `sim_low.json` (14 MB) and `sim_med.json` (52 MB) are present in the working tree but are **not** listed in `.gitattributes` for LFS tracking — they are tracked as regular (large) blobs in git history as currently configured.
+| Command | Purpose |
+|---------|---------|
+| `uv run planspiel validate` | check `simulation_config.json` (structure, hand-calculability, schedule) |
+| `uv run planspiel texts` / `clues` | check `content/texte.toml` and the clue matrix |
+| `uv run planspiel print` | build all PDFs into `final_documents/generated/` plus `manifest.json` |
+| `uv run planspiel print --check` | verify the committed PDFs against the current inputs, no TeX run |
+| `uv run planspiel gate [--paths]` | overspend gate and calibration of X |
+| `uv run planspiel tausch` / `referenzpfade` | swap layer and reference game paths |
+| `uv run python balance_analysis.py --layers all --paths` | full balance report over the full enumeration |
+| `uv run python simulate_outcomes.py --budget-tier <tier>` | per-tier enumeration and summary |
 
-## Configuration
+## Testing
 
-- No `.env` files or environment-variable-based configuration. All simulation parameters live in `simulation_config.json` (top-level keys: `default_budget_tier`, `base_cia`, `budget_tiers`, `waves`, `attacks`, `measures`, `events`).
-- Scripts accept config path via CLI flag, not env var: `simulate_outcomes.py --config simulation_config.json` (default), `analyze_simulation_results.py --config <path>` (optional, used for RoS calculation).
-- No formal build config. "Build" in this repo means running the generator scripts directly:
+- `uv run pytest`: fast suite, `addopts = "-m 'not slow and not pdf' --strict-markers"`
+- `uv run pytest -m pdf`: builds real PDFs with LuaLaTeX; skips when no TeX engine or package is available
+- `uv run pytest -m slow`: full enumeration over all dependency-valid combinations per tier
+- `uv run pytest tests -m balance`: Phase-6 design-principle checks, options `--planspiel-config` and `--planspiel-content-dir` select a candidate
+- No CI runner; no formatter or linter configuration
 
-## Platform Requirements
+## Configuration and generated data
 
-- Any OS with uv installed; `uv sync` provisions Python 3.12 and all dependencies.
-- `jq` recommended (per `CLAUDE.md`) for inspecting the large `sim_low.json` / `sim_med.json` files without loading them fully into an editor or Python REPL
-- None — this is not a deployed application. "Production" output is the printed/exported game material in `final_documents/` (docx/pptx/pdf) used live at the tabletop session; there is no server, hosting, or runtime deployment target.
+- All numbers come from `simulation_config.json`; the script paths take `--config`, there are no environment variables
+- `build/`, `simulation_summary_*.json`, `simulation_results*.json`, `sim_{low,med,high}.json` and `simulation_full_*.jsonl` are gitignored (large or local artifacts)
+- `final_documents/generated/` is committed output of `uv run planspiel print`; `archive/` is history outside the build
+
+## Platform requirements
+
+- Windows 11 with bash, uv, MiKTeX (LuaLaTeX, `kpsewhich`) and git; no server, no deployment target: production is the printed set
 
 <!-- GSD:stack-end -->
 
@@ -71,73 +86,48 @@ This project refines the game after its live run at the MHP workshop (2026-09): 
 
 ## Conventions
 
-## Scope Note
+## Single sources
 
-- `simulate_outcomes.py` (545 lines) — deterministic outcome enumeration
-- `analyze_simulation_results.py` (197 lines) — result summarization/top-N reporting
-- `balance_analysis.py` (431 lines) — strategy comparison / dominance checks
-- `generate_attack_calculator.py` (522 lines) — Excel calculator generation (openpyxl)
-- `generate_from_template.py` (642 lines) — PPTX generation from existing templates (python-pptx)
-- `generate_pptx_cards.py` (694 lines) — PPTX generation from scratch (python-pptx)
+- Numbers live only in `simulation_config.json`; prose lives only in `content/texte.toml`. Order of a content change: `simulation_config.json` -> `README.md` -> `content/texte.toml` -> `uv run planspiel print` -> `uv run planspiel print --check` -> commit `final_documents/generated/`
+- The validator rejects prose in the config (`schema.prose_in_config`); the digit lint rejects digits in prose unless the exact digit string is in `content/digit_allowlist.toml`
+- Game formulas have exactly one definition, in `planspiel/rules.py` (guarded by `tests/test_single_definition.py`); the root wrappers, enumeration, balance code and print models call it and never re-implement it
+- Formulas stay fixed and linear (hand-calculable on the worksheets); only operands are configurable
 
-## Naming Patterns
+## Arithmetic and rounding
 
-- Lowercase snake_case, verb-first for action scripts: `simulate_outcomes.py`, `analyze_simulation_results.py`, `generate_pptx_cards.py`, `generate_attack_calculator.py`.
-- `balance_analysis.py` is the one noun-first exception.
-- snake_case throughout, no exceptions observed: `load_config`, `compute_cia`, `compute_e_value`, `apply_attack`, `check_event_condition`, `selection_to_key`, `run_simulation`.
-- Verb-prefixed and descriptive: `compute_*`, `apply_*`, `check_*`, `load_*`, `run_*`, `format_*`, `summarize_*`.
-- Every script's entry point is named `main()` and guarded by `if __name__ == "__main__":` (`simulate_outcomes.py:531-545`).
-- snake_case for locals (`kz_start`, `total_damage`, `e_value`, `cia_mali`).
-- Domain abbreviations used consistently and without redefinition across files: `kz` (Kundenzufriedenheit), `cia` (Confidentiality/Integrity/Availability dict with keys `c`/`i`/`a`), `e_value`/`e_threshold`/`e_divisor` (Effektivitätswert), `opex`/`init` (cost categories), `ros` (Return on Security). These map 1:1 to terms defined in `simulation_config.json` and `README.md` — do not introduce new abbreviations without adding them to the README glossary.
-- Constants/lookup tables are SCREAMING_SNAKE_CASE module-level dicts: `COLORS`, `MEASURE_META` (`generate_pptx_cards.py:23-36`, `generate_from_template.py:23+`), `HEADER_FONT`, `INPUT_FILL`, `THIN_BORDER` (`generate_attack_calculator.py:16-29`).
-- PascalCase, singular nouns matching domain entities from `simulation_config.json`: `Attack`, `BonusMeasure`, `Wave`, `MeasureLevel`, `Measure`, `BudgetTier`, `Event` (`simulate_outcomes.py:10-74`).
-- All declared with `@dataclass`; no manual `__init__`. Optional/defaulted fields use `= 0.0` or `field(default_factory=list)` rather than mutable default arguments.
+- Exact arithmetic with `fractions.Fraction` or integer scaling for E-Wert, Gesamtreduktion, reduction over threshold and severity; damage stays exact in whole euros
+- The KZ change of a wave (attack plus events) is rounded once, half away from zero (`planspiel.rounding.round_half_away`), then KZ is clamped to 0-100; the built-in `round()` is forbidden in `planspiel/rules.py` and `planspiel/rounding.py`
+- RoS2 (RoS to two decimals) goes through `rules.ros_two_decimals`; the Final-Index is `weight_kz * KZ + weight_ros * RoS2`
 
-## Code Style
+## Print model rules
 
-- No formatter config detected (no `pyproject.toml`, `.flake8`, `black`/`ruff` config files in the repo). Indentation is consistently 4 spaces; line lengths are generally kept under ~110 characters but this is not enforced by tooling — it appears to be manual discipline only.
-- No linter config detected. No CI workflow runs linting (no `.github/workflows/`).
-- Type hints are used for function signatures (`Dict`, `List`, `Tuple`, `Optional` from `typing`) in the simulation/analysis scripts (`simulate_outcomes.py`, `analyze_simulation_results.py`, `balance_analysis.py`) but are absent from the two PPTX/Excel generator scripts, which favor large literal dict/constant blocks over typed helpers.
-- Every script starts with `#!/usr/bin/env python3`.
-- `balance_analysis.py` additionally declares `# -*- coding: utf-8 -*-` (needed because of German umlauts in print strings); the other scripts rely on Python 3's UTF-8 default and have no explicit encoding declaration despite also containing umlauts in string literals.
+- Print models (`planspiel/printmodel.py`, `cards.py`, `booklet.py`, `wave_page.py`, `story.py`, `practice.py`, `master.py`, `schedule.py`, `debrief.py`, `was_neu.py`, `probelauf.py`) hold finished strings; templates only loop and place, they never format numbers
+- Numbers reach TeX only as strings built in code; `render.tex_escape` is the Jinja `finalize` hook and rejects raw numbers and undefined names
+- Every print job name carries an audience prefix (`spieler-`, `uebung-`, `angriff-`, `spielleitung-`, see `planspiel/audience.py`); an unclassified job is a build error
+- Veil: player-facing pages never name an attack before its wave and never print a real wave's weights or bonus links (`planspiel/veil.py`, `content/giveaway_terms.toml`); story documents carry clues from `content/clues.toml`, never a named gap
+- Every PDF carries the stamp "Stand <date> · <hash>", ending in "+lokal" for a dirty build; only a clean, committed build is committed (`planspiel/stamp.py`)
+- Generated PDFs in `final_documents/generated/` are never edited by hand; `archive/` is never read by the build (`tests/test_no_archive_references.py`)
 
-## Import Organization
+## Naming and language
 
-## Config-Driven Design Pattern (the core convention)
+- snake_case modules, functions and variables; verb-first function names (`compute_*`, `build_*`, `check_*`, `load_*`); PascalCase dataclasses and NamedTuples named after domain entities (`Wave`, `Attack`, `Measure`, `Config`)
+- Domain abbreviations are used unexplained and must not be extended without a README glossary entry: `kz`, `cia`, `e_value`, `e_threshold`, `opex`, `init`, `ros`
+- Code identifiers, docs and commit messages are English; all game content, print output, CLI output and test-facing messages for the facilitator are German
+- Commit messages follow conventional commits (`feat:`, `fix:`, `test:`, `docs:`, `chore:`, with a phase-plan scope such as `(07-11)`)
 
-- `simulation_config.json` is the **only** source of numeric game-balance values (budgets, severities, weights, costs, thresholds, event effects).
-- Every script that touches game numbers loads this file at runtime via `load_config()` / `json.loads(path.read_text())` and converts it into typed dataclasses (`simulate_outcomes.py:77-163`) or plain dicts (`generate_attack_calculator.py:14-18`, `generate_pptx_cards.py`/`generate_from_template.py` load `MEASURE_META` for descriptive text only, not numbers).
-- **Rule enforced by `CLAUDE.md`:** no fixed numeric value may be introduced into prose Markdown documents (README, card decks, parameter tables, calculation worksheets) without that same value existing in `simulation_config.json`. Documentation and config must never drift apart. When changing a number, change `simulation_config.json` first, then propagate to `README.md` and any affected card/form documents.
-- Formulas themselves (e.g., `M_sum = min(MIT_CAP, ΣLevel-Mitigations)`, `G = max(0, baseSeverity + ΣeventSeverityMods − M_sum)`, `E = C*wC + I*wI + A*wA`, RoS formula) are fixed in code/`README.md` — only the operands are configurable, never the formula shape.
-- Descriptive/narrative content (measure names, focus descriptions, level explanations in `MEASURE_META`) is hardcoded in the generator scripts (`generate_pptx_cards.py`, `generate_from_template.py`) because it is prose, not a balance number — this is consistent with the "no numbers in prose without config sync" rule, which targets quantities, not descriptive text.
+## Testing
 
-## Comment Style
+- TDD for rules and simulation changes: write the failing test first, commit RED, then GREEN
+- pytest markers: `slow` (full enumeration), `pdf` (real LuaLaTeX builds), `balance` (design-principle checks on a chosen config); the fast suite excludes `slow` and `pdf`
+- Tests use the real code and real config, no mocks for the rules; golden files in `tests/golden/` pin reference outputs
+- Balance is verified by full enumeration, not by hand-picked strategies; `uv run planspiel gate` guards that overspending never pays off
 
-- Present in the generator and balance scripts, absent in `simulate_outcomes.py` and `analyze_simulation_results.py`.
-- When present, written in German, describing purpose and sometimes important caveats in capitals, e.g. `WICHTIG: Zusätzliche Boni werden NICHT angezeigt (nur Basis-Mitigationswerte)` (`generate_pptx_cards.py:10`, `generate_from_template.py:13`).
-- Inconsistent: some functions have triple-quoted docstrings describing return tuples (`compute_mitigation_from_e_value`, `apply_attack`, `apply_events` in `simulate_outcomes.py:209-352`), most do not (e.g. `compute_cia`, `compute_costs`, `load_config` have no docstring, relying on type hints and naming).
-- Where present, docstrings use a lightweight "Returns:" block style rather than full Google/NumPy docstring format.
-- Used sparingly to mark logical sections within long functions, e.g. `# Check E-Target`, `# Apply attack damage to KZ`, `# Apply events`, `# Clamp KZ` inside `simulate_selection` (`simulate_outcomes.py:383-400`).
-- `balance_analysis.py` uses inline comments to annotate manually verified cost totals next to each `Strategy` definition, e.g. `# 26+36+34+46+16+32=190` (`balance_analysis.py:43`) — these are load-bearing sanity checks against `simulation_config.json` values and must be updated if measure costs change.
+## Module and comment style
 
-## Language Mixing (German/English)
-
-- **Code identifiers (functions, variables, classes): English.** `compute_cia`, `apply_attack`, `BudgetTier`, `kz_delta` (despite `kz` itself being a German-origin abbreviation for Kundenzufriedenheit, it is treated as a domain term, not translated).
-- **CLI help text, docstrings, print/report output: German**, matching the target audience (German-speaking students/facilitators) — e.g. `parser.add_argument("--budget-tier", ..., help="Budget tier name (low|medium|high).")` is in English in `simulate_outcomes.py:518`, but `balance_analysis.py` print statements (`"BALANCE-ANALYSE: Security-Planspiel"`, `"BUDGET-TIER: ..."`) are entirely in German.
-- **No fixed rule enforced by tooling** — the split is pragmatic: code stays in English (as is conventional for Python), anything user/facilitator-facing (docstrings explaining intent, console output, error-adjacent messaging) is German. Follow this split when adding new scripts: keep identifiers English, keep human-readable output German.
-- `MEASURE_META` dict content (focus/description/levels_desc) is German prose describing measures for non-technical players — this mirrors the corresponding German Markdown documents (`MASSNAHMENKARTEN.md`) and must stay consistent with them.
-
-## Documentation Conventions (the cross-cutting rule)
-
-- **Numbers-in-sync rule:** Any concrete number appearing in prose (e.g., a budget figure, a severity value, an E-target threshold, a cost) must also exist in `simulation_config.json`. If you change a number in a `.md` file, you must change it in `simulation_config.json` too (and vice versa) — never let one drift from the other.
-- **Order of changes:** `simulation_config.json` → `README.md` (if a formula/rule changed) → affected card/form documents (`MASSNAHMENKARTEN.md`, `ANGRIFFSKARTEN.md`, `PARAMETER_TABELLE.md`, `BERECHNUNGSBOGEN_WELLE*.md`, etc.).
-- **Verification step after content changes:** run `simulate_outcomes.py` then `balance_analysis.py` to confirm no dominant strategy or numeric inconsistency was introduced before regenerating any print material.
-- The `.md` documents are the actual game-design product; editing them is content/editorial work, not refactoring, but the numeric-sync discipline still applies as if it were code.
-- Generated binary outputs (`final_documents/*.docx,.pptx,.pdf`, `pptx_output/*.pptx`) must never be hand-edited — only regenerated via the generator scripts or their source templates.
-
-## Function Design
-
-## Module Design
+- Type hints on function signatures, with builtin generics such as `tuple[str, ...]`
+- Module docstrings state the requirement ID and decision IDs they implement (for example `BAL-06 (D-16)`); inline comments explain why, in German or English
+- Config dataclasses are plain `@dataclass` and treated as read-only after loading; pure functions over the result store and config are preferred to stateful classes
+- No linter or formatter configuration; 4-space indentation, lines kept near 110 characters by discipline
 
 <!-- GSD:conventions-end -->
 
@@ -145,112 +135,54 @@ This project refines the game after its live run at the MHP workshop (2026-09): 
 
 ## Architecture
 
-## System Overview
-
-```text
-
-```
-
-## Component Responsibilities
-
-| Component | Responsibility | File |
-|-----------|----------------|------|
-| Game rules / formulas (source of truth) | Defines state machine, all formulas (M_sum, G, E, RoS) | `README.md` |
-| Central numeric configuration | Single source for budget tiers, waves, attacks, measures, events, base CIA | `simulation_config.json` |
-| Outcome enumerator | Deterministically enumerates all valid measure-level combinations and their resulting KZ/damage/CIA/cost | `simulate_outcomes.py` |
-| Result analyzer | Loads enumerated results, ranks by Final-Index (weighted KZ + RoS) | `analyze_simulation_results.py` |
-| Balance checker | Defines named "strategies" (e.g. all-L3, cheap-only) and compares their outcomes to detect dominant/broken strategies; reuses `simulate_outcomes.py` internals via direct import | `balance_analysis.py` |
-| Excel attack calculator generator | Builds `angriff_berechnung.xlsx`-style worksheets from config, for paper-free wave calculation | `generate_attack_calculator.py` |
-| PPTX template filler | Loads a PowerPoint template and find/replaces placeholder text (CIA values, costs, dependencies) per measure/event slide | `generate_from_template.py` |
-| PPTX deck builder (from scratch) | Programmatically builds measure-card and event-card slide decks using `python-pptx` shapes | `generate_pptx_cards.py` |
-| Pre-computed result caches | Large (10–50 MB) JSON dumps of `simulate_outcomes.py` runs for the low/medium budget tiers, used by analysis/balance scripts without recomputation | `sim_low.json`, `sim_med.json` |
-
 ## Pattern Overview
 
-- No persistence layer beyond flat JSON files (`simulation_config.json` as input, `sim_low.json`/`sim_med.json` as cached output)
-- No concurrency, no networking, no users/sessions — every script is a single-process batch job invoked via `argparse` from the command line
-- Determinism is the central design constraint: the same config + same measure selection must always produce the same numbers, both in the live game (by hand) and in the simulation scripts (in code). There is deliberate duplication of formula logic between `README.md` (human-readable spec) and `simulate_outcomes.py` (executable spec) — keeping these two in sync is a documented project convention (see `CLAUDE.md`)
-- The Python scripts are siblings, not a layered application: `balance_analysis.py` is the only script with an internal code dependency, importing functions directly from `simulate_outcomes.py` (see `balance_analysis.py:15`)
+- Config-driven batch tooling: `simulation_config.json` and `content/` go in, enumerations, balance reports and stamped PDFs come out; there is no server, no persistence and no state between runs
+- Determinism is the central constraint: same config and same decisions give the same numbers, in code and by hand on the worksheets
+- One definition of the rules (`planspiel/rules.py`) feeds the enumeration, the balance checks and every printed value, so worksheets, cards and simulation cannot drift
+- The package is layered; layers import downward only, the root scripts are thin wrappers
 
 ## Layers
 
-- Purpose: Define all tunable numbers for the game
-- Location: `simulation_config.json`
-- Contains: `default_budget_tier`, `base_cia`, `budget_tiers`, `waves`, `attacks`, `measures`, `events`
-- Used by: every Python script below
-- Purpose: Compute every legal outcome deterministically
-- Location: `simulate_outcomes.py`
-- Depends on: `simulation_config.json` (loaded via `load_config()`, `simulate_outcomes.py:77`)
-- Used by: `balance_analysis.py` (direct import), manually piped into `analyze_simulation_results.py` via JSON file
-- Purpose: Rank outcomes, detect dominant strategies, sanity-check balance
-- Location: `analyze_simulation_results.py`, `balance_analysis.py`
-- Depends on: simulation result JSON (either freshly generated or `sim_low.json`/`sim_med.json`)
-- Used by: human game designer, before content/print finalization
-- Purpose: Turn config/content into printable or presentable artifacts
-- Location: `generate_attack_calculator.py`, `generate_from_template.py`, `generate_pptx_cards.py`
-- Depends on: `simulation_config.json` plus existing `.pptx` templates (for `generate_from_template.py`)
-- Produces: files in `pptx_output/`, source material for `final_documents/`
-- Purpose: Actual game execution
-- Location: Printed Markdown forms (`FORMULARE.md`, `BERECHNUNGSBOGEN_WELLE*.md`, `TEAM_TRACKING_BOGEN.md`) and `final_documents/`
-- Depends on: nothing computational at runtime — facilitator applies the formulas from `README.md` by hand
+| Layer | Modules | Responsibility |
+|-------|---------|----------------|
+| Config | `simulation_config.json`, `planspiel/config.py`, `planspiel/validate.py` | load into typed dataclasses, validate structure, hand-calculability and schedule |
+| Content | `content/texte.toml`, `clues.toml`, `digit_allowlist.toml`, `giveaway_terms.toml`, `planspiel/texts.py` | load prose, digit lint, giveaway lint, clue matrix |
+| Rules | `planspiel/rules.py`, `rounding.py`, `fmt.py`, `review_text.py`, `eventtext.py` | exact formulas, paper rounding, budget review, Kurswechsel, number and text formatting |
+| Enumeration | `planspiel/enumerate.py`, `simulate.py`, `parallel.py`, `refpaths.py`, `choices.py` | all dependency-valid measure selections, swap layer, game paths |
+| Balance | `planspiel/gate.py`, `balance.py`, `strategies.py`, `rewarding.py`, `spread.py`, `index_weights.py`, `report.py`, `analyze.py` | overspend gate, design-principle checks, Final-Index weight, reports |
+| Print models | `planspiel/printmodel.py`, `cards.py`, `booklet.py`, `wave_page.py`, `story.py`, `practice.py`, `master.py`, `schedule.py`, `debrief.py`, `was_neu.py`, `probelauf.py` | build the finished strings of each document |
+| Print pipeline | `planspiel/render.py`, `veil.py`, `audience.py`, `texbuild.py`, `stamp.py`, `print/templates/`, `print/planspiel.sty` | Jinja2 render, veil scan, LuaLaTeX build, stamp and manifest, freshness check |
+| Entry points | `planspiel/cli.py` (`planspiel` console script), `simulate_outcomes.py`, `analyze_simulation_results.py`, `balance_analysis.py` | argparse commands and wrappers |
 
 ## Data Flow
 
-### Primary Content-Validation Path
-
-### Print Material Generation Path
+- Print path: `simulation_config.json` + `content/texte.toml` -> `config.load_config` and `validate` / `texts` checks -> rules and enumeration for derived values (answer keys, reference paths, key figures) -> print models -> Jinja2 templates (`render.render_all`) -> veil scan per audience -> `texbuild` runs LuaLaTeX -> `stamp` adds "Stand <date> · <hash>" and writes `manifest.json` -> PDFs in `final_documents/generated/`
+- Freshness path: `uv run planspiel print --check` recomputes the rendered TeX and the stamp hash without TeX and compares them with `manifest.json`; exit 0 current, 1 stale, 2 environment problem
+- Balance path: config -> full enumeration per budget tier (static layer, swap layer, game paths) -> `report` summaries -> `balance`, `gate`, `strategies`, `rewarding`, `spread` -> `balance_analysis.py` report with verdicts; `pytest -m slow` and `-m balance` run the same checks as tests
+- The MHP baseline `content/mhp_baseline.json` is read only by `was_neu.py` for the Was-ist-neu sheet; nothing else may import it
+- `archive/` (history, legacy generators, superseded MHP print material) is outside every data flow
 
 ## Key Abstractions
 
-- Purpose: Represents a security control selectable at level 0-3 (L1/L2/L3), with `costInit`, `costOpex`, `cia={c,i,a}`, `mitigations`, `eventEffects`, `dependencies`
-- Examples: `simulate_outcomes.py` `Measure` dataclass; content described in `MASSNAHMENKARTEN.md`; raw data in `simulation_config.json` under `measures`
-- Pattern: Plain dataclass loaded straight from JSON, no inheritance/polymorphism
-- Purpose: One round of play with CIA weights (`wC`, `wI`, `wA`), an E-target threshold, and a set of attacks
-- Examples: `simulation_config.json` under `waves`; described conceptually in `README.md` ("Wellen‑Ziel (E‑Wert) & Scoring")
-- Purpose: A deterministic threat event with `baseSeverity`, `sUnit`, `kzUnit`, `ciaImpactPerStep`, and references to measures that mitigate it
-- Examples: `simulation_config.json` under `attacks`; applied via `apply_attack` (`simulate_outcomes.py:237`); described in `ANGRIFFSKARTEN.md`
-- Purpose: Rule-based trigger (time/discovery-signal/measure-presence condition) with deterministic effects (`budgetDelta`, `kzDelta`, `severityMod`, `kzFactor`, `damageFactor`, `opexPenalty`)
-- Examples: `simulation_config.json` under `events`; checked via `check_event_condition` (`simulate_outcomes.py:288`) and applied via `apply_events` (`simulate_outcomes.py:313`)
-- Purpose: A hand-authored, named measure-selection used solely to probe for dominance/imbalance — not a concept that exists in the game itself
-- Examples: `define_strategies` (`balance_analysis.py:28`)
+- `Config` and its dataclasses (`Wave`, `Attack`, `Measure`, `BudgetTier`, `Event`) mirror `simulation_config.json` one to one
+- Print models: one model object per document, holding finished strings and fill lines; templates contain only layout and loops
+- Print job: a named document (`spieler-teamheft`, `angriff-1_ransomware`, `spielleitung-uebersicht`, ...) registered in `render.py` with an audience prefix that selects its veil profile
+- Stamp: content hash of the rendered TeX plus style, date of the last commit on the data inputs, "+lokal" for local changes
+- Reference plans and strategies: approved example paths and named strategies in the config, the basis of the answer keys and the balance checks
 
 ## Entry Points
 
-- Location: `simulate_outcomes.py`
-- Triggers: Manual invocation by game designer, e.g. `python3 simulate_outcomes.py --config simulation_config.json --budget-tier medium --output simulation_results.json`
-- Responsibilities: Full deterministic enumeration of outcomes; argument parsing in `parse_args()` (line 515), orchestration in `main()` (line 531)
-- Location: `analyze_simulation_results.py`
-- Triggers: Manual invocation after `simulate_outcomes.py` has produced a results file
-- Responsibilities: Ranking/summarizing outcomes by weighted Final-Index
-- Location: `balance_analysis.py`
-- Triggers: Manual invocation, no arguments required (`run_analysis()`, line 280)
-- Responsibilities: Strategy-vs-strategy comparison, dominance detection
-- Location: project root
-- Triggers: Manual invocation when print material needs regenerating after content changes
-- Responsibilities: Produce `.xlsx`/`.pptx` artifacts into `pptx_output/`
+- `uv run planspiel <validate|texts|clues|print|gate|tausch|referenzpfade>`: the main interface; `print --check` is the freshness gate before every commit that touches an input
+- `uv run python simulate_outcomes.py`, `analyze_simulation_results.py`, `balance_analysis.py`: wrappers around the package for per-tier enumeration, ranking and the full balance report
+- `uv run pytest` with the markers `slow`, `pdf` and `balance` verifies all of the above
 
-## Architectural Constraints
+## Constraints
 
-- **Threading:** None. Every script is single-threaded, synchronous, batch-style.
-- **Global state:** None beyond normal Python module-level constants (e.g. `MIT_CAP` style caps loaded from config at call time). No singletons, no shared mutable state across script invocations — each run reads `simulation_config.json` fresh.
-- **Circular imports:** None observed. `balance_analysis.py` imports from `simulate_outcomes.py` (one-directional); no other script imports another.
-- **Combinatorial explosion:** `simulate_outcomes.py` enumerates the full cross-product of measure-level selections, which is why `sim_low.json` is ~14 MB and `sim_med.json` is ~52 MB. Both files are explicitly flagged in `CLAUDE.md` as too large to read in full — must be parsed with `jq`/targeted Python rather than loaded wholesale.
-- **No runtime/production environment:** There is no deployment target, no server process, no persistent service. "Production" for this project means the printed contents of `final_documents/` used at the live game session.
-
-## Anti-Patterns
-
-### Treating this as a software application
-
-### Editing generated/binary output directly
-
-### Letting prose documentation and config drift apart
-
-## Error Handling
-
-- Config loading functions (`load_config` in `simulate_outcomes.py:77`, `load_config` in `generate_from_template.py:197`, `load_config` in `generate_pptx_cards.py:203`) assume well-formed JSON and will raise on malformed input rather than validating gracefully
-- Dependency/condition checks (`dependencies_satisfied`, `check_event_condition`) return booleans used to skip invalid combinations rather than raising — invalid measure combinations are filtered out of the enumeration, not flagged as errors
-
-## Cross-Cutting Concerns
+- No global mutable state; every run reads the config fresh; parallelism only inside enumeration (`--jobs`, `planspiel/parallel.py`)
+- Full enumerations are large; dumps are gitignored and parsed selectively
+- The build needs git history (stamp) and a TeX engine; `print --check` needs only git
+- Formulas stay linear so facilitators can recompute the worksheets by hand
 
 <!-- GSD:architecture-end -->
 
