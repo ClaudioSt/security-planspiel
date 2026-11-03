@@ -92,3 +92,10 @@ Decisions:
 - (e1) Slide-23 copy error (measure categories described with the threat texts): fix, yes.
 - (e2) Change-Fenster sentence on slide 34: no.
 Other deck findings: none, no outcome line needed.
+
+### Result review
+
+Question: "Ist die geänderte Einführungspräsentation so für den Probelauf am 2026-11-25 freigegeben?"
+Answer (verbatim): "Freigeben"
+Date: 2026-11-03
+Corrections: none. The edited deck is committed once with this record.
