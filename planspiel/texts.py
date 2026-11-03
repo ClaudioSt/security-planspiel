@@ -180,7 +180,7 @@ WAS_NEU_FLOW_IDS = ("whiteboard", "welle0", "debrief", "schedule")
 WAS_NEU_MATERIAL_IDS = ("generated", "veil", "clues", "teamheft", "wave_page", "practice")
 WAS_NEU_PART_IDS = (
     "kz", "per_started", "over_budget", "flat", "from_level", "level", "removed", "added", "yes", "no",
-    "boundary_above", "boundary_inclusive", "see", "total", "per_wave", "tier_from", "ros",
+    "boundary_above", "boundary_inclusive", "total", "per_wave", "tier_from", "ros",
 )
 WAS_NEU_FIELD_IDS = (
     "budget", "kz_start", "severity_multiplier", "base_cia", "e_threshold", "weights", "bonus", "min_level", "kz_ends",

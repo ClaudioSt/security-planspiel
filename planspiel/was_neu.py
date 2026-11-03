@@ -478,7 +478,7 @@ FLOW_IDS = WAS_NEU_FLOW_IDS
 MATERIAL_IDS = WAS_NEU_MATERIAL_IDS
 VALUE_GROUP_ORDER = BASELINE_GROUPS  # display order of the value rows
 # D-15: the value table shrinks first. Calibrated against the worst-case page proof in tests/test_was_neu_pdf.py.
-MAX_VALUE_ROWS = 20
+MAX_VALUE_ROWS = 19
 # Rows kept longest when the table is capped: budgets, KZ start and thresholds (meaning-changed rows always rank first).
 _FIRST_TIER_FIELDS = ("budget", "kz_start")
 _KZ_END_FIELDS = ("kz_at_full_damage", "kz_at_full_mitigation")
@@ -778,8 +778,8 @@ def build_was_neu_sheet(cfg: Config, texts: Texts, baseline: Optional[Baseline])
     flow_rows = (
         flow["whiteboard"],
         f"{wave_label(ablauf, practice.wave)}: {flow['welle0']}",
-        f"{flow['debrief']} {parts['see']} {debrief['title']} ({_number(debrief_block.minutes)} {unit}).",
-        f"{flow['schedule']} {parts['see']} {ablauf['title']} "
+        f"{flow['debrief']} {debrief['title']} ({_number(debrief_block.minutes)} {unit}).",
+        f"{flow['schedule']} {ablauf['title']} "
         f"({_number(schedule.total_minutes)} {unit} {parts['total']}, {parts['per_wave']} {wave_minutes} {unit}).",
     )
 

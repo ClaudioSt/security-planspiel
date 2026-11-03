@@ -699,7 +699,7 @@ questions = [
 [sheets.was_neu]
 title = "Was ist neu: Änderungen seit der MHP-Runde"
 notice = "Nur für die Spielleitung – nicht an Teams ausgeben"
-intro = "Dieses Blatt ist für Spielleitungen, die die MHP-Runde geleitet haben. Es fasst zusammen, was sich seitdem bei den Regeln, im Ablauf, im Material und bei den Werten geändert hat."
+intro = "Für Spielleitungen der MHP-Runde: was sich bei Regeln, Ablauf, Material und Werten geändert hat."
 rules_title = "Regeländerungen"
 flow_title = "Änderungen im Ablauf"
 material_title = "Neues Material"
@@ -725,8 +725,7 @@ yes = "ja"
 no = "nein"
 boundary_above = "gilt erst über der Grenze"
 boundary_inclusive = "gilt ab der Grenze einschließlich"
-see = "Siehe im Spielleitungsheft:"
-total = "insgesamt"
+total = "gesamt"
 per_wave = "je Welle"
 tier_from = "ab"
 ros = "RoS"
@@ -765,31 +764,31 @@ overspend = "Überziehung"
 
 [sheets.was_neu.rules.levelwechsel]
 heading = "Levelwechsel und Maßnahmentausch"
-text = "Levelwechsel heißt: dieselbe Maßnahme auf einem anderen Level. Kündigen ist ein Levelwechsel auf das niedrigste Level, Hinzufügen ein eigener Zug. Maßnahmentausch heißt: eine Maßnahme raus, eine andere rein. Den Begriff Maßnahmenwechsel der MHP-Runde gibt es nicht mehr."
+text = "Levelwechsel: dieselbe Maßnahme, anderes Level (Kündigen ist der Wechsel auf das niedrigste Level). Maßnahmentausch: eine Maßnahme raus, eine andere rein (früher Maßnahmenwechsel)."
 
 [sheets.was_neu.rules.kurswechsel]
 heading = "Kurswechsel"
-text = "Das Event erlaubt im Change-Fenster danach genau einen Pflicht-Maßnahmentausch: Eine aktive Maßnahme fällt weg, eine bisher inaktive kommt auf frei gewähltem Level hinzu. Der Kunde trägt deren Init bis zur Höhe der weggefallenen Maßnahme."
+text = "Das Event erlaubt im Change-Fenster danach genau einen Pflicht-Maßnahmentausch (eine aktive Maßnahme raus, eine inaktive rein); der Kunde trägt deren Init bis zur Höhe der weggefallenen."
 
 [sheets.was_neu.rules.downgrade]
 heading = "Herabstufen"
-text = "Im Change-Fenster dürfen Teams Level senken oder Maßnahmen kündigen. Init wird nie erstattet, die OPEX sinken erst ab der nächsten Welle."
+text = "Im Change-Fenster dürfen Teams Level senken oder Maßnahmen kündigen. Init wird nie erstattet, die OPEX sinken ab der nächsten Welle."
 
 [sheets.was_neu.rules.init_window]
 heading = "Init bei Hochstufung"
-text = "Wer im Change-Fenster ein Level erhöht oder eine Maßnahme hinzufügt, zahlt die Init-Differenz netto und sofort. Wirkung und OPEX zählen ab der nächsten Welle."
+text = "Wer im Change-Fenster ein Level erhöht oder eine Maßnahme hinzufügt, zahlt die Init-Differenz netto und sofort; Wirkung und OPEX gelten ab der nächsten Welle."
 
 [sheets.was_neu.rules.overspend]
 heading = "Überziehung"
-text = "Statt eines pauschalen Abzugs kostet das Überziehen am Ende des Spiels"
+text = "Statt pauschal kostet das Überziehen am Ende"
 
 [sheets.was_neu.rules.sparprogramm]
 heading = "Sparprogramm"
-text = "Rutscht ein Team durch das Sparprogramm ins Minus, zählt erst der Stand am Ende. Im Change-Fenster danach kann es durch Herabstufen oder Kündigen zurück ins Budget kommen."
+text = "Rutscht ein Team durch das Sparprogramm ins Minus, zählt erst der Stand am Ende; im Change-Fenster danach kann es durch Herabstufen oder Kündigen zurück ins Budget."
 
 [sheets.was_neu.rules.ros]
 heading = "RoS ohne Event-Effekte"
-text = "In die RoS gehen nur die eigenen Kosten ein: Init, OPEX und Init-Differenzen. Budget- und OPEX-Effekte von Events zählen weder als Abzug noch als Rabatt."
+text = "In die RoS gehen nur die eigenen Kosten ein (Init, OPEX, Init-Differenzen). Budget- und OPEX-Effekte von Events zählen weder als Abzug noch als Rabatt."
 
 [sheets.was_neu.rules.review_boundary]
 heading = "Budget-Review-Stufen"
@@ -797,31 +796,31 @@ text = "Die Stufen gelten ab der genannten Grenze einschließlich:"
 
 [sheets.was_neu.rules.e_target]
 heading = "E-Ziel"
-text = "Es gibt keinen KZ-Bonus oder -Malus mehr für das Erreichen eines E-Ziels. Auf dem Papier ist dafür nichts mehr zu tun."
+text = "Kein KZ-Bonus oder -Malus mehr für das Erreichen eines E-Ziels; auf dem Papier ist nichts zu tun."
 
 [sheets.was_neu.rules.rounding]
 heading = "Rundung der KZ"
-text = "Die KZ-Änderung einer Welle wird genau einmal gerundet, halbe Werte vom Betrag weg, und danach auf die Skala begrenzt."
+text = "KZ-Änderung je Welle: genau einmal runden (halbe Werte vom Betrag weg), danach auf die Skala begrenzen."
 
 [sheets.was_neu.rules.final_index]
 heading = "Neuer Final-Index"
-text = "Der Final-Index vergleicht die Teams. Die RoS wird vorher auf Hundertstel gerundet. Er rechnet:"
+text = "Vergleich der Teams; die RoS wird vorher auf Hundertstel gerundet. Er rechnet:"
 
 [sheets.was_neu.rules.event_order]
 heading = "Events zuerst"
 text = "Events sind der erste Schritt jeder Welle, vor dem Angriff."
 
 [sheets.was_neu.flow]
-whiteboard = "Das Whiteboard entfällt: Teams halten Budget, Maßnahmen und Rechnungen im Teamheft und auf den Arbeitsblättern fest."
-welle0 = "Neu ist eine Übungswelle vor der ersten echten Welle. Die Teams rechnen ein Beispiel gemeinsam durch."
-debrief = "Neu ist ein festes Debriefing mit Fragen und Datenimpulsen, geordnet in Stufen von der Reaktion bis zur Anwendung."
-schedule = "Der Ablauf folgt einem festen Plan mit Blöcken und Minutenangaben."
+whiteboard = "Das Whiteboard entfällt: Budget, Maßnahmen und Rechnungen stehen im Teamheft und auf den Arbeitsblättern."
+welle0 = "Neu ist eine Übungswelle vor der ersten echten Welle; die Teams rechnen ein Beispiel gemeinsam."
+debrief = "Neu ist ein festes Debriefing mit Fragen und Datenimpulsen im Spielleitungsheft:"
+schedule = "Fester Ablaufplan im Spielleitungsheft:"
 
 [sheets.was_neu.material]
-generated = "Alle Druckunterlagen sind jetzt generierte PDFs und ersetzen die Word- und PowerPoint-Dateien der MHP-Runde. Die Druckliste im Ablaufplan nennt die Menge je Datei."
-veil = "Angriffe bleiben bis zu ihrer Welle verdeckt: Das Arbeitsblatt nennt den Angriff erst, wenn er trifft. Die Rechenregeln sind von Anfang an offen."
-clues = "Die Hinweismatrix zeigt, welche Stelle der Unterlagen auf welchen Angriff hinweist. Ihr findet sie im Spielleitungsheft unter:"
-teamheft = "Das Teamheft führt durch die Planung und enthält die Tracking-Seite je Welle sowie die Seite zur RoS."
+generated = "Alle Druckunterlagen sind generierte PDFs und ersetzen die Word- und PowerPoint-Dateien der MHP-Runde."
+veil = "Angriffe bleiben bis zu ihrer Welle verdeckt und werden erst beim Treffer benannt; die Rechenregeln sind offen."
+clues = "Neu ist die Hinweismatrix zu den Angriffen im Spielleitungsheft:"
+teamheft = "Das Teamheft führt durch die Planung, mit Tracking-Seite je Welle und Seite zur RoS."
 wave_page = "Gebt vor der Übungswelle die Erklärseite aus:"
 practice = "Das Übungsblatt rechnet die Übungswelle mit allen Schritten vor."
 
