@@ -435,7 +435,8 @@ def evaluate_event(
     remaining_budget: Optional[float] = None,
 ) -> Tuple[int, int, int, str]:
     """
-    Evaluate a single event exactly as specified on Events_Security-Game.pptx.
+    Evaluate a single event exactly as specified on the archived MHP event deck Events_Security-Game.pptx
+    (folder mhp_print_material_2026-07).
 
     Returns: (kz_delta, opex_delta, budget_delta, effect_description)
     """

@@ -305,7 +305,7 @@
       "dependencies": []
     }
   },
-  "_comment_events": "Quelle: final_documents/Events_Security-Game.pptx (9 Folien). 'Backup & Recovery' (Folie 1) ist nicht separat aufgeführt, da identisch mit der M4-Recovery-Mechanik auf Angriffsebene (attacks.*.allow_recovery + measures.M4.levels.*.recovery: 0.10/0.30/0.50 -> Endschaden x 0.90/0.70/0.50).",
+  "_comment_events": "Quelle: archive/mhp_print_material_2026-07/Events_Security-Game.pptx (9 Folien). 'Backup & Recovery' (Folie 1) ist nicht separat aufgeführt, da identisch mit der M4-Recovery-Mechanik auf Angriffsebene (attacks.*.allow_recovery + measures.M4.levels.*.recovery: 0.10/0.30/0.50 -> Endschaden x 0.90/0.70/0.50).",
   "events": {
     "wave_1": [
       {

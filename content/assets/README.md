@@ -21,11 +21,11 @@ that were read from the hand-maintained documents (colours, fonts, page geometry
 
 | File | Origin | Licence / credentials |
 |------|--------|-----------------------|
-| `images/zeitungsartikel_bild_audit.png` | Copied byte for byte from `final_documents/Zeitungsartikel_bild_audit.png` (md5 `9d607b1920cd012c57f91ed1442aee37`), the image embedded in `Zeitungsartikel.docx` | Carries C2PA content credentials issued through OpenAI's media service; no prompt text. Grayscale, 1448 x 1086 |
-| `images/zeitungsartikel_bild_fabrik.png` | Copied byte for byte from `final_documents/Zeitungsartikel_bild_fabrik.png` (md5 `2557114b903d7ecb5377304949e13a1d`), the image embedded in `Zeitungsartikel.docx` | Carries C2PA content credentials issued through OpenAI's media service; no prompt text. Grayscale, 1448 x 1086. The picture shows a padlock screen and is kept deliberately as a visual clue |
+| `images/zeitungsartikel_bild_audit.png` | Copied byte for byte from `archive/mhp_print_material_2026-07/Zeitungsartikel_bild_audit.png` (md5 `9d607b1920cd012c57f91ed1442aee37`), the image embedded in `Zeitungsartikel.docx` | Carries C2PA content credentials issued through OpenAI's media service; no prompt text. Grayscale, 1448 x 1086 |
+| `images/zeitungsartikel_bild_fabrik.png` | Copied byte for byte from `archive/mhp_print_material_2026-07/Zeitungsartikel_bild_fabrik.png` (md5 `2557114b903d7ecb5377304949e13a1d`), the image embedded in `Zeitungsartikel.docx` | Carries C2PA content credentials issued through OpenAI's media service; no prompt text. Grayscale, 1448 x 1086. The picture shows a padlock screen and is kept deliberately as a visual clue |
 
-The originals stay in `final_documents/` until the legacy files are archived (LEG-01); the copies avoid
-changing that folder.
+The originals were archived in `archive/mhp_print_material_2026-07/` (Phase 7, LEG-01); the copies here are
+what the build uses.
 
 ## Rules
 

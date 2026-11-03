@@ -1,8 +1,13 @@
-# Inventory of the hand-maintained documents in `final_documents/`
+# Inventory of the hand-maintained documents of the MHP run
 
 Success criterion 5 of Phase 3 (D-19): every item of the hand-maintained docx, pptx, pdf and image files is
-accounted for, item by item. The file `tests/test_inventory.py` checks that each of the 20 files in
-`final_documents/` has a row of its own and that the targets exist.
+accounted for, item by item. The inventory covers the 20 files that were in `final_documents/` at the MHP run.
+The file `tests/test_inventory.py` checks that each of them has a row of its own and that the targets exist.
+
+## Location
+
+The 15 superseded files are in `archive/mhp_print_material_2026-07/` (Phase 7, LEG-01). The five kept manual
+files (intro deck, MHP company profile, VWI deck, two portraits) stay in `final_documents/`.
 
 Disposition vocabulary:
 
@@ -30,7 +35,7 @@ Shared rows list several full file names. Every file also has at least one row t
 | `Anfrage-Mail.docx` | Calibri 11 pt | carried→assets | `content/assets/GUIDELINES.md` |
 | `Anfrage-Mail.docx` | US Letter paper size | dropped | LaTeX builds A4 (A8) |
 | `Anfrage-Mail.pdf` | PDF render of `Anfrage-Mail.docx` | dropped | No content beyond the docx; PRINT-12 renders it from TOML |
-| `Audit-Mail.pdf` | Image-only mail, transcribed in the research appendix | carried→TOML | `story.audit_mail` (the original stays in `final_documents/` until LEG-01) |
+| `Audit-Mail.pdf` | Image-only mail, transcribed in the research appendix | carried→TOML | `story.audit_mail` (the original is in `archive/mhp_print_material_2026-07/`) |
 | `Angriff-1_Ransomware.docx` | Heading, scenario paragraph, CIA rationale, case sentences | carried→TOML | `attacks.ransomware.revealed` |
 | `Angriff-2_OT-Störung.docx` | Heading, scenario paragraph, CIA rationale, case sentences | carried→TOML | `attacks.ot.revealed` |
 | `Angriff-3_Datenexfiltration.docx` | Heading, scenario paragraph, CIA rationale, case sentences | carried→TOML | `attacks.exfil.revealed` |

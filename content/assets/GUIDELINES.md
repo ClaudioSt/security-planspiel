@@ -1,6 +1,6 @@
 # Design guidelines carried from the hand-maintained documents
 
-Facts read from the files in `final_documents/` (extracted 2026-10-08). They are the starting point for the
+Facts read from the files in `final_documents/` (now partly in `archive/mhp_print_material_2026-07/`; extracted 2026-10-08). They are the starting point for the
 LaTeX templates of Phases 4 and 5, not a binding style guide. Phase 4 decides what is kept.
 
 ## MHP theme (measure cards and event cards, theme name "MHP")

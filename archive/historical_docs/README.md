@@ -8,4 +8,8 @@ resolution).
 
 They are **not** synchronized with the config and are not a current
 reference. Current sources of truth: `simulation_config.json`, `README.md`,
-`final_documents/`. Kept here for historical reference only.
+`content/texte.toml` and `final_documents/generated/`. Kept here for historical
+reference only.
+
+`folienkonzept_spielphasen_mechtech.md` came from `docs/` (speaker prep for the
+MHP intro deck, outdated in Phase 7).
