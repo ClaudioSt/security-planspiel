@@ -70,7 +70,7 @@
 
 ### Legacy (LEG)
 
-- [ ] **LEG-01**: Legacy hand-maintained docx/pptx worksheets/cards, old pptx generators, `pptx_output/` and the Excel attack calculator are moved to `archive/`
+- [x] **LEG-01**: Legacy hand-maintained docx/pptx worksheets/cards, old pptx generators, `pptx_output/` and the Excel attack calculator are moved to `archive/`
 - [ ] **LEG-02**: README.md and CLAUDE.md describe the new pipeline and rules (print-sync section rewritten); manually maintained documents (intro deck, Audit-Mail, company profile) are checked for outdated rules
 
 ## v2 Requirements
@@ -165,7 +165,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | BAL-07 | Phase 6 | Complete |
 | BAL-08 | Phase 6 | Complete |
 | BAL-09 | Phase 6 | Complete |
-| LEG-01 | Phase 7 | Pending |
+| LEG-01 | Phase 7 | Complete |
 | LEG-02 | Phase 7 | Pending |
 
 **Coverage:**
