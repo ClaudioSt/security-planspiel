@@ -10,6 +10,7 @@ from planspiel import audience, printmodel, render, schedule, veil
 from planspiel.config import load_config
 from planspiel.printmodel import PrintModelError
 from planspiel.texts import PREWAVE_SHEETS, load_clues, load_content, load_texts, required_keys
+from planspiel.was_neu import BASELINE_FILE, load_baseline
 from tests.support import CONFIG_PATH, CONTENT_DIR, MINI_CONTENT_DIR, REPO_ROOT
 
 TEMPLATES = REPO_ROOT / "print" / "templates"
@@ -87,7 +88,8 @@ def test_attack_sheets_are_labelled_with_the_wave_id(cfg, texts):
 
 
 def test_the_print_list_is_exactly_the_set_of_rendered_jobs(cfg, texts, clues):
-    rendered = render.render_all(cfg, texts, TEMPLATES, clues=clues)
+    baseline = load_baseline(CONTENT_DIR / BASELINE_FILE)
+    rendered = render.render_all(cfg, texts, TEMPLATES, clues=clues, baseline=baseline)
     assert {row.job for row in cfg.session_schedule.print_list} == set(rendered)
     assert {row.file for row in schedule.print_list_rows(cfg, texts)} == {f"{job}.pdf" for job in rendered}
 

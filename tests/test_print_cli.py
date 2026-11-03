@@ -412,3 +412,46 @@ def test_a_missing_clues_file_stops_the_build_with_print_input(monkeypatch, call
     assert "ERROR print.input" in out
     assert "clues.toml" in out
     assert calls == []
+
+
+def _content_with_baseline(tmp_path, text):
+    import shutil
+
+    from planspiel.was_neu import BASELINE_FILE
+
+    content = tmp_path / "content"
+    shutil.copytree(MINI_CONTENT_DIR, content)
+    (content / BASELINE_FILE).write_text(text, encoding="utf-8")
+    return content
+
+
+def test_the_cli_hands_the_baseline_file_to_render_all(monkeypatch, calls, tmp_path):
+    from planspiel.was_neu import BASELINE_FILE, Baseline
+    from tests.support import CONTENT_DIR
+
+    monkeypatch.setattr(texbuild, "preflight", lambda **kwargs: [])
+    seen = []
+    monkeypatch.setattr(render, "render_all", lambda *args, **kwargs: seen.append(kwargs) or {"spieler-smoke": "x"})
+    assert main(_argv(tmp_path)) == 0
+    assert seen[-1]["baseline"] is None  # the mini content dir carries no baseline file
+    content = _content_with_baseline(tmp_path, (CONTENT_DIR / BASELINE_FILE).read_text(encoding="utf-8"))
+    assert main(_argv(tmp_path, **{"--content-dir": str(content)})) == 0
+    assert isinstance(seen[-1]["baseline"], Baseline)
+
+
+def test_a_malformed_baseline_stops_the_print_with_an_input_error(monkeypatch, calls, tmp_path, capsys):
+    monkeypatch.setattr(texbuild, "preflight", lambda **kwargs: [])
+    content = _content_with_baseline(tmp_path, "{ not json")
+    assert main(_argv(tmp_path, **{"--content-dir": str(content)})) == 1
+    out = capsys.readouterr().out
+    assert "ERROR print.input" in out and "mhp_baseline.json" in out
+    assert calls == []
+
+
+def test_a_malformed_baseline_makes_check_fail_with_two(monkeypatch, calls, tmp_path, capsys):
+    content = _content_with_baseline(tmp_path, '{"schema": 99}')
+    argv = _argv(tmp_path, **{"--content-dir": str(content)})
+    argv.insert(1, "--check")
+    assert main(argv) == 2
+    assert "ERROR print.input" in capsys.readouterr().out
+    assert calls == []

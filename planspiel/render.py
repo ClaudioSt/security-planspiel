@@ -16,6 +16,7 @@ from planspiel.master import build_master_sheet
 from planspiel.practice import build_practice_document
 from planspiel.printmodel import build_attack_sheets
 from planspiel.story import Mail, Steckbrief, Zeitungsartikel, build_story_documents
+from planspiel.was_neu import build_was_neu_sheet
 from planspiel.wave_page import build_wave_page
 
 _TEX_SPECIALS = str.maketrans(
@@ -151,7 +152,19 @@ def story_documents(cfg, texts, env: jinja2.Environment, clues) -> Dict[str, str
     }
 
 
+def was_neu_sheet(cfg, texts, env: jinja2.Environment, baseline) -> Dict[str, str]:
+    """The one-page "Was ist neu" sheet for facilitators of the MHP version, rendered with was_neu.tex.j2; nothing
+    without a session schedule or without a baseline. Not a regular builder: it alone receives the baseline (D-14)."""
+    if baseline is None:
+        return {}
+    sheet = build_was_neu_sheet(cfg, texts, baseline)
+    if sheet is None:
+        return {}
+    return {sheet.job: env.get_template("was_neu.tex.j2").render(sheet=sheet)}
+
+
 # Each builder takes (cfg, texts, env, clues) and returns {job name: .tex source}; only the master sheet reads the clues.
+# Only `was_neu_sheet` receives the MHP baseline, through its own call in `render_all` (D-14).
 DocumentBuilder = Callable[..., Dict[str, str]]
 DOCUMENT_BUILDERS: Tuple[DocumentBuilder, ...] = (
     attack_worksheets, measure_cards, event_cards, team_booklet, wave_page, story_documents, practice_document,
@@ -159,14 +172,19 @@ DOCUMENT_BUILDERS: Tuple[DocumentBuilder, ...] = (
 )
 
 
-def render_all(cfg, texts, template_dir: Path, clues: tuple = ()) -> Dict[str, str]:
+def render_all(cfg, texts, template_dir: Path, clues: tuple = (), baseline=None) -> Dict[str, str]:
     env = make_env(template_dir)
     documents: Dict[str, str] = {}
-    for builder in DOCUMENT_BUILDERS:
-        for job, source in builder(cfg, texts, env, clues).items():
+
+    def register(produced: Dict[str, str]) -> None:
+        for job, source in produced.items():
             texbuild.check_job_name(job)
             audience.audience_of(job)
             if job in documents:
                 raise ValueError(f"Dokument {job!r} wird von mehreren Erzeugern geliefert")
             documents[job] = source
+
+    for builder in DOCUMENT_BUILDERS:
+        register(builder(cfg, texts, env, clues))
+    register(was_neu_sheet(cfg, texts, env, baseline))
     return {job: documents[job] for job in sorted(documents)}

@@ -328,7 +328,8 @@
       {"job": "spieler-anfrage-mail", "per_team": 1, "facilitator": 1},
       {"job": "spieler-audit-mail", "per_team": 1, "facilitator": 1},
       {"job": "uebung-welle-0", "per_team": 1, "facilitator": 1},
-      {"job": "spielleitung-uebersicht", "per_team": 0, "facilitator": 1}
+      {"job": "spielleitung-uebersicht", "per_team": 0, "facilitator": 1},
+      {"job": "spielleitung-was-ist-neu", "per_team": 0, "facilitator": 1}
     ],
     "debrief_stages": [
       {"id": "reaction", "minutes": 3},

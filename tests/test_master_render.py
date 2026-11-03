@@ -137,3 +137,54 @@ def test_the_page_one_notice_is_a_dedicated_style_macro():
     style = (REPO_ROOT / "print" / "planspiel.sty").read_text(encoding="utf-8")
     assert "\\facilitatornotice" in style
     assert "\\facilitatornotice" in TEMPLATE.read_text(encoding="utf-8")
+
+
+# --- FLOW-04: the baseline reaches exactly one builder (D-14) ----------------------------------------------------
+
+
+def test_the_was_neu_sheet_is_rendered_only_with_a_baseline(real):
+    from planspiel.was_neu import BASELINE_FILE, WAS_NEU_JOB, load_baseline
+
+    cfg, texts, clues, documents = real
+    assert WAS_NEU_JOB not in documents
+    baseline = load_baseline(CONTENT_DIR / BASELINE_FILE)
+    with_baseline = render.render_all(cfg, texts, TEMPLATES, clues=clues, baseline=baseline)
+    assert WAS_NEU_JOB in with_baseline
+    assert audience.audience_of(WAS_NEU_JOB) == audience.FACILITATOR
+    assert audience.scan_profile(WAS_NEU_JOB) is None
+    assert list(with_baseline) == sorted(with_baseline)
+    assert set(with_baseline) - {WAS_NEU_JOB} == set(documents)
+
+
+def test_the_was_neu_builder_is_not_a_regular_document_builder():
+    assert render.was_neu_sheet not in render.DOCUMENT_BUILDERS
+    assert list(inspect.signature(render.was_neu_sheet).parameters) == ["cfg", "texts", "env", "baseline"]
+
+
+def test_only_the_was_neu_builder_receives_the_baseline(monkeypatch, tmp_path):
+    seen = []
+
+    def spy(cfg, texts, env, clues):
+        seen.append(("builder", clues))
+        return {}
+
+    def spy_was_neu(cfg, texts, env, baseline):
+        seen.append(("was_neu", baseline))
+        return {}
+
+    monkeypatch.setattr(render, "DOCUMENT_BUILDERS", (spy, spy))
+    monkeypatch.setattr(render, "was_neu_sheet", spy_was_neu)
+    assert render.render_all(None, None, tmp_path, clues=("a",), baseline="BASELINE") == {}
+    assert seen == [("builder", ("a",)), ("builder", ("a",)), ("was_neu", "BASELINE")]
+    seen.clear()
+    render.render_all(None, None, tmp_path)
+    assert seen[-1] == ("was_neu", None)
+
+
+def test_a_was_neu_job_clash_stops_the_render(monkeypatch, tmp_path):
+    from planspiel.was_neu import WAS_NEU_JOB
+
+    monkeypatch.setattr(render, "DOCUMENT_BUILDERS", (lambda cfg, texts, env, clues: {WAS_NEU_JOB: "x"},))
+    monkeypatch.setattr(render, "was_neu_sheet", lambda cfg, texts, env, baseline: {WAS_NEU_JOB: "y"})
+    with pytest.raises(ValueError, match="mehreren"):
+        render.render_all(None, None, tmp_path, baseline=object())

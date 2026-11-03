@@ -244,6 +244,7 @@ def _print_command(
     from planspiel.config import load_config
     from planspiel.printmodel import PrintModelError
     from planspiel.texts import CLUES_FILE, check_clues, check_texts, load_clues, load_content
+    from planspiel.was_neu import BASELINE_FILE, load_baseline
 
     failure = 2 if check else 1  # --check: 1 means stale, 2 means the check itself could not run
     if not check:
@@ -261,6 +262,7 @@ def _print_command(
         cfg = load_config(Path(config))
         content = load_content(Path(content_dir))
         clues = load_clues(Path(content_dir) / CLUES_FILE)
+        baseline = load_baseline(Path(content_dir) / BASELINE_FILE)
     except (OSError, json.JSONDecodeError, tomllib.TOMLDecodeError, ValueError) as error:
         print(f"ERROR print.input {config} / {content_dir}: {error}")
         print("1 Fehler")
@@ -287,7 +289,7 @@ def _print_command(
         print(f"{len(clue_errors)} Fehler")
         return failure
     try:
-        documents = render.render_all(cfg, texts, Path(print_dir) / "templates", clues=clues)
+        documents = render.render_all(cfg, texts, Path(print_dir) / "templates", clues=clues, baseline=baseline)
     except PrintModelError as error:
         print(f"ERROR print.model {error}")
         print("1 Fehler")

@@ -645,6 +645,7 @@ spieler-anfrage-mail = "Anfrage-Mail"
 spieler-audit-mail = "Audit-Mail"
 uebung-welle-0 = "Übungsblatt"
 spielleitung-uebersicht = "Spielleitungsheft"
+spielleitung-was-ist-neu = "Was ist neu (für Spielleitungen der MHP-Runde)"
 
 [sheets.debrief]
 title = "Debriefing-Fragen"
