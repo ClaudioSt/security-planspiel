@@ -154,15 +154,16 @@ def test_one_flow_row_per_flow_id_naming_the_debrief_and_the_schedule(cfg, texts
 
 def test_the_schedule_row_generates_the_wave_block_minutes(cfg, texts, baseline):
     minutes = sorted({block.minutes for block in cfg.session_schedule.blocks if block.wave})
-    assert len(minutes) == 1
-    assert fmt.format_number(minutes[0]) in build_was_neu_sheet(cfg, texts, baseline).flow[3]
+    assert minutes == [20, 25]  # D-34: wave 1 is re-budgeted to 25 minutes, waves 2 and 3 keep 20
+    row = build_was_neu_sheet(cfg, texts, baseline).flow[3]
+    assert all(fmt.format_number(figure) in row for figure in minutes)
     blocks = tuple(
         dataclasses.replace(block, minutes=block.minutes + 5) if block.id == "wave_1" else block
         for block in cfg.session_schedule.blocks
     )
     changed = dataclasses.replace(cfg, session_schedule=dataclasses.replace(cfg.session_schedule, blocks=blocks))
     row = build_was_neu_sheet(changed, texts, baseline).flow[3]
-    assert fmt.format_number(minutes[0] + 5) in row and fmt.format_number(minutes[0]) in row
+    assert fmt.format_number(minutes[0] + 10) in row and fmt.format_number(minutes[0]) in row
 
 
 def test_one_material_row_per_material_id_naming_the_clue_matrix(texts, sheet):
