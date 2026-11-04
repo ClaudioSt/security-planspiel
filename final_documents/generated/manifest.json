@@ -1,73 +1,83 @@
 {
-  "date": "2026-11-01",
+  "date": "2026-11-03",
   "dirty": false,
   "documents": {
     "angriff-1_ransomware": {
       "pdf": "angriff-1_ransomware.pdf",
-      "pdf_sha256": "780cc6ca70be497b3def3843fde5a99bb54d44b7d309ca6d88f395883767a11f",
+      "pdf_sha256": "83ec9ed0af4fd752bf579d2f33d77b1daca58bf5084d7940d8d720716e38651b",
       "tex_sha256": "61a9458d1ba7a98668650fb7de6de6e8079bef09f2e4ae3fcf5c0db3f78b3e2f"
     },
     "angriff-2_ot": {
       "pdf": "angriff-2_ot.pdf",
-      "pdf_sha256": "b6e8c9554b55393be1decdd7635c5b0891d9a19e2cfc6f7524054c7e2ec92b1f",
+      "pdf_sha256": "8684b72db19dd9e72b7d51d083345d4e39f32b12030d199ce8160834dd100f7d",
       "tex_sha256": "450552ef8780dc9def6ce6d7723bbee3c1ff05923406319115ec97aafddca28f"
     },
     "angriff-3_exfil": {
       "pdf": "angriff-3_exfil.pdf",
-      "pdf_sha256": "cf701d679c3b227a06634240b5fdbc16139c7e35cef0a3bd2d4384eb10b331c5",
+      "pdf_sha256": "d8318b5e5b86dbe14b1c7a656caa30e88e7de053a37842b548f43f98baf40e64",
       "tex_sha256": "93315d43bb78d512845b9dfc17dc70f6efa30630403b1bfcdfe52e3d8e96f434"
     },
     "spieler-anfrage-mail": {
       "pdf": "spieler-anfrage-mail.pdf",
-      "pdf_sha256": "85ec20a8f2d39fe30b553c42614e454489af4e38466e53684ac391c28cd9f78a",
+      "pdf_sha256": "d3228242face6ad7aea71818a05b31bc6e7d83a3de362028b65b8126748f4047",
       "tex_sha256": "4d1cfc3d0021f21f086326db09948fbf6a0597eea1ff21c474e8203fd85d4dbf"
     },
     "spieler-audit-mail": {
       "pdf": "spieler-audit-mail.pdf",
-      "pdf_sha256": "d7b618720671a72dccfddefe488ea815654df70481b8f5d3a6b00bb1e8335b91",
+      "pdf_sha256": "4609a3710553301806cda704577e30073fc3d6944e97added08aaad3e90fed58",
       "tex_sha256": "17c7f4177ef69b2ddddf252f58971dfbe1fb8ffd45e63b415d5d43de7fe35882"
     },
     "spieler-eventkarten": {
       "pdf": "spieler-eventkarten.pdf",
-      "pdf_sha256": "9c2b35779f9d091a24a2639832bf638df3c59f5e71befe948e6d98197a1116d2",
-      "tex_sha256": "126bb16c0ddd087f1893b55ccb77dd8bffb0f8c8ae21a6a932bf5c65ae4d63f3"
+      "pdf_sha256": "cad752aeed888acdc0d9433c4bdaa35c805a39de059cb32f16048c3c9cca62ce",
+      "tex_sha256": "9c09170e577350bd7ad92175e173e237f60c91b01f5bf9a4d466f7e4194fc257"
     },
     "spieler-massnahmenkarten": {
       "pdf": "spieler-massnahmenkarten.pdf",
-      "pdf_sha256": "2754f6f8d8078fbc1590f39b68575ac3e3cfe0c833bcfaa7c75ecd370e50bc18",
+      "pdf_sha256": "4cd8a8e0db2a3d35f3bc97ec59010f7d20fd10f97b76165c47761454acd30acc",
       "tex_sha256": "320635122cde8fdb44bb918776052ab40149ceef0d47a504894f5ba51f3059f0"
     },
     "spieler-so-funktioniert-eine-welle": {
       "pdf": "spieler-so-funktioniert-eine-welle.pdf",
-      "pdf_sha256": "98124fee7be9ffd9e063f2f2d7e24741dc384cd485328b7fcc9d73705172017a",
+      "pdf_sha256": "851e834c28eae0d3b967803222e212bc7320a759b2b9ca83e0bf5906473fba13",
       "tex_sha256": "e3fe837deef39fe3f5dda56f7f73e9f51240bdb09026bb1636d52e77584e65ec"
     },
     "spieler-teamheft": {
       "pdf": "spieler-teamheft.pdf",
-      "pdf_sha256": "6dd904a4a1914fdf15cc8f6d1c0849ce60275f06467223b73064f877a0959e16",
+      "pdf_sha256": "7d553f467f920ee36ddccc99627c67aac19456303ce17936785ff4fd3829a961",
       "tex_sha256": "81b7550dd719a3fb30c23aeb9545017223058dd112100c9e6145ef00a85bf3e4"
     },
     "spieler-unternehmenssteckbrief": {
       "pdf": "spieler-unternehmenssteckbrief.pdf",
-      "pdf_sha256": "f51883db5ccb60696f3fc6b3225532c3f9a1593e02c8be7019e3a82b378eaba7",
+      "pdf_sha256": "2b08e225c4c858ed1a9d233a8191a5c8ec5de22715038e02f5237a37a412070e",
       "tex_sha256": "be9de7e9a693962b0a836c34e7190509b32bcc275e8f3b2e02abb047d2a136ae"
     },
     "spieler-zeitungsartikel": {
       "pdf": "spieler-zeitungsartikel.pdf",
-      "pdf_sha256": "56574159fcbcef5f005f1b73b3a8ed2f9840b9e1c16d340074bdeda16a823cc3",
+      "pdf_sha256": "6de87cb2ebd488e56a4353d8fa9ea9996e012b73402e8cfd5076b89e5387af76",
       "tex_sha256": "83ce7b35feb920176d00e4ad3cbe9d5d0f2e16ae3dd62d8f0c6627cbe90e6138"
+    },
+    "spielleitung-probelauf": {
+      "pdf": "spielleitung-probelauf.pdf",
+      "pdf_sha256": "74b0a39149136c3956f65539ff9f7a1c2ac954437d6c0ceaec37ab4fa25ca675",
+      "tex_sha256": "3e2517316b4ceb2e745a4cc147287f87fda139c4f5a601365ee1e78e14aa6262"
     },
     "spielleitung-uebersicht": {
       "pdf": "spielleitung-uebersicht.pdf",
-      "pdf_sha256": "2c3349b2b83362d739ba6b9510e8a8d1e55a79609f40eaf83bb5ac6d6c6c702c",
-      "tex_sha256": "dea253ab5f63fd1460c6d45e6cce0c91bbade935702e85d57047af40d5f37dbb"
+      "pdf_sha256": "0534c0ad140075df2a25e6fb2f2043c3477ece4771a3d4543d76ab87db138355",
+      "tex_sha256": "4b410382e647a44e39b114e71e853a073d148ee6432116333bba3e89c5b36fba"
+    },
+    "spielleitung-was-ist-neu": {
+      "pdf": "spielleitung-was-ist-neu.pdf",
+      "pdf_sha256": "31cb61e18214714a83508cd2cd15ed8865cbb25bd43908adeacfe2a896143bed",
+      "tex_sha256": "9c7ec0a834574c0baf4fb1ca4e149f66ac81d1da0d61c2744866c0d79c28a6cf"
     },
     "uebung-welle-0": {
       "pdf": "uebung-welle-0.pdf",
-      "pdf_sha256": "94c615ee0d0e9e75f8a776988d6dc1bb0c2af80643a405abf32955773a184916",
+      "pdf_sha256": "2674c0b4753d64ccf19a3bab315e5f202b7940a8aa7fc7baffa926f5df0c3347",
       "tex_sha256": "bfe30402c8a7c61cc60a382e23151b9e154f3eecd52657d1980e39cf6aa8fad5"
     }
   },
-  "hash": "84b797689cfeeb72a2fa2e3468d900b1a5eda01436f80838d1f9c3690ae8c8ba",
-  "stamp": "Stand 2026-11-01 · 84b7976"
+  "hash": "13d40901e876486e60451fe1e77478ef7adac70267104f2fa5a66cd3bb10a290",
+  "stamp": "Stand 2026-11-03 · 13d4090"
 }
