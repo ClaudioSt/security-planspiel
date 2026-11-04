@@ -35,16 +35,25 @@ Material by file name (from the print list):
 
 ## Timing
 
-(pending)
+Run on 2026-11-04, one person alone, generated material only (release candidate 1).
+
+| Block | Planned (min) | Actual (min) | Result |
+|---|---|---|---|
+| measures_budget | 30 | 30 | WITHIN |
+| wave_1 | 20 | 30 | OVERRUN |
+
+Chosen plan and final wave-1 values: not reported.
 
 ## Questions and errors
 
-(pending)
+None. No unclear points, no hesitations, no printed errors. The time went to calculating and filling in, not to ambiguity.
 
 ## Gap items
 
-(none yet)
+None. There are no ST gap items; the overrun is a budgeting question, not a material gap.
 
 ## Verdict
 
-**Verdict:** pending
+**Verdict:** OVERRUN resolved by user decision: wave_1 re-budgeted to 25 min (D-34 deviation, user-approved 2026-11-04), re-measured in 07-12.
+
+Rationale recorded with the decision: every other block stays as it is, so `session_schedule.total_minutes` goes 190 -> 195. The solo run (30 min) still exceeds the new 25 min; this is accepted because a team of five splits the work. The dry run on 2026-11-25 (plan 07-12) measures the real time and decides whether 25 holds.
