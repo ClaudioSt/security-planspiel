@@ -1,7 +1,7 @@
 """The session_schedule block: loader, validator, invisibility to the rules and the FLOW-02 product rules (D-01..D-04, D-19, D-22, D-27).
 
 The block is read only by the facilitator print models and by the intro-deck test (`persons_per_team`). The product
-rules (190 minutes, the D-02 order, 20-minute waves, 3 teams of 5) live here and not in the validator, so a future
+rules (195 minutes, the D-02 order with a 25-minute wave 1, 20-minute waves 2 and 3, 3 teams of 5) live here and not in the validator, so a future
 schedule change is a deliberate test edit.
 """
 import copy
@@ -17,7 +17,7 @@ from tests.support import CONFIG_PATH
 
 D02_BLOCKS = (
     ("intro", 10), ("break_1", 5), ("story_groups", 25), ("wave_0", 15), ("measures_budget", 30), ("break_2", 15),
-    ("wave_1", 20), ("wave_2", 20), ("wave_3", 20), ("closing", 10), ("debrief", 20),
+    ("wave_1", 25), ("wave_2", 20), ("wave_3", 20), ("closing", 10), ("debrief", 20),
 )
 PROPOSED_JOBS = (
     "angriff-1_ransomware", "angriff-2_ot", "angriff-3_exfil", "spieler-massnahmenkarten", "spieler-eventkarten",
@@ -56,7 +56,7 @@ def cfg():
 def test_the_real_config_carries_the_schedule(cfg):
     schedule = cfg.session_schedule
     assert isinstance(schedule, SessionSchedule)
-    assert (schedule.total_minutes, schedule.teams, schedule.persons_per_team) == (190, 3, 5)
+    assert (schedule.total_minutes, schedule.teams, schedule.persons_per_team) == (195, 3, 5)
     assert all(isinstance(block, ScheduleBlock) for block in schedule.blocks)
     assert tuple((block.id, block.minutes) for block in schedule.blocks) == D02_BLOCKS
     assert [block.wave for block in schedule.blocks if block.wave is not None] == [0, 1, 2, 3]
@@ -203,17 +203,18 @@ def test_the_validator_does_not_mutate_its_input():
 # --- FLOW-02 product rules on the real config ---------------------------------------------------------------
 
 
-def test_the_schedule_is_the_d02_sequence_of_190_minutes(cfg):
+def test_the_schedule_is_the_d02_sequence_of_195_minutes(cfg):
     schedule = cfg.session_schedule
-    assert schedule.total_minutes == 190
-    assert sum(block.minutes for block in schedule.blocks) == 190
+    assert schedule.total_minutes == 195
+    assert sum(block.minutes for block in schedule.blocks) == 195
     assert tuple((block.id, block.minutes) for block in schedule.blocks) == D02_BLOCKS
 
 
-def test_every_wave_block_has_twenty_minutes_and_the_debrief_fits(cfg):
+def test_wave_one_has_25_minutes_the_other_waves_20_and_the_debrief_fits(cfg):
+    # D-34 deviation, user-approved 2026-11-04: the solo run took 30 min against 20, wave 1 is re-budgeted to 25
     blocks = {block.id: block for block in cfg.session_schedule.blocks}
     for wave in cfg.waves:
-        assert blocks[f"wave_{wave.wave_id}"].minutes == 20
+        assert blocks[f"wave_{wave.wave_id}"].minutes == (25 if wave.wave_id == 1 else 20)
     assert 15 <= blocks["debrief"].minutes <= 20
 
 
