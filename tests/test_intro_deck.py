@@ -19,13 +19,12 @@ from tests.support import CONFIG_PATH, CONTENT_DIR, REPO_ROOT
 
 DECK = REPO_ROOT / "final_documents" / "Planspiel_Einführung + Grundlagen.pptx"
 
-# slide number -> block ids behind its minute figure (slide 34: every wave block, slide 35: closing plus debrief)
+# slide number -> block ids behind its minute figure (slide 35: closing plus debrief; slide 34 is composed per wave below)
 MINUTE_SLIDES = {
     26: ("break_1",),
     31: ("story_groups",),
     32: ("measures_budget",),
     33: ("break_2",),
-    34: ("wave_1", "wave_2", "wave_3"),
     35: ("closing", "debrief"),
 }
 MINUTE_TEXT = {
@@ -33,12 +32,15 @@ MINUTE_TEXT = {
     31: "{n} min",
     32: "{n} min",
     33: "{n} Minuten Pause",
-    34: "{n} min pro Welle",
     35: "{n} min",
 }
 SUMMED_SLIDES = {35}
 MINUTE_FIGURE = re.compile(r"(\d+)\s*(?:Minuten|min)\b")
 CLOCK_TIME = re.compile(r"(?<!\d)\d{1,2}:\d{2}(?!\d)")
+
+# Slide 34 names wave 1 and the other waves separately since the D-34 re-budget of wave 1 (user-approved 2026-11-04)
+WAVE_SLIDE = 34
+WAVE_TEXT = "{first} min Welle 1, je {rest} min Welle 2 und 3"
 
 TEAM_SIZE_SLIDE = 30
 TEAM_SIZE_TEXT = "Beratungsteam aus {n} Personen"
@@ -133,6 +135,15 @@ def test_minute_figure_equals_the_session_schedule(cfg, slide_texts, number):
     assert expected in slide_texts[number]
     figures = {int(figure) for figure in MINUTE_FIGURE.findall(slide_texts[number])}
     assert figures == {_expected_minutes(cfg, number)}
+
+
+def test_wave_slide_composes_the_minutes_per_wave_from_the_session_schedule(cfg, slide_texts):
+    by_id = {block.id: block.minutes for block in cfg.session_schedule.blocks}
+    assert by_id["wave_2"] == by_id["wave_3"], "slide 34 shows one figure for waves 2 and 3"
+    expected = WAVE_TEXT.format(first=by_id["wave_1"], rest=by_id["wave_2"])
+    assert expected in slide_texts[WAVE_SLIDE]
+    figures = {int(figure) for figure in MINUTE_FIGURE.findall(slide_texts[WAVE_SLIDE])}
+    assert figures == {by_id["wave_1"], by_id["wave_2"]}
 
 
 @pytest.mark.parametrize("number", [26, 33])
