@@ -35,12 +35,12 @@ Material by file name (from the print list):
 
 ## Timing
 
-Run on 2026-11-04, one person alone, generated material only (release candidate 1).
+### Round 1, 2026-11-04 (release candidate 1, stamp Stand 2026-11-03 · 13d4090)
 
-| Block | Planned (min) | Actual (min) | Result |
-|---|---|---|---|
-| measures_budget | 30 | 30 | WITHIN |
-| wave_1 | 20 | 30 | OVERRUN |
+One person alone, generated material only.
+
+- measures_budget: 30 min actual, 30 min planned, difference 0.
+- wave_1: 30 min actual, 20 min planned, difference +10.
 
 Chosen plan and final wave-1 values: not reported.
 
@@ -54,6 +54,15 @@ None. There are no ST gap items; the overrun is a budgeting question, not a mate
 
 ## Verdict
 
+**Block measures_budget:** WITHIN (planned 30, actual 30)
+**Block wave_1:** OVERRUN (planned 20, actual 30)
+
 **Verdict:** OVERRUN resolved by user decision: wave_1 re-budgeted to 25 min (D-34 deviation, user-approved 2026-11-04), re-measured in 07-12.
 
-Rationale recorded with the decision: every other block stays as it is, so `session_schedule.total_minutes` goes 190 -> 195. The solo run (30 min) still exceeds the new 25 min; this is accepted because a team of five splits the work. The dry run on 2026-11-25 (plan 07-12) measures the real time and decides whether 25 holds.
+The strict rule (an overrun blocks the release) was replaced by the user's decision: every other block stays as it is, so `session_schedule.total_minutes` goes 190 -> 195. The solo run (30 min) still exceeds the new 25 min; this is accepted because a team of five splits the work. The dry run on 2026-11-25 (plan 07-12) measures the real wave-1 time and decides whether 25 holds.
+
+## Release
+
+Release candidate 2 (commit 8cf1972, stamp `Stand 2026-11-04 · 737ba65`, `dirty: false`) was built from the re-budgeted schedule (wave_1 25 min, total 195) and the adapted intro deck slide 34.
+
+User decision, 2026-11-06, after printing the set and checking it on paper (including slide 34 of the intro deck): "freigeben". The set is released for the dry run on 2026-11-25. The released print-set commit is 8cf1972; the wave-1 timing is not re-measured solo, it is measured in the dry run (07-12).

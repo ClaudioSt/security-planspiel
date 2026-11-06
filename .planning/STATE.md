@@ -5,15 +5,15 @@ milestone_name: milestone
 current_phase: 07
 current_phase_name: session-flow-handoff
 status: executing
-stopped_at: Completed 07-11-PLAN.md
-last_updated: "2026-11-03T23:45:44.803Z"
+stopped_at: Completed 07-09-PLAN.md
+last_updated: "2026-11-06T08:13:44.063Z"
 last_activity: 2026-11-03
 last_activity_desc: Phase 07 execution started
 progress:
   total_phases: 7
   completed_phases: 6
   total_plans: 62
-  completed_plans: 60
+  completed_plans: 61
   percent: 86
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-10-27)
 ## Current Position
 
 Phase: 07 (session-flow-handoff) — EXECUTING
-Plan: 11 of 12
+Plan: 12 of 12
 Status: Ready to execute
 Last activity: 2026-11-03 — Phase 07 execution started
 
@@ -119,6 +119,7 @@ Progress: [█████████░] 86% (6 of 7 phases)
 | Phase 07 P08 | 2.5h | 3 tasks | 15 files |
 | Phase 07 P10 | 35min | 2 tasks | 2 files |
 | Phase 07 P11 | 40 min | 3 tasks | 7 files |
+| Phase 07 P09 | 3 sessions | 4 tasks | 25 files |
 
 ## Accumulated Context
 
@@ -206,6 +207,8 @@ Recent decisions affecting current work:
 - [Phase 07-04]: Debrief guide minutes reaction 3, description 4, analysis 8, application 5; sum equals the debrief block (schedule.debrief_sum)
 - [Phase 07]: 07-06: MAX_VALUE_ROWS 19 (worst case 720.9 of 731.2 pt); the MHP baseline reaches only render.was_neu_sheet
 - [Phase 07]: 07-08: protocol rows reuse schedule_rows; Exzellenz line reads 'Level N oder höher'; event header 'Event in Welle N' (text only, D-28)
+- [Phase 07]: 07-09: wave_1 re-budgeted to 25 min, session total 195 (D-34 deviation, user-approved 2026-11-04); re-measured in the dry run (07-12)
+- [Phase 07]: 07-09: print set released as release candidate 2 (commit 8cf1972, Stand 2026-11-04, 737ba65) on 2026-11-06
 
 ### Pending Todos
 
@@ -228,6 +231,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-11-03T23:45:44.791Z
-Stopped at: Completed 07-11-PLAN.md
+Last session: 2026-11-06T08:13:44.049Z
+Stopped at: Completed 07-09-PLAN.md
 Resume file: None

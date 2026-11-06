@@ -308,7 +308,7 @@ Plans:
   4. README.md and CLAUDE.md describe the new pipeline and rules, with the print-sync section rewritten. The manually maintained intro deck, Audit-Mail and company profile contain no outdated rules.
   5. Someone who did not write the rules completes a timed dry run using only the material, and each wave fits the schedule.
 
-**Plans**: 10/12 plans executed
+**Plans**: 11/12 plans executed
 
 Plans:
 **Wave 1**
@@ -338,7 +338,7 @@ Plans:
 
 **Wave 6** *(blocked on Wave 5 completion)*
 
-- [ ] 07-09-PLAN.md — FLOW-05 (2/3): print-list quantities confirmed (D-27), print set regenerated and committed per release candidate, solo timing of measure selection and wave 1 (D-32, D-34), physical print released (wave 6, checkpoint)
+- [x] 07-09-PLAN.md — FLOW-05 (2/3): print-list quantities confirmed (D-27), print set regenerated and committed per release candidate, solo timing of measure selection and wave 1 (D-32, D-34), physical print released (wave 6, checkpoint)
 
 **Wave 7** *(blocked on Wave 6 completion; calendar-bound: 2026-11-25)*
 
@@ -357,4 +357,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 3 
 | 4. Print Pipeline & Attack Worksheets | 6/6 | Complete    | 2026-10-22 |
 | 5. Player & Facilitator Print Material | 16/16 | Complete    | 2026-10-26 |
 | 6. Rebalance | 10/10 | Complete    | 2026-11-01 |
-| 7. Session Flow & Handoff | 10/12 | In Progress|  |
+| 7. Session Flow & Handoff | 11/12 | In Progress|  |
