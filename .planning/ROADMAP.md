@@ -358,3 +358,14 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 3 
 | 5. Player & Facilitator Print Material | 16/16 | Complete    | 2026-10-26 |
 | 6. Rebalance | 10/10 | Complete    | 2026-11-01 |
 | 7. Session Flow & Handoff | 11/12 | In Progress|  |
+
+### Phase 07.1: Risk-Based Learning Chain: CIA risk register from the MechTech profile, measures justified against register risks with explicit risk acceptance, register check after each attack and change-window re-ranking, RoS framed as damage avoided per euro, debrief rebuilt around the chain plus optional 60-second management pitch; texts and templates only, ships as print RC3 before the 2026-11-25 dry run (INSERTED)
+
+**Goal:** [Urgent work - to be planned]
+**Requirements**: TBD
+**Depends on:** Phase 7
+**Plans:** 0 plans
+
+Plans:
+
+- [ ] TBD (run /gsd-plan-phase 07.1 to break down)

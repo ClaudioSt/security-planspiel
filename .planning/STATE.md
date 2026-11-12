@@ -5,16 +5,16 @@ milestone_name: milestone
 current_phase: 07
 current_phase_name: session-flow-handoff
 status: executing
-stopped_at: Completed 07-09-PLAN.md
-last_updated: "2026-11-06T08:13:44.063Z"
+stopped_at: Phase 07.1 context gathered
+last_updated: "2026-11-12T10:58:44.632Z"
 last_activity: 2026-11-03
 last_activity_desc: Phase 07 execution started
 progress:
-  total_phases: 7
+  total_phases: 8
   completed_phases: 6
   total_plans: 62
   completed_plans: 61
-  percent: 86
+  percent: 75
 ---
 
 # Project State
@@ -221,6 +221,10 @@ None. The veiling todo (2026-06-23) is closed (moved to `todos/completed/` in Ph
 - [Phase 4]: MiKTeX AutoInstall=ask hangs scripted builds; the first Phase 4 plan must be a non-interactive smoke build.
 - [Phase 1]: Interpreter trap until FOUND-01 lands (`python` on PATH is Inkscape's 3.12 without packages); full enumeration JSONs are >100 MB, so never read them whole.
 
+### Roadmap Evolution
+
+- Phase 07.1 inserted after Phase 7: Risk-based learning chain (pedagogical review 2026-11-12); must ship as print RC3 before the 07-12 dry run on 2026-11-25 (URGENT)
+
 ## Deferred Items
 
 Items acknowledged and carried forward from previous milestone close:
@@ -231,6 +235,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-11-06T08:13:44.049Z
-Stopped at: Completed 07-09-PLAN.md
-Resume file: None
+Last session: 2026-11-12T10:58:44.621Z
+Stopped at: Phase 07.1 context gathered
+Resume file: .planning/phases/07.1-risk-based-learning-chain-cia-risk-register-from-the-mechtec/07.1-CONTEXT.md
