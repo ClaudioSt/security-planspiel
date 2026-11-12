@@ -359,11 +359,19 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 3 
 | 6. Rebalance | 10/10 | Complete    | 2026-11-01 |
 | 7. Session Flow & Handoff | 11/12 | In Progress|  |
 
-### Phase 07.1: Risk-Based Learning Chain: CIA risk register from the MechTech profile, measures justified against register risks with explicit risk acceptance, register check after each attack and change-window re-ranking, RoS framed as damage avoided per euro, debrief rebuilt around the chain plus optional 60-second management pitch; texts and templates only, ships as print RC3 before the 2026-11-25 dry run (INSERTED)
+### Phase 07.1: Risk-Based Learning Chain: CIA risk register from the MechTech profile, measures linked to register risks with explicit risk acceptance, a reality check after each attack and a closing review, RoS framed as net damage avoided per euro, debrief rebuilt around the chain plus optional 60-second management pitch; texts and templates only, ships as print RC3 before the 2026-11-25 dry run (INSERTED)
 
-**Goal:** [Urgent work - to be planned]
-**Requirements**: TBD
+**Goal:** Teams practise the chain company profile → risk (CIA, likelihood, business impact) → measure → budget on paper instead of discovering it by chance. A risk register opens the Teamheft, measures point back to register risks, every attack is checked against the register, and the debriefing is built around the chain. Print material, schedule and texts only; no game formula or balance value changes. The set ships as print release candidate 3 before the dry run on 2026-11-25.
+**Requirements**: RISK-01, RISK-02, RISK-03, RISK-04, RISK-05, RISK-06, RISK-07, RISK-08, RISK-09, RISK-10
 **Depends on:** Phase 7
+**Success Criteria** (what must be TRUE):
+
+  1. Before choosing measures, every team fills in a risk register on the first Teamheft page: five risks with asset, threat and source document, protection goal C/I/A, business-impact category and sentence, a cell in a 3×3 risk matrix whose impact axis shows € bands from `simulation_config.json`, a rank, and a treat/accept decision with a reason.
+  2. Teams can link each planned measure to register risks ("gegen R#"). Each attack worksheet asks which register risk the attack hit, and in the closing block teams judge each risk in the Rückblick column against the attack's full damage without measures.
+  3. When a team asks what a damage would cost, the facilitator answers with a € band from a cheat sheet of 6–8 business cases that names no attack and agrees with the game's damage values.
+  4. The RoS page explains RoS as net damage avoided per invested euro. The 30-minute debriefing (3/5/14/8) asks along the chain: register vs. reality, accepted risks that hit, C/I/A assessment vs. wave weights, where the money paid off, transfer to real risk management. It offers an optional 60-second management pitch.
+  5. The schedule (story block 35, debriefing 30, total 215 minutes), print list, dry-run protocol and record, intro deck (new "Risiko-Matrix" slide), README and "Was ist neu" sheet match the new flow, and no game formula or balance value has changed.
+  6. Release candidate 3 is built clean (no "+lokal", `print --check` exit 0, fast and pdf tests pass), printed and approved by the user before 2026-11-25.
 **Plans:** 0 plans
 
 Plans:

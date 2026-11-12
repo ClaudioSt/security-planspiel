@@ -73,6 +73,21 @@
 - [x] **LEG-01**: Legacy hand-maintained docx/pptx worksheets/cards, old pptx generators, `pptx_output/` and the Excel attack calculator are moved to `archive/`
 - [x] **LEG-02**: README.md and CLAUDE.md describe the new pipeline and rules (print-sync section rewritten); manually maintained documents (intro deck, Audit-Mail, company profile) are checked for outdated rules
 
+### Risk-Based Learning Chain (RISK)
+
+Added 2026-11-12 for the inserted Phase 07.1 (pedagogical review): make the chain company profile → risk (CIA, likelihood, business impact) → measure → budget explicit for teams. Texts, templates and schedule only; no game formula or balance value changes.
+
+- [ ] **RISK-01**: The € impact bands (low, medium, high) of the risk matrix live in a new `simulation_config.json` block; the validator rejects bands that are not ascending or that overlap, and the limits agree with the game's unprotected attack damage
+- [ ] **RISK-02**: The Teamheft opens with a risk register page: five risks R1–R5 with asset, threat or weakness plus source document, protection goal C/I/A, business-impact category plus one sentence, rank 1–5, treat/accept plus one line of reasoning and a Rückblick column; a 3×3 likelihood × impact matrix with colour zones and the config € bands on the impact axis; a short instruction and one filled-in example from another industry; the page passes the veil, digit and fill checks
+- [ ] **RISK-03**: The planning table on the Teamheft planning page has a "gegen R#" column for one or more register risks per measure, marked as a recommendation (no penalty, no rule change, no facilitator check)
+- [ ] **RISK-04**: Every attack worksheet ends with one reality-check line asking which register risk the attack hit (R# or "nicht im Register"); the worksheet keeps its page count and passes the veil checks
+- [ ] **RISK-05**: The facilitator booklet has a business-impact cheat sheet of 6–8 business cases phrased as consequences, never as attacks, each with an answer and a band from config; the facilitator answers team questions in the role of MechTech's management with a € order of magnitude that agrees with the game's damage values
+- [ ] **RISK-06**: The Teamheft RoS page explains RoS in one sentence as net damage avoided per invested euro (avoided damage minus own cost, per euro of own cost); the formula and the printed calculation stay unchanged
+- [ ] **RISK-07**: The debriefing is rebuilt around the chain: questions per stage on register vs. reality, accepted risks that hit, the team's C/I/A assessment vs. the wave weightings, which risks the money paid off against (RoS, net framing) and transfer to real risk management, plus an optional 60-second management pitch per team without planned minutes
+- [ ] **RISK-08**: The session schedule gives the story block 35 and the debriefing 30 minutes (stages 3/5/14/8), 215 minutes in total; the Teamheft is handed out in the story block, the closing block directs the Rückblick, and the print list, the dry-run protocol and the dry-run record follow
+- [ ] **RISK-09**: The intro deck has a new "Risiko-Matrix" slide (likelihood × impact, zones, how the register is used; no MechTech or attack content) and its minute figures follow the new schedule; the deck is edited once from a user-approved checklist and pinned by the deck test
+- [ ] **RISK-10**: The print set is rebuilt and released as release candidate 3: clean stamp, `print --check` exit 0, fast and pdf test suites pass, printed and approved by the user before the dry run on 2026-11-25
+
 ## v2 Requirements
 
 Deferred to a future release. Tracked but not in the current roadmap.
@@ -167,13 +182,23 @@ Which phases cover which requirements. Updated during roadmap creation.
 | BAL-09 | Phase 6 | Complete |
 | LEG-01 | Phase 7 | Complete |
 | LEG-02 | Phase 7 | Complete |
+| RISK-01 | Phase 07.1 | Pending |
+| RISK-02 | Phase 07.1 | Pending |
+| RISK-03 | Phase 07.1 | Pending |
+| RISK-04 | Phase 07.1 | Pending |
+| RISK-05 | Phase 07.1 | Pending |
+| RISK-06 | Phase 07.1 | Pending |
+| RISK-07 | Phase 07.1 | Pending |
+| RISK-08 | Phase 07.1 | Pending |
+| RISK-09 | Phase 07.1 | Pending |
+| RISK-10 | Phase 07.1 | Pending |
 
 **Coverage:**
 
-- v1 requirements: 47 total
-- Mapped to phases: 47
+- v1 requirements: 57 total
+- Mapped to phases: 57
 - Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-09-29*
-*Last updated: 2026-10-28 — BAL-01/BAL-07 wording aligned with Phase 6 D-22/D-23 (plan-phase requirements review)*
+*Last updated: 2026-11-12 — RISK-01..RISK-10 added for Phase 07.1 (plan-phase requirements review)*
