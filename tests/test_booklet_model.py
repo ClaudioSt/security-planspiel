@@ -108,6 +108,23 @@ def test_the_planning_table_has_one_label_row_per_measure_in_config_order(loaded
     assert booklet.planning.planning_rows == tuple(f"{measure_id} – {measure.name}" for measure_id, measure in cfg.measures.items())
 
 
+def test_the_planning_table_gets_the_optional_register_column_only_with_a_register(loaded):
+    cfg, texts, booklet = loaded
+    if cfg.risk_matrix is None:
+        assert len(booklet.planning.planning_header) == 4
+        assert booklet.planning.planning_hint == ""
+        assert not any(key.endswith("planning_column") for key in required_keys(cfg))
+        return
+    register = PreAttackView(cfg, texts).sheet("register")
+    assert len(booklet.planning.planning_header) == 5
+    assert booklet.planning.planning_header[4] == register["planning_column"]
+    assert register["risk_prefix"] in register["planning_column"]
+    assert booklet.planning.planning_hint == register["planning_hint"]
+    assert register["planning_column"] in register["planning_hint"]
+    assert "sheets.register.planning_column" in required_keys(cfg)
+    assert "sheets.register.planning_hint" in required_keys(cfg)
+
+
 def test_the_cost_table_explains_init_and_opex(loaded):
     cfg, texts, booklet = loaded
     view = PreAttackView(cfg, texts)

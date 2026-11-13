@@ -168,6 +168,11 @@ def test_the_measures_block_hands_out_the_measure_cards(texts):
     assert texts.get("sheets.ablauf.print.spieler-massnahmenkarten") in direction
 
 
+def test_the_measures_direction_points_to_the_optional_column(texts):
+    direction = texts.get("sheets.ablauf.blocks.measures_budget.direction")
+    assert texts.get("sheets.register.planning_column") in direction
+
+
 def test_the_closing_block_directs_the_rueckblick(texts):
     direction = texts.get("sheets.ablauf.blocks.closing.direction")
     assert texts.get("sheets.register.head_review") in direction
