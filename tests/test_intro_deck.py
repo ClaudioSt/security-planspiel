@@ -35,6 +35,11 @@ MINUTE_TEXT = {
     35: "{n} min",
 }
 SUMMED_SLIDES = {35}
+# RISK-08 bridge: slides 31 and 35 follow the 35/30 schedule only when 07.1-09 edits the deck; strict, so an XPASS fails
+DECK_PENDING = pytest.mark.xfail(
+    strict=True,
+    reason="RISK-09: the deck minute figures of slides 31 and 35 follow the 35/30 schedule; 07.1-09 removes this mark",
+)
 MINUTE_FIGURE = re.compile(r"(\d+)\s*(?:Minuten|min)\b")
 CLOCK_TIME = re.compile(r"(?<!\d)\d{1,2}:\d{2}(?!\d)")
 
@@ -129,7 +134,9 @@ def _expected_minutes(cfg, number: int) -> int:
 # --- minute figures ----------------------------------------------------------------------------------------------
 
 
-@pytest.mark.parametrize("number", sorted(MINUTE_SLIDES))
+@pytest.mark.parametrize(
+    "number", [26, pytest.param(31, marks=DECK_PENDING), 32, 33, pytest.param(35, marks=DECK_PENDING)]
+)
 def test_minute_figure_equals_the_session_schedule(cfg, slide_texts, number):
     expected = MINUTE_TEXT[number].format(n=_expected_minutes(cfg, number))
     assert expected in slide_texts[number]

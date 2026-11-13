@@ -299,13 +299,13 @@
     "selection": {"M1": 0, "M2": 0, "M3": 0, "M4": 1, "M5": 0, "M6": 0, "M7": 0, "M8": 2, "M9": 2, "M10": 1}
   },
   "session_schedule": {
-    "total_minutes": 195,
+    "total_minutes": 215,
     "teams": 3,
     "persons_per_team": 5,
     "blocks": [
       {"id": "intro", "minutes": 10},
       {"id": "break_1", "minutes": 5},
-      {"id": "story_groups", "minutes": 25},
+      {"id": "story_groups", "minutes": 35},
       {"id": "wave_0", "minutes": 15, "wave": 0},
       {"id": "measures_budget", "minutes": 30},
       {"id": "break_2", "minutes": 15},
@@ -313,7 +313,7 @@
       {"id": "wave_2", "minutes": 20, "wave": 2},
       {"id": "wave_3", "minutes": 20, "wave": 3},
       {"id": "closing", "minutes": 10},
-      {"id": "debrief", "minutes": 20}
+      {"id": "debrief", "minutes": 30}
     ],
     "print_list": [
       {"job": "angriff-1_ransomware", "per_team": 1, "facilitator": 1},
@@ -334,9 +334,9 @@
     ],
     "debrief_stages": [
       {"id": "reaction", "minutes": 3},
-      {"id": "description", "minutes": 4},
-      {"id": "analysis", "minutes": 8},
-      {"id": "application", "minutes": 5}
+      {"id": "description", "minutes": 5},
+      {"id": "analysis", "minutes": 14},
+      {"id": "application", "minutes": 8}
     ]
   },
   "risk_matrix": {"register_rows": 5, "bands": [{"id": "low", "min": 0}, {"id": "medium", "min": 50}, {"id": "high", "min": 150}]},
