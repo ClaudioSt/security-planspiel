@@ -14,7 +14,7 @@ NUMBER_WORDS = ("eins", "zwei", "drei", "vier", "fünf", "sechs", "sieben", "ach
 ALLOWED: dict[tuple[str, str], str] = {}
 PHASE7_PREFIXES = (
     "sheets.ablauf", "sheets.debrief", "sheets.was_neu", "sheets.probelauf",
-    "sheets.eventkarten.level_or_higher", "sheets.labels.event_after_wave",
+    "sheets.eventkarten.level_or_higher", "sheets.labels.event_after_wave", "sheets.register",
 )
 
 _PATTERN = re.compile(r"(?<![^\W\d_])(" + "|".join(NUMBER_WORDS) + r")(?![^\W\d_])", re.IGNORECASE)

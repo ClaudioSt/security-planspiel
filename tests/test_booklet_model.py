@@ -9,7 +9,7 @@ from fractions import Fraction
 
 import pytest
 
-from planspiel import fmt, review_text, rules
+from planspiel import fmt, review_text, risk, rules
 from planspiel.booklet import (
     BOOKLET_JOB,
     MAX_PENALTY_ROWS,
@@ -355,3 +355,31 @@ def test_the_printed_formulas_reproduce_evaluate_path(replay_world, path, enforc
     assert available - costs == record["costs"]["remaining"]
     assert event_budget < 0 < -event_opex, "the cut lowers the remaining budget, the OPEX relief raises it"
     assert (available - costs) == (cfg.budget_tiers["medium"].budget - own) + event_budget - event_opex
+
+
+# ---- the risk register helpers (RISK-02, D-03, D-04) ---------------------------------------------------------------
+
+
+def test_risk_zone_of_gives_three_cells_per_zone():
+    zones = {(likelihood, impact): risk.zone_of(likelihood, impact) for likelihood in (1, 2, 3) for impact in (1, 2, 3)}
+    assert sorted(zones.values()).count("green") == 3
+    assert sorted(zones.values()).count("yellow") == 3
+    assert sorted(zones.values()).count("red") == 3
+    assert zones[(1, 1)] == "green"
+    assert zones[(1, 3)] == "yellow"
+    assert zones[(3, 1)] == "yellow"
+    assert zones[(2, 2)] == "yellow"
+    assert zones[(2, 3)] == "red"
+    assert zones[(3, 3)] == "red"
+
+
+def test_risk_band_ranges_compose_the_axis_labels():
+    cfg = load_config(CONFIG_PATH)
+    words = {"range_below": "unter", "range_to": "bis unter", "range_from": "ab"}
+    bands = cfg.risk_matrix.bands
+    assert risk.band_ranges(bands, words) == ("unter 50.000 €", "50.000 € bis unter 150.000 €", "ab 150.000 €")
+    assert risk.band_ranges(bands, words) == (
+        f"unter {fmt.format_money(bands[1].minimum * 1000)}",
+        f"{fmt.format_money(bands[1].minimum * 1000)} bis unter {fmt.format_money(bands[2].minimum * 1000)}",
+        f"ab {fmt.format_money(bands[2].minimum * 1000)}",
+    )
