@@ -9,10 +9,14 @@ facilitator comparator and has no place here (D-23).
 
 The module is a pre-wave builder: it reads the veiled attack titles and the wave count, never a wave's weights,
 thresholds or bonus data, and nothing under the revealed text namespace (VEIL-02).
+
+The register page opens the booklet (RISK-02, D-08); its axis and zones come from `cfg.risk_matrix` through
+`planspiel.risk`.
 """
 from dataclasses import dataclass
+from typing import Optional
 
-from planspiel import fmt, rules
+from planspiel import fmt, risk, rules
 from planspiel.cards import printed_strings
 from planspiel.config import Config
 from planspiel.eventtext import EFFECT_KINDS, effect_rows
@@ -28,6 +32,11 @@ MAX_PENALTY_ROWS = 34
 # The overspend table is printed as this many side-by-side lookup tables (teamheft_ros.tex.j2), filled left to right.
 PENALTY_TABLES = 2
 EN_DASH = "–"
+# Register rows the one-page register is proven for by the PDF fill report; a larger `register_rows` needs a new
+# layout proof of that page.
+MAX_REGISTER_ROWS = 5
+# Ranks start at one; the last rank is `register_rows`.
+RANK_FIRST = 1
 
 # The tracking sheet (PRINT-08): rows in calculation order. `remaining` closes the wave columns; the Budget Review
 # column adds the two rows `kz_review` and `kz_final` below it. A cell is written (WRITE) or crossed out (SHADED).
@@ -146,16 +155,65 @@ class TrackingPage:
 
 
 @dataclass(frozen=True)
+class MatrixCell:
+    """One matrix cell: its zone id (never printed) and the zone word that makes the zones readable in grayscale."""
+
+    kind: str
+    word: str
+
+
+@dataclass(frozen=True)
+class MatrixRow:
+    label: str  # likelihood word
+    zones: tuple[MatrixCell, ...]  # one cell per config band, in band order
+
+
+@dataclass(frozen=True)
+class RegisterPage:
+    title: str
+    instruction: str
+    rank_hint: str
+    example_label: str
+    header: tuple[str, str, str, str, str, str, str]
+    example: tuple[str, str, str, str, str, str, str]
+    example_cell: str
+    rows: tuple[str, ...]
+    goal_ticks: tuple[str, ...]
+    category_ticks: tuple[str, ...]
+    decision_ticks: tuple[str, ...]
+    review_ticks: tuple[str, ...]
+    source_label: str
+    reason_label: str
+    review_hint: str
+    matrix_title: str
+    axis_likelihood: str
+    axis_impact: str
+    band_labels: tuple[str, ...]
+    band_ranges: tuple[str, ...]
+    matrix_rows: tuple[MatrixRow, ...]
+
+    def printed_fragments(self) -> tuple[str, ...]:
+        return _fragments(self)
+
+
+@dataclass(frozen=True)
 class TeamBooklet:
     job: str
+    register: Optional[RegisterPage]
     planning: PlanningPage
     tracking: TrackingPage
     ros: RosPage
 
     def printed_fragments(self) -> tuple[str, ...]:
+        register = self.register.printed_fragments() if self.register is not None else ()
         return tuple(
             dict.fromkeys(
-                (*self.planning.printed_fragments(), *self.tracking.printed_fragments(), *self.ros.printed_fragments())
+                (
+                    *register,
+                    *self.planning.printed_fragments(),
+                    *self.tracking.printed_fragments(),
+                    *self.ros.printed_fragments(),
+                )
             )
         )
 
@@ -170,6 +228,64 @@ def _review_event(cfg: Config):
         if event.type == "final_budget_tier":
             return event
     raise PrintModelError("Die Config hat kein Budget-Review-Event (final_budget_tier)")
+
+
+def _register_page(cfg: Config, texts: Texts) -> Optional[RegisterPage]:
+    matrix = cfg.risk_matrix
+    if matrix is None:
+        return None
+    if matrix.register_rows > MAX_REGISTER_ROWS:
+        raise PrintModelError(
+            f"Das Risikoregister hat {matrix.register_rows} Zeilen, die Seite ist für höchstens {MAX_REGISTER_ROWS} "
+            "belegt (MAX_REGISTER_ROWS in planspiel/booklet.py); die Konstante nur zusammen mit einem neuen "
+            "Layout-Nachweis dieser Seite anheben."
+        )
+    words = PreAttackView(cfg, texts).sheet("register")
+    rows = tuple(f"{words['risk_prefix']}{fmt.format_number(number)}" for number in range(1, matrix.register_rows + 1))
+    last_rank = fmt.format_number(matrix.register_rows)
+    levels = len(matrix.bands)
+    matrix_rows = tuple(
+        MatrixRow(
+            label=words["likelihood"][likelihood_id],
+            zones=tuple(
+                MatrixCell(kind=zone, word=words["zones"][zone])
+                for zone in (risk.zone_of(likelihood, impact) for impact in range(1, levels + 1))
+            ),
+        )
+        for likelihood_id, likelihood in (("high", 3), ("medium", 2), ("low", 1))
+    )
+    example = words["example"]
+    return RegisterPage(
+        title=words["title"],
+        instruction=words["instruction"],
+        rank_hint=f"{words['rank_hint']} {fmt.format_number(RANK_FIRST)} {EN_DASH} {last_rank}",
+        example_label=words["example_label"],
+        header=tuple(
+            words[name]
+            for name in (
+                "head_asset", "head_threat", "head_goal", "head_impact", "head_rank", "head_decision", "head_review"
+            )
+        ),
+        example=(
+            example["asset"], example["threat"], example["goal"], example["impact"], fmt.format_number(RANK_FIRST),
+            example["decision"], words["review"]["correct"],
+        ),
+        example_cell=example["cell"],
+        rows=rows,
+        goal_ticks=tuple(words["goals"][name] for name in ("c", "i", "a")),
+        category_ticks=tuple(words["categories"][name] for name in ("production", "customer", "knowhow", "costs")),
+        decision_ticks=tuple(words["decision"][name] for name in ("treat", "accept")),
+        review_ticks=tuple(words["review"][name] for name in ("correct", "under", "over")),
+        source_label=words["source_label"],
+        reason_label=words["reason_label"],
+        review_hint=words["review_hint"],
+        matrix_title=words["matrix_title"],
+        axis_likelihood=words["axis_likelihood"],
+        axis_impact=words["axis_impact"],
+        band_labels=tuple(words["bands"][band.id] for band in matrix.bands),
+        band_ranges=risk.band_ranges(matrix.bands, words),
+        matrix_rows=matrix_rows,
+    )
 
 
 def _planning_page(cfg: Config, texts: Texts) -> PlanningPage:
@@ -404,6 +520,7 @@ def build_tracking_page(cfg: Config, texts: Texts) -> TrackingPage:
 def build_team_booklet(cfg: Config, texts: Texts) -> TeamBooklet:
     return TeamBooklet(
         job=BOOKLET_JOB,
+        register=_register_page(cfg, texts),
         planning=_planning_page(cfg, texts),
         tracking=build_tracking_page(cfg, texts),
         ros=_ros_page(cfg, texts),
