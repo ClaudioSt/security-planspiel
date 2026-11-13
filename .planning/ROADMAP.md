@@ -373,7 +373,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 3 
   5. The schedule (story block 35, debriefing 30, total 215 minutes), print list, dry-run protocol and record, intro deck (new "Risiko-Matrix" slide), README and "Was ist neu" sheet match the new flow, and no game formula or balance value has changed.
   6. Release candidate 3 is built clean (no "+lokal", `print --check` exit 0, fast and pdf tests pass), printed and approved by the user before 2026-11-25.
 
-**Plans:** 1/10 plans executed
+**Plans:** 2/10 plans executed
 
 Plans:
 **Wave 1**
@@ -382,7 +382,7 @@ Plans:
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 07.1-02-PLAN.md — RISK-02: risk register as the first of five Teamheft pages, 3×3 matrix with zones and config € ranges, clinic example, Rückblick rule, Teamheft page-order tests updated (wave 2)
+- [x] 07.1-02-PLAN.md — RISK-02: risk register as the first of five Teamheft pages, 3×3 matrix with zones and config € ranges, clinic example, Rückblick rule, Teamheft page-order tests updated (wave 2)
 
 **Wave 3** *(blocked on Wave 2 completion)*
 

@@ -5,15 +5,15 @@ milestone_name: milestone
 current_phase: 07.1
 current_phase_name: risk-based-learning-chain-cia-risk-register-from-the-mechtec
 status: executing
-stopped_at: Phase 07.1 planned (10 plans, ready to execute)
-last_updated: "2026-11-13T10:16:58.300Z"
+stopped_at: Completed 07.1-02-PLAN.md
+last_updated: "2026-11-13T10:40:16.268Z"
 last_activity: 2026-11-13
 last_activity_desc: Phase 07.1 execution started
 progress:
   total_phases: 8
   completed_phases: 6
   total_plans: 72
-  completed_plans: 62
+  completed_plans: 63
   percent: 75
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-10-27)
 ## Current Position
 
 Phase: 07.1 (risk-based-learning-chain-cia-risk-register-from-the-mechtec) — EXECUTING
-Plan: 2 of 10
+Plan: 3 of 10
 Status: Ready to execute
 Last activity: 2026-11-13 — Phase 07.1 execution started
 
@@ -121,6 +121,7 @@ Progress: [█████████░] 86% (6 of 7 phases)
 | Phase 07 P11 | 40 min | 3 tasks | 7 files |
 | Phase 07 P09 | 3 sessions | 4 tasks | 25 files |
 | Phase 07.1 P01 | 35min | 2 tasks | 9 files |
+| Phase 07.1 P02 | 2h | 3 tasks | 14 files |
 
 ## Accumulated Context
 
@@ -211,6 +212,7 @@ Recent decisions affecting current work:
 - [Phase 07]: 07-09: wave_1 re-budgeted to 25 min, session total 195 (D-34 deviation, user-approved 2026-11-04); re-measured in the dry run (07-12)
 - [Phase 07]: 07-09: print set released as release candidate 2 (commit 8cf1972, Stand 2026-11-04, 737ba65) on 2026-11-06
 - [Phase 07.1]: [07.1-01] risk_matrix sits after session_schedule in Config so practice stays the last field
+- [Phase 07.1]: [07.1-02] Register texts required only with a risk_matrix; zones and 3x3 levels are a layout constant (risk.ZONES); Teamheft is five pages with the register first
 
 ### Pending Todos
 
@@ -238,6 +240,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-11-13T10:16:52.246Z
-Stopped at: Phase 07.1 planned (10 plans, ready to execute)
+Last session: 2026-11-13T10:40:16.255Z
+Stopped at: Completed 07.1-02-PLAN.md
 Resume file: .planning/phases/07.1-risk-based-learning-chain-cia-risk-register-from-the-mechtec/07.1-01-PLAN.md
