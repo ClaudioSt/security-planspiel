@@ -169,6 +169,25 @@ def test_the_debrief_page_follows_the_final_table_and_precedes_welle_zero(printe
         assert squash(part) in text, part
 
 
+def test_the_debrief_offers_the_pitch_without_guide_minutes(printed_set, sheet):
+    pages = _pages(printed_set)
+    _, review = _section_pages(pages, sheet)
+    first = _first_page_with(pages, sheet.debrief.title, start=review)
+    last = _first_page_with(pages, sheet.welle0.title, start=first)
+    span = "".join(pages[first:last])
+    debrief = sheet.debrief
+    assert debrief.pitch_text
+    for part in (debrief.pitch_title, debrief.pitch_text, debrief.pitch_limit_label, debrief.pitch_limit):
+        assert squash(part) in span, part
+    application = debrief.stages[-1]
+    start = span.index(squash(application.questions[-1]))
+    pitch = span.index(squash(debrief.pitch_title), start)
+    compare = span.index(squash(debrief.compare_title), pitch)
+    assert start < pitch < compare
+    assert squash(debrief.guide_label) not in span[pitch:compare]
+    assert squash(debrief.total_value) in span
+
+
 def test_the_contents_list_names_the_debrief(printed_set, sheet):
     assert squash(sheet.debrief.title) in _pages(printed_set)[0]
 
