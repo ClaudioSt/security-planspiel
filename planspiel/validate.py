@@ -5,6 +5,8 @@ from fractions import Fraction
 from math import lcm
 from typing import Any, Dict, List, Optional, Tuple
 
+from planspiel.config import RiskBand
+from planspiel.risk import band_of
 from planspiel.rules import kz_slope
 
 KNOWN_EVENT_TYPES = (
@@ -33,6 +35,9 @@ SCHEDULE_KEYS = ("total_minutes", "teams", "persons_per_team", "blocks", "print_
 DEBRIEF_STAGE_KEYS = ("id", "minutes")
 SCHEDULE_BLOCK_KEYS = ("id", "minutes", "wave")
 PRINT_ROW_KEYS = ("job", "per_team", "facilitator")
+RISK_MATRIX_KEYS = ("register_rows", "bands")
+RISK_BAND_KEYS = ("id", "min")
+RISK_BAND_COUNT = 3  # the matrix is 3 x 3 (D-03)
 SNAKE_ID = re.compile(r"[a-z][a-z0-9_]*")
 PRINT_JOB = re.compile(r"[a-z0-9][a-z0-9_-]*")
 
@@ -236,6 +241,8 @@ class _Validator:
             self.check_practice(raw["practice"], attacks, measures)
         if "session_schedule" in raw:
             self.check_session_schedule(raw["session_schedule"], raw.get("waves"))
+        if "risk_matrix" in raw:
+            self.check_risk_matrix(raw["risk_matrix"], raw.get("attacks"), raw.get("waves"))
         if "reference_plans" in raw:
             self.check_reference_plans(raw["reference_plans"], measures)
         if "reference_strategies" in raw:
@@ -633,6 +640,88 @@ class _Validator:
                     None,
                 )
             self.check_debrief_stages(stages, debrief_minutes)
+
+    def check_risk_matrix(self, block: Any, attacks: Any, waves: Any) -> None:
+        """Risikomatrix (RISK-01, D-04, D-22, D-24): Zeilen des Registers und € Bänder; nur Zahlen und IDs, Prosa steht in content/texte.toml."""
+        path = "risk_matrix"
+        if not self.container(block, dict, path):
+            return
+        for key in block:
+            if key not in RISK_MATRIX_KEYS:
+                self.error("schema.keys", f"{path}.{key}", f"Unbekannter Schlüssel '{key}' in der Risikomatrix")
+        self.int_field(block, "register_rows", path, lo=1)
+        bands = self.field(block, "bands", path)
+        if bands is None or not self.container(bands, list, f"{path}.bands"):
+            return
+        if len(bands) != RISK_BAND_COUNT:
+            self.error(
+                "risk.bands_count", f"{path}.bands",
+                f"Die Risikomatrix hat genau {RISK_BAND_COUNT} Bänder, gefunden {len(bands)}",
+            )
+        seen: set = set()
+        minima: List[Optional[int]] = []
+        ids_ok = True
+        for index, band in enumerate(bands):
+            band_path = f"{path}.bands[{index}]"
+            if not self.container(band, dict, band_path):
+                minima.append(None)
+                ids_ok = False
+                continue
+            for key in band:
+                if key not in RISK_BAND_KEYS:
+                    self.error("schema.keys", f"{band_path}.{key}", f"Unbekannter Schlüssel '{key}' im Band")
+            band_id = self.field(band, "id", band_path)
+            if band_id is None:
+                ids_ok = False
+            elif not isinstance(band_id, str) or not SNAKE_ID.fullmatch(band_id):
+                self.error("risk.band_id", f"{band_path}.id", f"Ungültige Band-ID {band_id!r}")
+                ids_ok = False
+            elif band_id in seen:
+                self.error("risk.band_id", f"{band_path}.id", f"Doppelte Band-ID {band_id!r}")
+                ids_ok = False
+            else:
+                seen.add(band_id)
+            minima.append(self.int_field(band, "min", band_path, lo=0))
+        if any(value is None for value in minima):
+            return
+        ordered = minima[0] == 0 and all(left < right for left, right in zip(minima, minima[1:]))
+        if not ordered:
+            self.error(
+                "risk.bands_order", f"{path}.bands",
+                f"Die Untergrenzen der Bänder müssen bei 0 beginnen und streng aufsteigen, gefunden {minima}",
+            )
+        if not ordered or not ids_ok or len(bands) != RISK_BAND_COUNT:
+            return
+        damages = self.used_unprotected_damages(attacks, waves)
+        if not damages:
+            return
+        rebuilt = tuple(RiskBand(id=item["id"], minimum=item["min"]) for item in bands)
+        for attack_id, damage in damages.items():
+            if damage in minima[1:]:
+                self.error(
+                    "risk.attack_band", f"{path}.bands",
+                    f"Der ungeschützte Schaden von '{attack_id}' ({damage}) liegt genau auf einer Bandgrenze",
+                )
+        if band_of(rebuilt, min(damages.values())).id == rebuilt[0].id:
+            self.error("risk.attack_band", f"{path}.bands", "Ein ungeschützter Angriff läge im niedrigsten Band")
+        if band_of(rebuilt, max(damages.values())).id != rebuilt[-1].id:
+            self.error("risk.attack_band", f"{path}.bands", "Kein ungeschützter Angriff erreicht das höchste Band")
+
+    @staticmethod
+    def used_unprotected_damages(attacks: Any, waves: Any) -> Dict[str, int]:
+        """Basis-Schweregrad mal Euro je Punkt der in Wellen genutzten Angriffe (nur gültige Werte, in Tausend Euro)."""
+        if not isinstance(attacks, dict) or not isinstance(waves, list):
+            return {}
+        damages: Dict[str, int] = {}
+        for wave in waves:
+            attack_id = wave.get("attack_id") if isinstance(wave, dict) else None
+            attack = attacks.get(attack_id) if isinstance(attack_id, str) else None
+            if not isinstance(attack, dict):
+                continue
+            severity, unit = attack.get("base_severity"), attack.get("s_unit")
+            if all(isinstance(value, int) and not isinstance(value, bool) for value in (severity, unit)):
+                damages[attack_id] = severity * unit
+        return damages
 
     def check_debrief_stages(self, stages: list, debrief_minutes: Any) -> None:
         """Richtzeit je Debriefing-Stufe (D-11): Summe der Stufen = Dauer des Blocks 'debrief'."""
