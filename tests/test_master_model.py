@@ -560,7 +560,7 @@ def test_cheat_sheet_intro_names_the_management_role_and_case_texts_hold_no_amou
 def test_cheat_sheet_more_cases_than_the_maximum_stop_the_build(cfg, texts):
     extra = tuple(
         dataclasses.replace(cfg.risk_matrix.cases[0], id=f"extra_{index}")
-        for index in range(cheatsheet.MAX_CHEAT_CASES)
+        for index in range(cheatsheet.MAX_CHEAT_CASES + 1)
     )
     broken = dataclasses.replace(cfg, risk_matrix=dataclasses.replace(cfg.risk_matrix, cases=extra))
     with pytest.raises(PrintModelError, match="MAX_CHEAT_CASES"):

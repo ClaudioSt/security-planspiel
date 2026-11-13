@@ -221,6 +221,10 @@ REGISTER_KEYS = (
     *(f"sheets.register.{group}.{item}" for group, items in REGISTER_GROUPS.items() for item in items),
 )
 
+_CHEAT_KEYS = ("title", "intro", "bands_title", "head_case", "head_answer", "head_band")
+# Required only when the risk_matrix carries cases, like REGISTER_KEYS (RISK-05); not part of SHEET_KEYS.
+CHEAT_KEYS = tuple(f"sheets.cheatsheet.{name}" for name in _CHEAT_KEYS)
+
 # Required only when the config carries a risk_matrix, like REGISTER_KEYS (RISK-04); not part of SHEET_KEYS.
 REALITY_KEYS = ("sheets.angriff.reality_question", "sheets.angriff.reality_hint")
 
@@ -431,6 +435,10 @@ def required_keys(cfg: Config) -> set[str]:
         keys.update(REGISTER_KEYS)
         keys.update(REALITY_KEYS)
         keys.update(f"sheets.register.bands.{band.id}" for band in cfg.risk_matrix.bands)
+        if cfg.risk_matrix.cases:
+            keys.update(CHEAT_KEYS)
+            for case in cfg.risk_matrix.cases:
+                keys.update({f"sheets.cheatsheet.cases.{case.id}.case", f"sheets.cheatsheet.cases.{case.id}.answer"})
     return keys
 
 

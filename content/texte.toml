@@ -392,6 +392,42 @@ low = "gering"
 medium = "mittel"
 high = "hoch"
 
+[sheets.cheatsheet]
+title = "Geschäftsfolgen: Antworten der Geschäftsführung"
+intro = "Teams dürfen fragen, was ein Schaden fürs Geschäft bedeuten würde. Antwortet in der Rolle der Geschäftsführung von MechTech mit dem Band aus dieser Tabelle, nie mit einem genauen Betrag, und nennt nie einen Angriff."
+bands_title = "Bänder der Risiko-Matrix"
+head_case = "Folge fürs Geschäft"
+head_answer = "Antwort der Geschäftsführung"
+head_band = "Band"
+
+[sheets.cheatsheet.cases.production_day]
+case = "Die Produktion steht einen Arbeitstag still."
+answer = "Ein Arbeitstag ohne Produktion kostet uns grob den Umsatz dieses Arbeitstags."
+
+[sheets.cheatsheet.cases.production_days]
+case = "Die Produktion steht mehrere Tage still."
+answer = "Mehrere Tage Stillstand gefährden die Liefertermine beim OEM; das wird teuer."
+
+[sheets.cheatsheet.cases.production_week]
+case = "Eine Fertigungsanlage fällt für rund eine Woche aus."
+answer = "Eine Woche ohne Anlage heißt Vertragsstrafen und Sonderschichten."
+
+[sheets.cheatsheet.cases.design_data]
+case = "Konstruktionsdaten landen bei einem Wettbewerber."
+answer = "Das kostet uns Aufträge und Vertrauen, aber nicht sofort die Produktion."
+
+[sheets.cheatsheet.cases.oem_hold]
+case = "Der OEM legt Bestellungen auf Eis."
+answer = "Ohne Abrufe des Hauptkunden fehlt uns der größte Teil des Umsatzes."
+
+[sheets.cheatsheet.cases.audit_findings]
+case = "Ein Audit findet Mängel, die wir nachbessern müssen."
+answer = "Nacharbeit kostet Zeit, aber wenig Geld."
+
+[sheets.cheatsheet.cases.single_pc]
+case = "Ein einzelner Büro-PC muss neu aufgesetzt werden."
+answer = "Ärgerlich, aber schnell erledigt."
+
 [sheets.register.example]
 asset = "Patientenakten"
 threat = "Serverausfall im Rechenzentrum (Mail der Klinikleitung)"
@@ -675,7 +711,7 @@ direction = "Pause. Legt währenddessen die Story-Unterlagen für jedes Team ber
 
 [sheets.ablauf.blocks.story_groups]
 label = "Story-Gruppenarbeit"
-direction = "Gebt jedem Team die Story-Unterlagen und das Teamheft. Die Teams lesen, sammeln Hinweise und füllen das Risikoregister auf der ersten Seite des Teamhefts aus."
+direction = "Gebt jedem Team die Story-Unterlagen und das Teamheft. Die Teams lesen, sammeln Hinweise und füllen das Risikoregister auf der ersten Seite des Teamhefts aus. Fragt ein Team, was ein Schaden fürs Geschäft bedeuten würde, antwortet mit der Tabelle Geschäftsfolgen: Antworten der Geschäftsführung."
 
 [sheets.ablauf.blocks.wave_0]
 direction = "Gebt das Übungsblatt und die Erklärseite So funktioniert eine Welle aus. Rechnet das Beispiel gemeinsam durch, bevor die erste echte Welle beginnt."
@@ -891,7 +927,7 @@ schedule = "Fester Ablaufplan im Spielleitungsheft:"
 [sheets.was_neu.material]
 generated = "Alle Druckunterlagen sind generierte PDFs und ersetzen die Word- und PowerPoint-Dateien der MHP-Runde."
 veil = "Angriffe bleiben bis zu ihrer Welle verdeckt und werden erst beim Treffer benannt; die Rechenregeln sind offen."
-clues = "Neu ist die Hinweismatrix zu den Angriffen im Spielleitungsheft:"
+clues = "Neu im Spielleitungsheft: Antworten zu Geschäftsfolgen und die"
 teamheft = "Teamheft schon im Story-Block: erst Risikoregister, dann Planung, Tracking, RoS."
 wave_page = "Gebt vor der Übungswelle die Erklärseite aus:"
 practice = "Das Übungsblatt rechnet die Übungswelle mit allen Schritten vor."

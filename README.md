@@ -49,7 +49,7 @@ Der Ablaufplan mit Blöcken, Dauern und Pausen steht in `session_schedule` und w
 1. **Einführung (Intro)**  
    Das Intro-Deck erklärt Spielidee und Rollen.
 2. **Story und Gruppenarbeit**  
-   Teams lesen die Story-Dokumente und erhalten dazu das Teamheft. Auf seiner ersten Seite, dem Risikoregister, leiten sie aus dem Unternehmen ihre Risiken ab, ordnen sie in der Risiko-Matrix ein, vergeben einen Rang und entscheiden, welche sie behandeln oder akzeptieren. Die Spielleitung beantwortet Fragen **kontextbezogen** und benennt keine Lücken.
+   Teams lesen die Story-Dokumente und erhalten dazu das Teamheft. Auf seiner ersten Seite, dem Risikoregister, leiten sie aus dem Unternehmen ihre Risiken ab, ordnen sie in der Risiko-Matrix ein, vergeben einen Rang und entscheiden, welche sie behandeln oder akzeptieren. Die Spielleitung beantwortet Fragen **kontextbezogen** und benennt keine Lücken. Fragen die Teams, was ein Schaden fürs Geschäft bedeuten würde, antwortet die Spielleitung als Geschäftsführung mit einem Band der Risiko-Matrix, nie mit einem genauen Betrag.
 3. **Welle 0 (Übung)**  
    Ein durchgerechnetes Übungsbeispiel (`uebung-welle-0.pdf`) mit eigenen Werten aus dem Block `practice`; es zählt nicht für die Wertung.
 4. **Budgetverhandlung und Maßnahmenwahl**  
@@ -209,7 +209,7 @@ Alle Dateien liegen als PDF in `final_documents/generated/` und werden aus `simu
 
 **Nur für die Spielleitung (nicht an Teams ausgeben):**
 
-- `spielleitung-uebersicht.pdf`: das Spielleitungs-Heft mit Ablaufplan, Druckliste, Kennwerten, Prüfzeilen, Lösungsschlüsseln, Debriefing-Fragen und der Hinweis-Matrix.
+- `spielleitung-uebersicht.pdf`: das Spielleitungs-Heft mit Ablaufplan, Druckliste, Kennwerten, Prüfzeilen, Lösungsschlüsseln, Debriefing-Fragen, Antworten zu Geschäftsfolgen (Bänder der Risiko-Matrix) und der Hinweis-Matrix.
 - `spielleitung-was-ist-neu.pdf`: das Blatt „Was ist neu“ für Spielleitungen der MHP-Runde mit den geänderten Regeln, dem geänderten Ablauf, dem neuen Material und der Gegenüberstellung alter und neuer Werte. Die alten Werte stammen aus `content/mhp_baseline.json`, dem eingefrorenen Stand der MHP-Runde; nur dieses Blatt liest die Datei.
 - `spielleitung-probelauf.pdf`: das Probelauf-Protokoll.
 
