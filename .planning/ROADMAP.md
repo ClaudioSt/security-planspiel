@@ -373,7 +373,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 3 
   5. The schedule (story block 35, debriefing 30, total 215 minutes), print list, dry-run protocol and record, intro deck (new "Risiko-Matrix" slide), README and "Was ist neu" sheet match the new flow, and no game formula or balance value has changed.
   6. Release candidate 3 is built clean (no "+lokal", `print --check` exit 0, fast and pdf tests pass), printed and approved by the user before 2026-11-25.
 
-**Plans:** 7/10 plans executed
+**Plans:** 8/10 plans executed
 
 Plans:
 **Wave 1**
@@ -406,7 +406,7 @@ Plans:
 
 **Wave 8** *(blocked on Wave 7 completion)*
 
-- [ ] 07.1-07-PLAN.md — RISK-07: debriefing along the chain plus optional 60-second management pitch (wave 8)
+- [x] 07.1-07-PLAN.md — RISK-07: debriefing along the chain plus optional 60-second management pitch (wave 8)
 
 **Wave 9** *(blocked on Wave 8 completion)*
 
