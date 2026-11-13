@@ -69,7 +69,10 @@ def test_the_planning_page_holds_the_cost_table_the_tier_rows_and_the_anticipate
     for row in (planning.tier_header, *planning.tier_rows):
         for cell in row:
             assert squash(cell) in first, cell
-    for text in (*planning.planning_header, *planning.planning_rows, planning.sum_label, planning.anticipated_line):
+    for text in (
+        *planning.planning_header, *planning.planning_rows, planning.planning_hint, planning.sum_label,
+        planning.anticipated_line,
+    ):
         assert squash(text) in first, text
 
 

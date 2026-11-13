@@ -181,6 +181,41 @@ def test_the_planning_table_rows_are_writable(loaded):
         assert render.tex_escape(label) in source
 
 
+def _planning_table_lines(source, booklet):
+    start = source.index(r"\begin{tabularx}", source.index(render.tex_escape(booklet.planning.planning_intro)))
+    table = source[start : source.index(r"\end{tabularx}", start)]
+    return [line for line in table.splitlines() if line.startswith((r"\rowstrut", r"\rowcolor"))]
+
+
+def test_the_planning_table_prints_every_header_cell_and_one_separator_fewer_per_row(loaded):
+    _, _, booklet, source = loaded
+    header = booklet.planning.planning_header
+    lines = _planning_table_lines(source, booklet)
+    assert lines[0].startswith(r"\rowcolor{mhpblue}") and lines[0].count(r"\hdr{") == len(header)
+    for cell in header:
+        assert render.tex_escape(cell) in lines[0]
+    body = lines[1:]
+    assert len(body) == len(booklet.planning.planning_rows) + 1
+    for line in body:
+        assert len(UNESCAPED_AMPERSAND.findall(line)) == len(header) - 1, line
+
+
+def test_the_planning_partial_loops_over_the_header_cells_and_prints_the_hint():
+    planning = (TEMPLATES / PLANNING).read_text(encoding="utf-8")
+    assert r"\BLOCK{for cell in booklet.planning.planning_header}" in planning
+    assert "planning_header[4]" not in planning
+    assert r"\hint{\VAR{booklet.planning.planning_hint}}" in planning
+
+
+def test_the_planning_hint_is_printed_only_with_a_register(loaded):
+    _, _, booklet, source = loaded
+    assert len(booklet.planning.planning_header) == (5 if booklet.register is not None else 4)
+    if booklet.register is None:
+        assert booklet.planning.planning_hint == ""
+    else:
+        assert render.tex_escape(booklet.planning.planning_hint) in source
+
+
 @pytest.mark.parametrize("template", [SHELL, REGISTER, PLANNING, TRACKING, ROS])
 def test_templates_print_only_plain_variables(template):
     text = (TEMPLATES / template).read_text(encoding="utf-8")
