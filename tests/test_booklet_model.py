@@ -9,11 +9,15 @@ from fractions import Fraction
 
 import pytest
 
-from planspiel import fmt, review_text, risk, rules
+from planspiel import audience, fmt, review_text, risk, rules, veil
 from planspiel.booklet import (
     BOOKLET_JOB,
+    EN_DASH,
     MAX_PENALTY_ROWS,
+    MAX_REGISTER_ROWS,
+    RANK_FIRST,
     PlanningPage,
+    RegisterPage,
     RosPage,
     TeamBooklet,
     build_team_booklet,
@@ -23,7 +27,7 @@ from planspiel.config import load_config
 from planspiel.eventtext import effect_rows
 from planspiel.printmodel import PrintModelError
 from planspiel.rules import Path, Window
-from planspiel.texts import PreAttackView, load_texts
+from planspiel.texts import PreAttackView, load_clues, load_content, load_texts, required_keys
 from tests.support import CONFIG_PATH, CONTENT_DIR, MINI_CONTENT_DIR, REPO_ROOT
 
 MINI = REPO_ROOT / "tests" / "fixtures" / "mini_config.json"
@@ -243,11 +247,148 @@ def test_printed_fragments_are_non_empty_and_unique(loaded):
         fragments = part.printed_fragments()
         assert fragments
         assert len(set(fragments)) == len(fragments)
+    register = set(booklet.register.printed_fragments()) if booklet.register else set()
     assert (
-        set(booklet.planning.printed_fragments())
+        register
+        | set(booklet.planning.printed_fragments())
         | set(booklet.tracking.printed_fragments())
         | set(booklet.ros.printed_fragments())
     ) == set(booklet.printed_fragments())
+
+
+# ---- the register page model (RISK-02) ------------------------------------------------------------------------------
+
+
+def _register_words(texts):
+    return PreAttackView(load_config(CONFIG_PATH), texts).sheet("register")
+
+
+def test_the_register_exists_only_with_a_risk_matrix(loaded):
+    cfg, texts, booklet = loaded
+    if cfg.risk_matrix is None:
+        assert booklet.register is None
+        assert not any(key.startswith("sheets.register") for key in required_keys(cfg))
+    else:
+        assert isinstance(booklet.register, RegisterPage)
+        assert {f"sheets.register.bands.{band.id}" for band in cfg.risk_matrix.bands} <= required_keys(cfg)
+
+
+def test_the_register_rows_are_labelled_from_register_rows(real):
+    cfg, texts, booklet = real
+    words = _register_words(texts)
+    count = cfg.risk_matrix.register_rows
+    labels = tuple(f"{words['risk_prefix']}{fmt.format_number(number)}" for number in range(1, count + 1))
+    assert booklet.register.rows == labels == ("R1", "R2", "R3", "R4", "R5")
+
+
+def test_the_rank_hint_ends_with_the_generated_rank_range(real):
+    cfg, _, booklet = real
+    rows = cfg.risk_matrix.register_rows
+    assert booklet.register.rank_hint.endswith(f"{fmt.format_number(RANK_FIRST)} {EN_DASH} {fmt.format_number(rows)}")
+
+
+def test_the_register_header_has_seven_columns_in_the_documented_order(real):
+    _, texts, booklet = real
+    words = _register_words(texts)
+    register = booklet.register
+    names = ("head_asset", "head_threat", "head_goal", "head_impact", "head_rank", "head_decision", "head_review")
+    assert register.header == tuple(words[name] for name in names)
+    assert register.source_label == words["source_label"]
+    assert register.reason_label == words["reason_label"]
+    assert register.goal_ticks == tuple(words["goals"][goal] for goal in ("c", "i", "a"))
+    assert len(register.category_ticks) == 4 and len(register.decision_ticks) == 2 and len(register.review_ticks) == 3
+
+
+def test_the_register_review_hint_fixes_the_comparison_direction(real):
+    _, texts, booklet = real
+    words = _register_words(texts)
+    register = booklet.register
+    hint = register.review_hint
+    assert hint == words["review_hint"]
+    assert register.matrix_title in hint and "Realitätscheck" in hint
+    under, over, correct = words["review"]["under"], words["review"]["over"], words["review"]["correct"]
+    order = [hint.index(part) for part in ("höher", under, "niedriger", over, "gleich", correct)]
+    assert order == sorted(order) and len(set(order)) == len(order)
+    assert over in hint.split(".")[-2], "the last sentence is the not-hit rule (D-25)"
+    assert "mehrere Angriffe" in hint and "größten" in hint
+
+
+def test_every_wave_attack_has_a_story_clue_for_the_register_source_column():
+    cfg = load_config(CONFIG_PATH)
+    clues = load_clues(CONTENT_DIR / "clues.toml")
+    for attack_id in {wave.attack_id for wave in cfg.waves}:
+        assert any(clue.attack == attack_id and clue.source.startswith("story.") for clue in clues), attack_id
+
+
+def test_the_axis_labels_follow_the_config_bands(real):
+    cfg, texts, booklet = real
+    words = _register_words(texts)
+    bands = cfg.risk_matrix.bands
+    assert booklet.register.band_ranges == risk.band_ranges(bands, words)
+    assert booklet.register.band_labels == tuple(words["bands"][band.id] for band in bands)
+
+
+def test_the_matrix_has_high_likelihood_on_top_and_zones_from_zone_of(real):
+    cfg, texts, booklet = real
+    words = _register_words(texts)
+    rows = booklet.register.matrix_rows
+    assert len(rows) == 3
+    assert [row.label for row in rows] == [words["likelihood"][level] for level in ("high", "medium", "low")]
+    for row, likelihood in zip(rows, (3, 2, 1)):
+        assert len(row.zones) == len(cfg.risk_matrix.bands)
+        for impact, cell in enumerate(row.zones, start=1):
+            assert cell.kind == risk.zone_of(likelihood, impact)
+            assert cell.word == words["zones"][cell.kind]
+
+
+def test_the_example_row_comes_from_the_clinic_texts(real):
+    _, texts, booklet = real
+    words = _register_words(texts)
+    register = booklet.register
+    example = words["example"]
+    assert register.example == (
+        example["asset"], example["threat"], example["goal"], example["impact"],
+        fmt.format_number(RANK_FIRST), example["decision"], words["review"]["correct"],
+    )
+    assert register.example_cell == example["cell"]
+    assert any(word in register.example_cell for word in words["likelihood"].values())
+    assert any(word in register.example_cell for word in words["bands"].values())
+    for text in (*register.example, register.example_cell):
+        assert "MechTech" not in text
+
+
+def test_no_register_string_names_an_attack(real):
+    cfg, texts, booklet = real
+    ctx = veil.context(cfg, texts, load_content(CONTENT_DIR).terms)
+    fragments = booklet.register.printed_fragments()
+    assert fragments
+    for text in fragments:
+        assert veil.name_hits(text, ctx, audience.PROFILE_STORY) == [], text
+
+
+def test_only_generated_register_strings_carry_digits(real):
+    _, _, booklet = real
+    register = booklet.register
+    generated = {*register.rows, register.rank_hint, register.example[4], *register.band_ranges}
+    for text in register.printed_fragments():
+        if any(char.isdigit() for char in text):
+            assert text in generated, text
+
+
+def test_the_register_fragments_open_the_booklet_fragments(real):
+    _, _, booklet = real
+    register = booklet.register.printed_fragments()
+    assert booklet.printed_fragments()[: len(register)] == register
+
+
+def test_too_many_register_rows_stop_the_build(tmp_path):
+    raw = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
+    raw["risk_matrix"]["register_rows"] = MAX_REGISTER_ROWS + 1
+    path = tmp_path / "config.json"
+    path.write_text(json.dumps(raw, ensure_ascii=False, indent=2), encoding="utf-8", newline="\n")
+    cfg = load_config(path)
+    with pytest.raises(PrintModelError, match="MAX_REGISTER_ROWS"):
+        build_team_booklet(cfg, load_texts(CONTENT_DIR / "texte.toml"))
 
 
 # ---- the printed formulas replayed against the simulation ---------------------------------------------------------
