@@ -3,28 +3,33 @@
 Every answer-key value equals `rules.path_trace` on the reference paths pinned in 05-14, is replayed independently from
 the worksheet fields by tests/support/worksheet_replay.py, and is pinned in tests/golden/answer_keys.json. The numbers
 are formatted here with `fmt` again (not through the model), so a drift between model and rules shows up.
+The business-impact cheat sheet (RISK-05, D-05, D-06, D-22) is a page of the same booklet and is tested here too.
 """
+import dataclasses
 import json
 from fractions import Fraction
 
 import pytest
 
-from planspiel import audience, eventtext, fmt, master, practice, refpaths, rules
+from planspiel import audience, cheatsheet, eventtext, fmt, master, practice, refpaths, risk, rules, veil
 from planspiel.config import load_config
 from planspiel.printmodel import PrintModelError, build_attack_sheet
 from planspiel.rounding import round_half_away_frac
 from planspiel.texts import (
+    PREWAVE_SHEETS,
     SHEET_KEYS,
     FacilitatorView,
     RevealView,
     check_coverage,
     load_clues,
+    load_content,
     load_texts,
     required_keys,
 )
 from tests.support import CONFIG_PATH, CONTENT_DIR, MINI_CONTENT_DIR, REPO_ROOT
 from tests.support.golden import check_golden
 from tests.support.worksheet_replay import replay_steps
+from tests.test_texts_number_words import PHASE7_PREFIXES
 
 MINI = REPO_ROOT / "tests" / "fixtures" / "mini_config.json"
 GOLDEN_DIR = REPO_ROOT / "tests" / "golden"
@@ -497,3 +502,88 @@ def test_changing_a_reference_path_changes_the_pinned_payload(sheet, texts, clue
 
     other = master.build_master_sheet(_modified(tmp_path, cheaper), texts, clues)
     assert printed_payload(other) != printed_payload(sheet)
+
+
+# --- business-impact cheat sheet (RISK-05, D-05, D-06, D-22) -------------------------------------------------------
+
+
+@pytest.fixture(scope="module")
+def cheat_page(cfg, texts):
+    return cheatsheet.build_cheat_sheet_page(cfg, texts)
+
+
+def test_cheat_sheet_page_is_absent_without_cases(cfg, texts, tmp_path):
+    assert cheatsheet.build_cheat_sheet_page(load_config(MINI), texts) is None
+
+    def no_cases(raw):
+        del raw["risk_matrix"]["cases"]
+
+    assert cheatsheet.build_cheat_sheet_page(_modified(tmp_path, no_cases), texts) is None
+
+
+def test_cheat_sheet_bands_follow_the_config_bands_with_their_ranges(cfg, texts, cheat_page):
+    words = texts.subtree("sheets.register")
+    ranges = risk.band_ranges(cfg.risk_matrix.bands, words)
+    assert [(band.word, band.range) for band in cheat_page.bands] == [
+        (words["bands"][band.id], ranges[index]) for index, band in enumerate(cfg.risk_matrix.bands)
+    ]
+
+
+def test_cheat_sheet_cases_follow_the_config_order_with_texts_and_band_strings(cfg, texts, cheat_page):
+    bands = {band.id: f"{item.word} ({item.range})" for band, item in zip(cfg.risk_matrix.bands, cheat_page.bands)}
+    assert [case.case for case in cheat_page.cases] == [
+        texts.get(f"sheets.cheatsheet.cases.{case.id}.case") for case in cfg.risk_matrix.cases
+    ]
+    for case, printed in zip(cfg.risk_matrix.cases, cheat_page.cases):
+        assert printed.answer == texts.get(f"sheets.cheatsheet.cases.{case.id}.answer")
+        assert printed.band == bands[case.band]
+
+
+def test_cheat_sheet_case_has_no_anchor_field_and_names_no_attack(cfg, texts, cheat_page):
+    assert not hasattr(cheat_page.cases[0], "like_attack")
+    ctx = veil.context(cfg, texts, load_content(CONTENT_DIR).terms)
+    fragments = cheat_page.printed_fragments()
+    assert fragments
+    for text in fragments:
+        assert not any(attack_id in text.lower() for attack_id in cfg.attacks), text
+        for profile in (audience.PROFILE_STORY, audience.PROFILE_NAMES):
+            assert veil.name_hits(text, ctx, profile) == [], (profile, text)
+
+
+def test_cheat_sheet_intro_names_the_management_role_and_case_texts_hold_no_amount(cheat_page):
+    assert "Geschäftsführung" in cheat_page.intro
+    for case in cheat_page.cases:
+        for text in (case.case, case.answer):
+            assert not any(char.isdigit() for char in text) and "€" not in text, text
+
+
+def test_cheat_sheet_more_cases_than_the_maximum_stop_the_build(cfg, texts):
+    extra = tuple(
+        dataclasses.replace(cfg.risk_matrix.cases[0], id=f"extra_{index}")
+        for index in range(cheatsheet.MAX_CHEAT_CASES)
+    )
+    broken = dataclasses.replace(cfg, risk_matrix=dataclasses.replace(cfg.risk_matrix, cases=extra))
+    with pytest.raises(PrintModelError, match="MAX_CHEAT_CASES"):
+        cheatsheet.build_cheat_sheet_page(broken, texts)
+
+
+def test_cheat_sheet_texts_are_required_only_with_cases(cfg):
+    assert "cheatsheet" not in PREWAVE_SHEETS
+    assert "sheets.cheatsheet" in PHASE7_PREFIXES
+    assert not [key for key in required_keys(load_config(MINI)) if key.startswith("sheets.cheatsheet")]
+    keys = required_keys(cfg)
+    assert "sheets.cheatsheet.title" in keys
+    for case in cfg.risk_matrix.cases:
+        assert f"sheets.cheatsheet.cases.{case.id}.case" in keys
+        assert f"sheets.cheatsheet.cases.{case.id}.answer" in keys
+
+
+def test_the_story_direction_points_to_the_cheat_sheet(texts):
+    direction = texts.get("sheets.ablauf.blocks.story_groups.direction")
+    assert texts.get("sheets.cheatsheet.title") in direction
+
+
+def test_the_was_neu_clue_line_names_the_cheat_sheet(texts):
+    line = texts.get("sheets.was_neu.material.clues")
+    assert "Geschäftsfolgen" in line and "Geschäftsfolgen" in texts.get("sheets.cheatsheet.title")
+    assert len(line) <= 64
