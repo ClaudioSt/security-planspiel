@@ -1,9 +1,11 @@
-"""Regression test of the approved intro deck changes (LEG-02, D-18, D-19).
+"""Regression test of the approved intro deck changes (LEG-02, D-18, D-19; RISK-09, D-19, D-26).
 
 The deck `final_documents/Planspiel_Einführung + Grundlagen.pptx` is maintained by hand (no generator). Its rows were
-approved in `.planning/phases/07-session-flow-handoff/07-DECK-CHECKLIST.md`; this test pins them. Every minute figure
-and the team size are composed from `session_schedule` at test time, so a later schedule or team-format change fails
-here until the deck follows. Set `PLANSPIEL_DECK` to run the test against a working copy.
+approved in `.planning/phases/07-session-flow-handoff/07-DECK-CHECKLIST.md` and, for the Risiko-Matrix slide and the
+35/40 minute figures, in `.planning/phases/07.1-risk-based-learning-chain-cia-risk-register-from-the-mechtec/
+07.1-DECK-CHECKLIST.md`; this test pins them. Every minute figure and the team size are composed from
+`session_schedule` at test time, so a later schedule or team-format change fails here until the deck follows. Set
+`PLANSPIEL_DECK` to run the test against a working copy.
 """
 import os
 import re
@@ -19,32 +21,28 @@ from tests.support import CONFIG_PATH, CONTENT_DIR, REPO_ROOT
 
 DECK = REPO_ROOT / "final_documents" / "Planspiel_Einführung + Grundlagen.pptx"
 
-# slide number -> block ids behind its minute figure (slide 35: closing plus debrief; slide 34 is composed per wave below)
+# slide number -> block ids behind its minute figure (slide 36: closing plus debrief; slide 35 is composed per wave below)
 MINUTE_SLIDES = {
     26: ("break_1",),
     31: ("story_groups",),
-    32: ("measures_budget",),
-    33: ("break_2",),
-    35: ("closing", "debrief"),
+    33: ("measures_budget",),
+    34: ("break_2",),
+    36: ("closing", "debrief"),
 }
 MINUTE_TEXT = {
     26: "{n} Minuten Pause",
     31: "{n} min",
-    32: "{n} min",
-    33: "{n} Minuten Pause",
-    35: "{n} min",
+    33: "{n} min",
+    34: "{n} Minuten Pause",
+    36: "{n} min",
 }
-SUMMED_SLIDES = {35}
-# RISK-08 bridge: slides 31 and 35 follow the 35/30 schedule only when 07.1-09 edits the deck; strict, so an XPASS fails
-DECK_PENDING = pytest.mark.xfail(
-    strict=True,
-    reason="RISK-09: the deck minute figures of slides 31 and 35 follow the 35/30 schedule; 07.1-09 removes this mark",
-)
+SUMMED_SLIDES = {36}
 MINUTE_FIGURE = re.compile(r"(\d+)\s*(?:Minuten|min)\b")
 CLOCK_TIME = re.compile(r"(?<!\d)\d{1,2}:\d{2}(?!\d)")
 
-# Slide 34 names wave 1 and the other waves separately since the D-34 re-budget of wave 1 (user-approved 2026-11-04)
-WAVE_SLIDE = 34
+# The wave slide names wave 1 and the other waves separately since the D-34 re-budget of wave 1 (user-approved
+# 2026-11-04); it is slide 35 since the Risiko-Matrix slide was inserted after slide 31 (07.1-09)
+WAVE_SLIDE = 35
 WAVE_TEXT = "{first} min Welle 1, je {rest} min Welle 2 und 3"
 
 TEAM_SIZE_SLIDE = 30
@@ -58,18 +56,25 @@ DATE_FIGURE = re.compile(r"\d{1,2}\.\d{1,2}\.\d{4}")
 
 # Material lines (approved rows) and the print_list jobs behind them
 MATERIAL = {
-    31: "Material: Unternehmenssteckbrief, Anfrage-Mail, Zeitungsartikel, Audit-Mail",
-    32: "Material: Teamheft, Maßnahmenkarten",
-    34: "Material: Arbeitsblatt der Welle, Eventkarten, So funktioniert eine Welle",
-    35: "Material: Teamheft",
+    31: "Material: Unternehmenssteckbrief, Anfrage-Mail, Zeitungsartikel, Audit-Mail, Teamheft",
+    33: "Material: Teamheft, Maßnahmenkarten",
+    35: "Material: Arbeitsblatt der Welle, Eventkarten, So funktioniert eine Welle",
+    36: "Material: Teamheft",
 }
 MATERIAL_JOBS = {
-    31: ("spieler-unternehmenssteckbrief", "spieler-anfrage-mail", "spieler-zeitungsartikel", "spieler-audit-mail"),
-    32: ("spieler-teamheft", "spieler-massnahmenkarten"),
-    34: ("angriff-1_ransomware", "angriff-2_ot", "angriff-3_exfil", "spieler-eventkarten",
+    31: ("spieler-unternehmenssteckbrief", "spieler-anfrage-mail", "spieler-zeitungsartikel", "spieler-audit-mail",
+         "spieler-teamheft"),
+    33: ("spieler-teamheft", "spieler-massnahmenkarten"),
+    35: ("angriff-1_ransomware", "angriff-2_ot", "angriff-3_exfil", "spieler-eventkarten",
          "spieler-so-funktioniert-eine-welle"),
-    35: ("spieler-teamheft",),
+    36: ("spieler-teamheft",),
 }
+
+# RISK-09 (D-19): the Risiko-Matrix slide sits directly after the story slide 31; checklist 07.1-DECK-CHECKLIST.md
+RISK_SLIDE = 32
+RISK_TITLE = "Risiko-Matrix"
+CLOSING_REVIEW_TEXT = "Und wie gut stimmte euer Risikoregister im Rückblick (richtig, unterschätzt, überschätzt)?"
+MONEY_FIGURE = re.compile(r"\d[\d.]*\s*(€|Euro)")
 
 MEASURE_CATEGORY_TEXT = {
     "Physische": "Schutz von Gebäuden, Räumen und Hardware vor unbefugtem Zutritt und Umwelteinflüssen.",
@@ -134,9 +139,7 @@ def _expected_minutes(cfg, number: int) -> int:
 # --- minute figures ----------------------------------------------------------------------------------------------
 
 
-@pytest.mark.parametrize(
-    "number", [26, pytest.param(31, marks=DECK_PENDING), 32, 33, pytest.param(35, marks=DECK_PENDING)]
-)
+@pytest.mark.parametrize("number", sorted(MINUTE_SLIDES))
 def test_minute_figure_equals_the_session_schedule(cfg, slide_texts, number):
     expected = MINUTE_TEXT[number].format(n=_expected_minutes(cfg, number))
     assert expected in slide_texts[number]
@@ -146,14 +149,14 @@ def test_minute_figure_equals_the_session_schedule(cfg, slide_texts, number):
 
 def test_wave_slide_composes_the_minutes_per_wave_from_the_session_schedule(cfg, slide_texts):
     by_id = {block.id: block.minutes for block in cfg.session_schedule.blocks}
-    assert by_id["wave_2"] == by_id["wave_3"], "slide 34 shows one figure for waves 2 and 3"
+    assert by_id["wave_2"] == by_id["wave_3"], "the wave slide shows one figure for waves 2 and 3"
     expected = WAVE_TEXT.format(first=by_id["wave_1"], rest=by_id["wave_2"])
     assert expected in slide_texts[WAVE_SLIDE]
     figures = {int(figure) for figure in MINUTE_FIGURE.findall(slide_texts[WAVE_SLIDE])}
     assert figures == {by_id["wave_1"], by_id["wave_2"]}
 
 
-@pytest.mark.parametrize("number", [26, 33])
+@pytest.mark.parametrize("number", [26, 34])
 def test_break_slides_carry_no_clock_time(slide_texts, number):
     assert not CLOCK_TIME.search(slide_texts[number])
     assert not re.search(r"bis\s*\d", slide_texts[number])
@@ -193,13 +196,14 @@ def test_measures_slide_describes_measures_not_threats(slide_texts):
 
 
 def test_budget_slide_names_no_amount(slide_texts):
-    assert "Budget zur Umsetzung eurer Maßnahmen" in slide_texts[32]
-    assert "€" not in slide_texts[32]
+    assert "Budget zur Umsetzung eurer Maßnahmen" in slide_texts[33]
+    assert "€" not in slide_texts[33]
 
 
 def test_last_block_slide_is_closing_and_debriefing(slide_texts):
-    assert "Abschluss und Debriefing" in slide_texts[35]
-    assert "Endergebnis und Reflexion" not in slide_texts[35]
+    assert "Abschluss und Debriefing" in slide_texts[36]
+    assert "Endergebnis und Reflexion" not in slide_texts[36]
+    assert CLOSING_REVIEW_TEXT in slide_texts[36]
 
 
 def test_no_old_phrase_and_no_board_term_remains(slide_texts):
@@ -209,8 +213,71 @@ def test_no_old_phrase_and_no_board_term_remains(slide_texts):
         assert not BOARD_TERM.search(text), number
 
 
-def test_pinnwand_slide_is_gone(slides):
-    assert len(slides) == 36
+def test_the_deck_has_the_expected_slides(slides):
+    assert len(slides) == 37
+
+
+# --- Risiko-Matrix slide (RISK-09, D-19, D-26) -------------------------------------------------------------------
+
+
+def _risk_table(slide):
+    tables = [shape.table for shape in slide.shapes if getattr(shape, "has_table", False) and shape.has_table]
+    assert len(tables) == 1, "the Risiko-Matrix slide holds exactly one table"
+    return tables[0]
+
+
+def test_risk_slide_is_visible_and_titled(slides):
+    slide = slides[RISK_SLIDE - 1]
+    assert slide._element.get("show") != "0"
+    assert slide.shapes.title.text_frame.text == RISK_TITLE
+
+
+def test_risk_slide_holds_the_three_by_three_matrix_with_headers(slides):
+    table = _risk_table(slides[RISK_SLIDE - 1])
+    assert len(table.rows) == 4
+    assert len(table.columns) == 4
+
+
+def test_risk_slide_uses_the_register_vocabulary(content, slide_texts):
+    register = content.texts.subtree("sheets.register")
+    words = [
+        *register["zones"].values(),
+        *register["likelihood"].values(),
+        *register["bands"].values(),
+        register["axis_likelihood"],
+        register["planning_column"],
+        register["head_review"],
+    ]
+    for word in words:
+        assert word in slide_texts[RISK_SLIDE], word
+
+
+def test_risk_slide_matrix_cells_carry_their_zone_word_and_colour(slides, content):
+    from planspiel import risk
+
+    register = content.texts.subtree("sheets.register")
+    levels = ("low", "medium", "high")
+    fills = {"green": "CFE8CF", "yellow": "FFF0A8", "red": "F2B8B8"}
+    table = _risk_table(slides[RISK_SLIDE - 1])
+    # body row 1 is the highest likelihood (top), the last row the lowest; columns follow the impact bands
+    for row_index, likelihood in enumerate((3, 2, 1), start=1):
+        assert table.cell(row_index, 0).text_frame.text == register["likelihood"][levels[likelihood - 1]]
+        for impact in (1, 2, 3):
+            cell = table.cell(row_index, impact)
+            zone = risk.zone_of(likelihood, impact)
+            assert cell.text_frame.text == register["zones"][zone]
+            assert str(cell.fill.fore_color.rgb) == fills[zone]
+    for impact in (1, 2, 3):
+        assert table.cell(0, impact).text_frame.text == register["bands"][levels[impact - 1]]
+
+
+def test_risk_slide_names_no_company_attack_or_amount(cfg, content, slide_texts):
+    text = slide_texts[RISK_SLIDE]
+    assert "mechtech" not in text.lower()
+    assert "€" not in text and "Euro" not in text
+    assert not MONEY_FIGURE.search(text)
+    ctx = veil.context(cfg, content.texts, content.terms)
+    assert veil.name_hits(text, ctx, audience.PROFILE_STORY) == []
 
 
 # --- flow overview (D-19) ----------------------------------------------------------------------------------------
