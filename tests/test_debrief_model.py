@@ -7,7 +7,7 @@ import dataclasses
 
 import pytest
 
-from planspiel import audience, debrief, veil
+from planspiel import audience, debrief, fmt, veil
 from planspiel.config import load_config
 from planspiel.printmodel import PrintModelError
 from planspiel.texts import PREWAVE_SHEETS, load_content, load_texts, required_keys
@@ -56,9 +56,65 @@ def test_stages_follow_the_config_order_and_take_their_titles_from_the_texts(cfg
     ]
 
 
-def test_every_stage_has_two_or_three_entries_and_about_ten_in_total(page):
-    assert all(2 <= _entries(section) <= 3 for section in page.stages)
-    assert 8 <= sum(_entries(section) for section in page.stages) <= 12
+def test_every_stage_has_two_to_six_entries_and_twelve_to_sixteen_in_total(page):
+    assert all(2 <= _entries(section) <= 6 for section in page.stages)
+    assert 12 <= sum(_entries(section) for section in page.stages) <= 16
+
+
+def _stage(page, stage_id):
+    return page.stages[STAGE_ORDER.index(stage_id)]
+
+
+def test_the_description_recalls_the_register_and_the_chosen_measures(texts, page):
+    title = texts.get("sheets.register.title")
+    assert any(title in question for question in _stage(page, "description").questions)
+
+
+def test_the_analysis_follows_the_chain(texts, page):
+    questions = _stage(page, "analysis").questions
+    review = texts.get("sheets.register.head_review")
+    assert any(review in question for question in questions)
+    assert "Welches akzeptierte Risiko hat euch getroffen?" in " ".join(questions)
+    assert any(
+        all(word in question for word in ("Gewichtung", "Vertraulichkeit", "Integrität", "Verfügbarkeit"))
+        for question in questions
+    )
+    assert any(all(word in question for word in ("RoS", "Kosten", "Euro")) for question in questions)
+
+
+def test_the_application_transfers_to_a_real_risk_register(texts, page):
+    title = texts.get("sheets.register.title")
+    assert any(title in question for question in _stage(page, "application").questions)
+
+
+def test_the_debrief_intro_asks_for_the_filled_register(texts, page):
+    assert texts.get("sheets.register.title") in page.intro
+    assert texts.get("sheets.register.head_review") in page.intro
+
+
+def test_the_pitch_is_optional_and_has_no_guide_minutes(cfg, texts, page):
+    words = texts.subtree("sheets.debrief")
+    assert page.pitch_title == words["pitch_title"]
+    assert page.pitch_text == words["pitch_text"]
+    assert page.pitch_limit_label == words["pitch_limit_label"]
+    assert "Warum war unser Budget gut investiert?" in page.pitch_text
+    seconds = cfg.session_schedule.pitch_seconds
+    assert page.pitch_limit == f"{fmt.format_number(seconds)} {words['seconds_unit']}"
+    assert tuple(stage.id for stage in cfg.session_schedule.debrief_stages) == STAGE_ORDER
+    block = next(block for block in cfg.session_schedule.blocks if block.id == "debrief")
+    assert page.total_value == f"{block.minutes} {words['minutes_unit']}"
+
+
+def test_a_config_without_a_pitch_time_has_empty_pitch_fields_and_needs_no_pitch_keys(cfg, texts):
+    plain = dataclasses.replace(cfg, session_schedule=dataclasses.replace(cfg.session_schedule, pitch_seconds=None))
+    built = debrief.build_debrief_page(plain, texts)
+    assert (built.pitch_title, built.pitch_text, built.pitch_limit_label, built.pitch_limit) == ("", "", "", "")
+    assert "sheets.debrief.pitch_title" not in required_keys(plain)
+    assert "sheets.debrief.pitch_title" in required_keys(cfg)
+
+
+def test_the_debrief_direction_mentions_the_pitch(texts):
+    assert texts.get("sheets.debrief.pitch_title") in texts.get("sheets.ablauf.blocks.debrief.direction")
 
 
 def test_the_guide_minutes_come_from_config_and_fill_the_debrief_block(cfg, texts, page):
@@ -141,7 +197,7 @@ def test_the_fragments_hold_every_printed_string_once(page):
         for text in (section.title, section.guide, *section.questions, *section.prompts):
             assert text in fragments
     for text in (page.title, page.intro, page.compare_title, page.compare_intro, *page.compare_header,
-                 *page.compare_rows):
+                 *page.compare_rows, page.pitch_title, page.pitch_text, page.pitch_limit_label, page.pitch_limit):
         assert text in fragments
 
 
