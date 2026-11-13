@@ -180,3 +180,74 @@ def test_the_validator_does_not_mutate_its_input():
     before = copy.deepcopy(raw)
     validate(raw)
     assert raw == before
+
+
+# --- cheat-sheet cases (RISK-05, D-06, D-22 as clarified on 2026-11-13) ---------------------------------------------
+
+
+def _case(block, case_id):
+    return next(item for item in block["cases"] if item["id"] == case_id)
+
+
+def test_the_real_config_carries_six_to_eight_cases(cfg):
+    cases = cfg.risk_matrix.cases
+    assert 6 <= len(cases) <= 8
+    assert len({case.id for case in cases}) == len(cases)
+    assert {case.band for case in cases} == {band.id for band in cfg.risk_matrix.bands}
+
+
+def test_every_wave_attack_is_the_anchor_of_a_case(cfg):
+    anchors = {case.like_attack for case in cfg.risk_matrix.cases if case.like_attack}
+    assert {wave.attack_id for wave in cfg.waves} <= anchors
+
+
+def test_an_anchored_case_has_the_band_of_the_attack_damage(cfg):
+    bands = cfg.risk_matrix.bands
+    for case in cfg.risk_matrix.cases:
+        if case.like_attack:
+            damage = rules.unprotected_damage(cfg.attacks[case.like_attack])
+            assert case.band == band_of(bands, damage).id, case.id
+
+
+def test_only_anchored_cases_are_tied_to_the_attack_damage(cfg):
+    anchored = {case.id for case in cfg.risk_matrix.cases if case.like_attack}
+    assert anchored == {"production_days", "production_week", "design_data"}
+    for case_id in ("audit_findings", "oem_hold"):
+        for band_id in ("low", "medium", "high"):
+            raw = _mutated(lambda block: _case(block, case_id).update(band=band_id))
+            assert "risk.case_consistency" not in _codes(raw)
+    raw = _mutated(lambda block: _case(block, "design_data").update(band="high"))
+    assert "risk.case_consistency" in _codes(raw)
+
+
+def test_a_block_without_cases_loads_with_no_cases(tmp_path):
+    raw = _raw()
+    del raw["risk_matrix"]["cases"]
+    assert _load(raw, tmp_path).risk_matrix.cases == ()
+    assert _errors(raw) == []
+
+
+def test_cases_must_be_a_list():
+    assert "schema.type" in _codes(_mutated(lambda block: block.update(cases={})))
+
+
+def test_an_unknown_case_key_is_rejected():
+    assert "schema.keys" in _codes(_mutated(lambda block: block["cases"][0].update(extra=1)))
+
+
+def test_a_malformed_or_duplicate_case_id_is_rejected():
+    assert "risk.case_id" in _codes(_mutated(lambda block: block["cases"][0].update(id="Bad Id")))
+    assert "risk.case_id" in _codes(_mutated(lambda block: block["cases"][1].update(id=block["cases"][0]["id"])))
+
+
+def test_a_case_band_must_be_a_band_id():
+    assert "risk.case_band" in _codes(_mutated(lambda block: block["cases"][0].update(band="extreme")))
+
+
+def test_a_like_attack_must_be_an_attack_used_in_the_waves():
+    assert "risk.case_attack" in _codes(_mutated(lambda block: _case(block, "design_data").update(like_attack="nope")))
+
+
+def test_the_exfil_case_set_to_high_is_inconsistent():
+    raw = _mutated(lambda block: _case(block, "design_data").update(band="high"))
+    assert "risk.case_consistency" in _codes(raw)
