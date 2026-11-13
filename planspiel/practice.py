@@ -61,6 +61,8 @@ def practice_config(cfg: Config) -> Config:
         final_events=[],
         budget_tiers={PRACTICE_TIER: tier},
         practice=None,
+        # Welle 0 is a worked example without the team's register (RISK-04, A8): no reality-check line.
+        risk_matrix=None,
     )
 
 

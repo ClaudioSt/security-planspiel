@@ -221,6 +221,9 @@ REGISTER_KEYS = (
     *(f"sheets.register.{group}.{item}" for group, items in REGISTER_GROUPS.items() for item in items),
 )
 
+# Required only when the config carries a risk_matrix, like REGISTER_KEYS (RISK-04); not part of SHEET_KEYS.
+REALITY_KEYS = ("sheets.angriff.reality_question", "sheets.angriff.reality_hint")
+
 _PROBELAUF_KEYS = (
     "title", "notice", "intro", "head_block", "head_planned", "head_span", "head_start", "head_actual", "head_questions",
     "head_errors", "total_label", "pass_title", "pass_wave_lead", "pass_wave_practice", "pass_wave_tail", "pass_rules",
@@ -426,6 +429,7 @@ def required_keys(cfg: Config) -> set[str]:
                 keys.update({f"sheets.debrief.stages.{stage.id}.title", f"sheets.debrief.stages.{stage.id}.questions"})
     if cfg.risk_matrix is not None:
         keys.update(REGISTER_KEYS)
+        keys.update(REALITY_KEYS)
         keys.update(f"sheets.register.bands.{band.id}" for band in cfg.risk_matrix.bands)
     return keys
 

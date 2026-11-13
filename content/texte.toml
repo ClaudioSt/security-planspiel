@@ -286,6 +286,8 @@ kz_decimals_hint = "Rechnet genau; zwei Nachkommastellen genügen."
 kz_fraction_hint = "Multipliziert zuerst mit der oberen Zahl und teilt dann durch die untere. Rundet nur das Ergebnis auf zwei Nachkommastellen, nie die Steigung."
 events_hint = "KZ Events ist die KZ-Wirkung aller Events dieser Welle zusammen; die Spielleitung nennt sie euch."
 wave_kz_rounding = "gerundet (ab ,5 vom Betrag aufrunden)"
+reality_question = "Realitätscheck: Welches Risiko aus eurem Risikoregister hat dieser Angriff getroffen?"
+reality_hint = "R-Nummer oder „nicht im Register“; ihr braucht die Zeile für den Rückblick."
 
 [sheets.budget]
 title = "Budget"

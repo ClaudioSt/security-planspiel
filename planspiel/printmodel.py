@@ -122,6 +122,8 @@ class AttackSheet:
     cia_filled: tuple[tuple[str, ...], ...] = ()
     cia_sum: tuple[str, ...] = ()
     bonus_fulfilled: tuple[str, ...] = ()
+    # RISK-04 (D-12): which register risk the attack hit; None without a risk_matrix (Welle 0, mini fixture).
+    reality_line: Optional[Line] = None
 
     def printed_fragments(self) -> tuple[str, ...]:
         """Title, step headings and every number-bearing display string, without duplicates (D-11).
@@ -326,6 +328,10 @@ def build_attack_sheet(cfg: Config, texts: Texts, wave: Wave, *, view=None, job:
         f"{labels['result']}: {final_damage_label} ", _long(), f" · {angriff['step_wave_kz']} ", _short(),
     )
 
+    reality_line: Optional[Line] = None
+    if cfg.risk_matrix is not None:
+        reality_line = (f"{angriff['reality_question']} ", _short(), f" {angriff['reality_hint']}")
+
     hint_key = "kz_decimals_hint" if fmt.terminates(constants.slope) else "kz_fraction_hint"
     base_cia = (cfg.base_cia["c"], cfg.base_cia["i"], cfg.base_cia["a"])
     return AttackSheet(
@@ -372,6 +378,7 @@ def build_attack_sheet(cfg: Config, texts: Texts, wave: Wave, *, view=None, job:
         recovery_table=recovery_table,
         recovery_line=recovery_line,
         wave_kz_line=wave_kz_line,
+        reality_line=reality_line,
     )
 
 

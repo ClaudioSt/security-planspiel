@@ -55,7 +55,7 @@ Der Ablaufplan mit Blöcken, Dauern und Pausen steht in `session_schedule` und w
 4. **Budgetverhandlung und Maßnahmenwahl**  
    Teams einigen sich auf ein Budget-Tier, wählen Maßnahmen und **Level**. **Abhängigkeiten** werden geprüft, **OPEX** wird notiert. Freiwillig tragen sie je Maßnahme ein, gegen welche Risiken ihres Registers sie wirkt („gegen R#“); die Spalte wird nicht bewertet.
 5. **Die Wellen**  
-   Jede Welle: a) Events anwenden, b) den Angriff deterministisch auflösen (siehe „Deterministische Auflösung“), c) **OPEX** zahlen und **Erholung** anwenden (falls konfiguriert).
+   Jede Welle: a) Events anwenden, b) den Angriff deterministisch auflösen (siehe „Deterministische Auflösung“), c) **OPEX** zahlen und **Erholung** anwenden (falls konfiguriert), d) Realitätscheck: In der letzten Zeile des Arbeitsblatts tragen die Teams ein, welches Risiko ihres Registers der Angriff getroffen hat, oder „nicht im Register“.
 6. **Change-Fenster**  
    Nach jeder Welle außer der letzten: Levelwechsel, Kündigen, Hinzufügen (wirksam **ab der nächsten Welle**); nach der Kurswechsel-Welle zusätzlich der Pflicht-Maßnahmentausch.
 7. **Abschluss und Budget Review**  
