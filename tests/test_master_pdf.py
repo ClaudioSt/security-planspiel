@@ -230,7 +230,8 @@ def test_the_stamp_is_on_every_page(printed_set):
 def test_the_cheat_sheet_follows_the_print_list_and_precedes_the_waves(printed_set, sheet):
     pages = _pages(printed_set)
     print_list_page = _first_page_with(pages, sheet.schedule.print_title, start=1)
-    cheat_page = _first_page_with(pages, sheet.cheat.title, start=1)
+    # the title also stands in the story direction of the schedule page, so the page is found by its intro
+    cheat_page = _first_page_with(pages, sheet.cheat.intro, start=1)
     ranges, _ = _section_pages(pages, sheet)
     assert print_list_page < cheat_page < ranges[0][0]
     assert sum(squash(sheet.cheat.intro) in page for page in pages) == 1

@@ -18,6 +18,7 @@ from planspiel import eventtext, fmt, practice, refpaths, rules
 from planspiel.cards import printed_strings
 from planspiel.config import Config, Wave
 from planspiel.printmodel import PrintModelError
+from planspiel.cheatsheet import CheatSheetPage, build_cheat_sheet_page
 from planspiel.debrief import DebriefPage, build_debrief_page
 from planspiel.schedule import SchedulePage, build_schedule_page
 from planspiel.texts import Clue, FacilitatorView, RevealView, Texts
@@ -180,6 +181,7 @@ class MasterSheet:
     clue_groups: tuple[ClueGroup, ...]
     schedule: Optional[SchedulePage]
     debrief: Optional[DebriefPage]
+    cheat: Optional[CheatSheetPage]
 
     def printed_fragments(self) -> tuple[str, ...]:
         """Every string of the sheet that ends up on the paper, without duplicates and without empty strings."""
@@ -531,4 +533,5 @@ def build_master_sheet(cfg: Config, texts: Texts, clues: tuple[Clue, ...]) -> Op
         clue_groups=_clue_groups(cfg, texts, clues),
         schedule=build_schedule_page(cfg, texts),
         debrief=build_debrief_page(cfg, texts),
+        cheat=build_cheat_sheet_page(cfg, texts),
     )

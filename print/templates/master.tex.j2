@@ -17,6 +17,9 @@
 \VAR{sheet.schedule.title}\par
 \VAR{sheet.schedule.print_title}\par
 \BLOCK{endif}
+\BLOCK{if sheet.cheat}
+\VAR{sheet.cheat.title}\par
+\BLOCK{endif}
 \BLOCK{for section in sheet.waves}
 \VAR{section.title}\par
 \BLOCK{endfor}
@@ -82,6 +85,31 @@
 \hline
 \BLOCK{for row in sheet.schedule.print_rows}
 \textrowtop{}\VAR{row.label}\textrowend{} & \textrowtop{}\VAR{row.file}\textrowend{} & \textrowtop{}\VAR{row.per_team}\textrowend{} & \textrowtop{}\VAR{row.facilitator}\textrowend{} & \textrowtop{}\textbf{\VAR{row.total}}\textrowend{} \\
+\hline
+\BLOCK{endfor}
+\end{tabularx}\endgroup\par
+\pagereport
+\BLOCK{endif}
+\BLOCK{if sheet.cheat}
+
+\clearpage
+\attacktitle{\VAR{sheet.cheat.title}}
+{\small{} \VAR{sheet.cheat.intro}\par}
+\step{\VAR{sheet.cheat.bands_title}}
+\noindent\begingroup\small\setlength{\tabcolsep}{3pt}\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{30mm}|L|}
+\hline
+\BLOCK{for band in sheet.cheat.bands}
+\textrowtop{}\textbf{\VAR{band.word}}\textrowend{} & \textrowtop{}\VAR{band.range}\textrowend{} \\
+\hline
+\BLOCK{endfor}
+\end{tabularx}\endgroup\par
+\vspace{2mm}
+\noindent\begingroup\small\setlength{\tabcolsep}{3pt}\begin{tabularx}{\linewidth}{|L|L|>{\raggedright\arraybackslash}p{38mm}|}
+\hline
+\rowcolor{mhpblue}\BLOCK{for cell in sheet.cheat.header}\hdrs{\VAR{cell}}\BLOCK{if not loop.last} & \BLOCK{endif}\BLOCK{endfor} \\
+\hline
+\BLOCK{for row in sheet.cheat.cases}
+\textrowtop{}\VAR{row.case}\textrowend{} & \textrowtop{}\VAR{row.answer}\textrowend{} & \textrowtop{}\textbf{\VAR{row.band}}\textrowend{} \\
 \hline
 \BLOCK{endfor}
 \end{tabularx}\endgroup\par

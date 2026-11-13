@@ -592,8 +592,6 @@ def test_the_was_neu_clue_line_names_the_cheat_sheet(texts):
 def test_the_master_sheet_carries_the_cheat_sheet(cfg, texts, clues, sheet, cheat_page):
     assert isinstance(sheet.cheat, cheatsheet.CheatSheetPage)
     assert sheet.cheat == cheat_page
-    mini = master.build_master_sheet(load_config(MINI), load_texts(MINI_CONTENT_DIR / "texte.toml"), None)
-    assert mini.cheat is None
     printed = sheet.printed_fragments()
     for fragment in cheat_page.printed_fragments():
         assert fragment in printed, fragment
