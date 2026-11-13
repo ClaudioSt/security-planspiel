@@ -302,7 +302,7 @@ anticipated_sum_intro = "In diesem Sheet plant und trackt ihr euer Budget über 
 [sheets.ros]
 title = "Return on Security"
 instruction = "Trag die folgenden Werte ein:"
-purpose = "Der RoS zeigt, ob sich eure Security-Investition finanziell gelohnt hat."
+purpose = "Die RoS ist der vermiedene Schaden abzüglich eurer eigenen Kosten, je Euro eigener Kosten: Liegt sie über null, hat eure Sicherheit mehr Schaden verhindert, als sie gekostet hat."
 
 [sheets.teamheft]
 planning_title = "Budget und Planung"

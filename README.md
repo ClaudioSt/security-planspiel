@@ -140,6 +140,8 @@ RoS           = (Vermeidete Verluste − Gesamtkosten) / Gesamtkosten
 
 Nicht enthalten: Event-Effekte auf Kosten oder Budget (Straf-OPEX, OPEX-Rabatte wie „Operative Unterstützung“, Budget-Kürzungen wie „Sparprogramm“); sie zählen nur für das Budget.
 
+Lesart: Die RoS zeigt, wie viel Schaden jeder investierte Euro über seine eigenen Kosten hinaus verhindert hat; liegt sie über null, hat die Sicherheit mehr Schaden verhindert, als sie gekostet hat.
+
 - **Final-Index:** Der Vergleichswert für die Spielleitung über Teams und Tiers ist `weight_kz * KZ + weight_ros * RoS₂`; RoS₂ ist die RoS auf zwei Nachkommastellen gerundet (ab ,5 vom Betrag aufrunden). Die Gewichte stehen im Config-Block `final_index`; das Teamheft führt die RoS-Seite, das Debriefing vergleicht die Teams anhand von KZ, RoS und Final-Index.
 
 ---
