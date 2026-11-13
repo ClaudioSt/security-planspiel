@@ -244,7 +244,7 @@ def test_a_case_band_must_be_a_band_id():
     assert "risk.case_band" in _codes(_mutated(lambda block: block["cases"][0].update(band="extreme")))
 
 
-def test_a_like_attack_must_be_an_attack_used_in_the_waves():
+def test_a_like_attack_must_be_an_attack_of_the_config():
     assert "risk.case_attack" in _codes(_mutated(lambda block: _case(block, "design_data").update(like_attack="nope")))
 
 

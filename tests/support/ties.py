@@ -29,6 +29,7 @@ def tie_raw(extra_wave_3_events=()):
     raw = copy.deepcopy(json.loads(CONFIG_PATH.read_text(encoding="utf-8")))
     exfil = raw["attacks"]["exfil"]
     exfil.update(base_severity=8, mitigation_cap=8, kz_at_full_damage=-6, kz_at_full_mitigation=6)
+    raw["risk_matrix"].pop("cases", None)  # the cheat-sheet band of the exfil case no longer fits the test damage
     raw["events"]["wave_3"].extend(copy.deepcopy(event) for event in extra_wave_3_events)
     return raw
 

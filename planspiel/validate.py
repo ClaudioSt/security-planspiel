@@ -724,7 +724,7 @@ class _Validator:
         cases = block["cases"]
         if not self.container(cases, list, path):
             return
-        damages = self.used_unprotected_damages(attacks, waves)
+        damages = self.defined_unprotected_damages(attacks)
         seen: set = set()
         for index, case in enumerate(cases):
             case_path = f"{path}[{index}]"
@@ -748,32 +748,39 @@ class _Validator:
             if "like_attack" not in case:
                 continue
             anchor = case["like_attack"]
-            if not isinstance(anchor, str) or anchor not in damages:
+            if not isinstance(anchor, str) or not isinstance(attacks, dict) or anchor not in attacks:
                 self.error(
                     "risk.case_attack", f"{case_path}.like_attack",
-                    f"Fall '{case_id}': '{anchor}' ist kein in Wellen genutzter Angriff",
+                    f"Fall '{case_id}': '{anchor}' ist kein Angriff der Config",
                 )
-            elif band_known and bands is not None and band_of(bands, damages[anchor]).id != band:
+            elif anchor in damages and band_known and bands is not None and band_of(bands, damages[anchor]).id != band:
                 self.error(
                     "risk.case_consistency", f"{case_path}.band",
                     f"Fall '{case_id}': Band passt nicht zum ungeschützten Schaden des Angriffs",
                 )
 
     @staticmethod
-    def used_unprotected_damages(attacks: Any, waves: Any) -> Dict[str, int]:
-        """Basis-Schweregrad mal Euro je Punkt der in Wellen genutzten Angriffe (nur gültige Werte, in Tausend Euro)."""
-        if not isinstance(attacks, dict) or not isinstance(waves, list):
+    def defined_unprotected_damages(attacks: Any) -> Dict[str, int]:
+        """Basis-Schweregrad mal Euro je Punkt aller definierten Angriffe (nur gültige Werte, in Tausend Euro)."""
+        if not isinstance(attacks, dict):
             return {}
         damages: Dict[str, int] = {}
-        for wave in waves:
-            attack_id = wave.get("attack_id") if isinstance(wave, dict) else None
-            attack = attacks.get(attack_id) if isinstance(attack_id, str) else None
+        for attack_id, attack in attacks.items():
             if not isinstance(attack, dict):
                 continue
             severity, unit = attack.get("base_severity"), attack.get("s_unit")
             if all(isinstance(value, int) and not isinstance(value, bool) for value in (severity, unit)):
                 damages[attack_id] = severity * unit
         return damages
+
+    @staticmethod
+    def used_unprotected_damages(attacks: Any, waves: Any) -> Dict[str, int]:
+        """Wie `defined_unprotected_damages`, aber nur für die in Wellen genutzten Angriffe."""
+        if not isinstance(waves, list):
+            return {}
+        defined = _Validator.defined_unprotected_damages(attacks)
+        used = {wave.get("attack_id") for wave in waves if isinstance(wave, dict)}
+        return {attack_id: damage for attack_id, damage in defined.items() if attack_id in used}
 
     def check_debrief_stages(self, stages: list, debrief_minutes: Any) -> None:
         """Richtzeit je Debriefing-Stufe (D-11): Summe der Stufen = Dauer des Blocks 'debrief'."""
