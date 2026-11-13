@@ -123,12 +123,23 @@ class RiskBand:
 
 
 @dataclass
+class RiskCase:
+    """One business case of the facilitator cheat sheet with its band id; `like_attack` is a consistency anchor for
+    the validator and tests and is never printed."""
+
+    id: str
+    band: str
+    like_attack: Optional[str] = None
+
+
+@dataclass
 class RiskMatrix:
-    """Register rows and € bands of the risk matrix: read only by the validator, print models and tests, never by
-    rules or enumeration."""
+    """Register rows, € bands and cheat-sheet cases of the risk matrix: read only by the validator, print models and
+    tests, never by rules or enumeration."""
 
     register_rows: int
     bands: tuple[RiskBand, ...]
+    cases: tuple[RiskCase, ...] = ()
 
 
 @dataclass
@@ -303,6 +314,10 @@ def load_config(path: Path, hand_calc_level: str = "error") -> Config:
         risk_matrix = RiskMatrix(
             register_rows=block["register_rows"],
             bands=tuple(RiskBand(id=item["id"], minimum=item["min"]) for item in block["bands"]),
+            cases=tuple(
+                RiskCase(id=item["id"], band=item["band"], like_attack=item.get("like_attack"))
+                for item in block.get("cases", [])
+            ),
         )
 
     return Config(

@@ -339,7 +339,8 @@
       {"id": "application", "minutes": 8}
     ]
   },
-  "risk_matrix": {"register_rows": 5, "bands": [{"id": "low", "min": 0}, {"id": "medium", "min": 50}, {"id": "high", "min": 150}]},
+  "risk_matrix": {"register_rows": 5, "bands": [{"id": "low", "min": 0}, {"id": "medium", "min": 50}, {"id": "high", "min": 150}],
+    "cases": [{"id": "production_day", "band": "medium"}, {"id": "production_days", "band": "high", "like_attack": "ransomware"}, {"id": "production_week", "band": "high", "like_attack": "ot"}, {"id": "design_data", "band": "medium", "like_attack": "exfil"}, {"id": "oem_hold", "band": "high"}, {"id": "audit_findings", "band": "low"}, {"id": "single_pc", "band": "low"}]},
   "reference_plans": {
     "low": {
       "start": {"M1": 0, "M2": 0, "M3": 0, "M4": 1, "M5": 0, "M6": 2, "M7": 1, "M8": 1, "M9": 3, "M10": 2},

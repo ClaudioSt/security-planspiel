@@ -35,7 +35,8 @@ SCHEDULE_KEYS = ("total_minutes", "teams", "persons_per_team", "blocks", "print_
 DEBRIEF_STAGE_KEYS = ("id", "minutes")
 SCHEDULE_BLOCK_KEYS = ("id", "minutes", "wave")
 PRINT_ROW_KEYS = ("job", "per_team", "facilitator")
-RISK_MATRIX_KEYS = ("register_rows", "bands")
+RISK_MATRIX_KEYS = ("register_rows", "bands", "cases")
+RISK_CASE_KEYS = ("id", "band", "like_attack")
 RISK_BAND_KEYS = ("id", "min")
 RISK_BAND_COUNT = 3  # the matrix is 3 x 3 (D-03)
 SNAKE_ID = re.compile(r"[a-z][a-z0-9_]*")
@@ -683,6 +684,7 @@ class _Validator:
                 seen.add(band_id)
             minima.append(self.int_field(band, "min", band_path, lo=0))
         if any(value is None for value in minima):
+            self.check_risk_cases(block, seen, None, attacks, waves)
             return
         ordered = minima[0] == 0 and all(left < right for left, right in zip(minima, minima[1:]))
         if not ordered:
@@ -690,12 +692,15 @@ class _Validator:
                 "risk.bands_order", f"{path}.bands",
                 f"Die Untergrenzen der Bänder müssen bei 0 beginnen und streng aufsteigen, gefunden {minima}",
             )
-        if not ordered or not ids_ok or len(bands) != RISK_BAND_COUNT:
+        rebuilt = None
+        if ordered and ids_ok and len(bands) == RISK_BAND_COUNT:
+            rebuilt = tuple(RiskBand(id=item["id"], minimum=item["min"]) for item in bands)
+        self.check_risk_cases(block, seen, rebuilt, attacks, waves)
+        if rebuilt is None:
             return
         damages = self.used_unprotected_damages(attacks, waves)
         if not damages:
             return
-        rebuilt = tuple(RiskBand(id=item["id"], minimum=item["min"]) for item in bands)
         for attack_id, damage in damages.items():
             if damage in minima[1:]:
                 self.error(
@@ -706,6 +711,53 @@ class _Validator:
             self.error("risk.attack_band", f"{path}.bands", "Ein ungeschützter Angriff läge im niedrigsten Band")
         if band_of(rebuilt, max(damages.values())).id != rebuilt[-1].id:
             self.error("risk.attack_band", f"{path}.bands", "Kein ungeschützter Angriff erreicht das höchste Band")
+
+    def check_risk_cases(
+        self, block: dict, band_ids: set, bands: Optional[tuple], attacks: Any, waves: Any,
+    ) -> None:
+        """Geschäftsfälle der Spielleitung (RISK-05, D-06, D-22): ID, Band und optionaler Angriffs-Anker; nur ein
+        verankerter Fall muss das Band des ungeschützten Schadens seines Angriffs tragen, die anderen sind
+        Plausibilitätsurteile ohne Spielwert."""
+        path = "risk_matrix.cases"
+        if "cases" not in block:
+            return
+        cases = block["cases"]
+        if not self.container(cases, list, path):
+            return
+        damages = self.used_unprotected_damages(attacks, waves)
+        seen: set = set()
+        for index, case in enumerate(cases):
+            case_path = f"{path}[{index}]"
+            if not self.container(case, dict, case_path):
+                continue
+            for key in case:
+                if key not in RISK_CASE_KEYS:
+                    self.error("schema.keys", f"{case_path}.{key}", f"Unbekannter Schlüssel '{key}' im Geschäftsfall")
+            case_id = self.field(case, "id", case_path)
+            if case_id is not None:
+                if not isinstance(case_id, str) or not SNAKE_ID.fullmatch(case_id):
+                    self.error("risk.case_id", f"{case_path}.id", f"Ungültige Fall-ID {case_id!r}")
+                elif case_id in seen:
+                    self.error("risk.case_id", f"{case_path}.id", f"Doppelte Fall-ID {case_id!r}")
+                else:
+                    seen.add(case_id)
+            band = self.field(case, "band", case_path)
+            band_known = isinstance(band, str) and band in band_ids
+            if band is not None and not band_known:
+                self.error("risk.case_band", f"{case_path}.band", f"Fall '{case_id}': '{band}' ist keine Band-ID")
+            if "like_attack" not in case:
+                continue
+            anchor = case["like_attack"]
+            if not isinstance(anchor, str) or anchor not in damages:
+                self.error(
+                    "risk.case_attack", f"{case_path}.like_attack",
+                    f"Fall '{case_id}': '{anchor}' ist kein in Wellen genutzter Angriff",
+                )
+            elif band_known and bands is not None and band_of(bands, damages[anchor]).id != band:
+                self.error(
+                    "risk.case_consistency", f"{case_path}.band",
+                    f"Fall '{case_id}': Band passt nicht zum ungeschützten Schaden des Angriffs",
+                )
 
     @staticmethod
     def used_unprotected_damages(attacks: Any, waves: Any) -> Dict[str, int]:
