@@ -86,3 +86,14 @@ def test_both_pages_fit_the_text_height_as_measured_in_the_log(printed_set, shee
                 f"{sheet.job} Seite {number}: {float(used) / PT_PER_MM:.1f} mm belegt, "
                 f"{float(text) / PT_PER_MM:.1f} mm Satzspiegel"
             )
+
+
+def test_page_two_ends_with_the_reality_check_line(printed_set, sheets):
+    texts = load_texts(CONTENT_DIR / "texte.toml")
+    question = _squash(texts.get("sheets.angriff.reality_question"))
+    hint = _squash(texts.get("sheets.angriff.reality_hint"))
+    for sheet in sheets:
+        first, second = _pages(printed_set.out_a / f"{sheet.job}.pdf")
+        assert question not in first, sheet.job
+        assert question in second and hint in second, sheet.job
+        assert second.index(_squash(sheet.labels["result"])) < second.index(question), sheet.job

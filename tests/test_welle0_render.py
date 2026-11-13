@@ -115,3 +115,21 @@ def test_the_build_stops_with_a_model_error_when_the_example_breaks(tmp_path):
     cfg = load_config(path)
     with pytest.raises(PrintModelError):
         render.render_all(cfg, load_texts(CONTENT_DIR / "texte.toml"), TEMPLATES)
+
+
+# ---- the reality-check line (RISK-04, D-12) --------------------------------------------------------------------
+
+
+def test_the_reality_question_follows_the_result_line_and_precedes_the_fill_report(real):
+    cfg, texts, documents = real
+    question = render.tex_escape(texts.get("sheets.angriff.reality_question"))
+    result_label = render.tex_escape(texts.get("sheets.angriff.label_result"))
+    for job in REAL_WORKSHEETS:
+        source = documents[job]
+        assert source.count(question) == 1, job
+        assert source.index(result_label + ":") < source.index(question) < source.index("\fillreport{2}"), job
+
+
+def test_the_practice_sheet_has_no_reality_question(real):
+    _, texts, documents = real
+    assert render.tex_escape(texts.get("sheets.angriff.reality_question")) not in documents[practice.PRACTICE_JOB]
