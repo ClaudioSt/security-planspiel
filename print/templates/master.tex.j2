@@ -264,6 +264,11 @@
 \BLOCK{endfor}
 {\footnotesize{} \textbf{\VAR{sheet.debrief.total_label}:} \VAR{sheet.debrief.total_value}\par}
 \endgroup
+\BLOCK{if sheet.debrief.pitch_text}
+\step{\VAR{sheet.debrief.pitch_title}}
+{\small{} \VAR{sheet.debrief.pitch_text}\par}
+{\footnotesize{} \textbf{\VAR{sheet.debrief.pitch_limit_label}:} \VAR{sheet.debrief.pitch_limit}\par}
+\BLOCK{endif}
 \step{\VAR{sheet.debrief.compare_title}}
 {\small{} \VAR{sheet.debrief.compare_intro}\par}
 \vspace{1mm}

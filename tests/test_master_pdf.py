@@ -184,7 +184,8 @@ def test_the_debrief_offers_the_pitch_without_guide_minutes(printed_set, sheet):
     pitch = span.index(squash(debrief.pitch_title), start)
     compare = span.index(squash(debrief.compare_title), pitch)
     assert start < pitch < compare
-    assert squash(debrief.guide_label) not in span[pitch:compare]
+    # the pitch text itself says that there is no guide time, so only the label row of a stage is ruled out
+    assert squash(f"{debrief.guide_label}:") not in span[pitch:compare]
     assert squash(debrief.total_value) in span
 
 
