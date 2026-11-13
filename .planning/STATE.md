@@ -5,15 +5,15 @@ milestone_name: milestone
 current_phase: 07.1
 current_phase_name: risk-based-learning-chain-cia-risk-register-from-the-mechtec
 status: executing
-stopped_at: Completed 07.1-02-PLAN.md
-last_updated: "2026-11-13T10:55:38.927Z"
+stopped_at: Completed 07.1-03-PLAN.md
+last_updated: "2026-11-13T11:18:01.457Z"
 last_activity: 2026-11-13
 last_activity_desc: Phase 07.1 execution started
 progress:
   total_phases: 8
   completed_phases: 6
   total_plans: 72
-  completed_plans: 64
+  completed_plans: 65
   percent: 75
 ---
 
@@ -29,8 +29,8 @@ See: .planning/PROJECT.md (updated 2026-10-27)
 ## Current Position
 
 Phase: 07.1 (risk-based-learning-chain-cia-risk-register-from-the-mechtec) — EXECUTING
-Plan: 4 of 10
-Status: Ready to execute
+Plan: 4 of 10 complete (07.1-01, 02, 03, 08); next 07.1-04
+Status: Executing Phase 07.1
 Last activity: 2026-11-13 — Phase 07.1 execution started
 
 Progress: [█████████░] 86% (6 of 7 phases)
@@ -214,6 +214,7 @@ Recent decisions affecting current work:
 - [Phase 07.1]: [07.1-01] risk_matrix sits after session_schedule in Config so practice stays the last field
 - [Phase 07.1]: [07.1-02] Register texts required only with a risk_matrix; zones and 3x3 levels are a layout constant (risk.ZONES); Teamheft is five pages with the register first
 - [Phase 07.1]: [07.1-08] Schedule is 215 min (story 35, debrief 30, stages 3/5/14/8); deck slides 31/35 bridged by strict xfail DECK_PENDING until 07.1-09
+- [Phase 07.1]: 07.1-03: gegen R# planning column is a recommendation only; no rules/config/validator change (D-10)
 
 ### Pending Todos
 
@@ -241,6 +242,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-11-13T10:55:31.806Z
+Last session: 2026-11-13T11:18:01.444Z
 Stopped at: Completed 07.1-02-PLAN.md
 Resume file: .planning/phases/07.1-risk-based-learning-chain-cia-risk-register-from-the-mechtec/07.1-01-PLAN.md

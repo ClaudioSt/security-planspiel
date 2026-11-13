@@ -79,7 +79,7 @@ Added 2026-11-12 for the inserted Phase 07.1 (pedagogical review): make the chai
 
 - [x] **RISK-01**: The € impact bands (low, medium, high) of the risk matrix live in a new `simulation_config.json` block; the validator rejects bands that are not ascending or that overlap, and the limits agree with the game's unprotected attack damage
 - [x] **RISK-02**: The Teamheft opens with a risk register page: five risks R1–R5 with asset, threat or weakness plus source document, protection goal C/I/A, business-impact category plus one sentence, rank 1–5, treat/accept plus one line of reasoning and a Rückblick column; a 3×3 likelihood × impact matrix with colour zones and the config € bands on the impact axis; a short instruction and one filled-in example from another industry; the page passes the veil, digit and fill checks
-- [ ] **RISK-03**: The planning table on the Teamheft planning page has a "gegen R#" column for one or more register risks per measure, marked as a recommendation (no penalty, no rule change, no facilitator check)
+- [x] **RISK-03**: The planning table on the Teamheft planning page has a "gegen R#" column for one or more register risks per measure, marked as a recommendation (no penalty, no rule change, no facilitator check)
 - [ ] **RISK-04**: Every attack worksheet ends with one reality-check line asking which register risk the attack hit (R# or "nicht im Register"); the worksheet keeps its page count and passes the veil checks
 - [ ] **RISK-05**: The facilitator booklet has a business-impact cheat sheet of 6–8 business cases phrased as consequences, never as attacks, each with an answer and a band from config; the facilitator answers team questions in the role of MechTech's management with a € order of magnitude that agrees with the game's damage values
 - [ ] **RISK-06**: The Teamheft RoS page explains RoS in one sentence as net damage avoided per invested euro (avoided damage minus own cost, per euro of own cost); the formula and the printed calculation stay unchanged
@@ -184,7 +184,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | LEG-02 | Phase 7 | Complete |
 | RISK-01 | Phase 07.1 | Complete |
 | RISK-02 | Phase 07.1 | Complete |
-| RISK-03 | Phase 07.1 | Pending |
+| RISK-03 | Phase 07.1 | Complete |
 | RISK-04 | Phase 07.1 | Pending |
 | RISK-05 | Phase 07.1 | Pending |
 | RISK-06 | Phase 07.1 | Pending |
