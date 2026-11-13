@@ -373,7 +373,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 3 
   5. The schedule (story block 35, debriefing 30, total 215 minutes), print list, dry-run protocol and record, intro deck (new "Risiko-Matrix" slide), README and "Was ist neu" sheet match the new flow, and no game formula or balance value has changed.
   6. Release candidate 3 is built clean (no "+lokal", `print --check` exit 0, fast and pdf tests pass), printed and approved by the user before 2026-11-25.
 
-**Plans:** 4/10 plans executed
+**Plans:** 5/10 plans executed
 
 Plans:
 **Wave 1**
@@ -394,7 +394,7 @@ Plans:
 
 **Wave 5** *(blocked on Wave 4 completion)*
 
-- [ ] 07.1-04-PLAN.md — RISK-04: reality-check line at the end of every attack worksheet, golden re-pin, Welle 0 unchanged (wave 5)
+- [x] 07.1-04-PLAN.md — RISK-04: reality-check line at the end of every attack worksheet, golden re-pin, Welle 0 unchanged (wave 5)
 
 **Wave 6** *(blocked on Wave 5 completion)*
 
