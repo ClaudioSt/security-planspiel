@@ -225,3 +225,20 @@ def test_every_page_fits_the_text_height_as_measured_in_the_log(printed_set):
 def test_the_stamp_is_on_every_page(printed_set):
     for number, page in enumerate(_pages(printed_set), start=1):
         assert STAMP.search(page), f"Seite {number} ohne Stempel"
+
+
+def test_the_cheat_sheet_follows_the_print_list_and_precedes_the_waves(printed_set, sheet):
+    pages = _pages(printed_set)
+    print_list_page = _first_page_with(pages, sheet.schedule.print_title, start=1)
+    cheat_page = _first_page_with(pages, sheet.cheat.title, start=1)
+    ranges, _ = _section_pages(pages, sheet)
+    assert print_list_page < cheat_page < ranges[0][0]
+    assert sum(squash(sheet.cheat.intro) in page for page in pages) == 1
+    text = pages[cheat_page]
+    parts = [*sheet.cheat.printed_fragments()]
+    for part in parts:
+        assert squash(part) in text, part
+
+
+def test_the_contents_list_names_the_cheat_sheet(printed_set, sheet):
+    assert squash(sheet.cheat.title) in _pages(printed_set)[0]
