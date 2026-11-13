@@ -61,7 +61,7 @@ Der Ablaufplan mit Blöcken, Dauern und Pausen steht in `session_schedule` und w
 7. **Abschluss und Budget Review**  
    Einmal nach der letzten Welle: Restbudget-Bonus oder Überziehungsstrafe, danach Klammerung der KZ. Dazu füllen die Teams die Spalte Rückblick im Risikoregister: Welches Risiko hat ein Angriff getroffen, und stimmte das Band?
 8. **Debriefing**  
-   Feste Reihenfolge der Stufen (Reaktion, Beschreibung, Analyse, Anwendung) mit den Fragen der Seite „Debriefing-Fragen“ im Spielleitungs-Heft.
+   Feste Reihenfolge der Stufen (Reaktion, Beschreibung, Analyse, Anwendung) mit den Fragen der Seite „Debriefing-Fragen“ im Spielleitungs-Heft. Die Fragen folgen der Kette: Risikoregister gegen die Wirklichkeit, getroffene akzeptierte Risiken, die eigene Einstufung nach Vertraulichkeit, Integrität und Verfügbarkeit gegen die Gewichtung der Wellen, wo sich das Geld ausgezahlt hat (RoS), Übertrag auf echtes Risikomanagement. Wenn Zeit bleibt, folgt ein kurzer Management-Pitch je Team ohne eigene Richtzeit.
 
 > **Hinweis:** Anzahl der Wellen, Events und der Blöcke des Ablaufs sind in der Konfiguration festgelegt.
 

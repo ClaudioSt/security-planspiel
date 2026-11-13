@@ -168,6 +168,10 @@ _DEBRIEF_KEYS = (
 # Required only when the config carries debrief_stages; stage and prompt keys follow the config ids (FLOW-03).
 DEBRIEF_KEYS = tuple(f"sheets.debrief.{name}" for name in _DEBRIEF_KEYS)
 DEBRIEF_PROMPT_KEYS = tuple(f"sheets.debrief.prompts.{name}" for name in ("compare", "clues", "window"))
+# Required only when session_schedule.pitch_seconds is set (RISK-07, D-17)
+PITCH_KEYS = tuple(
+    f"sheets.debrief.{name}" for name in ("pitch_title", "pitch_text", "pitch_limit_label", "seconds_unit")
+)
 
 _WAS_NEU_KEYS = (
     "title", "notice", "intro", "rules_title", "flow_title", "material_title", "values_title", "values_head_item",
@@ -429,6 +433,8 @@ def required_keys(cfg: Config) -> set[str]:
         if cfg.session_schedule.debrief_stages:
             keys.update(DEBRIEF_KEYS)
             keys.update(DEBRIEF_PROMPT_KEYS)
+            if cfg.session_schedule.pitch_seconds is not None:
+                keys.update(PITCH_KEYS)
             for stage in cfg.session_schedule.debrief_stages:
                 keys.update({f"sheets.debrief.stages.{stage.id}.title", f"sheets.debrief.stages.{stage.id}.questions"})
     if cfg.risk_matrix is not None:

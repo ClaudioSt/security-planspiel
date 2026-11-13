@@ -2,6 +2,8 @@
 
 Guide minutes come from `session_schedule.debrief_stages`, the team rows from `session_schedule.teams`, all prose from
 `sheets.debrief`. The page lies after the final results of the facilitator booklet; it names no attack and types no digit.
+The optional management pitch (RISK-07, D-17) is no stage: it has no guide minutes and its speaking time comes from
+`session_schedule.pitch_seconds`.
 """
 from dataclasses import dataclass
 from typing import Optional
@@ -33,6 +35,10 @@ class DebriefPage:
     questions_label: str
     prompts_label: str
     stages: tuple[DebriefSection, ...]
+    pitch_title: str
+    pitch_text: str
+    pitch_limit_label: str
+    pitch_limit: str
     compare_title: str
     compare_intro: str
     compare_header: tuple[str, str, str, str]
@@ -72,6 +78,7 @@ def build_debrief_page(cfg: Config, texts: Texts) -> Optional[DebriefPage]:
         for stage in schedule.debrief_stages
     )
     total = sum(stage.minutes for stage in schedule.debrief_stages)
+    pitch = schedule.pitch_seconds is not None
     return DebriefPage(
         title=words["title"],
         intro=words["intro"],
@@ -79,6 +86,10 @@ def build_debrief_page(cfg: Config, texts: Texts) -> Optional[DebriefPage]:
         questions_label=words["questions_label"],
         prompts_label=words["prompts_label"],
         stages=stages,
+        pitch_title=words["pitch_title"] if pitch else "",
+        pitch_text=words["pitch_text"] if pitch else "",
+        pitch_limit_label=words["pitch_limit_label"] if pitch else "",
+        pitch_limit=f"{fmt.format_number(schedule.pitch_seconds)} {words['seconds_unit']}" if pitch else "",
         compare_title=words["compare_title"],
         compare_intro=words["compare_intro"],
         compare_header=(
