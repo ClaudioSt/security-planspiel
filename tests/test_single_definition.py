@@ -42,6 +42,7 @@ FORMULA_FUNCTIONS = {
         "evaluate_plan",
         "over_budget",
         "base_losses",
+        "unprotected_damage",
         "ros",
         "ros_two_decimals",
         "final_index",
