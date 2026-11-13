@@ -22,6 +22,8 @@ SETUPS = [
 SHELL, PLANNING, TRACKING, ROS = (
     "teamheft.tex.j2", "teamheft_planung.tex.j2", "teamheft_tracking.tex.j2", "teamheft_ros.tex.j2"
 )
+REGISTER = "teamheft_register.tex.j2"
+UNESCAPED_AMPERSAND = re.compile(r"(?<!\\)&")
 PLAIN_VARIABLE = re.compile(r"^[A-Za-z_][A-Za-z0-9_.\[\]'\"]*$")
 VARIABLE = re.compile(r"\\VAR\{([^}]*)\}")
 
@@ -70,6 +72,16 @@ def test_the_tracking_partial_sits_between_planning_and_ros_with_its_own_fill_re
     assert lines[include - 1].strip() == "\\clearpage"
 
 
+def test_the_register_partial_comes_first_inside_its_guard_with_its_own_fill_report():
+    lines = [line.strip() for line in (TEMPLATES / SHELL).read_text(encoding="utf-8").splitlines() if line.strip()]
+    include = next(index for index, line in enumerate(lines) if REGISTER in line)
+    assert lines[include - 1] == "\\BLOCK{if booklet.register}"
+    assert lines[include + 1].startswith("\\fillreport{\\thepage}")
+    assert lines[include + 2] == "\\clearpage"
+    assert lines[include + 3] == "\\BLOCK{endif}"
+    assert PLANNING in lines[include + 4]
+
+
 def test_the_rendered_booklet_is_a_complete_document(loaded):
     source = loaded[3]
     assert source.startswith("\\documentclass")
@@ -87,6 +99,59 @@ def test_every_printed_fragment_is_in_the_tex(loaded):
         assert render.tex_escape(fragment) in source, fragment
 
 
+def test_the_register_page_is_rendered_only_with_a_risk_matrix(loaded):
+    cfg, _, booklet, source = loaded
+    if cfg.risk_matrix is None:
+        assert booklet.register is None
+        assert "Risikoregister" not in source
+    else:
+        assert render.tex_escape(booklet.register.title) in source
+        assert source.index(render.tex_escape(booklet.register.title)) < source.index(
+            render.tex_escape(booklet.planning.title)
+        )
+
+
+def _register_body_rows(source, booklet):
+    rows = []
+    for label in booklet.register.rows:
+        start = source.index(f"\\textbf{{{label}}}")
+        end = source.index("\\\\", start)
+        rows.append(UNESCAPED_AMPERSAND.split(source[start:end]))
+    return rows
+
+
+def test_every_register_row_has_seven_cells_with_its_writing_areas(loaded):
+    cfg, _, booklet, source = loaded
+    if cfg.risk_matrix is None:
+        pytest.skip("the mini config has no register")
+    register = booklet.register
+    rows = _register_body_rows(source, booklet)
+    assert len(rows) == cfg.risk_matrix.register_rows
+    for cells in rows:
+        assert len(cells) == 7, cells
+        asset, threat, goal, impact, rank, decision, review = cells
+        assert "\\writeline" in asset
+        assert threat.count("\\writeline") >= 2 and render.tex_escape(register.source_label) in threat
+        assert threat.index("\\writeline") < threat.index(render.tex_escape(register.source_label))
+        assert goal.count("\\tickbox") == 3 and all(render.tex_escape(tick) in goal for tick in register.goal_ticks)
+        assert impact.count("\\tickbox") == 4 and "\\writeline" in impact
+        assert all(render.tex_escape(tick) in impact for tick in register.category_ticks)
+        assert "\\tickbox" not in rank and "\\writeline" not in rank
+        assert decision.count("\\tickbox") == 2 and "\\writeline" in decision
+        assert render.tex_escape(register.reason_label) in decision
+        assert all(render.tex_escape(tick) in decision for tick in register.decision_ticks)
+        review_ticks = all(render.tex_escape(tick) in review for tick in register.review_ticks)
+        assert review.count("\\tickbox") == 3 and review_ticks
+    header = source[source.index("\\rowcolor{mhpblue}", source.index(render.tex_escape(register.title))):]
+    header = header[: header.index("\\\\")]
+    assert len(UNESCAPED_AMPERSAND.split(header)) == 7
+    for text in register.header:
+        assert render.tex_escape(text) in header
+    example = source[source.index(render.tex_escape(register.example[0])):]
+    example = example[: example.index("\\\\")]
+    assert len(UNESCAPED_AMPERSAND.split(example)) == 7
+
+
 def test_planning_comes_first_then_the_tracking_page_then_the_ros_part(loaded):
     _, _, booklet, source = loaded
     planning = source.index(render.tex_escape(booklet.planning.title))
@@ -102,7 +167,7 @@ def test_planning_comes_first_then_the_tracking_page_then_the_ros_part(loaded):
 def test_every_page_break_and_the_end_of_the_document_follow_a_fill_report(loaded):
     lines = _lines(loaded[3])
     breaks = [index for index, line in enumerate(lines) if line.strip() == "\\clearpage"]
-    assert len(breaks) == 3
+    assert len(breaks) == (4 if loaded[0].risk_matrix is not None else 3), "one break per page but the last"
     for index in [*breaks, lines.index("\\end{document}")]:
         assert lines[index - 1].startswith("\\fillreport{"), lines[index - 1]
 
@@ -116,7 +181,7 @@ def test_the_planning_table_rows_are_writable(loaded):
         assert render.tex_escape(label) in source
 
 
-@pytest.mark.parametrize("template", [SHELL, PLANNING, TRACKING, ROS])
+@pytest.mark.parametrize("template", [SHELL, REGISTER, PLANNING, TRACKING, ROS])
 def test_templates_print_only_plain_variables(template):
     text = (TEMPLATES / template).read_text(encoding="utf-8")
     expressions = VARIABLE.findall(text)

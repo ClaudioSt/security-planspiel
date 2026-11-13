@@ -1,4 +1,4 @@
-"""Built team booklet: planning page first, RoS and Budget Review last, every page fits as measured in the log (PRINT-07).
+"""Built team booklet: register page first, then planning, RoS and Budget Review last, every page fits as measured in the log (PRINT-07, RISK-02).
 
 Run with `uv run pytest -m pdf tests/test_booklet_pdf.py -v`.
 """
@@ -38,17 +38,28 @@ def _page_of(pages, text):
     return found
 
 
-def test_the_booklet_is_a4_portrait_with_the_planning_page_first(printed_set, pages, booklet):
-    assert len(pages) == 4, "planning, tracking, RoS and Budget Review"
+def test_the_booklet_is_a4_portrait_with_the_register_page_first(printed_set, pages, booklet):
+    assert len(pages) == 5, "register, planning, tracking, RoS and Budget Review"
     mm_per_pt = 25.4 / 72
     for number, page in enumerate(PdfReader(printed_set.out_a / f"{BOOKLET_JOB}.pdf").pages, start=1):
         width, height = float(page.mediabox.width) * mm_per_pt, float(page.mediabox.height) * mm_per_pt
         assert (round(width), round(height)) == (210, 297), f"Seite {number}: {width:.1f} x {height:.1f} mm"
-    assert _page_of(pages, booklet.planning.title)[0] == 0
+    assert _page_of(pages, booklet.register.title)[0] == 0
+    assert _page_of(pages, booklet.planning.title)[0] == 1
 
 
-def test_page_one_holds_the_cost_table_the_tier_rows_and_the_anticipated_sum(pages, booklet):
+def test_the_register_page_holds_every_register_string(pages, booklet):
     first = pages[0]
+    fragments = booklet.register.printed_fragments()
+    assert fragments
+    for text in fragments:
+        assert squash(text) in first, text
+    for text in (*booklet.register.rows, *booklet.register.band_ranges):
+        assert squash(text) in first, text
+
+
+def test_the_planning_page_holds_the_cost_table_the_tier_rows_and_the_anticipated_sum(pages, booklet):
+    first = pages[1]
     planning = booklet.planning
     for text in (*planning.cost_header, planning.step_costs, planning.step_tiers, planning.step_planning):
         assert squash(text) in first, text
@@ -71,7 +82,7 @@ def test_the_ros_part_starts_on_a_new_page_and_holds_the_ros_formula(pages, book
         assert squash(metric.label) in page, metric.label
         if metric.note:
             assert squash(metric.note) in page, metric.note
-    assert squash(ros.ros_line.note) not in pages[0]
+    assert squash(ros.ros_line.note) not in pages[1]
 
 
 def test_the_budget_review_page_holds_all_tier_rows_and_all_penalty_rows(pages, booklet):

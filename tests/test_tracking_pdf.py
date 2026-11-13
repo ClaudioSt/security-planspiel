@@ -1,4 +1,4 @@
-"""Built tracking sheet: exactly one A4 page between planning and RoS, every label printed, fill marker within the page.
+"""Built tracking sheet: exactly one A4 page between planning and RoS (the register page opens the booklet), every label printed, fill marker within the page.
 
 Run with `uv run pytest -m pdf tests/test_tracking_pdf.py -v`.
 """
@@ -39,11 +39,13 @@ def _log(printed_set):
 
 
 def test_the_tracking_sheet_is_one_page_between_planning_and_ros(pages, booklet, tracking_index):
+    register = next(n for n, page in enumerate(pages) if squash(booklet.register.title) in page)
     planning = next(n for n, page in enumerate(pages) if squash(booklet.planning.title) in page)
     ros = next(n for n, page in enumerate(pages) if squash(booklet.ros.title) in page)
-    assert planning == 0 and tracking_index == 1 and ros == 2
+    assert (register, planning, tracking_index, ros) == (0, 1, 2, 3)
     page = pages[tracking_index]
     assert squash(booklet.ros.title) not in page and squash(booklet.planning.title) not in page
+    assert squash(booklet.register.title) not in page
 
 
 def test_the_page_holds_every_column_head_row_label_and_both_block_titles(pages, booklet, tracking_index):
