@@ -330,6 +330,72 @@ penalty_title = "Überzogenes Budget"
 penalty_intro = "Ist das Restbudget negativ, lest die KZ-Änderung für den überzogenen Betrag hier ab."
 overspend_header = "Überzogen um"
 
+[sheets.register]
+title = "Risikoregister"
+instruction = "Leitet aus den Story-Unterlagen eure wichtigsten Risiken für MechTech ab: Was ist wertvoll, was bedroht es und in welchem Dokument steht der Hinweis? Welches Schutzziel ist betroffen, und was hieße ein Schaden fürs Geschäft? Tragt jedes Risiko mit seiner Nummer in die Risiko-Matrix ein und entscheidet, ob ihr es behandelt oder akzeptiert."
+rank_hint = "Vergebt jeden Rang genau einmal, das wichtigste Risiko zuerst:"
+risk_prefix = "R"
+example_label = "Beispiel aus einer Klinik"
+head_asset = "Wert"
+head_threat = "Bedrohung, Quelle"
+head_goal = "CIA"
+head_impact = "Folge fürs Geschäft"
+head_rank = "Rang"
+head_decision = "Entscheidung, Grund"
+head_review = "Rückblick"
+source_label = "Quelle:"
+reason_label = "Grund:"
+review_hint = "Rückblick im Abschluss: Euer Band ist die Spalte der Risiko-Matrix, in der die Nummer des Risikos steht. Getroffen ist ein Risiko, wenn ihr es auf der Realitätscheck-Zeile eines Arbeitsblatts genannt habt. Sucht dann das Band, in dem der volle Schaden dieses Angriffs ohne Maßnahmen liegt (der Schaden im ersten Fall des Arbeitsblatts); haben mehrere Angriffe das Risiko getroffen, nehmt den mit dem größten vollen Schaden: Liegt es höher als euer Band, habt ihr unterschätzt; liegt es niedriger, überschätzt; ist es gleich, richtig. Hat kein Angriff das Risiko getroffen, gilt es als überschätzt."
+matrix_title = "Risiko-Matrix"
+axis_likelihood = "Eintrittswahrscheinlichkeit"
+axis_impact = "Schaden fürs Geschäft"
+range_below = "unter"
+range_to = "bis unter"
+range_from = "ab"
+
+[sheets.register.goals]
+c = "C"
+i = "I"
+a = "A"
+
+[sheets.register.categories]
+production = "Produktion"
+customer = "Kunde (OEM)"
+knowhow = "Know-how"
+costs = "Kosten"
+
+[sheets.register.decision]
+treat = "behandeln"
+accept = "akzeptieren"
+
+[sheets.register.review]
+correct = "richtig"
+under = "unterschätzt"
+over = "überschätzt"
+
+[sheets.register.likelihood]
+low = "selten"
+medium = "möglich"
+high = "wahrscheinlich"
+
+[sheets.register.zones]
+green = "tragbar"
+yellow = "abwägen"
+red = "vorrangig"
+
+[sheets.register.bands]
+low = "gering"
+medium = "mittel"
+high = "hoch"
+
+[sheets.register.example]
+asset = "Patientenakten"
+threat = "Serverausfall im Rechenzentrum (Mail der Klinikleitung)"
+goal = "A"
+impact = "Kosten: Operationen werden verschoben, die Klinik verliert Einnahmen."
+decision = "behandeln: der Schaden wäre zu hoch"
+cell = "Im Raster: wahrscheinlich × hoch"
+
 [sheets.tracking]
 title = "Tracking-Bogen"
 intro = "Pro Welle eine Spalte, von oben nach unten: Werte vom Angriffsblatt, den Maßnahmenkarten und den Eventkarten."
@@ -822,7 +888,7 @@ schedule = "Fester Ablaufplan im Spielleitungsheft:"
 generated = "Alle Druckunterlagen sind generierte PDFs und ersetzen die Word- und PowerPoint-Dateien der MHP-Runde."
 veil = "Angriffe bleiben bis zu ihrer Welle verdeckt und werden erst beim Treffer benannt; die Rechenregeln sind offen."
 clues = "Neu ist die Hinweismatrix zu den Angriffen im Spielleitungsheft:"
-teamheft = "Das Teamheft führt durch die Planung, mit Tracking-Seite je Welle und Seite zur RoS."
+teamheft = "Teamheft schon im Story-Block: erst Risikoregister, dann Planung, Tracking, RoS."
 wave_page = "Gebt vor der Übungswelle die Erklärseite aus:"
 practice = "Das Übungsblatt rechnet die Übungswelle mit allen Schritten vor."
 

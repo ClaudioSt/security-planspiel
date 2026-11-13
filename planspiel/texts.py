@@ -28,7 +28,8 @@ CLUE_SCORE_TOP = 4
 
 STORY_DOCS = ("steckbrief", "zeitungsartikel", "anfrage_mail", "audit_mail")
 PREWAVE_SHEETS = (
-    "budget", "ros", "backup_recovery", "labels", "karten", "eventkarten", "teamheft", "tracking", "angriff", "welle"
+    "budget", "ros", "backup_recovery", "labels", "karten", "eventkarten", "teamheft", "tracking", "angriff", "welle",
+    "register",
 )
 CASE_KEYS = ("case_1", "case_2", "case_3")
 
@@ -197,6 +198,26 @@ WAS_NEU_KEYS = (
     *(f"sheets.was_neu.rules.{name}.{part}" for name in WAS_NEU_RULE_IDS for part in ("heading", "text")),
     *(f"sheets.was_neu.flow.{name}" for name in WAS_NEU_FLOW_IDS),
     *(f"sheets.was_neu.material.{name}" for name in WAS_NEU_MATERIAL_IDS),
+)
+
+_REGISTER_KEYS = (
+    "title", "instruction", "rank_hint", "risk_prefix", "example_label", "head_asset", "head_threat", "head_goal",
+    "head_impact", "head_rank", "head_decision", "head_review", "source_label", "reason_label", "review_hint",
+    "matrix_title", "axis_likelihood", "axis_impact", "range_below", "range_to", "range_from",
+)
+REGISTER_GROUPS = {
+    "goals": ("c", "i", "a"),
+    "categories": ("production", "customer", "knowhow", "costs"),
+    "decision": ("treat", "accept"),
+    "review": ("correct", "under", "over"),
+    "likelihood": ("low", "medium", "high"),
+    "zones": ("green", "yellow", "red"),
+    "example": ("asset", "threat", "goal", "impact", "decision", "cell"),
+}
+# Required only when the config carries a risk_matrix, so the mini fixture needs no register texts (RISK-02).
+REGISTER_KEYS = (
+    *(f"sheets.register.{name}" for name in _REGISTER_KEYS),
+    *(f"sheets.register.{group}.{item}" for group, items in REGISTER_GROUPS.items() for item in items),
 )
 
 _PROBELAUF_KEYS = (
@@ -402,6 +423,9 @@ def required_keys(cfg: Config) -> set[str]:
             keys.update(DEBRIEF_PROMPT_KEYS)
             for stage in cfg.session_schedule.debrief_stages:
                 keys.update({f"sheets.debrief.stages.{stage.id}.title", f"sheets.debrief.stages.{stage.id}.questions"})
+    if cfg.risk_matrix is not None:
+        keys.update(REGISTER_KEYS)
+        keys.update(f"sheets.register.bands.{band.id}" for band in cfg.risk_matrix.bands)
     return keys
 
 
