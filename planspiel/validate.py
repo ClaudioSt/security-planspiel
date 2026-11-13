@@ -31,7 +31,7 @@ REQUIRED_EVENT_PARAMS = {
     "final_budget_tier": ("tiers", "overspend_penalty"),
 }
 
-SCHEDULE_KEYS = ("total_minutes", "teams", "persons_per_team", "blocks", "print_list", "debrief_stages")
+SCHEDULE_KEYS = ("total_minutes", "teams", "persons_per_team", "blocks", "print_list", "debrief_stages", "pitch_seconds")
 DEBRIEF_STAGE_KEYS = ("id", "minutes")
 SCHEDULE_BLOCK_KEYS = ("id", "minutes", "wave")
 PRINT_ROW_KEYS = ("job", "per_team", "facilitator")
@@ -629,6 +629,8 @@ class _Validator:
         print_list = self.field(block, "print_list", path)
         if print_list is not None and self.container(print_list, list, f"{path}.print_list"):
             self.check_print_list(print_list)
+        if "pitch_seconds" in block:
+            self.int_field(block, "pitch_seconds", path, lo=1)
         stages = block.get("debrief_stages")
         if stages is not None and self.container(stages, list, f"{path}.debrief_stages"):
             debrief_minutes = None

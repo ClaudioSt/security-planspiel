@@ -112,6 +112,7 @@ class SessionSchedule:
     blocks: tuple[ScheduleBlock, ...]
     print_list: tuple[PrintRow, ...]
     debrief_stages: tuple[DebriefStage, ...] = ()
+    pitch_seconds: Optional[int] = None
 
 
 @dataclass
@@ -306,6 +307,7 @@ def load_config(path: Path, hand_calc_level: str = "error") -> Config:
             debrief_stages=tuple(
                 DebriefStage(id=item["id"], minutes=item["minutes"]) for item in block.get("debrief_stages", [])
             ),
+            pitch_seconds=block.get("pitch_seconds"),
         )
 
     risk_matrix = None

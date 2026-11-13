@@ -226,7 +226,7 @@ Alle Dateien liegen als PDF in `final_documents/generated/` und werden aus `simu
 - **Events** (`events`) und **Abschluss-Event** (`final_events`): Effekte, Staffeln, Restbudget-Stufen und die Überziehungsstrafe `overspend_penalty` (X je angefangene Schrittweite).
 - **Final-Index** (`final_index`): Gewichte von KZ und RoS.
 - **Übung** (`practice`): die Werte des Übungsblatts für Welle 0.
-- **Veranstaltung** (`session_schedule`): Blöcke mit Dauern, Teamzahl, Personen je Team, Druckliste und Debriefing-Stufen.
+- **Veranstaltung** (`session_schedule`): Blöcke mit Dauern, Teamzahl, Personen je Team, Druckliste, Debriefing-Stufen und die Redezeit des optionalen Management-Pitches.
 - **Risikomatrix** (`risk_matrix`): Zeilen des Risikoregisters und die Untergrenzen der € Bänder (gering, mittel, hoch) auf der Schadensachse der Risiko-Matrix. Die Bänder steigen streng an, und kein ungeschützter Angriffsschaden liegt auf einer Bandgrenze. Dazu kommen die Geschäftsfälle der Spielleitung mit ihrem Band; ein Fall, der der Folge eines Angriffs entspricht, trägt dessen Band.
 - **Referenzpläne** (`reference_plans`) und **Referenzstrategien** (`reference_strategies`): Grundlage der Lösungsschlüssel und der Balance-Prüfungen.
 - **Prosa** liegt in `content/texte.toml`; Ziffern in dieser Prosa sind nur erlaubt, wenn sie in `content/digit_allowlist.toml` stehen. `content/clues.toml` ordnet die Hinweise den Angriffen zu, `content/mhp_baseline.json` hält den eingefrorenen Stand der MHP-Runde.
