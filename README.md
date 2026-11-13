@@ -49,7 +49,7 @@ Der Ablaufplan mit Blöcken, Dauern und Pausen steht in `session_schedule` und w
 1. **Einführung (Intro)**  
    Das Intro-Deck erklärt Spielidee und Rollen.
 2. **Story und Gruppenarbeit**  
-   Teams lesen die Story-Dokumente und erarbeiten sich daraus ein Bild des Unternehmens. Die Spielleitung beantwortet Fragen **kontextbezogen** und benennt keine Lücken.
+   Teams lesen die Story-Dokumente und erhalten dazu das Teamheft. Auf seiner ersten Seite, dem Risikoregister, leiten sie aus dem Unternehmen ihre Risiken ab, ordnen sie in der Risiko-Matrix ein, vergeben einen Rang und entscheiden, welche sie behandeln oder akzeptieren. Die Spielleitung beantwortet Fragen **kontextbezogen** und benennt keine Lücken.
 3. **Welle 0 (Übung)**  
    Ein durchgerechnetes Übungsbeispiel (`uebung-welle-0.pdf`) mit eigenen Werten aus dem Block `practice`; es zählt nicht für die Wertung.
 4. **Budgetverhandlung und Maßnahmenwahl**  
@@ -59,7 +59,7 @@ Der Ablaufplan mit Blöcken, Dauern und Pausen steht in `session_schedule` und w
 6. **Change-Fenster**  
    Nach jeder Welle außer der letzten: Levelwechsel, Kündigen, Hinzufügen (wirksam **ab der nächsten Welle**); nach der Kurswechsel-Welle zusätzlich der Pflicht-Maßnahmentausch.
 7. **Abschluss und Budget Review**  
-   Einmal nach der letzten Welle: Restbudget-Bonus oder Überziehungsstrafe, danach Klammerung der KZ.
+   Einmal nach der letzten Welle: Restbudget-Bonus oder Überziehungsstrafe, danach Klammerung der KZ. Dazu füllen die Teams die Spalte Rückblick im Risikoregister: Welches Risiko hat ein Angriff getroffen, und stimmte das Band?
 8. **Debriefing**  
    Feste Reihenfolge der Stufen (Reaktion, Beschreibung, Analyse, Anwendung) mit den Fragen der Seite „Debriefing-Fragen“ im Spielleitungs-Heft.
 

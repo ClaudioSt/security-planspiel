@@ -671,14 +671,14 @@ direction = "Pause. Legt währenddessen die Story-Unterlagen für jedes Team ber
 
 [sheets.ablauf.blocks.story_groups]
 label = "Story-Gruppenarbeit"
-direction = "Gebt jedem Team die Story-Unterlagen. Die Teams lesen, sammeln Hinweise und tauschen sich im Team aus."
+direction = "Gebt jedem Team die Story-Unterlagen und das Teamheft. Die Teams lesen, sammeln Hinweise und füllen das Risikoregister auf der ersten Seite des Teamhefts aus."
 
 [sheets.ablauf.blocks.wave_0]
 direction = "Gebt das Übungsblatt und die Erklärseite So funktioniert eine Welle aus. Rechnet das Beispiel gemeinsam durch, bevor die erste echte Welle beginnt."
 
 [sheets.ablauf.blocks.measures_budget]
 label = "Maßnahmen und Budget"
-direction = "Gebt das Teamheft und die Maßnahmenkarten aus. Die Teams verhandeln ihr Budget-Tier und wählen ihre Maßnahmen."
+direction = "Gebt die Maßnahmenkarten aus. Die Teams verhandeln ihr Budget-Tier und tragen ihre Maßnahmen im Teamheft ein."
 
 [sheets.ablauf.blocks.break_2]
 label = "Pause"
@@ -695,7 +695,7 @@ direction = "Lest die Ereignisse dieser Welle vor und gebt ihre Eventkarten aus.
 
 [sheets.ablauf.blocks.closing]
 label = "Abschluss"
-direction = "Die Teams rechnen das Budget Review und die RoS-Seite im Teamheft aus. Sammelt die Ergebnisse ein."
+direction = "Die Teams rechnen das Budget Review und die RoS-Seite im Teamheft aus und füllen im Risikoregister die Spalte Rückblick. Sammelt die Ergebnisse ein."
 
 [sheets.ablauf.blocks.debrief]
 label = "Debriefing"
