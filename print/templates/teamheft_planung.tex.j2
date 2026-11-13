@@ -30,16 +30,20 @@
 \step{\VAR{booklet.planning.step_planning}}
 \VAR{booklet.planning.planning_intro}\par
 \VAR{booklet.planning.planning_instruction}\par
+\BLOCK{if booklet.planning.planning_hint}
+\hint{\VAR{booklet.planning.planning_hint}}
+\BLOCK{endif}
 \vspace{1mm}
-\noindent\begin{tabularx}{\linewidth}{|X|C{18mm}|C{30mm}|C{30mm}|}
+\noindent\begingroup\BLOCK{if booklet.register}\setlength{\tabcolsep}{4pt}\BLOCK{endif}\begin{tabularx}{\linewidth}{|X|\BLOCK{if booklet.register}C{14mm}|C{20mm}|C{25mm}|C{22mm}\BLOCK{else}C{18mm}|C{30mm}|C{30mm}\BLOCK{endif}|}
 \hline
-\rowcolor{mhpblue}\hdr{\VAR{booklet.planning.planning_header[0]}} & \hdr{\VAR{booklet.planning.planning_header[1]}} & \hdr{\VAR{booklet.planning.planning_header[2]}} & \hdr{\VAR{booklet.planning.planning_header[3]}} \\
+\rowcolor{mhpblue}\BLOCK{for cell in booklet.planning.planning_header}\hdr{\VAR{cell}}\BLOCK{if not loop.last} & \BLOCK{endif}\BLOCK{endfor} \\
 \hline
 \BLOCK{for label in booklet.planning.planning_rows}
-\rowstrut{}\VAR{label} & & & \\
+\rowstrut{}\VAR{label}\BLOCK{for cell in booklet.planning.planning_header[1:]} &\BLOCK{endfor} \\
 \hline
 \BLOCK{endfor}
-\rowcolor{mhplight}\rowstrut{}\textbf{\VAR{booklet.planning.sum_label}} & &  &  \\
+\rowcolor{mhplight}\rowstrut{}\textbf{\VAR{booklet.planning.sum_label}}\BLOCK{for cell in booklet.planning.planning_header[1:]} &\BLOCK{endfor} \\
 \hline
 \end{tabularx}
+\endgroup
 \fillline{\VAR{booklet.planning.anticipated_line} \ibox{long}}

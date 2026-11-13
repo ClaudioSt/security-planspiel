@@ -198,6 +198,7 @@ def test_the_planning_table_prints_every_header_cell_and_one_separator_fewer_per
     assert len(body) == len(booklet.planning.planning_rows) + 1
     for line in body:
         assert len(UNESCAPED_AMPERSAND.findall(line)) == len(header) - 1, line
+        assert line.rstrip().endswith(r"\\"), line
 
 
 def test_the_planning_partial_loops_over_the_header_cells_and_prints_the_hint():
