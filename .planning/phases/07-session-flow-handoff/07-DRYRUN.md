@@ -14,13 +14,13 @@ Timed dry run of the full game with a test group. Prepared on 2026-11-06 from th
 
 - **Print set:** release candidate 2, commit 8cf1972, stamp `Stand 2026-11-04 · 737ba65`, `dirty: false` (07-09, user release 2026-11-06). Freshness checked on 2026-11-06 with `uv run planspiel print --check`: exit 0, 15 documents current (T-07-39). On the day, compare the stamp on every printed page with this line.
 - **Intro deck:** `final_documents/Planspiel_Einführung + Grundlagen.pptx`, last changed in commit d4b0cb8 (slide 34 shows the per-wave minutes, D-34).
-- **Session total:** the stated total is 195 min. D-22 named 190 min; the user-approved D-34 deviation (wave 1 re-budgeted from 20 to 25 min, 07-09) raised it to 195. The verdict below is judged against 195.
+- **Session total:** the stated total is 215 min. D-22 named 190 min; the D-34 deviation (07-09) raised it to 195; Phase 07.1 D-16 (story block 25 -> 35, debriefing 20 -> 30, stages 3/5/14/8) raised it to 215, superseding D-22 and D-34 only for these blocks. The booked slot is 240 min. The verdict below is judged against 215.
 
 ## Pass rule (D-25, verbatim from 07-CONTEXT.md)
 
 > Pass rule for the dry run (the literal reading of ROADMAP success criterion 5): every wave block finishes within its planned minutes, the whole session finishes within the stated total (D-22), and the facilitator gets no help from the author. Each overrun, unclear point or calculation error recorded on the protocol (D-07) becomes a gap-closure item (D-06), unless the user explicitly accepts it at verification.
 
-Reading used for the verdict: every wave block including Welle 0 (wave_0, wave_1, wave_2, wave_3) within its planned minutes; the whole session within 195 min; `## Help given` empty. PASS needs all three; a Welle 0 overrun fails the run like any other wave overrun.
+Reading used for the verdict: every wave block including Welle 0 (wave_0, wave_1, wave_2, wave_3) within its planned minutes; the whole session within 215 min; `## Help given` empty. PASS needs all three; a Welle 0 overrun fails the run like any other wave overrun.
 
 ## Protocol
 
@@ -28,16 +28,16 @@ Reading used for the verdict: every wave block including Welle 0 (wave_0, wave_1
 |---|---|---|---|---|---|---|---|
 | intro (Einführung) | 10 | 0 - 10 | | | | | |
 | break_1 (Pause) | 5 | 10 - 15 | | | | | |
-| story_groups (Story-Gruppenarbeit) | 25 | 15 - 40 | | | | | |
-| wave_0 (Übungswelle (Welle 0)) | 15 | 40 - 55 | | | | | |
-| measures_budget (Maßnahmen und Budget) | 30 | 55 - 85 | | | | | |
-| break_2 (Pause) | 15 | 85 - 100 | | | | | |
-| wave_1 (Welle 1) | 25 | 100 - 125 | | | | | |
-| wave_2 (Welle 2) | 20 | 125 - 145 | | | | | |
-| wave_3 (Welle 3) | 20 | 145 - 165 | | | | | |
-| closing (Abschluss) | 10 | 165 - 175 | | | | | |
-| debrief (Debriefing) | 20 | 175 - 195 | | | | | |
-| **Total** | 195 | 0 - 195 | | | | | |
+| story_groups (Story-Gruppenarbeit) | 35 | 15 - 50 | | | | | |
+| wave_0 (Übungswelle (Welle 0)) | 15 | 50 - 65 | | | | | |
+| measures_budget (Maßnahmen und Budget) | 30 | 65 - 95 | | | | | |
+| break_2 (Pause) | 15 | 95 - 110 | | | | | |
+| wave_1 (Welle 1) | 25 | 110 - 135 | | | | | |
+| wave_2 (Welle 2) | 20 | 135 - 155 | | | | | |
+| wave_3 (Welle 3) | 20 | 155 - 175 | | | | | |
+| closing (Abschluss) | 10 | 175 - 185 | | | | | |
+| debrief (Debriefing) | 30 | 185 - 215 | | | | | |
+| **Total** | 215 | 0 - 215 | | | | | |
 
 ## Help given
 
