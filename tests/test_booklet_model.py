@@ -541,3 +541,26 @@ def test_risk_band_ranges_compose_the_axis_labels():
         f"{fmt.format_money(bands[1].minimum * 1000)} bis unter {fmt.format_money(bands[2].minimum * 1000)}",
         f"ab {fmt.format_money(bands[2].minimum * 1000)}",
     )
+
+
+def test_the_ros_purpose_frames_ros_as_net_damage_avoided_per_euro(real):
+    purpose = real[2].ros.purpose
+    assert purpose.endswith(".") and purpose.count(".") == 1, "exactly one sentence"
+    folded = purpose.casefold()
+    for term in ("vermiedene", "schaden", "abzüglich", "eigene", "kosten", "je euro", "über null"):
+        assert term in folded, term
+
+
+def test_ros_is_positive_exactly_when_avoided_damage_exceeds_own_costs(real):
+    cfg = real[0]
+    triples = [(620, 300, 200), (620, 420, 200), (620, 500, 200)]
+    for tier, plan in cfg.reference_plans.items():
+        result = rules.evaluate_plan(cfg, tier, plan["start"])
+        triples.append((
+            rules.base_losses(cfg.waves, cfg.attacks), result["total_damage"], result["costs"]["security_spend"],
+        ))
+    assert len(triples) == 3 + len(cfg.budget_tiers)
+    for base, damage, own in triples:
+        value = rules.ros(base, damage, own)
+        assert value == Fraction(base - damage - own) / own
+        assert (value > 0) == (base - damage > own), (base, damage, own)

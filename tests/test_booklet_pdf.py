@@ -138,3 +138,9 @@ def test_the_build_log_has_no_missing_glyph_and_no_overfull_line(printed_set):
     log = _log(printed_set)
     assert "Missing character" not in log
     assert "Overfull \\hbox" not in log
+
+
+def test_the_ros_page_carries_the_purpose_sentence(pages, booklet):
+    ros_page = _page_of(pages, booklet.ros.title)[0]
+    assert squash(booklet.ros.purpose) in pages[ros_page]
+    assert squash(booklet.ros.purpose) not in pages[1], "not on the planning page"
