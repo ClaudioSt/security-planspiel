@@ -3,6 +3,11 @@
 \usepackage{planspiel}
 \begin{document}
 \raggedright
+\BLOCK{if booklet.register}
+\BLOCK{include "teamheft_register.tex.j2"}
+\fillreport{\thepage}
+\clearpage
+\BLOCK{endif}
 \BLOCK{include "teamheft_planung.tex.j2"}
 \fillreport{\thepage}
 \clearpage

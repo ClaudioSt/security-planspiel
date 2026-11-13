@@ -26,6 +26,11 @@
 \definecolor{levelone}{HTML}{00CC67}
 \definecolor{leveltwo}{HTML}{DDEF03}
 \definecolor{levelthree}{HTML}{575757}
+% Zone tints of the risk matrix (light, so handwritten numbers stay readable; the printed zone word carries the
+% meaning in grayscale).
+\definecolor{riskgreen}{HTML}{CFE8CF}
+\definecolor{riskyellow}{HTML}{FFF0A8}
+\definecolor{riskred}{HTML}{F2B8B8}
 \definecolor{mhpwarn}{HTML}{B00020}
 
 % Version stamp "Stand <date> · <hash>": `planspiel print` writes it to stamp.tex (outside the
@@ -59,6 +64,7 @@
 \arrayrulecolor{mhpblue}
 \setlength{\arrayrulewidth}{0.5pt}
 \newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
 
 % Title as on the Word worksheets: 12 pt, bold, blue.
 \newcommand{\attacktitle}[1]{{\color{mhpblue}\bfseries\fontsize{12}{15}\selectfont #1\par}\vspace{1mm}}
@@ -97,6 +103,9 @@
 
 % One fill-in line: the line height leaves room for the 7 mm boxes.
 \newcommand{\fillline}[1]{\begingroup\setlength{\baselineskip}{9.5mm}\noindent #1\par\endgroup}
+
+% One handwriting line in a table cell: starts on a new line, 6 mm high, light grey baseline across the cell width.
+\newcommand{\writeline}{\par\noindent\rule{0pt}{6mm}\textcolor{mhpshade}{\rule{\linewidth}{0.4pt}}\par}
 
 % Empty square for the "Erfuellt" column (no tick glyphs: Arial lacks them).
 \newcommand{\tickbox}{\raisebox{-1.2mm}[3mm][1mm]{{\setlength{\fboxsep}{0pt}\setlength{\fboxrule}{0.5pt}%
