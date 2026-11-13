@@ -53,7 +53,7 @@ Der Ablaufplan mit Blöcken, Dauern und Pausen steht in `session_schedule` und w
 3. **Welle 0 (Übung)**  
    Ein durchgerechnetes Übungsbeispiel (`uebung-welle-0.pdf`) mit eigenen Werten aus dem Block `practice`; es zählt nicht für die Wertung.
 4. **Budgetverhandlung und Maßnahmenwahl**  
-   Teams einigen sich auf ein Budget-Tier, wählen Maßnahmen und **Level**. **Abhängigkeiten** werden geprüft, **OPEX** wird notiert.
+   Teams einigen sich auf ein Budget-Tier, wählen Maßnahmen und **Level**. **Abhängigkeiten** werden geprüft, **OPEX** wird notiert. Freiwillig tragen sie je Maßnahme ein, gegen welche Risiken ihres Registers sie wirkt („gegen R#“); die Spalte wird nicht bewertet.
 5. **Die Wellen**  
    Jede Welle: a) Events anwenden, b) den Angriff deterministisch auflösen (siehe „Deterministische Auflösung“), c) **OPEX** zahlen und **Erholung** anwenden (falls konfiguriert).
 6. **Change-Fenster**  

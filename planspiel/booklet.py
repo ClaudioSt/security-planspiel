@@ -73,7 +73,8 @@ class PlanningPage:
     step_planning: str
     planning_intro: str
     planning_instruction: str
-    planning_header: tuple[str, str, str, str]
+    planning_hint: str
+    planning_header: tuple[str, ...]
     planning_rows: tuple[str, ...]
     sum_label: str
     wave_count_text: str
@@ -297,6 +298,12 @@ def _planning_page(cfg: Config, texts: Texts) -> PlanningPage:
         f"{labels['anticipated_sum']} = {labels['sum']} {labels['init_costs']} + {labels['sum']} "
         f"{words['opex_per_wave']} {wave_count_text} ="
     )
+    planning_header = (labels["measure"], labels["level"], labels["init_costs"], words["opex_per_wave"])
+    planning_hint = ""
+    if cfg.risk_matrix is not None:
+        register = view.sheet("register")
+        planning_header += (register["planning_column"],)
+        planning_hint = register["planning_hint"]
     return PlanningPage(
         title=words["planning_title"],
         intro=budget["intro"],
@@ -316,7 +323,8 @@ def _planning_page(cfg: Config, texts: Texts) -> PlanningPage:
         step_planning=words["step_planning"],
         planning_intro=budget["anticipated_sum_intro"],
         planning_instruction=words["planning_instruction"],
-        planning_header=(labels["measure"], labels["level"], labels["init_costs"], words["opex_per_wave"]),
+        planning_hint=planning_hint,
+        planning_header=planning_header,
         planning_rows=tuple(f"{measure_id} {EN_DASH} {measure.name}" for measure_id, measure in cfg.measures.items()),
         sum_label=labels["sum"],
         wave_count_text=wave_count_text,

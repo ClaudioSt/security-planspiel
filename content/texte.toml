@@ -352,6 +352,8 @@ axis_impact = "Schaden fürs Geschäft"
 range_below = "unter"
 range_to = "bis unter"
 range_from = "ab"
+planning_column = "gegen R#"
+planning_hint = "Empfehlung: Tragt in der Spalte gegen R# ein, gegen welche Risiken aus eurem Register die Maßnahme wirkt, mehrere durch Komma getrennt. Die Spalte ist freiwillig und wird nicht bewertet."
 
 [sheets.register.goals]
 c = "C"
@@ -678,7 +680,7 @@ direction = "Gebt das Übungsblatt und die Erklärseite So funktioniert eine Wel
 
 [sheets.ablauf.blocks.measures_budget]
 label = "Maßnahmen und Budget"
-direction = "Gebt die Maßnahmenkarten aus. Die Teams verhandeln ihr Budget-Tier und tragen ihre Maßnahmen im Teamheft ein."
+direction = "Gebt die Maßnahmenkarten aus. Die Teams verhandeln ihr Budget-Tier und tragen ihre Maßnahmen im Teamheft ein. Weist auf die freiwillige Spalte gegen R# im Teamheft hin; ihr prüft sie nicht."
 
 [sheets.ablauf.blocks.break_2]
 label = "Pause"
