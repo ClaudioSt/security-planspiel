@@ -98,4 +98,8 @@
 \hint{\VAR{sheet.intro.events_hint}}
 \vspace{2mm}
 \BLOCK{call fillline(sheet.result_line)}\BLOCK{endcall}
+\BLOCK{if sheet.reality_line}
+\vspace{2mm}
+\BLOCK{call fillline(sheet.reality_line)}\BLOCK{endcall}
+\BLOCK{endif}
 \fillreport{2}

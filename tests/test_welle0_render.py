@@ -127,7 +127,7 @@ def test_the_reality_question_follows_the_result_line_and_precedes_the_fill_repo
     for job in REAL_WORKSHEETS:
         source = documents[job]
         assert source.count(question) == 1, job
-        assert source.index(result_label + ":") < source.index(question) < source.index("\fillreport{2}"), job
+        assert source.index(result_label + ":") < source.index(question) < source.index(r"\fillreport{2}"), job
 
 
 def test_the_practice_sheet_has_no_reality_question(real):
