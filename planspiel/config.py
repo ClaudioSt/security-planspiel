@@ -153,10 +153,10 @@ class Config:
     rs: int
     final_index: FinalIndexWeights
     session_schedule: Optional[SessionSchedule] = None
+    risk_matrix: Optional[RiskMatrix] = None
     reference_plans: Dict[str, Dict] = field(default_factory=dict)
     reference_strategies: Dict[str, Dict] = field(default_factory=dict)
     practice: Optional[Practice] = None
-    risk_matrix: Optional[RiskMatrix] = None
 
     @property
     def measure_ids(self) -> List[str]:
