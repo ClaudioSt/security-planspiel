@@ -2,18 +2,18 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_phase: 07
-current_phase_name: session-flow-handoff
+current_phase: 07.1
+current_phase_name: risk-based-learning-chain-cia-risk-register-from-the-mechtec
 status: executing
 stopped_at: Phase 07.1 planned (10 plans, ready to execute)
-last_updated: "2026-11-12T10:58:44.632Z"
-last_activity: 2026-11-03
-last_activity_desc: Phase 07 execution started
+last_updated: "2026-11-13T10:16:58.300Z"
+last_activity: 2026-11-13
+last_activity_desc: Phase 07.1 execution started
 progress:
   total_phases: 8
   completed_phases: 6
-  total_plans: 62
-  completed_plans: 61
+  total_plans: 72
+  completed_plans: 62
   percent: 75
 ---
 
@@ -24,14 +24,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-10-27)
 
 **Core value:** Facilitators and players can run the game by hand without ambiguity: every rule is unambiguous, every printed number matches `simulation_config.json`, and no strategy exploits a rule loophole.
-**Current focus:** Phase 07 — session-flow-handoff
+**Current focus:** Phase 07.1 — risk-based-learning-chain-cia-risk-register-from-the-mechtec
 
 ## Current Position
 
-Phase: 07 (session-flow-handoff) — EXECUTING
-Plan: 12 of 12
+Phase: 07.1 (risk-based-learning-chain-cia-risk-register-from-the-mechtec) — EXECUTING
+Plan: 2 of 10
 Status: Ready to execute
-Last activity: 2026-11-03 — Phase 07 execution started
+Last activity: 2026-11-13 — Phase 07.1 execution started
 
 Progress: [█████████░] 86% (6 of 7 phases)
 
@@ -120,6 +120,7 @@ Progress: [█████████░] 86% (6 of 7 phases)
 | Phase 07 P10 | 35min | 2 tasks | 2 files |
 | Phase 07 P11 | 40 min | 3 tasks | 7 files |
 | Phase 07 P09 | 3 sessions | 4 tasks | 25 files |
+| Phase 07.1 P01 | 35min | 2 tasks | 9 files |
 
 ## Accumulated Context
 
@@ -209,6 +210,7 @@ Recent decisions affecting current work:
 - [Phase 07]: 07-08: protocol rows reuse schedule_rows; Exzellenz line reads 'Level N oder höher'; event header 'Event in Welle N' (text only, D-28)
 - [Phase 07]: 07-09: wave_1 re-budgeted to 25 min, session total 195 (D-34 deviation, user-approved 2026-11-04); re-measured in the dry run (07-12)
 - [Phase 07]: 07-09: print set released as release candidate 2 (commit 8cf1972, Stand 2026-11-04, 737ba65) on 2026-11-06
+- [Phase 07.1]: [07.1-01] risk_matrix sits after session_schedule in Config so practice stays the last field
 
 ### Pending Todos
 
@@ -236,6 +238,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-11-12T10:58:44.621Z
+Last session: 2026-11-13T10:16:52.246Z
 Stopped at: Phase 07.1 planned (10 plans, ready to execute)
 Resume file: .planning/phases/07.1-risk-based-learning-chain-cia-risk-register-from-the-mechtec/07.1-01-PLAN.md
