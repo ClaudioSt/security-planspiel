@@ -275,3 +275,25 @@ def test_duplicate_and_malformed_stage_ids_are_rejected():
 def test_stage_minutes_must_be_positive_and_keys_known():
     assert "schema.range" in _codes(_mutated(lambda s: s["debrief_stages"][0].update(minutes=0)))
     assert "schema.keys" in _codes(_mutated(lambda s: s["debrief_stages"][0].update(label="x")))
+
+
+# --- RISK-07: optional management pitch speaking time (D-17) -----------------------------------------------
+
+
+def test_the_pitch_speaking_time_is_sixty_seconds_outside_the_timed_blocks(cfg):
+    schedule = cfg.session_schedule
+    assert schedule.pitch_seconds == 60
+    assert schedule.total_minutes == 215
+    assert tuple((stage.id, stage.minutes) for stage in schedule.debrief_stages) == DEBRIEF_STAGES
+
+
+def test_a_schedule_without_a_pitch_time_loads_with_none(tmp_path):
+    raw = _raw()
+    del raw["session_schedule"]["pitch_seconds"]
+    assert _errors(raw) == []
+    assert _load(raw, tmp_path).session_schedule.pitch_seconds is None
+
+
+def test_the_pitch_time_needs_at_least_one_second_and_an_integer():
+    assert "schema.range" in _codes(_mutated(lambda s: s.update(pitch_seconds=0)))
+    assert "schema.type" in _codes(_mutated(lambda s: s.update(pitch_seconds="60")))
