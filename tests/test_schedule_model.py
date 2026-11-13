@@ -152,6 +152,27 @@ def test_directions_hold_back_the_attack_worksheets(texts):
         assert "Arbeitsblatt" in direction
 
 
+def test_the_teamheft_is_handed_out_in_the_story_block(cfg, texts):
+    label = texts.get("sheets.ablauf.print.spieler-teamheft")
+    directions = [
+        (block.id, texts.get(f"sheets.ablauf.blocks.{block.id}.direction")) for block in cfg.session_schedule.blocks
+    ]
+    first = next(block_id for block_id, direction in directions if label in direction)
+    assert first == "story_groups"
+    story = dict(directions)["story_groups"]
+    assert texts.get("sheets.register.title") in story
+
+
+def test_the_measures_block_hands_out_the_measure_cards(texts):
+    direction = texts.get("sheets.ablauf.blocks.measures_budget.direction")
+    assert texts.get("sheets.ablauf.print.spieler-massnahmenkarten") in direction
+
+
+def test_the_closing_block_directs_the_rueckblick(texts):
+    direction = texts.get("sheets.ablauf.blocks.closing.direction")
+    assert texts.get("sheets.register.head_review") in direction
+
+
 # --- key coverage ----------------------------------------------------------------------------------------------
 
 
