@@ -372,8 +372,46 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 3 
   4. The RoS page explains RoS as net damage avoided per invested euro. The 30-minute debriefing (3/5/14/8) asks along the chain: register vs. reality, accepted risks that hit, C/I/A assessment vs. wave weights, where the money paid off, transfer to real risk management. It offers an optional 60-second management pitch.
   5. The schedule (story block 35, debriefing 30, total 215 minutes), print list, dry-run protocol and record, intro deck (new "Risiko-Matrix" slide), README and "Was ist neu" sheet match the new flow, and no game formula or balance value has changed.
   6. Release candidate 3 is built clean (no "+lokal", `print --check` exit 0, fast and pdf tests pass), printed and approved by the user before 2026-11-25.
-**Plans:** 0 plans
+
+**Plans:** 10 plans
 
 Plans:
+**Wave 1**
 
-- [ ] TBD (run /gsd-plan-phase 07.1 to break down)
+- [ ] 07.1-01-PLAN.md — RISK-01: `risk_matrix` block (5 register rows, € bands 0/50/150 k€), loader, validator against the unprotected attack damage, `rules.unprotected_damage`, `band_of` as the validator's single band lookup (wave 1)
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [ ] 07.1-02-PLAN.md — RISK-02: risk register as the first of five Teamheft pages, 3×3 matrix with zones and config € ranges, clinic example, Rückblick rule, Teamheft page-order tests updated (wave 2)
+
+**Wave 3** *(blocked on Wave 2 completion)*
+
+- [ ] 07.1-08-PLAN.md — RISK-08: schedule 35/30 (stages 3/5/14/8, 215 min), Teamheft handout in the story block, Rückblick in the closing block, deck-test bridge, dry-run record (wave 3)
+
+**Wave 4** *(blocked on Wave 3 completion)*
+
+- [ ] 07.1-03-PLAN.md — RISK-03: optional "gegen R#" column on the planning page (wave 4)
+
+**Wave 5** *(blocked on Wave 4 completion)*
+
+- [ ] 07.1-04-PLAN.md — RISK-04: reality-check line at the end of every attack worksheet, golden re-pin, Welle 0 unchanged (wave 5)
+
+**Wave 6** *(blocked on Wave 5 completion)*
+
+- [ ] 07.1-06-PLAN.md — RISK-06: RoS sentence as net damage avoided per invested euro (wave 6)
+
+**Wave 7** *(blocked on Wave 6 completion)*
+
+- [ ] 07.1-05-PLAN.md — RISK-05: business-impact cheat sheet (7 cases; the attack-anchored cases' bands tied to the attack damage, D-22 as clarified) in the facilitator booklet, Was-ist-neu clue line names it (wave 7)
+
+**Wave 8** *(blocked on Wave 7 completion)*
+
+- [ ] 07.1-07-PLAN.md — RISK-07: debriefing along the chain plus optional 60-second management pitch (wave 8)
+
+**Wave 9** *(blocked on Wave 8 completion)*
+
+- [ ] 07.1-09-PLAN.md — RISK-09: intro deck "Risiko-Matrix" slide and 35/40 minute figures from an approved checklist, user review, one binary commit (wave 9 after the autonomous plans, checkpoints)
+
+**Wave 10** *(blocked on Wave 9 completion)*
+
+- [ ] 07.1-10-PLAN.md — RISK-10: release candidate 3 built, verified, printed and approved before 2026-11-25 (wave 10, checkpoint)
