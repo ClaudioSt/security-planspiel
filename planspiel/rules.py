@@ -623,12 +623,12 @@ def simulate_selection(
     }
 
 
+def unprotected_damage(attack: Attack) -> int:
+    return attack.base_severity * attack.s_unit
+
+
 def base_losses(waves: List[Wave], attacks: Dict[str, Attack]) -> int:
-    total = 0
-    for wave in waves:
-        attack = attacks[wave.attack_id]
-        total += attack.base_severity * attack.s_unit
-    return total
+    return sum(unprotected_damage(attacks[wave.attack_id]) for wave in waves)
 
 
 def ros(base_losses: float, total_damage: float, own_spend: float) -> Optional[Fraction]:

@@ -115,6 +115,23 @@ class SessionSchedule:
 
 
 @dataclass
+class RiskBand:
+    """One € impact band of the risk matrix; `minimum` is the inclusive lower limit in thousand euros."""
+
+    id: str
+    minimum: int
+
+
+@dataclass
+class RiskMatrix:
+    """Register rows and € bands of the risk matrix: read only by the validator, print models and tests, never by
+    rules or enumeration."""
+
+    register_rows: int
+    bands: tuple[RiskBand, ...]
+
+
+@dataclass
 class FinalIndexWeights:
     """Weights of the facilitator-side final index (D-23); the single source for reports and printed answer keys."""
 
@@ -139,6 +156,7 @@ class Config:
     reference_plans: Dict[str, Dict] = field(default_factory=dict)
     reference_strategies: Dict[str, Dict] = field(default_factory=dict)
     practice: Optional[Practice] = None
+    risk_matrix: Optional[RiskMatrix] = None
 
     @property
     def measure_ids(self) -> List[str]:
@@ -279,6 +297,14 @@ def load_config(path: Path, hand_calc_level: str = "error") -> Config:
             ),
         )
 
+    risk_matrix = None
+    if "risk_matrix" in raw:
+        block = raw["risk_matrix"]
+        risk_matrix = RiskMatrix(
+            register_rows=block["register_rows"],
+            bands=tuple(RiskBand(id=item["id"], minimum=item["min"]) for item in block["bands"]),
+        )
+
     return Config(
         default_budget_tier=raw["default_budget_tier"],
         budget_tiers=budget_tiers,
@@ -296,6 +322,7 @@ def load_config(path: Path, hand_calc_level: str = "error") -> Config:
         ),
         practice=practice,
         session_schedule=session_schedule,
+        risk_matrix=risk_matrix,
         reference_plans=dict(raw.get("reference_plans", {})),
         reference_strategies=dict(raw.get("reference_strategies", {})),
     )

@@ -339,6 +339,7 @@
       {"id": "application", "minutes": 5}
     ]
   },
+  "risk_matrix": {"register_rows": 5, "bands": [{"id": "low", "min": 0}, {"id": "medium", "min": 50}, {"id": "high", "min": 150}]},
   "reference_plans": {
     "low": {
       "start": {"M1": 0, "M2": 0, "M3": 0, "M4": 1, "M5": 0, "M6": 2, "M7": 1, "M8": 1, "M9": 3, "M10": 2},
