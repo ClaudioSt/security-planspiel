@@ -85,7 +85,7 @@ Added 2026-11-12 for the inserted Phase 07.1 (pedagogical review): make the chai
 - [x] **RISK-06**: The Teamheft RoS page explains RoS in one sentence as net damage avoided per invested euro (avoided damage minus own cost, per euro of own cost); the formula and the printed calculation stay unchanged
 - [x] **RISK-07**: The debriefing is rebuilt around the chain: questions per stage on register vs. reality, accepted risks that hit, the team's C/I/A assessment vs. the wave weightings, which risks the money paid off against (RoS, net framing) and transfer to real risk management, plus an optional 60-second management pitch per team without planned minutes
 - [x] **RISK-08**: The session schedule gives the story block 35 and the debriefing 30 minutes (stages 3/5/14/8), 215 minutes in total; the Teamheft is handed out in the story block, the closing block directs the Rückblick, and the print list, the dry-run protocol and the dry-run record follow
-- [ ] **RISK-09**: The intro deck has a new "Risiko-Matrix" slide (likelihood × impact, zones, how the register is used; no MechTech or attack content) and its minute figures follow the new schedule; the deck is edited once from a user-approved checklist and pinned by the deck test
+- [x] **RISK-09**: The intro deck has a new "Risiko-Matrix" slide (likelihood × impact, zones, how the register is used; no MechTech or attack content) and its minute figures follow the new schedule; the deck is edited once from a user-approved checklist and pinned by the deck test
 - [ ] **RISK-10**: The print set is rebuilt and released as release candidate 3: clean stamp, `print --check` exit 0, fast and pdf test suites pass, printed and approved by the user before the dry run on 2026-11-25
 
 ## v2 Requirements
@@ -190,7 +190,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RISK-06 | Phase 07.1 | Complete |
 | RISK-07 | Phase 07.1 | Complete |
 | RISK-08 | Phase 07.1 | Complete |
-| RISK-09 | Phase 07.1 | Pending |
+| RISK-09 | Phase 07.1 | Complete |
 | RISK-10 | Phase 07.1 | Pending |
 
 **Coverage:**

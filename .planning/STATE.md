@@ -5,15 +5,15 @@ milestone_name: milestone
 current_phase: 07.1
 current_phase_name: risk-based-learning-chain-cia-risk-register-from-the-mechtec
 status: executing
-stopped_at: Completed 07.1-07-PLAN.md
-last_updated: "2026-11-13T12:37:03.729Z"
+stopped_at: Completed 07.1-09-PLAN.md
+last_updated: "2026-11-14T00:29:49.915Z"
 last_activity: 2026-11-13
 last_activity_desc: Phase 07.1 execution started
 progress:
   total_phases: 8
   completed_phases: 6
   total_plans: 72
-  completed_plans: 69
+  completed_plans: 70
   percent: 75
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-10-27)
 ## Current Position
 
 Phase: 07.1 (risk-based-learning-chain-cia-risk-register-from-the-mechtec) — EXECUTING
-Plan: 8 of 10 complete (07.1-01..08); next 07.1-09
+Plan: 9 of 10 complete (07.1-01..09); next 07.1-10
 Status: Ready to execute
 Last activity: 2026-11-13 — Phase 07.1 execution started
 
@@ -126,6 +126,7 @@ Progress: [█████████░] 86% (6 of 7 phases)
 | Phase 07.1 P06 | 25min | 2 tasks | 4 files |
 | Phase 07.1 P05 | 75min | 3 tasks | 13 files |
 | Phase 07.1 P07 | 50min | 3 tasks | 11 files |
+| Phase 07.1 P09 | 55min | 3 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -223,6 +224,7 @@ Recent decisions affecting current work:
 - [Phase 07.1]: 07.1-06: RoS purpose sentence uses the net framing (avoided damage minus own costs, per euro of own costs); formula and code unchanged (D-18)
 - [Phase 07.1]: 07.1-05: cheat-sheet case bands tied to attack damage only for like_attack-anchored cases; risk.case_attack accepts any defined attack
 - [Phase 07.1]: 07.1-07: the optional management pitch stays outside debrief_stages; pitch_seconds (60) is config, composed in code; Was-ist-neu debrief line unchanged
+- [Phase 07.1-09]: Slide-31 material box widened (cx 9300000) so the material line no longer wraps onto the footer; deck patched surgically, docProps/app.xml untouched
 
 ### Pending Todos
 
@@ -250,6 +252,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-11-13T12:36:53.387Z
-Stopped at: Completed 07.1-07-PLAN.md
+Last session: 2026-11-14T00:29:43.346Z
+Stopped at: Completed 07.1-09-PLAN.md
 Resume file: .planning/phases/07.1-risk-based-learning-chain-cia-risk-register-from-the-mechtec/07.1-01-PLAN.md

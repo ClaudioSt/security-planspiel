@@ -373,7 +373,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 3 
   5. The schedule (story block 35, debriefing 30, total 215 minutes), print list, dry-run protocol and record, intro deck (new "Risiko-Matrix" slide), README and "Was ist neu" sheet match the new flow, and no game formula or balance value has changed.
   6. Release candidate 3 is built clean (no "+lokal", `print --check` exit 0, fast and pdf tests pass), printed and approved by the user before 2026-11-25.
 
-**Plans:** 8/10 plans executed
+**Plans:** 9/10 plans executed
 
 Plans:
 **Wave 1**
@@ -410,7 +410,7 @@ Plans:
 
 **Wave 9** *(blocked on Wave 8 completion)*
 
-- [ ] 07.1-09-PLAN.md — RISK-09: intro deck "Risiko-Matrix" slide and 35/40 minute figures from an approved checklist, user review, one binary commit (wave 9 after the autonomous plans, checkpoints)
+- [x] 07.1-09-PLAN.md — RISK-09: intro deck "Risiko-Matrix" slide and 35/40 minute figures from an approved checklist, user review, one binary commit (wave 9 after the autonomous plans, checkpoints)
 
 **Wave 10** *(blocked on Wave 9 completion)*
 
