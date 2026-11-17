@@ -1,0 +1,19 @@
+\#{ Team booklet: the shell only. The page partials hold the pages; every number arrives as a finished string from the print model. }
+\documentclass[a4paper,10pt]{article}
+\usepackage{planspiel}
+\begin{document}
+\raggedright
+\BLOCK{if booklet.register}
+\BLOCK{include "teamheft_register.tex.j2"}
+\fillreport{\thepage}
+\clearpage
+\BLOCK{endif}
+\BLOCK{include "teamheft_planung.tex.j2"}
+\fillreport{\thepage}
+\clearpage
+\BLOCK{include "teamheft_tracking.tex.j2"}
+\fillreport{\thepage}
+\clearpage
+\BLOCK{include "teamheft_ros.tex.j2"}
+\fillreport{\thepage}
+\end{document}

@@ -1,0 +1,39 @@
+\#{ Facilitator dry-run protocol: one A4 page, loops and inserts only. Every string and number arrives finished from the print model (FLOW-05, D-07, D-25); the block rows keep a fixed height of 14 mm (at least 12 mm) so there is room to write, and the page ends with a fill report that the PDF test reads. }
+\documentclass[a4paper,10pt]{article}
+\usepackage{planspiel}
+\newcommand{\protocolrow}{\rule[-9.5mm]{0pt}{4.5mm}}
+\newcommand{\protocolstep}[1]{\par\vspace{1.2mm}\noindent
+  \colorbox{mhpblue}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\color{white}\bfseries\small #1}}\par\vspace{0.6mm}}
+\begin{document}
+\raggedright
+\facilitatornotice{\VAR{sheet.notice}}
+\attacktitle{\VAR{sheet.title}}
+{\footnotesize{} \VAR{sheet.intro}\par}
+\vspace{1mm}
+\begingroup\footnotesize\setlength{\tabcolsep}{3pt}\noindent\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{34mm}|>{\raggedright\arraybackslash}p{15mm}|>{\raggedright\arraybackslash}p{18mm}|>{\raggedright\arraybackslash}p{19mm}|>{\raggedright\arraybackslash}p{17mm}|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X|}
+\hline
+\rowcolor{mhpblue}\hdrs{\VAR{sheet.header[0]}} & \hdrs{\VAR{sheet.header[1]}} & \hdrs{\VAR{sheet.header[2]}} & \hdrs{\VAR{sheet.header[3]}} & \hdrs{\VAR{sheet.header[4]}} & \hdrs{\VAR{sheet.header[5]}} & \hdrs{\VAR{sheet.header[6]}} \\
+\hline
+\BLOCK{for row in sheet.rows}
+\protocolrow{}\textbf{\VAR{row.label}} & \VAR{row.planned} & \VAR{row.span} & & & & \\
+\hline
+\BLOCK{endfor}
+\end{tabularx}\par\endgroup
+\vspace{1mm}
+{\small\textbf{\VAR{sheet.total_label}:} \VAR{sheet.total_value}\par}
+\protocolstep{\VAR{sheet.pass_title}}
+\begingroup\footnotesize\setlength{\parskip}{0.4mm}
+\BLOCK{for text in sheet.pass_rules}
+\noindent\hangindent=3.5mm\hangafter=1\textbullet\hspace{1.5mm}\VAR{text}\par
+\BLOCK{endfor}
+\endgroup
+\protocolstep{\VAR{sheet.help_title}}
+\begingroup\footnotesize
+\noindent\rule[-1mm]{0pt}{6mm}\leaders\hrule\hfill\kern0pt\par
+\noindent\rule[-1mm]{0pt}{6mm}\leaders\hrule\hfill\kern0pt\par
+\noindent\rule[-1mm]{0pt}{6mm}\leaders\hrule\hfill\kern0pt\par
+\vspace{2mm}
+\noindent\textbf{\VAR{sheet.observer_label}:}\ \rule{70mm}{0.4pt}\hfill\textbf{\VAR{sheet.date_label}:}\ \rule{35mm}{0.4pt}\par
+\endgroup
+\fillreport{1}
+\end{document}

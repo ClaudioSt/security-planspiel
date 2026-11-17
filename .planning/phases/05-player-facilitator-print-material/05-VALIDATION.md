@@ -1,0 +1,102 @@
+---
+phase: 5
+slug: player-facilitator-print-material
+status: draft
+nyquist_compliant: true
+wave_0_complete: false
+created: 2026-10-23
+---
+
+# Phase 5 — Validation Strategy
+
+> Per-phase validation contract for feedback sampling during execution.
+> Source: `05-RESEARCH.md` § Validation Architecture.
+
+---
+
+## Test Infrastructure
+
+| Property | Value |
+|----------|-------|
+| **Framework** | pytest 9.1.1 (dev group); pypdf 6.19.0 for PDF text |
+| **Config file** | `pyproject.toml` `[tool.pytest.ini_options]` (`addopts = -m 'not slow and not pdf' --strict-markers`) |
+| **Quick run command** | `uv run pytest tests/test_<plan module>.py -x -q` |
+| **Full suite command** | `uv run pytest -q` and `uv run pytest -m pdf -q` (plus `uv run pytest -m slow tests/test_digest.py` after D-23) |
+| **Estimated runtime** | ~70 s fast suite; pdf suite a few minutes |
+
+---
+
+## Sampling Rate
+
+- **After every task commit:** the plan's own quick test files plus `uv run planspiel texts`
+- **After every plan wave:** `uv run pytest -q`, `uv run planspiel validate`, `uv run planspiel texts`, `uv run planspiel clues`; `uv run pytest -m pdf -q` for plans that add a document
+- **Before `/gsd-verify-work`:** fast suite + `-m pdf` + `-m slow tests/test_digest.py` + clean `uv run planspiel print` + `uv run planspiel print --check` exit 0
+- **Max feedback latency:** ~70 seconds (fast suite)
+
+---
+
+## Per-Requirement Verification Map
+
+One requirement per plan, never two requirements in one plan; a large requirement may span several plans, each carrying only its own ID (user decision 2026-10-23: PRINT-05, PRINT-12, FLOW-01 and PRINT-10 are split). Plans run strictly sequentially (waves 1-16) because they share append-only files (`planspiel/render.py`, `content/texte.toml`, `planspiel/texts.py`, `print/planspiel.sty`, mini fixtures, `tests/test_veil_models.py`) and every task runs the full suite in one shared working tree.
+
+| Requirement | Plan | Behavior | Test Type | Automated Command | File Exists | Status |
+|-------------|------|----------|-----------|-------------------|-------------|--------|
+| VEIL-02 | 05-01 | every print job has an audience; unknown prefix raises | unit | `uv run pytest tests/test_veil_audience.py -x` | ❌ W0 | ⬜ pending |
+| VEIL-02 | 05-01 | layer-1 scan catches injected names, weight triples, revealed strings; `print.veil` gate | unit | `uv run pytest tests/test_veil_scan.py -x` | ❌ W0 | ⬜ pending |
+| VEIL-02 | 05-01 | pre-wave builders never touch revealed or wave internals | unit (AST) | `uv run pytest tests/test_veil_models.py -x` | ❌ W0 | ⬜ pending |
+| VEIL-02 | 05-01 | built PDFs: text, metadata, file names clean; revealed N names no other attack | pdf | `uv run pytest -m pdf tests/test_veil_pdf.py` | ❌ W0 | ⬜ pending |
+| PRINT-05 | 05-02 | 31 cards, values equal `rules`, dependency icons, deck registered and compiling | unit | `uv run pytest tests/test_cards_model.py tests/test_cards_render.py -x` | ❌ W0 | ⬜ pending |
+| PRINT-05 | 05-03 | sheets, stamp, fit, no missing glyphs or overfull boxes (all jobs); print checkpoint | pdf | `uv run pytest -m pdf tests/test_cards_pdf.py tests/test_print_documents_pdf.py` | ❌ W0 | ⬜ pending |
+| VEIL-04 | 05-04 | measure-card field set pinned; deck has no weights, bonus links, names; legend reveal note | unit | `uv run pytest tests/test_veil_cards.py -x` | ❌ W0 | ⬜ pending |
+| VEIL-04 | 05-04 | deck PDF negatives; each worksheet PDF carries its own weights and full bonus table | pdf | `uv run pytest -m pdf tests/test_veil_cards_pdf.py` | ❌ W0 | ⬜ pending |
+| PRINT-06 | 05-05 | every effect line equals `rules.evaluate_event` / `budget_review_delta` | unit | `uv run pytest tests/test_event_text.py -x` | ❌ W0 | ⬜ pending |
+| PRINT-06 | 05-05 | 8 cards on 2 sheets | unit + pdf | `uv run pytest tests/test_event_cards.py -x`; `uv run pytest -m pdf tests/test_event_cards_pdf.py` | ❌ W0 | ⬜ pending |
+| PRINT-07 | 05-06 | budget and RoS sheets from config; no event-penalty row; printed formulas replay `evaluate_path`; `MAX_PENALTY_ROWS` = 12 equals today's table | unit + pdf | `uv run pytest tests/test_booklet_model.py tests/test_booklet_render.py -x`; `uv run pytest -m pdf tests/test_booklet_pdf.py` | ❌ W0 | ⬜ pending |
+| PRINT-08 | 05-07 | row order, own vs external rows, window blocks, swap credit; printed procedure replays `evaluate_path` | unit | `uv run pytest tests/test_tracking_model.py -x` | ❌ W0 | ⬜ pending |
+| PRINT-08 | 05-07 | tracking sheet on one page | pdf | `uv run pytest -m pdf tests/test_tracking_pdf.py` | ❌ W0 | ⬜ pending |
+| PRINT-09 | 05-08 | one page, no values or attack names, vocabulary equals worksheet | unit + pdf | `uv run pytest tests/test_wave_page.py -x`; `uv run pytest -m pdf tests/test_wave_page_pdf.py` | ❌ W0 | ⬜ pending |
+| PRINT-12 | 05-09 | fixed-name assets copied and hashed; inputs and read-guard extended | unit | `uv run pytest tests/test_print_assets.py tests/test_print_stamp.py -x` | ❌ W0 | ⬜ pending |
+| PRINT-12 | 05-10 | four story docs from `[story.*]`; every clue quote in the PDF; images embedded | unit + pdf | `uv run pytest tests/test_story_model.py tests/test_story_render.py -x`; `uv run pytest -m pdf tests/test_story_pdf.py` | ❌ W0 | ⬜ pending |
+| FLOW-01 | 05-11 | `rules.path_trace` equals `evaluate_path` and the worksheet replay | unit | `uv run pytest tests/test_path_trace.py -x` | ❌ W0 | ⬜ pending |
+| FLOW-01 | 05-11 | practice config validated, guarded and ignored by enumeration, gate, digests | unit | `uv run pytest tests/test_practice_config.py -x` | ❌ W0 | ⬜ pending |
+| FLOW-01 | 05-12 | practice story keys, digit and giveaway lint (user review at the D-16 checkpoint) | unit | `uv run pytest tests/test_practice_texts.py -x` | ❌ W0 | ⬜ pending |
+| FLOW-01 | 05-12 | golden: printed numbers equal rules and replay; real worksheets byte-identical | unit + pdf | `uv run pytest tests/test_welle0_golden.py tests/test_welle0_render.py -x`; `uv run pytest -m pdf tests/test_welle0_pdf.py` | ❌ W0 | ⬜ pending |
+| PRINT-10 | 05-13 | final-index weights from config, outputs unchanged | unit + slow | `uv run pytest tests/test_final_index_config.py -x`; `uv run pytest -m slow tests/test_digest.py` | ❌ W0 | ⬜ pending |
+| PRINT-10 | 05-14 | reference paths legal and typical; candidate finder; `format_approx` | unit | `uv run pytest tests/test_refpaths.py tests/test_reference_plans.py tests/test_print_fmt.py -x` | ❌ W0 | ⬜ pending |
+| PRINT-10 | 05-15 | master values, check rows, answer keys equal rules; pinned `answer_keys.json`; `≈` only on the master; clues as stamped input | unit + pdf | `uv run pytest tests/test_master_model.py tests/test_master_render.py -x`; `uv run pytest -m pdf tests/test_master_pdf.py` | ❌ W0 | ⬜ pending |
+| All | 05-16 | committed print set fresh and reproducible | cli | `uv run planspiel print --check` | ✅ | ⬜ pending |
+
+*Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
+
+---
+
+## Wave 0 Requirements
+
+- [ ] `tests/support/pdf_text.py` — shared PDF text helpers (squash, pages, fragments) — plan 05-01 Task 3 (`CARD` regex added in 05-03)
+- [ ] Prefix-aware job assertions in `tests/test_print_render.py` — plan 05-01 Task 1 (`tests/test_print_model.py` asserts the model's own jobs and needs no change)
+- [ ] `tests/test_print_documents_pdf.py` — generic log hygiene over all jobs — plan 05-03 Task 1
+- [ ] Mini fixtures extended per plan for new text keys and config blocks — every plan that adds a `sheets.*` key; config blocks (`practice`, `reference_plans`) are absent from the mini config and their builders return `{}`; `final_index` is added to the mini config in 05-13
+
+---
+
+## Manual-Only Verifications
+
+| Behavior | Requirement | Why Manual | Test Instructions |
+|----------|-------------|------------|-------------------|
+| Card sheet cut, margins, legibility | PRINT-05, PRINT-06 | physical print | Print one card sheet and cut it; check text size and safe strip (blocking decision checkpoint in 05-03 Task 2 before 05-05 reuses the layout; event deck in the 05-05 human-check) |
+| Team booklet usable in calculation order | PRINT-07, PRINT-08, PRINT-09 | needs a human run-through | Play one wave on the printed sheets without a whiteboard |
+| Practice story contains no hint at real attacks | FLOW-01 | content judgment | User reviews the draft at the D-16 checkpoint (05-12 Task 2) |
+| Reference paths are typical | PRINT-10 | judgment | User approves the paths at the D-18/D-22 checkpoint (05-14 Task 2) |
+
+---
+
+## Validation Sign-Off
+
+- [x] All tasks have `<automated>` verify or Wave 0 dependencies (33 tasks in 16 plans, 33 `<automated>` blocks, checkpoints included)
+- [x] Sampling continuity: no 3 consecutive tasks without automated verify
+- [x] Wave 0 covers all MISSING references (each RED step creates its test file first)
+- [x] No watch-mode flags
+- [ ] Feedback latency < 70s (task-level commands run in seconds; the full pdf suite and the 05-13/05-16 slow digest runs are phase-gate commands, not per-task feedback)
+- [x] `nyquist_compliant: true` set in frontmatter
+
+**Approval:** pending

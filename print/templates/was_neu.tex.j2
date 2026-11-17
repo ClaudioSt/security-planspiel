@@ -1,0 +1,51 @@
+\#{ Facilitator sheet "Was ist neu": one A4 page, loops and inserts only. Every string and number arrives finished from the print model; the page ends with a fill report that the PDF test reads (D-15). }
+\documentclass[a4paper,10pt]{article}
+\usepackage{planspiel}
+\newcommand{\newrowtop}{\rule[-1.2mm]{0pt}{3.9mm}}
+\newcommand{\newstep}[1]{\par\vspace{0.8mm}\noindent
+  \colorbox{mhpblue}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\color{white}\bfseries\small #1}}\par\vspace{0.3mm}}
+\begin{document}
+\raggedright
+\facilitatornotice{\VAR{sheet.notice}}
+\attacktitle{\VAR{sheet.title}}
+{\footnotesize{} \VAR{sheet.intro}\par}
+\newstep{\VAR{sheet.rules_title}}
+\begingroup\footnotesize\setlength{\tabcolsep}{3pt}\noindent\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{33mm}|>{\raggedright\arraybackslash}X|}
+\hline
+\BLOCK{for rule in sheet.rules}
+\newrowtop{}\textbf{\color{mhpblue}\VAR{rule.heading}} & \newrowtop{}\VAR{rule.text} \\
+\hline
+\BLOCK{endfor}
+\end{tabularx}\par\endgroup
+\newstep{\VAR{sheet.flow_title}}
+\begingroup\footnotesize\setlength{\parskip}{0.4mm}
+\BLOCK{for text in sheet.flow}
+\noindent\hangindent=3.5mm\hangafter=1\textbullet\hspace{1.5mm}\VAR{text}\par
+\BLOCK{endfor}
+\endgroup
+\newstep{\VAR{sheet.material_title}}
+\begingroup\footnotesize\setlength{\parskip}{0.4mm}
+\BLOCK{for text in sheet.material}
+\noindent\hangindent=3.5mm\hangafter=1\textbullet\hspace{1.5mm}\VAR{text}\par
+\BLOCK{endfor}
+\endgroup
+\BLOCK{if sheet.values}
+\newstep{\VAR{sheet.values_title}}
+\begingroup\footnotesize\setlength{\tabcolsep}{3pt}\noindent\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}p{42mm}|>{\raggedright\arraybackslash}p{42mm}|}
+\hline
+\rowcolor{mhpblue}\hdrs{\VAR{sheet.values_header[0]}} & \hdrs{\VAR{sheet.values_header[1]}} & \hdrs{\VAR{sheet.values_header[2]}} \\
+\hline
+\BLOCK{for row in sheet.values}
+\newrowtop{}\VAR{row.label}\BLOCK{if row.flag}\textbf{\color{mhpwarn}\VAR{row.flag}}\BLOCK{endif} & \newrowtop{}\VAR{row.old} & \newrowtop{}\VAR{row.new} \\
+\hline
+\BLOCK{endfor}
+\end{tabularx}\par\endgroup
+\BLOCK{if sheet.flag_note}
+{\scriptsize{}\color{mhpwarn} \VAR{sheet.flag_note}\par}
+\BLOCK{endif}
+\BLOCK{if sheet.values_more}
+{\scriptsize{}\itshape{} \VAR{sheet.values_more}\par}
+\BLOCK{endif}
+\BLOCK{endif}
+\fillreport{1}
+\end{document}

@@ -1,0 +1,57 @@
+\#{ Welle 0 document: the filled worksheet in the real layout (shared partial), then the example selection, the practice event and the filled tracking excerpt. Loops and inserts only; every number arrives as a finished string from the practice model. }
+\documentclass[a4paper,10pt]{article}
+\usepackage{planspiel}
+\begin{document}
+\raggedright
+\BLOCK{with sheet = doc.sheet, intro = doc.intro}
+\BLOCK{include "angriff_blatt.tex.j2"}
+\BLOCK{endwith}
+\clearpage
+\step{\VAR{doc.selection_title}}
+\vspace{1mm}
+\noindent\begingroup\setlength{\tabcolsep}{3pt}\begin{tabularx}{\linewidth}{|X|C{12mm}|C{7mm}|C{7mm}|C{7mm}|C{22mm}|C{26mm}|}
+\hline
+\rowcolor{mhpblue}\BLOCK{for cell in doc.selection_header}\hdr{\VAR{cell}}\BLOCK{if not loop.last} & \BLOCK{endif}\BLOCK{endfor} \\
+\hline
+\BLOCK{for row in doc.selection_rows}
+\rowstrut{}\VAR{row.measure} & \levelbadge{\VAR{row.level}} & \VAR{row.c} & \VAR{row.i} & \VAR{row.a} & \VAR{row.init} & \VAR{row.opex} \\
+\hline
+\BLOCK{endfor}
+\rowcolor{mhplight}\rowstrut{}\textbf{\VAR{doc.selection_total.label}} & & & & & \textbf{\VAR{doc.selection_total.init}} & \textbf{\VAR{doc.selection_total.opex}} \\
+\hline
+\end{tabularx}\endgroup\par
+
+\step{\VAR{doc.event.title}}
+\VAR{doc.event.narrative}\par
+\vspace{1mm}
+\refline{\VAR{doc.event.heading}}
+\noindent\begin{tabularx}{\linewidth}{|X|}
+\hline
+\BLOCK{for row in doc.event.rows}
+\BLOCK{if loop.index0 == doc.event.selected}
+\rowcolor{mhplight}\rowstrut{}\textbf{\VAR{row}} \\
+\BLOCK{else}
+\rowstrut{}\VAR{row} \\
+\BLOCK{endif}
+\hline
+\BLOCK{endfor}
+\end{tabularx}\par
+\vspace{1mm}
+\textbf{\VAR{doc.event.result}}\par
+
+\step{\VAR{doc.tracking.title}}
+\vspace{1mm}
+\noindent\begingroup\setlength{\tabcolsep}{4pt}\begin{tabularx}{\linewidth}{|L|C{28mm}|C{28mm}|}
+\hline
+\rowcolor{mhpblue}\multicolumn{1}{|l|}{\hdrs{}} & \multicolumn{1}{c|}{\small\hdrs{\VAR{doc.tracking.columns[0]}}} & \multicolumn{1}{c|}{\small\hdrs{\VAR{doc.tracking.columns[1]}}} \\
+\hline
+\BLOCK{for row in doc.tracking.rows}
+\rowstrutgrid{}\VAR{row[0]}\rowpad{} & \textbf{\VAR{row[1]}} & \textbf{\VAR{row[2]}} \\
+\hline
+\BLOCK{endfor}
+\end{tabularx}\endgroup\par
+\vspace{1mm}
+{\footnotesize\bfseries{} \VAR{doc.tracking.clamp_hint}\par}
+\hint{\VAR{doc.tracking.rounding_hint}}
+\fillreport{3}
+\end{document}

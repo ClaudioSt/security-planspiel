@@ -1,0 +1,82 @@
+\#{ Booklet RoS page and Budget Review page: loops and inserts only. Sums are carried from the pages before, formula lines name their operands. }
+\attacktitle{\VAR{booklet.ros.title}}
+\VAR{booklet.ros.purpose}\par
+\VAR{booklet.ros.carry_hint}\par
+\VAR{booklet.ros.instruction}\par
+\vspace{1mm}
+\noindent\begin{tabularx}{\linewidth}{|X|C{52mm}|}
+\hline
+\rowcolor{mhpblue}\hdr{\VAR{booklet.ros.metric_header[0]}} & \hdr{\VAR{booklet.ros.metric_header[1]}} \\
+\hline
+\BLOCK{for row in booklet.ros.own_cost_rows}
+\BLOCK{if loop.last}\rowcolor{mhplight}\BLOCK{endif}
+\rowstrutbig{}\BLOCK{if loop.last}\bfseries{}\BLOCK{endif}\VAR{row.label}\BLOCK{if row.note}\newline\textcolor{mhpgrey}{\small\mdseries{} \VAR{row.note}}\BLOCK{endif}\rowpad{} & \\
+\hline
+\BLOCK{endfor}
+\BLOCK{for row in booklet.ros.damage_rows}
+\rowstrutbig{}\VAR{row.label}\rowpad{} & \\
+\hline
+\BLOCK{endfor}
+\rowcolor{mhplight}\rowstrutbig{}\textbf{\VAR{booklet.ros.damage_sum.label}}\rowpad{} & \\
+\hline
+\rowcolor{mhplight}\rowstrutbig{}\textbf{\VAR{booklet.ros.avoided_line.label}}\newline\textcolor{mhpgrey}{\small \VAR{booklet.ros.avoided_line.note}}\rowpad{} & \\
+\hline
+\rowcolor{mhplight}\rowstrutbig{}\textbf{\VAR{booklet.ros.ros_line.label}}\newline\textcolor{mhpgrey}{\small \VAR{booklet.ros.ros_line.note}}\rowpad{} & \\
+\hline
+\end{tabularx}
+\fillreport{\thepage}
+\clearpage
+\attacktitle{\VAR{booklet.ros.review_title}}
+\VAR{booklet.ros.review_intro}\par
+\VAR{booklet.ros.sign_hint}\par
+\vspace{1mm}
+\noindent\begin{tabularx}{\linewidth}{|X|C{52mm}|}
+\hline
+\rowcolor{mhpblue}\hdr{\VAR{booklet.ros.metric_header[0]}} & \hdr{\VAR{booklet.ros.metric_header[1]}} \\
+\hline
+\BLOCK{for row in booklet.ros.budget_rows}
+\BLOCK{if row.note}\rowcolor{mhplight}\BLOCK{endif}
+\rowstrutmid{}\VAR{row.label}\BLOCK{if row.note}\newline\textcolor{mhpgrey}{\small \VAR{row.note}}\BLOCK{endif}\rowpad{} & \\
+\hline
+\BLOCK{endfor}
+\rowcolor{mhplight}\rowstrutmid{}\textbf{\VAR{booklet.ros.remaining_line.label}}\newline\textcolor{mhpgrey}{\small \VAR{booklet.ros.remaining_line.note}}\rowpad{} & \\
+\hline
+\end{tabularx}
+
+\vspace{2mm}
+\noindent\begin{tabularx}{\linewidth}{|Z|Z|}
+\hline
+\rowcolor{mhpblue}\hdr{\VAR{booklet.ros.tier_header[0]}} & \hdr{\VAR{booklet.ros.tier_header[1]}} \\
+\hline
+\BLOCK{for row in booklet.ros.tier_rows}
+\rowstrutlookup{}\VAR{row[0]} & \VAR{row[1]} \\
+\hline
+\BLOCK{endfor}
+\end{tabularx}
+
+\step{\VAR{booklet.ros.penalty_title}}
+\textbf{\VAR{booklet.ros.overspend_rule}}\par
+\VAR{booklet.ros.penalty_intro}\par
+\vspace{1mm}
+\noindent\begin{minipage}[t]{0.485\linewidth}
+\begin{tabular}{|C{38mm}|C{26mm}|}
+\hline
+\rowcolor{mhpblue}\hdr{\VAR{booklet.ros.penalty_header[0]}} & \hdr{\VAR{booklet.ros.penalty_header[1]}} \\
+\hline
+\BLOCK{for row in booklet.ros.penalty_rows[:booklet.ros.penalty_per_table]}
+\rowstrutlookup{}\VAR{row[0]} & \VAR{row[1]} \\
+\hline
+\BLOCK{endfor}
+\end{tabular}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.485\linewidth}
+\begin{tabular}{|C{38mm}|C{26mm}|}
+\hline
+\rowcolor{mhpblue}\hdr{\VAR{booklet.ros.penalty_header[0]}} & \hdr{\VAR{booklet.ros.penalty_header[1]}} \\
+\hline
+\BLOCK{for row in booklet.ros.penalty_rows[booklet.ros.penalty_per_table:]}
+\rowstrutlookup{}\VAR{row[0]} & \VAR{row[1]} \\
+\hline
+\BLOCK{endfor}
+\end{tabular}
+\end{minipage}

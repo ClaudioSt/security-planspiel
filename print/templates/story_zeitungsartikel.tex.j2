@@ -1,0 +1,90 @@
+\#{ Newspaper page: masthead, header line, ticker, a full-width first section and two columns from the second section on. Loops and inserts only. Images only by the fixed names the model carries. }
+\documentclass[a4paper,10pt]{article}
+\usepackage{planspiel}
+\usepackage{multicol}
+\usepackage{graphicx}
+\newfontfamily\newspaperfont{Georgia}[RawFeature={-tlig},Numbers=Lining]
+\newgeometry{left=1.8cm,right=1.8cm,top=1.3cm,bottom=2cm,nohead,footskip=9mm}
+\setlength{\columnsep}{7mm}
+\setlength{\columnseprule}{0.4pt}
+\setlength{\parskip}{1.2mm}
+\newcommand{\newsbody}{\newspaperfont\fontsize{9.5}{12.2}\selectfont\raggedright\setlength{\parskip}{1.4mm}}
+\newcommand{\newsmasthead}[1]{{\centering\newspaperfont\bfseries\fontsize{48}{50}\selectfont #1\par}\vspace{1mm}}
+\newcommand{\newsheadline}[1]{{\newspaperfont\bfseries\fontsize{19}{22}\selectfont #1\par}\vspace{1.5mm}}
+\newcommand{\newssubheading}[1]{\par\vspace{1.5mm}{\newspaperfont\bfseries\fontsize{10.5}{13}\selectfont #1\par}\vspace{0.3mm}}
+\newcommand{\newscaption}[1]{{\newspaperfont\itshape\fontsize{8.5}{10.5}\selectfont\color{mhpgrey} #1\par}}
+\newcommand{\newsdateline}[1]{{\newspaperfont\bfseries\fontsize{9.5}{12}\selectfont #1\par}}
+\newcommand{\newslead}[1]{{\newspaperfont\bfseries\fontsize{11}{14}\selectfont #1\par}\vspace{1.5mm}}
+\newcommand{\newsrule}{\par\noindent\rule{\linewidth}{0.5pt}\par}
+\begin{document}
+\raggedright
+\newsmasthead{\VAR{doc.masthead}}
+\newsrule
+\vspace{-1mm}
+{\noindent\newspaperfont\small\hbox to \linewidth{\BLOCK{for item in doc.header_items}\VAR{item}\BLOCK{if not loop.last}\hfill{}\BLOCK{endif}\BLOCK{endfor}}\par}
+\vspace{-1mm}
+\newsrule
+\BLOCK{if doc.ticker}
+\vspace{1mm}
+\noindent\colorbox{mhpshade}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\centering\newspaperfont\bfseries\fontsize{10}{13}\selectfont\strut \BLOCK{for item in doc.ticker}\VAR{item}\BLOCK{if not loop.last}\quad{}\textbullet{}\quad{}\BLOCK{endif}\BLOCK{endfor}\strut}}\par
+\BLOCK{endif}
+\vspace{2.5mm}
+\BLOCK{for section in doc.sections}
+\BLOCK{if loop.first}
+\newsheadline{\VAR{section.heading}}
+\BLOCK{if section.dateline}
+\newsdateline{\VAR{section.dateline}}
+\BLOCK{endif}
+\BLOCK{if section.lead}
+\newslead{\VAR{section.lead}}
+\BLOCK{endif}
+\noindent\begin{minipage}[t]{0.40\linewidth}\vspace{0pt}
+\BLOCK{if section.image}
+\includegraphics[width=\linewidth]{\VAR{asset[section.image]}}\par
+\BLOCK{endif}
+\vspace{0.8mm}
+\newscaption{\VAR{section.caption}}
+\end{minipage}\hfill\begin{minipage}[t]{0.56\linewidth}\vspace{0pt}
+\newsbody
+\BLOCK{for paragraph in section.paragraphs}
+\VAR{paragraph}\par
+\BLOCK{endfor}
+\BLOCK{for sub in section.subsections}
+\BLOCK{if sub.heading}
+\newssubheading{\VAR{sub.heading}}
+\BLOCK{endif}
+\BLOCK{for paragraph in sub.paragraphs}
+\VAR{paragraph}\par
+\BLOCK{endfor}
+\BLOCK{endfor}
+\end{minipage}\par
+\vspace{2mm}
+\newsrule
+\vspace{1.5mm}
+\BLOCK{else}
+\begin{multicols}{2}[\newsheadline{\VAR{section.heading}}\BLOCK{if section.dateline}\newsdateline{\VAR{section.dateline}}\BLOCK{endif}\BLOCK{if section.lead}\newslead{\VAR{section.lead}}\BLOCK{endif}]
+\newsbody
+\BLOCK{if section.image}
+\includegraphics[width=\linewidth]{\VAR{asset[section.image]}}\par
+\vspace{0.8mm}
+\newscaption{\VAR{section.caption}}
+\BLOCK{endif}
+\BLOCK{for paragraph in section.paragraphs}
+\VAR{paragraph}\par
+\BLOCK{endfor}
+\BLOCK{for sub in section.subsections}
+\BLOCK{if sub.heading}
+\newssubheading{\VAR{sub.heading}}
+\BLOCK{endif}
+\BLOCK{for paragraph in sub.paragraphs}
+\VAR{paragraph}\par
+\BLOCK{endfor}
+\BLOCK{endfor}
+\end{multicols}
+\BLOCK{endif}
+\BLOCK{endfor}
+\BLOCK{if doc.footer_items}
+\vfill
+{\noindent\newspaperfont\small\color{mhpgrey}\hbox to \linewidth{\BLOCK{for item in doc.footer_items}\VAR{item}\BLOCK{if not loop.last}\hfill{}\BLOCK{endif}\BLOCK{endfor}}\par}
+\BLOCK{endif}
+\end{document}

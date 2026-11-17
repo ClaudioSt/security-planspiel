@@ -1,0 +1,111 @@
+\#{ Card deck template: loops and inserts only. Every number arrives as a finished string from the deck model. Cards are A6 landscape, four per A4 landscape sheet. Cards dispatch on card.kind (legend, measure, event, review). }
+\#{ The three pieces below are called as statements (call ... endcall): Jinja then applies no escaping to the macro output. The line with caller only lets the macro accept the call block. }
+\BLOCK{macro card_header(card, legend)}
+\BLOCK{if caller}\BLOCK{endif}
+\cardheader{\BLOCK{if legend}legend-sample\BLOCK{else}\VAR{card.card_id}\BLOCK{endif}}{\BLOCK{if legend}\relax\BLOCK{else}\cardtitlefont\BLOCK{endif}}{\VAR{card.title}}{\levelbadge{\VAR{card.level}}}{\BLOCK{if legend} \callout{\VAR{legend.callouts[3][0]}}\BLOCK{endif}}{}
+\levelstrip{\VAR{card.level}}
+\BLOCK{endmacro}
+\BLOCK{macro card_text(card, legend)}
+\BLOCK{if caller}\BLOCK{endif}
+\BLOCK{if not legend}
+{\bfseries\color{mhpblue}\VAR{card.focus}\par}
+\VAR{card.description}\par
+\BLOCK{endif}
+\vspace{1.6mm}
+\cardplain{\VAR{card.simple}}
+\vspace{\cardtechgap}
+{\cardtech\color{mhpgrey}\VAR{card.technical}\par}
+\BLOCK{endmacro}
+\BLOCK{macro card_facts(card, labels, legend)}
+\BLOCK{if caller}\BLOCK{endif}
+\BLOCK{set cia_shrink = "2.5mm" if legend else "1pt"}
+\BLOCK{set cia_top = "1.6mm" if legend else "0.6mm"}
+\vspace{\VAR{cia_top}}
+\noindent\colorbox{mhplight}{\parbox{\dimexpr(\linewidth-6\fboxsep)/3-\VAR{cia_shrink}\relax}{\centering\strut\textbf{C}\enspace \VAR{card.cia_values[0]}\strut}}\hfill\colorbox{mhplight}{\parbox{\dimexpr(\linewidth-6\fboxsep)/3-\VAR{cia_shrink}\relax}{\centering\strut\textbf{I}\enspace \VAR{card.cia_values[1]}\strut}}\hfill\colorbox{mhplight}{\parbox{\dimexpr(\linewidth-6\fboxsep)/3-\VAR{cia_shrink}\relax}{\centering\strut\textbf{A}\enspace \VAR{card.cia_values[2]}\strut}}\BLOCK{if legend} \callout{\VAR{legend.callouts[0][0]}}\BLOCK{endif}\par
+\vspace{\cardgap}
+\factbox{\VAR{labels.init}}{\VAR{card.init_text}}\par
+\vspace{\cardgap}
+\factbox{\VAR{labels.opex}}{\VAR{card.opex_text}}\BLOCK{if legend} \callout{\VAR{legend.callouts[1][0]}}\BLOCK{endif}\par
+\BLOCK{if card.dependency}
+\vspace{\cardgap}
+\factbox{\lockicon\ \VAR{labels.requires}}{\VAR{card.dependency}}\BLOCK{if legend} \callout{\VAR{legend.callouts[2][0]}}\BLOCK{endif}\par
+\BLOCK{endif}
+\BLOCK{endmacro}
+\#{ A card: header across the full width; below it text left and figures right. The sample of the legend card is narrow, so it stacks both parts. }
+\BLOCK{macro card_body(card, labels, legend)}
+\BLOCK{if caller}\BLOCK{endif}
+\BLOCK{call card_header(card, legend)}\BLOCK{endcall}
+\BLOCK{if legend}
+\BLOCK{call card_text(card, legend)}\BLOCK{endcall}
+\BLOCK{call card_facts(card, labels, legend)}\BLOCK{endcall}
+\BLOCK{else}
+\noindent\begin{minipage}[t]{\cardleftwidth}\raggedright
+\BLOCK{call card_text(card, legend)}\BLOCK{endcall}
+\end{minipage}\hfill\begin{minipage}[t]{\cardrightwidth}\raggedright
+\BLOCK{call card_facts(card, labels, legend)}\BLOCK{endcall}
+\end{minipage}\par
+\BLOCK{endif}
+\BLOCK{endmacro}
+\#{ Event and Budget Review cards: the header bar carries the kicker line and the one-line guarded title, then narrative, rule text and the generated effect lines in a framed box. }
+\BLOCK{macro event_head(card)}
+\BLOCK{if caller}\BLOCK{endif}
+\cardheader{\VAR{card.card_id}}{\cardtitlefont}{\VAR{card.title}}{}{}{\VAR{card.header}}\par
+\vspace{1.6mm}
+{\color{mhpaccent}\VAR{card.narrative}\par}
+\BLOCK{if card.rule}
+\vspace{1.4mm}
+{\cardtech\color{mhpgrey}\VAR{card.rule}\par}
+\BLOCK{endif}
+\vspace{\cardgap}
+\BLOCK{endmacro}
+\BLOCK{macro event_body(card)}
+\BLOCK{if caller}\BLOCK{endif}
+\BLOCK{call event_head(card)}\BLOCK{endcall}
+\effectbox{}{\BLOCK{if card.effect_heading}{\cardtech\color{mhpgrey}\VAR{card.effect_heading}\par}\vspace{0.8mm}\BLOCK{endif}\BLOCK{for line in card.effect_lines}\VAR{line}\BLOCK{if not loop.last}\par{}\BLOCK{endif}\BLOCK{endfor}}\par
+\BLOCK{endmacro}
+\BLOCK{macro review_body(card)}
+\BLOCK{if caller}\BLOCK{endif}
+\BLOCK{call event_head(card)}\BLOCK{endcall}
+\effectbox{\VAR{card.tier_heading}}{\BLOCK{for line in card.tier_lines}\VAR{line}\par{}\BLOCK{endfor}\vspace{0.8mm}{\bfseries{}\VAR{card.overspend_line}}}\par
+\BLOCK{endmacro}
+\documentclass[a4paper,10pt]{article}
+\usepackage{planspiel}
+\usepackage{tikz}
+\geometry{a4paper,landscape,left=0pt,right=0pt,top=0pt,bottom=0pt,nohead,nofoot}
+\pagestyle{empty}
+\AddToHook{shipout/foreground}{\cardsheetfooter}
+\begin{document}
+\BLOCK{for sheet in deck.sheets}
+\begin{cardsheet}
+\BLOCK{for card in sheet}
+\begin{cardcell}
+\BLOCK{if card.kind == "legend"}
+{\bfseries\color{mhpblue}\cardlegendtitle \VAR{card.title}\par}
+{\cardlegendfont{}\VAR{card.intro}\par}
+\vspace{0.6mm}
+\noindent\begin{minipage}[t]{\cardlegendleft}
+\setlength{\fboxsep}{2pt}\noindent\fbox{\hspace{0.9mm}\parbox[t]{\dimexpr\linewidth-2\fboxsep-2\fboxrule-1.8mm\relax}{\cardlegendsample\raggedright
+\BLOCK{call card_body(card.sample, deck.labels, card)}\BLOCK{endcall}
+}\hspace{0.9mm}}
+\end{minipage}\hfill\begin{minipage}[t]{\cardlegendright}\cardlegendfont\raggedright
+\BLOCK{for callout in card.callouts}
+\noindent\hangindent=4.5mm\hangafter=1 \callout{\VAR{callout[0]}}\hspace{1.2mm}\BLOCK{if loop.index == 3}\lockicon\ \BLOCK{endif}\VAR{callout[1]}\par
+\BLOCK{endfor}
+\vspace{0.5mm}
+\noindent{\itshape\color{mhpgrey}\VAR{card.reveal_note}\par}
+\#{ The formula comes last: a digit right after a weight symbol would trip the veil scan (wC = 4). }
+\vspace{0.5mm}
+\noindent{\bfseries{}\VAR{card.formula}\par}
+\end{minipage}\par
+\BLOCK{elif card.kind == "measure"}
+\BLOCK{call card_body(card, deck.labels, false)}\BLOCK{endcall}
+\BLOCK{elif card.kind == "event"}
+\BLOCK{call event_body(card)}\BLOCK{endcall}
+\BLOCK{elif card.kind == "review"}
+\BLOCK{call review_body(card)}\BLOCK{endcall}
+\BLOCK{endif}
+\end{cardcell}\cardreport{\VAR{card.card_id}}
+\BLOCK{endfor}
+\end{cardsheet}
+\BLOCK{endfor}
+\end{document}

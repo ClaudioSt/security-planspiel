@@ -1,0 +1,321 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{planspiel}[2026/10/20 Shared style of the Planspiel print material]
+
+% No creation date, producer or trailer ID: identical inputs give byte-identical PDFs.
+\pdfvariable suppressoptionalinfo 1023
+
+% A4 with the margins of the Word worksheets (punch margin on the left).
+\RequirePackage[a4paper,left=3cm,right=1.5cm,top=2cm,bottom=2cm,nohead,footskip=9mm]{geometry}
+
+% System Arial, selected by name and never by path: a different selection mode changes the bytes.
+\RequirePackage{fontspec}
+% Without the TeX input ligatures (tlig): `--` `<<` `>>` `''` `,,` stay as typed in the source text.
+\setmainfont{Arial}[RawFeature={-tlig}]
+
+\RequirePackage[ngerman]{babel}
+\RequirePackage[table]{xcolor}
+\RequirePackage{array,tabularx}
+
+% MHP theme colours and the level badge colours.
+\definecolor{mhpblue}{HTML}{000099}
+\definecolor{mhpaccent}{HTML}{1612FF}
+\definecolor{mhplight}{HTML}{CDD6FF}
+\definecolor{mhpgrey}{HTML}{575757}
+\definecolor{mhpdark}{HTML}{262626}
+\definecolor{mhpshade}{HTML}{D9D9D9}
+\definecolor{levelone}{HTML}{00CC67}
+\definecolor{leveltwo}{HTML}{DDEF03}
+\definecolor{levelthree}{HTML}{575757}
+% Zone tints of the risk matrix (light, so handwritten numbers stay readable; the printed zone word carries the
+% meaning in grayscale).
+\definecolor{riskgreen}{HTML}{CFE8CF}
+\definecolor{riskyellow}{HTML}{FFF0A8}
+\definecolor{riskred}{HTML}{F2B8B8}
+\definecolor{mhpwarn}{HTML}{B00020}
+
+% Version stamp "Stand <date> · <hash>": `planspiel print` writes it to stamp.tex (outside the
+% hashed content). Without it the build stops, so no page can be printed unstamped.
+\InputIfFileExists{stamp.tex}{}{%
+  \PackageError{planspiel}{stamp.tex fehlt im Build-Verzeichnis}%
+    {Der Stempel wird von `planspiel print` erzeugt; ohne ihn darf keine Seite gebaut werden.}}
+
+% Footer: thin rule, stamp on the left and "Seite x von y" on the right. The LastPage label is
+% written into the aux file at the end of the document and read back in the next pass (no lastpage
+% or fancyhdr package needed).
+\makeatletter
+\def\ps@planspiel{%
+  \let\@oddhead\@empty
+  \let\@evenhead\@empty
+  \def\@oddfoot{\parbox[t]{\textwidth}{%
+    \color{mhpgrey}\rule{\textwidth}{0.4pt}\par\vspace{-2pt}%
+    {\small\footerstamp\hfill Seite \thepage\ von \pageref{LastPage}}}}%
+  \let\@evenfoot\@oddfoot}
+\AtEndDocument{\immediate\write\@auxout{\string\newlabel{LastPage}{{}{\thepage}}}}
+\makeatother
+\pagestyle{planspiel}
+
+% ---- Worksheet layout (attack worksheets) -------------------------------------------------------
+\makeatletter
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.8mm}
+\setlength{\emergencystretch}{3em}
+\arrayrulecolor{mhpblue}
+\setlength{\arrayrulewidth}{0.5pt}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+% Title as on the Word worksheets: 12 pt, bold, blue.
+\newcommand{\attacktitle}[1]{{\color{mhpblue}\bfseries\fontsize{12}{15}\selectfont #1\par}\vspace{1mm}}
+
+% Step bar: full-width blue bar with white bold text.
+\newcommand{\step}[1]{\par\vspace{1.2mm}\noindent
+  \colorbox{mhpblue}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\color{white}\bfseries\strut #1\strut}}\par\vspace{0.5mm}}
+
+% Small grey italic hint.
+\newcommand{\hint}[1]{{\footnotesize\itshape\color{mhpgrey}#1\par}}
+
+% Reference line (cap line): bold text on a light blue bar.
+\newcommand{\refline}[1]{\par\noindent
+  \colorbox{mhplight}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\bfseries\strut #1\strut}}\par}
+
+% Facilitator-only notice (page 1 of the facilitator booklet): full-width dark red bar with bold white text, so the booklet
+% cannot be mistaken for player material.
+\newcommand{\facilitatornotice}[1]{\par\vspace{1mm}\noindent
+  \colorbox{mhpwarn}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\color{white}\centering\bfseries\fontsize{14}{18}\selectfont\strut #1\strut}}\par\vspace{2mm}}
+
+% Fill-in boxes: 7 mm high, centred on the text line (7 mm = declared height plus depth). Sizes: short (an entry), long (a result).
+\newcommand{\planspiel@framebox}[1]{%
+  \raisebox{0pt}[4.4mm][2.6mm]{{\setlength{\fboxsep}{0pt}\setlength{\fboxrule}{0.5pt}%
+    \fcolorbox{mhpblue}{white}{\parbox[c][7mm][c]{#1}{\hfill}}}}}
+\newcommand{\planspiel@ibox@short}{\planspiel@framebox{13mm}}
+\newcommand{\planspiel@ibox@long}{\planspiel@framebox{28mm}}
+\newcommand{\ibox}[1]{\csname planspiel@ibox@#1\endcsname}
+
+% Filled fill-in box (the Welle 0 worked example): same frame, height and width as \ibox, the value centred in bold.
+\newcommand{\planspiel@filledbox}[2]{%
+  \raisebox{0pt}[4.4mm][2.6mm]{{\setlength{\fboxsep}{0pt}\setlength{\fboxrule}{0.5pt}%
+    \fcolorbox{mhpblue}{white}{\parbox[c][7mm][c]{#1}{\centering\bfseries #2}}}}}
+\newcommand{\planspiel@ifilled@short}{\planspiel@filledbox{13mm}}
+\newcommand{\planspiel@ifilled@long}{\planspiel@filledbox{28mm}}
+\newcommand{\ifilled}[1]{\csname planspiel@ifilled@#1\endcsname}
+
+% One fill-in line: the line height leaves room for the 7 mm boxes.
+\newcommand{\fillline}[1]{\begingroup\setlength{\baselineskip}{9.5mm}\noindent #1\par\endgroup}
+
+% One handwriting line in a table cell: starts on a new line, 6 mm high, light grey baseline across the cell width.
+\newcommand{\writeline}{\par\noindent\rule{0pt}{6mm}\textcolor{mhpshade}{\rule{\linewidth}{0.4pt}}\par}
+
+% Empty square for the "Erfuellt" column (no tick glyphs: Arial lacks them).
+\newcommand{\tickbox}{\raisebox{-1.2mm}[3mm][1mm]{{\setlength{\fboxsep}{0pt}\setlength{\fboxrule}{0.5pt}%
+  \fcolorbox{mhpblue}{white}{\rule{0pt}{4mm}\rule{4mm}{0pt}}}}}
+
+% The same square with a mark in it (the Welle 0 worked example: a cross for met, a dash for missed).
+\newcommand{\tickfilled}[1]{\raisebox{-1.2mm}[3mm][1mm]{{\setlength{\fboxsep}{0pt}\setlength{\fboxrule}{0.5pt}%
+  \fcolorbox{mhpblue}{white}{\parbox[c][4mm][c]{4mm}{\centering\bfseries #1}}}}}
+
+% Level badge: filled box in the level colour (white text, dark on the light yellow of level 2).
+\newcommand{\cardbadgesep}{3pt}
+\newcommand{\planspiel@badge}[3]{%
+  {\setlength{\fboxsep}{\cardbadgesep}\colorbox{#1}{\parbox[c][4.5mm][c]{4.5mm}{\centering\color{#2}\bfseries #3}}}}
+\newcommand{\levelbadge}[1]{%
+  \ifcase#1\relax #1\or
+    \planspiel@badge{levelone}{white}{1}\or
+    \planspiel@badge{leveltwo}{mhpdark}{2}\or
+    \planspiel@badge{levelthree}{white}{3}\else\PackageError{planspiel}{Unbekanntes Level #1}{}\fi}
+
+% Table rows: data rows are 7 mm high (writable), header rows 6 mm.
+\newcommand{\rowstrut}{\rule[-2.3mm]{0pt}{7mm}}
+\newcommand{\hdr}[1]{\color{white}\bfseries\rule[-1.5mm]{0pt}{5mm}#1}
+% Taller write-in rows (10 mm) for the calculation tables of the booklet, and a centred stretch column.
+\newcommand{\rowstrutbig}{\rule[-3.3mm]{0pt}{10mm}}
+% Write-in rows of 8.5 mm for the Budget Review page, which also holds the long overspend lookup table.
+\newcommand{\rowstrutmid}{\rule[-2.8mm]{0pt}{8.5mm}}
+\newcolumntype{Z}{>{\centering\arraybackslash}X}
+% Compact write-in rows (6 mm) and a left-aligned stretch column for the dense tracking sheet of the booklet.
+\newcommand{\rowstrutgrid}{\rule[-2mm]{0pt}{6mm}}
+% Read-only lookup rows (no writing) for long tables such as the overspend table of the Budget Review page.
+\newcommand{\rowstrutlookup}{\rule[-0.8mm]{0pt}{4mm}}
+\newcommand{\hdrs}[1]{\color{white}\bfseries\rule[-1mm]{0pt}{3.8mm}#1}
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+% Text cells of the wave explainer tables: \textrowtop leaves 1.6 mm clear above the first line of 9 pt text, \textrowend 1.5 mm below the
+% last line (descenders included). Both are rules without width; the leading between lines stays normal.
+\newcommand{\textrowtop}{\rule{0pt}{3.9mm}}
+\newcommand{\textrowend}{\rule[-2.3mm]{0pt}{0pt}}
+% End of a multi-line table cell: keeps the last line clear of the rule below it (2.6 mm below the baseline).
+\newcommand{\rowpad}{\rule[-2.6mm]{0pt}{0pt}}
+
+% A table cell that has nothing to write (crossed out in grey), as on the tracking sheet of the booklet.
+\newcommand{\shadedcell}{\cellcolor{mhpshade}}
+
+% Page fill report (log only, no change to the PDF): used height and text height of the page just filled.
+\newcommand{\fillreport}[1]{\par\typeout{PLANSPIEL-FILL page=#1 used=\the\pagetotal\space text=\the\textheight}}
+\makeatother
+
+% ---- Card sheets (measure and event decks) ------------------------------------------------------
+% Needs TikZ (loaded by the card template, not here). One A4 sheet in landscape holds four A6 cells of
+% 148.5 x 105 mm, placed from the page's top-left corner by overlays: 0 1 / 2 3. The page has zero margins;
+% the outer edge of each card is the paper edge. Text keeps a 7 mm safe margin, and the two lower cells
+% reserve an 8 mm strip at the bottom for the sheet footer (stamp and page counter, drawn once per sheet).
+\makeatletter
+\newcounter{cardcell}
+\newsavebox{\planspiel@cardbox}
+\newdimen\planspiel@cardlimit
+\newdimen\planspiel@cellx
+\newdimen\planspiel@celly
+\newcommand{\planspiel@cardtextwidth}{134mm}
+
+% Two-column body of a card: text on the left, figures on the right, 4 mm gap in between.
+\newcommand{\cardleftwidth}{82mm}
+\newcommand{\cardrightwidth}{48mm}
+% Legend card: the annotated sample on the left, the numbered explanations on the right.
+\newcommand{\cardlegendleft}{62mm}
+\newcommand{\cardlegendright}{68mm}
+
+% Card type, one set for the whole deck: 12 pt body on a 14.5 pt line, ragged right (hyphenation is off for
+% the whole package), 10 pt technical line, 17 pt title, bold 14 pt figures. The legend card sets its
+% own, smaller set (\cardlegendfont and the legend values); the sample on it takes the legend set too.
+\newcommand{\cardfont}{\fontsize{12}{14.5}\selectfont\raggedright}
+\newcommand{\cardtech}{\fontsize{10}{12}\selectfont}
+\newcommand{\cardcaption}{\fontsize{10.5}{12}\selectfont\bfseries\color{mhpblue}}
+\newcommand{\cardvalue}{\fontsize{14}{16.5}\selectfont\bfseries}
+\newcommand{\cardtitlefont}{\fontsize{17}{20}\selectfont\renewcommand{\planspiel@headstrut}{\rule[-4pt]{0pt}{14pt}}}
+\newcommand{\cardlegendfont}{\fontsize{9}{10.5}\selectfont}
+\newcommand{\cardlegendtitle}{\fontsize{14}{16}\selectfont}
+\newcommand{\cardlegendcaption}{\fontsize{7.5}{9}\selectfont\bfseries\color{mhpblue}}
+\newcommand{\cardlegendvalue}{\fontsize{9}{10.5}\selectfont\bfseries}
+\newcommand{\cardfactwidth}{\linewidth}
+\newcommand{\cardgap}{2mm}
+% Inner padding of the boxes (clearance between glyphs and the rules or box edges): above and below the
+% caption of a fact box, above and below its value, and in the shaded plain-text box.
+\newcommand{\cardcaptop}{1.6mm}
+\newcommand{\cardcapbot}{0.8mm}
+\newcommand{\cardvaltop}{1.3mm}
+\newcommand{\cardvalbot}{0.6mm}
+\newcommand{\cardplaintop}{1.4mm}
+\newcommand{\cardplainbot}{1mm}
+\newcommand{\cardplainside}{2mm}
+\newcommand{\cardtechgap}{1.6mm}
+\newcommand{\cardheadsep}{1.8mm}
+\newcommand{\cardlegendsample}{\cardlegendfont\let\cardtech\cardlegendfont\let\cardcaption\cardlegendcaption
+  \let\cardvalue\cardlegendvalue\renewcommand{\cardfactwidth}{\dimexpr\linewidth-5.5mm\relax}%
+  \renewcommand{\cardgap}{0.6mm}\renewcommand{\cardcaptop}{1.2mm}\renewcommand{\cardcapbot}{0.6mm}%
+  \renewcommand{\cardvaltop}{1mm}\renewcommand{\cardvalbot}{0.4mm}\renewcommand{\cardplaintop}{1.1mm}%
+  \renewcommand{\cardplainbot}{0.8mm}\renewcommand{\cardplainside}{1.6mm}\renewcommand{\cardtechgap}{1.2mm}\renewcommand{\cardheadsep}{2pt}\renewcommand{\cardbadgesep}{2pt}}
+
+% Framed box: a caption band (label) with its content directly beneath, both inside one blue frame, so a
+% value can only be read together with its label. #1 type set of the content, #2 label (empty: no caption band, the
+% box is a plain frame), #3 content; the width is
+% \cardfactwidth. \factbox sets a value in the bold figure type; \effectbox sets the effect lines of an event card
+% in the body type.
+\newdimen\planspiel@factwidth
+\newcommand{\planspiel@factframe}[3]{\begingroup\setlength{\planspiel@factwidth}{\cardfactwidth}%
+  \setlength{\fboxsep}{0pt}\setlength{\fboxrule}{0.6pt}\setlength{\parskip}{0pt}%
+  \noindent\fcolorbox{mhpblue}{white}{\parbox{\dimexpr\planspiel@factwidth-2\fboxrule\relax}{%
+    \ifx\relax#2\relax\else
+    \colorbox{mhplight}{\parbox{\dimexpr\planspiel@factwidth-2\fboxrule\relax}{\raggedright\cardcaption\vspace{\cardcaptop}%
+      \noindent\strut\hspace{1.5mm}#2\strut\par\vspace{\cardcapbot}}}\par
+    \fi
+    \vspace{\cardvaltop}\noindent\hspace{1.5mm}\parbox[t]{\dimexpr\planspiel@factwidth-2\fboxrule-3mm\relax}{\raggedright#1\strut #3\strut}\par
+    \vspace{\cardvalbot}}}\endgroup}
+\newcommand{\factbox}[2]{\planspiel@factframe{\cardvalue}{#1}{#2}}
+\newcommand{\effectbox}[2]{\planspiel@factframe{\cardfont}{#1}{#2}}
+
+% Shaded plain-text box (the one-sentence explanation of a card): padded on all sides, text in bold.
+\newcommand{\cardplain}[1]{\begingroup\setlength{\fboxsep}{0pt}\setlength{\parskip}{0pt}%
+  \noindent\colorbox{mhplight}{\parbox{\linewidth}{\vspace{\cardplaintop}%
+    \noindent\hspace{\cardplainside}\parbox[t]{\dimexpr\linewidth-\cardplainside-\cardplainside\relax}{\raggedright\bfseries\strut #1\strut}\par
+    \vspace{\cardplainbot}}}\par\endgroup}
+
+% One sheet = one page: the guides first, then the cells. The counter gives each cell its position. A sheet
+% starts a new page unless it is the first, so the last page is never flushed early (LastPage stays right).
+\newcounter{cardsheets}
+\newenvironment{cardsheet}{%
+  \ifnum\value{cardsheets}>0 \clearpage\fi\stepcounter{cardsheets}%
+  \setcounter{cardcell}{0}\thispagestyle{empty}\mbox{}%
+  \begin{tikzpicture}[remember picture,overlay,line width=0.4pt,color=mhpgrey]
+    \draw[dash pattern=on 2pt off 2pt] ([xshift=148.5mm]current page.north west) -- ([xshift=148.5mm]current page.south west);
+    \draw[dash pattern=on 2pt off 2pt] ([yshift=-105mm]current page.north west) -- ([yshift=-105mm]current page.north east);
+    \draw ([xshift=148.5mm]current page.north west) -- ++(0,-4mm);
+    \draw ([xshift=148.5mm]current page.south west) -- ++(0,4mm);
+    \draw ([yshift=-105mm]current page.north west) -- ++(4mm,0);
+    \draw ([yshift=-105mm]current page.north east) -- ++(-4mm,0);
+  \end{tikzpicture}%
+}{}
+
+% Set the limit and the origin of the next cell; more than four cells on a sheet is a build error.
+\newcommand{\planspiel@cellgeometry}{%
+  \ifnum\value{cardcell}>3
+    \PackageError{planspiel}{Mehr als vier Karten auf einem Blatt}{}%
+  \fi
+  \ifodd\value{cardcell}\planspiel@cellx=155.5mm \else\planspiel@cellx=7mm \fi
+  \ifnum\value{cardcell}>1
+    \planspiel@celly=-112mm \global\planspiel@cardlimit=83mm
+  \else
+    \planspiel@celly=-7mm \global\planspiel@cardlimit=91mm
+  \fi}
+
+% A card cell: the body is set in a global box first (it must outlive the environment), so \cardreport can
+% measure it, then placed on the sheet.
+\newenvironment{cardcell}{%
+  \global\setbox\planspiel@cardbox\hbox\bgroup\begin{minipage}[t]{\planspiel@cardtextwidth}\cardfont
+}{%
+  \end{minipage}\egroup%
+  \planspiel@cellgeometry
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=north west,inner sep=0pt] at ([xshift=\planspiel@cellx,yshift=\planspiel@celly]current page.north west)
+      {\usebox{\planspiel@cardbox}};
+  \end{tikzpicture}%
+  \stepcounter{cardcell}%
+}
+
+% Directly after \end{cardcell}: height of the card just placed against the room it had (log only).
+\newcommand{\cardreport}[1]{\typeout{PLANSPIEL-CARD id=#1 used=\the\dimexpr\ht\planspiel@cardbox+\dp\planspiel@cardbox\relax\space limit=\the\planspiel@cardlimit}}
+
+% Title bar of a card: title left, badge material right (the level badge of a measure card, empty on an event card,
+% plus the optional callout of the legend sample), \cardheadsep clear on every side. The title must stay on one line:
+% its width is measured against the room before the badge (minus a 2 mm gap) and logged. #1 id, #2 type set, #3 title,
+% #4 badge, #5 extra, #6 kicker line above the title (empty: none; the event header "Event in Welle N"). The 17 pt
+% title set also swaps in a tighter strut (14 pt up, 4 pt down) so the capitals sit centred in the bar, 1.8 mm clear
+% all round.
+\newcommand{\planspiel@headstrut}{\strut}
+\newdimen\planspiel@titlewidth
+\newdimen\planspiel@badgewidth
+\newcommand{\cardkickerfont}{\fontsize{10.5}{12}\selectfont\mdseries}
+\newcommand{\cardheader}[6]{\begingroup\setlength{\fboxsep}{\cardheadsep}%
+  \settowidth{\planspiel@titlewidth}{\bfseries#2\strut #3}%
+  \settowidth{\planspiel@badgewidth}{\bfseries#2#4#5}%
+  \typeout{PLANSPIEL-CARDTITLE id=#1 width=\the\planspiel@titlewidth\space
+    avail=\the\dimexpr\linewidth-2\fboxsep-\planspiel@badgewidth-2mm\relax}%
+  \noindent\colorbox{mhpblue}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\color{white}%
+    \ifx\relax#6\relax\else{\cardkickerfont\strut #6\strut\par}\fi
+    \bfseries#2\planspiel@headstrut #3\hfill #4#5\planspiel@headstrut}}\endgroup}
+
+% Sheet footer, once per sheet in the bottom strip: stamp left, page counter right. Added to every
+% shipped page by the template with \AddToHook{shipout/foreground}.
+\newcommand{\cardsheetfooter}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=south west,inner sep=0pt,font=\scriptsize,text=mhpgrey] at ([xshift=7mm,yshift=3.5mm]current page.south west)
+      {\footerstamp};
+    \node[anchor=south east,inner sep=0pt,font=\scriptsize,text=mhpgrey] at ([xshift=-7mm,yshift=3.5mm]current page.south east)
+      {Seite \thepage\ von \pageref{LastPage}};
+  \end{tikzpicture}}
+
+% Padlock icon (Arial has no lock glyph): shackle and body, 2.9 mm high, so it fits a caption band.
+\newcommand{\lockicon}{\raisebox{-0.2mm}{\begin{tikzpicture}[baseline=0pt,line cap=round]
+  \draw[line width=0.45pt,color=mhpdark] (0.5mm,1.6mm) -- (0.5mm,2.1mm) arc (180:0:0.7mm) -- (1.9mm,1.6mm);
+  \fill[color=mhpdark,rounded corners=0.2mm] (0,0) rectangle (2.4mm,1.8mm);
+\end{tikzpicture}}}
+
+% Numbered callout dot of the legend card.
+\newcommand{\callout}[1]{\tikz[baseline=(planspiel@dot.base)]\node[circle,fill=mhpaccent,text=white,inner sep=0.7pt,%
+  font=\bfseries\fontsize{7.5}{8}\selectfont] (planspiel@dot) {#1};}
+
+% Thin strip in the level colour under the card header.
+\newcommand{\levelstrip}[1]{\par\noindent\ifcase#1\relax\or\planspiel@strip{levelone}\or\planspiel@strip{leveltwo}\or
+  \planspiel@strip{levelthree}\else\PackageError{planspiel}{Unbekanntes Level #1}{}\fi}
+\newcommand{\planspiel@strip}[1]{\textcolor{#1}{\rule{\linewidth}{1.6mm}}\par}
+\makeatother
+
+\endinput

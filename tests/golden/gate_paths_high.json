@@ -1,0 +1,140 @@
+{
+  "static": {
+    "tier": "high",
+    "layer": "referenz",
+    "config_x": 3,
+    "step": 10,
+    "over_budget": 657004,
+    "min_x_strict": 2,
+    "min_x_weak": 1,
+    "x_histogram": {
+      "1": 657002,
+      "2": 2
+    },
+    "witness": {
+      "code": "2101113122",
+      "remaining": -65,
+      "steps": 7,
+      "kz_pre_review": 76,
+      "kz_final": 55,
+      "required_x": 2,
+      "trimmed_code": "0101103112",
+      "trimmed_kz_final": 69,
+      "trimmed_remaining": 77
+    },
+    "unlosable": 0,
+    "untrimmable": 0,
+    "violations_at_config_x": 0,
+    "passed": true
+  },
+  "families": {
+    "tausch": {
+      "tier": "high",
+      "family": "tausch",
+      "pool": "legal",
+      "config_x": 3,
+      "step": 10,
+      "paths": 37348851,
+      "over_budget": 30628631,
+      "min_x_strict": 1,
+      "min_x_capped": 1,
+      "min_x_weak": 1,
+      "x_histogram": {
+        "1": 8418167
+      },
+      "witness": {
+        "code": "0000001323",
+        "steps": 1,
+        "kz_pre_review": 42,
+        "required_x": 1,
+        "trimmed_code": "0000001322",
+        "trimmed_kz_final": 65
+      },
+      "unlosable": 0,
+      "untrimmable": 0,
+      "violations_at_config_x": 0,
+      "passed": true
+    },
+    "fenster1": {
+      "tier": "high",
+      "family": "fenster1",
+      "pool": "union",
+      "config_x": 3,
+      "step": 10,
+      "paths": 1373463,
+      "over_budget": 1371980,
+      "min_x_strict": 1,
+      "min_x_capped": 1,
+      "min_x_weak": 1,
+      "x_histogram": {
+        "1": 489545
+      },
+      "witness": {
+        "code": "1111111111",
+        "steps": 1,
+        "kz_pre_review": 47,
+        "required_x": 1,
+        "trimmed_code": "0111011111",
+        "trimmed_kz_final": 76
+      },
+      "unlosable": 0,
+      "untrimmable": 0,
+      "violations_at_config_x": 0,
+      "passed": true
+    },
+    "fenster2": {
+      "tier": "high",
+      "family": "fenster2",
+      "pool": "union",
+      "config_x": 3,
+      "step": 10,
+      "paths": 1373463,
+      "over_budget": 1372166,
+      "min_x_strict": 1,
+      "min_x_capped": 1,
+      "min_x_weak": 1,
+      "x_histogram": {
+        "1": 379145
+      },
+      "witness": {
+        "code": "1111111112",
+        "steps": 1,
+        "kz_pre_review": 45,
+        "required_x": 1,
+        "trimmed_code": "0111110112",
+        "trimmed_kz_final": 80
+      },
+      "unlosable": 0,
+      "untrimmable": 0,
+      "violations_at_config_x": 0,
+      "passed": true
+    },
+    "tausch_fenster2": {
+      "tier": "high",
+      "family": "tausch_fenster2",
+      "pool": "union",
+      "config_x": 3,
+      "step": 10,
+      "paths": 1059867648,
+      "over_budget": 918457935,
+      "min_x_strict": 1,
+      "min_x_capped": 1,
+      "min_x_weak": 1,
+      "x_histogram": {
+        "1": 11851085
+      },
+      "witness": {
+        "code": "0000000132",
+        "steps": 1,
+        "kz_pre_review": 47,
+        "required_x": 1,
+        "trimmed_code": "0000000122",
+        "trimmed_kz_final": 69
+      },
+      "unlosable": 0,
+      "untrimmable": 0,
+      "violations_at_config_x": 0,
+      "passed": true
+    }
+  }
+}

@@ -1,0 +1,39 @@
+[project]
+name = "security-planspiel"
+version = "0.1.0"
+description = "Shared rules and tooling for the CIA-Planspiel simulation."
+requires-python = ">=3.12"
+dependencies = [
+    "jinja2==3.1.6",
+    "python-pptx==1.0.2",
+]
+
+[project.scripts]
+planspiel = "planspiel.cli:main"
+
+[build-system]
+requires = ["uv_build>=0.12,<0.13"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-root = ""
+module-name = "planspiel"
+
+[tool.uv]
+python-preference = "only-managed"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-m 'not slow and not pdf' --strict-markers"
+markers = [
+    "slow: full-enumeration checks over all 782,336 dependency-valid combinations per tier; run with `uv run pytest -m slow`",
+    "pdf: builds PDFs with LuaLaTeX via MiKTeX; run with `uv run pytest -m pdf`; skipped when no TeX engine or a required package is missing",
+    "balance: Phase-6 design-principle checks on the config chosen by --planspiel-config (default simulation_config.json); select with uv run pytest -m balance",
+]
+
+[dependency-groups]
+dev = [
+    "pypdf==6.19.0",
+    "pytest==9.1.1",
+]

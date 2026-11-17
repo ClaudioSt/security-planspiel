@@ -1,0 +1,4 @@
+[[allow]]
+key = "measures.M2.levels_desc.1"
+token = "30 Tage"
+why = "Aufbewahrungsdauer der Protokolle, kein Spielparameter"

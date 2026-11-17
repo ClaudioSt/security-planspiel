@@ -1,0 +1,53 @@
+\#{ Company profile (Unternehmenssteckbrief): loops and inserts only. Sections and one nested level arrive finished from the story model. Each section and subsection is one unbreakable box, so a heading never stays alone at the foot of a page. }
+\documentclass[a4paper,10pt]{article}
+\usepackage{planspiel}
+\newgeometry{left=2.5cm,right=1.5cm,top=2cm,bottom=1.8cm,nohead,footskip=9mm}
+\newcommand{\storytitle}[1]{{\color{mhpblue}\bfseries\fontsize{12}{15}\selectfont #1\par}\vspace{2mm}}
+\newcommand{\storyheading}[1]{{\color{mhpblue}\bfseries\fontsize{11}{13.5}\selectfont #1\par}\vspace{0.6mm}}
+\newcommand{\storysubheading}[1]{{\bfseries\color{mhpdark}\fontsize{10}{12.5}\selectfont #1\par}\vspace{0.3mm}}
+\newenvironment{storybullets}{\begin{itemize}\setlength{\itemsep}{0.7mm}\setlength{\topsep}{0.6mm}\setlength{\parsep}{0pt}\setlength{\parskip}{0pt}\setlength{\leftmargin}{5mm}}{\end{itemize}}
+\begin{document}
+\raggedright
+\fontsize{10}{13}\selectfont
+\storytitle{\VAR{doc.title}}
+\BLOCK{for section in doc.sections}
+\vspace{2.6mm}
+\noindent\begin{minipage}{\linewidth}\raggedright
+\BLOCK{if section.heading}
+\storyheading{\VAR{section.heading}}
+\BLOCK{endif}
+\BLOCK{for paragraph in section.paragraphs}
+\VAR{paragraph}\par
+\BLOCK{endfor}
+\BLOCK{if section.bullets}
+\begin{storybullets}
+\BLOCK{for bullet in section.bullets}
+\item \VAR{bullet}
+\BLOCK{endfor}
+\end{storybullets}
+\BLOCK{endif}
+\end{minipage}\par
+\BLOCK{if section.subsections}
+\nopagebreak
+\BLOCK{endif}
+\BLOCK{for sub in section.subsections}
+\vspace{1.6mm}
+\noindent\begin{minipage}{\linewidth}\raggedright
+\BLOCK{if sub.heading}
+\storysubheading{\VAR{sub.heading}}
+\BLOCK{endif}
+\BLOCK{for paragraph in sub.paragraphs}
+\VAR{paragraph}\par
+\BLOCK{endfor}
+\BLOCK{if sub.bullets}
+\begin{storybullets}
+\BLOCK{for bullet in sub.bullets}
+\item \VAR{bullet}
+\BLOCK{endfor}
+\end{storybullets}
+\BLOCK{endif}
+\end{minipage}\par
+\BLOCK{endfor}
+\BLOCK{endfor}
+\fillreport{1}
+\end{document}

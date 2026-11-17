@@ -1,107 +1,227 @@
 # Testing Patterns
 
-**Analysis Date:** 2026-06-23
+**Analysis Date:** 2026-11-09
 
-## Honest Summary
+## Test Framework
 
-**There is no automated test suite in this repository.** A repo-wide search found:
+**Runner:**
+- pytest 9.1.1 (dev dependency group in `pyproject.toml`), run through uv.
+- Config: `[tool.pytest.ini_options]` in `pyproject.toml`
+  - `testpaths = ["tests"]`, `pythonpath = ["."]`
+  - `addopts = "-m 'not slow and not pdf' --strict-markers"`: the default run excludes the `slow` and `pdf` markers, and unknown markers are errors.
+  - Registered markers: `slow`, `pdf`, `balance`.
 
-- No `test_*.py`, `*_test.py`, or `tests/` directory.
-- No `pytest.ini`, `pyproject.toml` `[tool.pytest.ini_options]` block, `conftest.py`, `tox.ini`, or `unittest.TestCase` usage anywhere.
-- No CI workflow (`.github/workflows/` does not exist) that would run tests on push/PR.
-- No `assert`-based smoke tests embedded in the six Python scripts beyond ordinary control-flow `if`/`return` checks (no `assert` statements used for verification purposes).
+**Assertion Library:**
+- Plain `assert` statements (pytest rewriting). No assertion library is used.
+- `pytest.raises(..., match=...)` for expected errors (see `tests/test_print_render_env.py` and `tests/test_rules_exact.py`).
+- `pytest.approx` is not used for game values; exact comparisons use `Fraction` equality.
 
-Do not invent or assume unit test coverage when planning changes to this codebase — none exists. If a future phase requires automated tests, they would need to be created from scratch (e.g., `pytest` against the pure functions in `simulate_outcomes.py`, which are good candidates since they are deterministic and side-effect-free).
+**Other test-time dependencies:**
+- `pypdf==6.19.0` (dev group) reads built PDFs in the `pdf` tests (`tests/support/pdf_text.py`).
+- LuaLaTeX via MiKTeX for `pdf` tests; the marker is skipped when the engine or packages are missing.
 
-## What Actually Assures Quality Here
-
-Quality assurance in this project happens at two levels: a **deterministic simulation/balance check** (script-driven) and a **human playtest evaluation loop** (document-driven). Both are described below as they actually function today.
-
-### 1. Deterministic Simulation as De Facto Regression Test
-
-**Script:** `/home/user/security-planspiel/simulate_outcomes.py`
-
-- Enumerates every legal combination of measure levels (0-3) per measure (`iter_selections`, `simulate_outcomes.py:442-445`) for a given budget tier, subject to dependency constraints (`dependencies_satisfied`, `simulate_outcomes.py:166-174`) and budget filters.
-- For each combination, computes CIA totals, E-values, mitigation, attack severity/damage, KZ trajectory, and cost (`simulate_selection`, `simulate_outcomes.py:355-435`) — entirely deterministic, no randomness, given the current `simulation_config.json`.
-- Writes a full results JSON (default `simulation_results.json`) containing every outcome plus a `summary` block.
-
-**Run command:**
-```bash
-python3 simulate_outcomes.py --config simulation_config.json --budget-tier medium --output simulation_results.json
-```
-Pre-generated large outputs already exist for low/medium tiers: `/home/user/security-planspiel/sim_low.json`, `/home/user/security-planspiel/sim_med.json` (>10MB — per `CLAUDE.md`, do not read these fully; query with `jq`/Python instead).
-
-**Effective purpose as a "test":** Because the simulation is exhaustive and deterministic, re-running it after any change to `simulation_config.json` (or to the formulas in `simulate_outcomes.py` itself) acts as a full-coverage regression check over the entire decision space — if a change produces nonsensical KZ/damage/cost combinations, they will appear directly in the output.
-
-### 2. Balance/Dominance Analysis as De Facto Integration Test
-
-**Script:** `/home/user/security-planspiel/balance_analysis.py`
-
-- Imports functions directly from `simulate_outcomes.py` (`load_config`, `compute_cia`, `compute_costs`, `simulate_selection`, `dependencies_satisfied`) — `balance_analysis.py:15-18`.
-- Defines ~27 hand-curated "strategies" per budget tier (`define_strategies`, `balance_analysis.py:28-261`) representing plausible and intentionally suboptimal team choices, each with a manually pre-computed cost annotated in a comment (e.g. `# 26+36+34+46+16+32=190`).
-- Runs each strategy against each budget tier, computes RoS (`calculate_ros`) and a weighted combined score (`calculate_combined_score`: 60% KZ, 30% RoS, 10% inverse damage), and prints per-wave detail plus tier summaries.
-- At the end, prints explicit **balance-problem detectors**:
-  - KZ distribution check: flags if fewer than 50% of valid outcomes reach KZ ≥ 50 (`balance_analysis.py:416-417`).
-  - Budget coverage check: how many of the 27 strategies actually fit each tier's budget (`balance_analysis.py:420-425`).
-
-**Run command:**
-```bash
-python3 balance_analysis.py
-```
-
-**Effective purpose as a "test":** This is the project's stand-in for an integration/acceptance test — it answers "does any single measure or strategy dominate or break the game?" The hardcoded cost comments inside the strategy definitions are themselves a manual cross-check against `simulation_config.json` measure costs; if a measure's `init`/`opex` value changes, these comments will go stale and should be recalculated (there is no automated check that they stay correct — this is a known manual maintenance burden, not a gap to silently ignore).
-
-### 3. Result Summarization
-
-**Script:** `/home/user/security-planspiel/analyze_simulation_results.py`
-
-- Loads a `simulate_outcomes.py` output JSON and a `simulation_config.json` (for baseline loss calculation), and prints top-N/bottom-N outcomes by configurable metric (KZ, RoS, damage, "final index" — a weighted KZ/RoS blend), via `summarize_top`/`summarize_bottom` (`analyze_simulation_results.py:43-48`).
-- Not itself a check/assertion tool — it is a reporting aid used by a human to manually eyeball whether top results look sane before finalizing balance.
-
-**Run command (example):**
-```bash
-python3 analyze_simulation_results.py simulation_results.json --config simulation_config.json
-```
-(Run with `--help` to see all available sort keys and weighting flags; exact flag names should be confirmed against `parse_args()`/`argparse` setup in the script before use.)
-
-### 4. Mandated Verification Workflow (from `CLAUDE.md`)
-
-Per project instructions, after any content change to measures/attacks/events:
+**Run Commands:**
 
 ```bash
-python3 simulate_outcomes.py --config simulation_config.json --budget-tier <tier> --output simulation_results.json
-python3 balance_analysis.py
+uv run pytest                          # fast suite (excludes slow and pdf); about 2900 tests, about 4 min
+uv run pytest -m pdf                   # real LuaLaTeX builds; skips without TeX
+uv run pytest -m slow                  # full enumeration over all dependency-valid combinations per tier
+uv run pytest tests -m balance         # Phase-6 design-principle checks on the chosen config
+uv run pytest tests -m balance --planspiel-config <candidate> --planspiel-content-dir <dir>   # candidate check
+uv run pytest tests/test_rules_exact.py          # single file
+uv run pytest tests --update-golden              # rewrite tests/golden/*.json (review the diff before commit)
+uv run pytest --collect-only -q | tail -3        # test count only
 ```
 
-This must be done **before** regenerating print material (`generate_attack_calculator.py`, `generate_from_template.py`, `generate_pptx_cards.py`), so that any introduced dominance/inconsistency is caught before it propagates into player-facing documents.
+Never use the `python` on PATH; always `uv run pytest` or `uv run python ...`.
 
-### 5. Human Playtest Loop (the real-world QA, not code)
+## Test File Organization
 
-This project's actual acceptance testing happens with live human playtests, captured in:
+**Location:**
+- All tests live in the top-level `tests/` directory, separate from the source in `planspiel/`. There are no co-located tests.
+- Shared helpers, constants and adapters live in `tests/support/`; fixtures for config and print tests live in `tests/fixtures/`.
 
-**`/home/user/security-planspiel/BEOBACHTUNGSBOGEN_PLAYTEST.md`** (167 lines) — a facilitator observation form filled out live during a playtest session:
-- Timing tracker per phase (Discovery, Budget, Measure selection, each Wave + calculation, each Change window, Debrief) against planned durations (e.g. total planned 150 min).
-- Comprehensibility ratings (1-5 scale) for: game goal, budget trade-off, measure selection, dependencies, formulas, E-value concept, events, RoS calculation.
-- Engagement tracker (Hoch/Mittel/Niedrig) per phase.
-- Free-text fields for most frequently asked questions and observed problems.
+**Naming:**
+- `tests/test_<topic>.py`, where the topic matches a module or a requirement area: `test_rules_exact.py`, `test_overspend_gate.py`, `test_print_render.py`, `test_veil_cards_pdf.py`.
+- Test functions: `test_<behaviour_in_snake_case>`, describing the rule or property: `test_wave_kz_change_rounds_once_half_away`, `test_clamp_kz`, `test_damage_euros_whole_euros_with_recovery`.
+- Test classes are not used (no `class Test...` in `tests/`). Group by module and by function.
 
-**`/home/user/security-planspiel/EVALUIERUNGSPLAN.md`** (562 lines) — the evaluation framework defining what "success" means for a playtest run:
-- Target audience, game mode, learning objectives (CIA triad understanding, trade-off thinking, risk-based decision making).
-- Success criteria with explicit weights: KZ 60%, RoS 30%, total damage 10% — these weights are the human-facing equivalent of `calculate_combined_score` in `balance_analysis.py`, and the two must be kept in sync if either changes.
-- Full worked formulas (CIA totals, E-value, mitigation, damage) restated in prose for facilitators to verify by hand against the code/config.
+**Structure:**
+```
+tests/
+  conftest.py              # pytest options (--update-golden, --planspiel-config, --planspiel-content-dir), session fixtures
+  support/                 # REPO_ROOT, CONFIG_PATH, CONTENT_DIR, harness, golden, tex, candidate, pdf_text, ...
+  fixtures/
+    mini_config.json       # small config for enumeration and gate tests
+    mini_content/          # content directory belonging to the mini config
+    print/                 # smoke.tex.j2, smoke.tex used by print pipeline tests
+  golden/                  # pinned reference data (*.json), updated only with --update-golden
+  test_*.py                # 120 modules
+```
 
-**`/home/user/security-planspiel/BALANCE_ANALYSE.md`** (264 lines) — the human-readable writeup of `balance_analysis.py`'s output for the finalized parameter set:
-- States the design invariant that all budget tiers represent the *same* company facing identical threats (same E-targets 15/17/19, same KZ-start 60, same severity multiplier 1.0) — only budget differs.
-- Documents the actual best-strategy result per tier (e.g. Low tier: "Awareness Heavy", KZ=73, Score=71.4) from a run of 27 strategies — this is essentially a checked-in "expected output" snapshot of `balance_analysis.py`, and should be regenerated/updated whenever `simulation_config.json` changes the underlying numbers.
+## Test Structure
 
-**Loop in practice:** content/balance change → run `simulate_outcomes.py` + `balance_analysis.py` (automated, deterministic) → if results look sane, update `BALANCE_ANALYSE.md` with new findings → conduct/observe a live playtest using `BEOBACHTUNGSBOGEN_PLAYTEST.md` → compare observed timing/comprehension/engagement against `EVALUIERUNGSPLAN.md` targets → feed findings back into `simulation_config.json` and the Markdown rule documents.
+**Suite Organization:**
+Function-based tests with module-level constants, module-scoped fixtures and parametrization. A typical rule test (from `tests/test_rules_exact.py`):
 
-## What This Means for Future Work
+```python
+@pytest.mark.parametrize(
+    ("attack_delta", "event_kz", "expected"),
+    [
+        (Fraction(3, 2), 0, 2),
+        (Fraction(3, 2), -7, -6),
+        (Fraction(5, 2), 0, 3),
+        (Fraction(-5, 2), 0, -3),
+    ],
+)
+def test_wave_kz_change_rounds_once_half_away(attack_delta, event_kz, expected):
+    assert wave_kz_change(attack_delta, event_kz) == expected
+```
 
-- If asked to "add tests" for this codebase, clarify scope: there is no existing pytest/unittest convention to extend. A from-scratch test suite would most naturally target the pure functions in `simulate_outcomes.py` (`compute_cia`, `compute_e_value`, `compute_mitigation_from_e_value`, `apply_attack`, `dependencies_satisfied`, `check_event_condition`) since they are deterministic and free of I/O.
-- Any change to formulas or default values in `simulate_outcomes.py`/`simulation_config.json` should be validated by re-running `simulate_outcomes.py` + `balance_analysis.py` and diffing against the snapshot in `BALANCE_ANALYSE.md`, not by writing/relying on unit tests that do not exist.
-- Do not claim or imply test coverage percentages, CI status, or pytest results in any generated documentation for this repo — none of that infrastructure exists.
+A test that needs the real config loads it from the repository (`tests/test_rules_exact.py`):
+
+```python
+def test_config_numbers_are_exact():
+    cfg = load_config(CONFIG_PATH)
+    weight = cfg.waves[0].weights["c"]
+    assert isinstance(weight, Fraction)
+    assert weight == Fraction(2, 5)
+```
+
+**Patterns:**
+- Setup: module-scoped fixtures load configs once (`@pytest.fixture(scope="module") def mini(): return harness.load_config(MINI)` in `tests/test_overspend_gate.py`).
+- Session-scoped fixtures for expensive artifacts: `printed_set` in `tests/conftest.py` runs the real `planspiel print` twice and returns both output directories so the tests can compare reproducibility.
+- Teardown: `tmp_path` (pytest built-in) for every filesystem test; `tmp_path_factory.mktemp(...)` for session-scoped output. No manual cleanup.
+- Assertions: exact equality on `Fraction`/`int` values; golden comparison for structured output (below); `pytest.raises(match=...)` for expected errors.
+- Parametrize heavily: `@pytest.mark.parametrize("tier", TIERS)` with `TIERS = ("low", "medium", "high")` is the standard way to run a check on every budget tier (54 uses in `tests/`).
+
+## Golden Files
+
+- `tests/golden/*.json` pin reference outputs: `characterization_{low,medium,high}.json`, `gate_*.json`, `digest_*.json`, `answer_keys.json`, `welle0.json`, `worksheet_tex.json`.
+- `tests/support/golden.py` compares values with a domain-readable diff. Fractions are serialised through `planspiel.rounding.exact_to_json` (exact decimals or `p/q`). Numeric noise above `NOISE_TOLERANCE = Fraction(1, 10**9)` is a failure. The diff shows at most `MAX_SHOWN_LINES = 30` lines.
+- Rewrite only with `--update-golden`. The summary is printed under "golden updates (review before commit)" by `pytest_terminal_summary` in `tests/conftest.py`. Review every changed value before committing. Golden updates on a rules change must come with a RED-GREEN commit history.
+
+## Mocking
+
+**Framework:** none for game logic. `monkeypatch` (pytest built-in) is used for environment and module substitution in about 29 test modules; `unittest.mock` appears once (`tests/test_print_render_env.py`, to inject a bad job registry into `render.DOCUMENT_BUILDERS`).
+
+**Patterns:**
+```python
+def test_...(monkeypatch, tmp_path):
+    monkeypatch.setattr(render, "render_all", fake)   # only for the pipeline wiring, not for the rules
+```
+
+- The session fixture `printed_set` in `tests/conftest.py` monkeypatches `render.render_all` to add one injected smoke document, so the real pipeline runs with an extra job.
+- Process and environment helpers (`tests/support/gitrepo.py`, `tests/support/peak_memory.py`) wrap real git and memory measurement rather than fakes.
+
+**What to Mock:**
+- Environment boundaries that cannot run here: a missing TeX engine (prefer skipping with `tex_skip_reason()` instead), a foreign registry used to test a validation error, the output directory of a print run.
+- Only replace a wiring point (a registry or entry function), never a formula.
+
+**What NOT to Mock:**
+- The rules in `planspiel/rules.py`, the rounding in `planspiel/rounding.py`, the config loader and validator. The project rule is: no mocks for rules and no mocked database or integration; use the real config and real code.
+- The config. Tests use `CONFIG_PATH` (the real `simulation_config.json`) or the small fixture `tests/fixtures/mini_config.json`, both through `harness.load_config`.
+- Do not stub `texbuild`, `stamp` or `render` in pipeline tests to fake a result. Run the real pipeline or skip.
+
+## Fixtures and Factories
+
+**Test Data:**
+- `tests/fixtures/mini_config.json` with `tests/fixtures/mini_content/` is a complete, small game config. Use it for enumeration, gate and balance logic where the full config is too large.
+- `tests/fixtures/print/smoke.tex.j2` and `smoke.tex` drive the print pipeline smoke test (`SMOKE_TITLE` in `tests/conftest.py` contains the characters that must survive LaTeX escaping).
+- `tests/support/ties.py` provides `write_tie_config(...)` and related helpers that build a config variant with a tie on purpose (writes a JSON file into `tmp_path`).
+- `tests/support/harness.py` offers `load_config`, `selection_of(cfg, code)` (convert an enumeration code to a selection) and `evaluate(cfg, tier, selection)` (wrap `rules.evaluate_plan`).
+- `tests/support/golden_cases.py` builds the named golden cases.
+
+**Location:**
+- Config and content fixtures: `tests/fixtures/`.
+- Factories and adapters: `tests/support/`.
+- Pinned outputs: `tests/golden/`.
+
+**Real data preference:** the real `simulation_config.json` is used whenever a number is asserted. Synthetic configs are created only when the scenario needs a specific shape (ties, mutated tiers).
+
+## Coverage
+
+**Requirements:** None enforced. No coverage tool is configured (`pytest-cov` is not a dependency).
+
+**View Coverage:** Not configured. Use `uv run pytest --collect-only -q | tail -3` for the test count.
+
+## Test Types
+
+**Unit Tests:**
+- Pure rule functions with parametrized exact values: `tests/test_rules_exact.py`, `tests/test_rounding.py`, `tests/test_budget_review.py`, `tests/test_swap_layer.py`, `tests/test_kurswechsel.py`.
+- Print model strings and veil rules without TeX: `tests/test_*_model.py`, `tests/test_*_render.py`, `tests/test_veil_*.py`.
+
+**Integration Tests:**
+- Full print pipeline without TeX (`tests/test_print_check.py`, `tests/test_print_stamp.py`, `tests/test_print_driver.py`).
+- CLI commands through `planspiel.cli.main([...])` with real arguments (`tests/test_print_cli.py`, `tests/test_overspend_gate.py`).
+- Config, content and clue checks on the real repository files (`tests/test_validate.py`, `tests/test_texts_coverage.py`, `tests/test_clues.py`, `tests/test_texts_digits.py`, `tests/test_texts_giveaway.py`).
+
+**Slow tests (`@pytest.mark.slow`, 33 uses):**
+- Full enumeration over all dependency-valid combinations per tier (782,336 combinations per the marker description in `pyproject.toml`). Run with `uv run pytest -m slow`. These are the authoritative balance checks, not hand-picked strategies.
+
+**Balance tests (`@pytest.mark.balance`, 24 uses):**
+- Phase-6 design-principle checks on the config chosen with `--planspiel-config`, defaulting to `simulation_config.json`. Use the `balance_config_path` and `balance_content_dir` session fixtures from `tests/conftest.py`; do not hard-code the config path in a balance test.
+- Hand-calculation findings are errors. The clue mapping in `content/clues.toml` is mandatory.
+- Whole-report verification is `uv run python balance_analysis.py --layers all --paths --jobs 3 --out build/balance`, not a single test.
+
+**PDF tests (`@pytest.mark.pdf`):**
+- Module-level marker `pytestmark = pytest.mark.pdf` (for example `tests/test_cards_pdf.py`, `tests/test_booklet_pdf.py`, `tests/test_master_pdf.py`).
+- Skip reasons come from `tex_skip_reason()` in `tests/support/tex.py`: no `lualatex` on PATH, or a required MiKTeX package missing. A skip is not a pass; report it.
+
+**E2E Tests:** Not used. The game is paper-only; the nearest equivalent is the printed-set run in `tests/conftest.py`.
+
+## Common Patterns
+
+**Expected errors:**
+```python
+def test_...():
+    with pytest.raises(ValueError, match="Angriff-X"):
+        render.render_all(None, None, tmp_path)
+```
+
+**Exact arithmetic checks:**
+```python
+def test_attack_kz_delta_exfil_slope():
+    slope = kz_slope(-7, 10, 7)
+    assert attack_kz_delta(-7, slope, 10, 10) == Fraction(-32, 7)
+```
+
+**Parametrized tiers:**
+```python
+TIERS = ("low", "medium", "high")
+
+@pytest.mark.parametrize("tier", TIERS)
+def test_...(tier):
+    ...
+```
+
+**Golden comparison:** call `check_golden(...)` from `tests/support/golden.py` with the golden name; do not write ad-hoc JSON comparisons.
+
+**Print tests:**
+- Model tests check the strings a print model produces (`tests/test_cards_model.py`).
+- Veil tests check that no player-facing string contains a giveaway term from `content/giveaway_terms.toml` (`tests/test_veil_cards.py`, `tests/test_veil_pdf.py`).
+- Text tests check digits in prose against `content/digit_allowlist.toml` (`tests/test_texts_digits.py`).
+- Freshness tests check that committed PDFs match the current inputs without TeX (`tests/test_print_check.py`).
+
+**Async Testing:** Not applicable.
+
+**Error Testing:** Use `pytest.raises` with `match=` on the German or English message fragment, not the full message.
+
+## Rules for New Tests
+
+- TDD for rules and simulation changes: write the failing test first, commit RED, then GREEN.
+- Use the real config (`CONFIG_PATH`) or the mini config; no mocks for rules, config or validation.
+- Put tests in `tests/test_<topic>.py`; mark `@pytest.mark.slow` for full enumerations and `@pytest.mark.pdf` for LuaLaTeX builds, and use the module-level `pytestmark` when a whole module needs a marker.
+- Use `tmp_path` for every written file. Pass `encoding="utf-8"` to every text read and write (enforced by `tests/test_encoding_lint.py`).
+- Do not run the full suite as a quick check. Run the single module, then `uv run pytest` for the fast suite before claiming done.
+
+## Verification Before Completion
+
+- Run `uv run pytest <file>` for the changed module.
+- For config or formula changes also run `uv run planspiel validate`, `uv run planspiel gate` (or `gate --paths --jobs 3`) and the affected `-m balance` tests.
+- For content or template changes run `uv run planspiel print` and `uv run planspiel print --check` (the PDF tests are a separate, slower step).
+- Never claim a balance result from a hand-picked strategy; use the full enumeration.
 
 ---
 
-*Testing analysis: 2026-06-23*
+*Testing analysis: 2026-11-09*

@@ -1,0 +1,51 @@
+\#{ E-mail look for both story mails (Anfrage and Audit): a framed header block, then the body. Loops and inserts only. }
+\documentclass[a4paper,10pt]{article}
+\usepackage{planspiel}
+\newcommand{\mailheading}[1]{\par\vspace{2mm}{\bfseries\color{mhpblue} #1\par}\vspace{0.5mm}}
+\newenvironment{mailbullets}{\begin{itemize}\setlength{\itemsep}{1mm}\setlength{\topsep}{1mm}\setlength{\parsep}{0pt}\setlength{\parskip}{0pt}\setlength{\leftmargin}{6mm}}{\end{itemize}}
+\begin{document}
+\raggedright
+\setlength{\parskip}{2.2mm}
+\setlength{\fboxsep}{3.5mm}
+\setlength{\fboxrule}{0.6pt}
+\noindent\fcolorbox{mhpblue}{mhplight}{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{%
+\setlength{\parskip}{0pt}\fontsize{11}{14}\selectfont
+{\hangindent=22mm\hangafter=1\noindent\makebox[22mm][l]{\bfseries\color{mhpblue}\VAR{doc.labels.sender}:}\VAR{doc.sender}\par}\vspace{2.2mm}
+{\hangindent=22mm\hangafter=1\noindent\makebox[22mm][l]{\bfseries\color{mhpblue}\VAR{doc.labels.recipient}:}\VAR{doc.recipient}\par}\vspace{2.2mm}
+{\hangindent=22mm\hangafter=1\noindent\makebox[22mm][l]{\bfseries\color{mhpblue}\VAR{doc.labels.subject}:}\textbf{\VAR{doc.subject}}\par}}}
+\par\vspace{5mm}
+\fontsize{11}{14.5}\selectfont
+\BLOCK{if doc.salutation}
+\VAR{doc.salutation}\par
+\BLOCK{endif}
+\BLOCK{for section in doc.sections}
+\BLOCK{if section.heading}
+\mailheading{\VAR{section.heading}}
+\BLOCK{endif}
+\BLOCK{for paragraph in section.paragraphs}
+\VAR{paragraph}\par
+\BLOCK{endfor}
+\BLOCK{if section.bullets}
+\begin{mailbullets}
+\BLOCK{for bullet in section.bullets}
+\item \VAR{bullet}
+\BLOCK{endfor}
+\end{mailbullets}
+\BLOCK{endif}
+\BLOCK{endfor}
+\BLOCK{if doc.closing_lines}
+\par\vspace{3mm}
+\BLOCK{for line in doc.closing_lines}
+\VAR{line}\par\vspace{-1.6mm}
+\BLOCK{endfor}
+\BLOCK{endif}
+\BLOCK{if doc.footer_lines}
+\par\vspace{9mm}
+{\color{mhpgrey}\noindent\rule{\linewidth}{0.4pt}\par\vspace{0.5mm}\fontsize{9.5}{12}\selectfont
+\BLOCK{for line in doc.footer_lines}
+\VAR{line}\par
+\BLOCK{endfor}
+}
+\BLOCK{endif}
+\fillreport{1}
+\end{document}

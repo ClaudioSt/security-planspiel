@@ -1,3 +1,20 @@
 simulation_results.json filter=lfs diff=lfs merge=lfs -text
 simulation_results_high.json filter=lfs diff=lfs merge=lfs -text
 sim_high.json filter=lfs diff=lfs merge=lfs -text
+tests/golden/*.json text eol=lf
+content/*.toml text eol=lf
+content/*.json text eol=lf
+print/**/*.sty text eol=lf
+print/**/*.cls text eol=lf
+print/**/*.tex text eol=lf
+print/**/*.j2 text eol=lf
+print/**/*.txt text eol=lf
+print/**/*.png binary
+print/**/*.jpg binary
+print/**/*.jpeg binary
+print/**/*.pdf binary
+print/**/*.ttf binary
+print/**/*.otf binary
+final_documents/generated/*.pdf binary
+final_documents/generated/manifest.json text eol=lf
+content/assets/images/*.png binary

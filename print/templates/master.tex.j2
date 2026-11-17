@@ -1,0 +1,323 @@
+\#{ Facilitator booklet: loops and inserts only; every number arrives as a finished string from the master sheet model. Page 1 carries the facilitator-only notice, every wave starts on a new page (parameters, check rows, event schedule) followed by a page with the answer keys. }
+\documentclass[a4paper,10pt]{article}
+\usepackage{planspiel}
+\newcounter{masterreport}
+\newcommand{\pagereport}{\stepcounter{masterreport}\fillreport{\themasterreport}}
+\begin{document}
+\raggedright
+\facilitatornotice{\VAR{sheet.notice}}
+\attacktitle{\VAR{sheet.title}}
+\VAR{sheet.intro}\par
+\vspace{1mm}
+\textbf{\VAR{sheet.gr_legend}}\par
+
+\step{\VAR{sheet.contents_title}}
+\begingroup\small\setlength{\parskip}{0.6mm}
+\BLOCK{if sheet.schedule}
+\VAR{sheet.schedule.title}\par
+\VAR{sheet.schedule.print_title}\par
+\BLOCK{endif}
+\BLOCK{if sheet.cheat}
+\VAR{sheet.cheat.title}\par
+\BLOCK{endif}
+\BLOCK{for section in sheet.waves}
+\VAR{section.title}\par
+\BLOCK{endfor}
+\VAR{sheet.review.title}\par
+\VAR{sheet.final_title}\par
+\BLOCK{if sheet.debrief}
+\VAR{sheet.debrief.title}\par
+\BLOCK{endif}
+\BLOCK{if sheet.welle0}
+\VAR{sheet.welle0.title}\par
+\BLOCK{endif}
+\BLOCK{if sheet.clue_groups}
+\VAR{sheet.clues_title}\par
+\BLOCK{endif}
+\endgroup
+
+\step{\VAR{sheet.how_to_title}}
+\begingroup\small\setlength{\parskip}{1mm}
+\BLOCK{for text in sheet.how_to}
+\BLOCK{set number = loop.index|string}
+\noindent\hangindent=6mm\hangafter=1\textbf{\VAR{number}.}\hspace{1.5mm}\VAR{text}\par
+\BLOCK{endfor}
+\endgroup
+
+\step{\VAR{sheet.paths_title}}
+{\small{} \VAR{sheet.paths_intro}\par}
+\vspace{1mm}
+\noindent\begingroup\small\setlength{\tabcolsep}{4pt}\begin{tabularx}{\linewidth}{|C{20mm}|L|}
+\hline
+\BLOCK{for line in sheet.paths}
+\textrowtop{}\textbf{\VAR{line.tier}}\textrowend{} & \textrowtop{}\textbf{\VAR{sheet.path_start}:} \VAR{line.start}\BLOCK{for window in line.windows}\newline{} \VAR{window}\BLOCK{endfor}\textrowend{} \\
+\hline
+\BLOCK{endfor}
+\end{tabularx}\endgroup\par
+\pagereport
+\BLOCK{if sheet.schedule}
+
+\clearpage
+\attacktitle{\VAR{sheet.schedule.title}}
+{\small{} \VAR{sheet.schedule.intro}\par}
+\vspace{1mm}
+\noindent\begingroup\footnotesize\setlength{\tabcolsep}{3pt}\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{32mm}|C{11mm}|C{16mm}|C{14mm}|L|}
+\hline
+\rowcolor{mhpblue}\BLOCK{for cell in sheet.schedule.header}\hdrs{\VAR{cell}}\BLOCK{if not loop.last} & \BLOCK{endif}\BLOCK{endfor} \\
+\hline
+\BLOCK{for row in sheet.schedule.rows}
+\textrowtop{}\textbf{\VAR{row.label}}\textrowend{} & \textrowtop{}\VAR{row.minutes}\textrowend{} & \textrowtop{}\VAR{row.start}\,\textendash\,\VAR{row.end}\textrowend{} & \textrowtop{}\textrowend{} & \textrowtop{}\VAR{row.direction}\textrowend{} \\
+\hline
+\BLOCK{endfor}
+\textrowtop{}\textbf{\VAR{sheet.schedule.total_label}}\textrowend{} & \textrowtop{}\textbf{\VAR{sheet.schedule.total_value}}\textrowend{} & \textrowtop{}\textrowend{} & \textrowtop{}\textrowend{} & \textrowtop{}\textrowend{} \\
+\hline
+\end{tabularx}\endgroup\par
+\pagereport
+
+\clearpage
+\step{\VAR{sheet.schedule.print_title}}
+{\small{} \VAR{sheet.schedule.print_intro}\par}
+{\small{} \VAR{sheet.schedule.teams_label}: \textbf{\VAR{sheet.schedule.teams_value}}\par}
+\vspace{1mm}
+\noindent\begingroup\footnotesize\setlength{\tabcolsep}{3pt}\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{44mm}|L|C{14mm}|C{20mm}|C{14mm}|}
+\hline
+\rowcolor{mhpblue}\BLOCK{for cell in sheet.schedule.print_header}\hdrs{\VAR{cell}}\BLOCK{if not loop.last} & \BLOCK{endif}\BLOCK{endfor} \\
+\hline
+\BLOCK{for row in sheet.schedule.print_rows}
+\textrowtop{}\VAR{row.label}\textrowend{} & \textrowtop{}\VAR{row.file}\textrowend{} & \textrowtop{}\VAR{row.per_team}\textrowend{} & \textrowtop{}\VAR{row.facilitator}\textrowend{} & \textrowtop{}\textbf{\VAR{row.total}}\textrowend{} \\
+\hline
+\BLOCK{endfor}
+\end{tabularx}\endgroup\par
+\pagereport
+\BLOCK{endif}
+\BLOCK{if sheet.cheat}
+
+\clearpage
+\attacktitle{\VAR{sheet.cheat.title}}
+{\small{} \VAR{sheet.cheat.intro}\par}
+\step{\VAR{sheet.cheat.bands_title}}
+\noindent\begingroup\small\setlength{\tabcolsep}{3pt}\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{30mm}|L|}
+\hline
+\BLOCK{for band in sheet.cheat.bands}
+\textrowtop{}\textbf{\VAR{band.word}}\textrowend{} & \textrowtop{}\VAR{band.range}\textrowend{} \\
+\hline
+\BLOCK{endfor}
+\end{tabularx}\endgroup\par
+\vspace{2mm}
+\noindent\begingroup\small\setlength{\tabcolsep}{3pt}\begin{tabularx}{\linewidth}{|L|L|>{\raggedright\arraybackslash}p{38mm}|}
+\hline
+\rowcolor{mhpblue}\BLOCK{for cell in sheet.cheat.header}\hdrs{\VAR{cell}}\BLOCK{if not loop.last} & \BLOCK{endif}\BLOCK{endfor} \\
+\hline
+\BLOCK{for row in sheet.cheat.cases}
+\textrowtop{}\VAR{row.case}\textrowend{} & \textrowtop{}\VAR{row.answer}\textrowend{} & \textrowtop{}\textbf{\VAR{row.band}}\textrowend{} \\
+\hline
+\BLOCK{endfor}
+\end{tabularx}\endgroup\par
+\pagereport
+\BLOCK{endif}
+\BLOCK{for section in sheet.waves}
+
+\clearpage
+\attacktitle{\VAR{section.title}}
+\hint{\VAR{sheet.gr_legend}}
+\step{\VAR{sheet.params_title}}
+\vspace{1mm}
+\noindent\begingroup\small\setlength{\tabcolsep}{4pt}\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{70mm}|L|}
+\hline
+\BLOCK{for row in section.parameters.rows}
+\textrowtop{}\VAR{row[0]}\textrowend{} & \textrowtop{}\textbf{\VAR{row[1]}}\textrowend{} \\
+\hline
+\BLOCK{endfor}
+\end{tabularx}\endgroup\par
+\vspace{1.5mm}
+{\small\bfseries{} \VAR{sheet.bonus_title}\par}
+\vspace{0.5mm}
+\noindent\begingroup\small\setlength{\tabcolsep}{4pt}\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{50mm}|C{17mm}|C{13mm}|L|}
+\hline
+\rowcolor{mhpblue}\BLOCK{for cell in section.parameters.bonus_header}\small\hdrs{\VAR{cell}}\BLOCK{if not loop.last} & \BLOCK{endif}\BLOCK{endfor} \\
+\hline
+\BLOCK{for row in section.parameters.bonus_rows}
+\textrowtop{}\VAR{row[0]}\textrowend{} & \textrowtop{}\VAR{row[1]}\textrowend{} & \textrowtop{}\VAR{row[2]}\textrowend{} & \textrowtop{}\VAR{row[3]}\textrowend{} \\
+\hline
+\BLOCK{endfor}
+\end{tabularx}\endgroup\par
+
+\step{\VAR{sheet.check_title}}
+\vspace{1mm}
+\noindent\begingroup\small\setlength{\tabcolsep}{4pt}\begin{tabularx}{\linewidth}{|L|L|L|}
+\hline
+\rowcolor{mhpblue}\BLOCK{for cell in section.checks.case_header}\small\hdrs{\VAR{cell}}\BLOCK{if not loop.last} & \BLOCK{endif}\BLOCK{endfor} \\
+\hline
+\BLOCK{for row in section.checks.case_rows}
+\textrowtop{}\textbf{\VAR{row[0]}}\textrowend{} & \textrowtop{}\VAR{row[1]}\textrowend{} & \textrowtop{}\VAR{row[2]}\textrowend{} \\
+\hline
+\BLOCK{endfor}
+\end{tabularx}\endgroup\par
+\vspace{1mm}
+{\small\bfseries{} \VAR{sheet.check_table_intro}\par}
+\vspace{0.5mm}
+\noindent\begingroup\footnotesize\setlength{\tabcolsep}{2pt}\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{26mm}|\BLOCK{for row in section.checks.table_rows}Z|\BLOCK{endfor}}
+\hline
+\rowcolor{mhpblue}\hdrs{\VAR{section.checks.table_header[0]}}\BLOCK{for row in section.checks.table_rows} & \hdrs{\VAR{row[0]}}\BLOCK{endfor} \\
+\hline
+\textrowtop{}\VAR{section.checks.table_header[1]}\textrowend{}\BLOCK{for row in section.checks.table_rows} & \VAR{row[1]}\BLOCK{endfor} \\
+\hline
+\textrowtop{}\VAR{section.checks.table_header[2]}\textrowend{}\BLOCK{for row in section.checks.table_rows} & \VAR{row[2]}\BLOCK{endfor} \\
+\hline
+\end{tabularx}\endgroup\par
+
+\pagereport
+
+\clearpage
+\step{\VAR{sheet.events_title}: \VAR{section.title}}
+\vspace{1mm}
+\BLOCK{if section.events}
+\noindent\begingroup\small\setlength{\tabcolsep}{4pt}\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{36mm}|>{\raggedright\arraybackslash}p{24mm}|L|}
+\hline
+\rowcolor{mhpblue}\BLOCK{for cell in sheet.event_header}\small\hdrs{\VAR{cell}}\BLOCK{if not loop.last} & \BLOCK{endif}\BLOCK{endfor} \\
+\hline
+\BLOCK{for event in section.events}
+\textrowtop{}\textbf{\VAR{event.name}}\textrowend{} & \textrowtop{}\VAR{event.kind}\textrowend{} & \textrowtop{}\BLOCK{if event.heading}\textbf{\VAR{event.heading}}\newline{} \BLOCK{endif}\BLOCK{for line in event.lines}\VAR{line}\BLOCK{if not loop.last}\newline{} \BLOCK{endif}\BLOCK{endfor}\textrowend{} \\
+\hline
+\BLOCK{endfor}
+\end{tabularx}\endgroup\par
+\BLOCK{else}
+{\small{} \VAR{section.no_events}\par}
+\BLOCK{endif}
+\step{\VAR{sheet.keys_title}}
+\hint{\VAR{sheet.keys_intro}}
+\vspace{1mm}
+\noindent\begingroup\footnotesize\setlength{\tabcolsep}{3pt}\begin{tabularx}{\linewidth}{|L\BLOCK{for tier in section.key_header[1:]}|C{30mm}\BLOCK{endfor}|}
+\hline
+\rowcolor{mhpblue}\BLOCK{for cell in section.key_header}\hdrs{\VAR{cell}}\BLOCK{if not loop.last} & \BLOCK{endif}\BLOCK{endfor} \\
+\hline
+\BLOCK{for row in section.key_rows}
+\BLOCK{if row.key in ("gr", "damage_after", "kz_change", "remaining")}
+\rowcolor{mhplight}\textrowtop{}\textbf{\VAR{row.label}}\textrowend{}\BLOCK{for value in row.values} & \textrowtop{}\textbf{\VAR{value}}\textrowend{}\BLOCK{endfor} \\
+\BLOCK{else}
+\textrowtop{}\VAR{row.label}\textrowend{}\BLOCK{for value in row.values} & \textrowtop{}\VAR{value}\textrowend{}\BLOCK{endfor} \\
+\BLOCK{endif}
+\hline
+\BLOCK{endfor}
+\end{tabularx}\endgroup\par
+\pagereport
+\BLOCK{endfor}
+
+\clearpage
+\attacktitle{\VAR{sheet.review.title}}
+\VAR{sheet.review.intro}\par
+\vspace{1mm}
+\refline{\VAR{sheet.review.tier_heading}}
+\noindent\begingroup\small\begin{tabularx}{\linewidth}{|L|}
+\hline
+\BLOCK{for line in sheet.review.tier_lines}
+\textrowtop{}\VAR{line}\textrowend{} \\
+\hline
+\BLOCK{endfor}
+\end{tabularx}\endgroup\par
+\vspace{1mm}
+\noindent\begingroup\small\setlength{\tabcolsep}{4pt}\begin{tabularx}{\linewidth}{|L|C{30mm}|}
+\hline
+\rowcolor{mhplight}\textrowtop{}\VAR{sheet.review.x_label}\textrowend{} & \textrowtop{}\textbf{\VAR{sheet.review.x_value}}\textrowend{} \\
+\hline
+\textrowtop{}\VAR{sheet.review.step_label}\textrowend{} & \textrowtop{}\textbf{\VAR{sheet.review.step_value}}\textrowend{} \\
+\hline
+\end{tabularx}\endgroup\par
+
+\step{\VAR{sheet.final_title}}
+{\small{} \VAR{sheet.final_intro}\par}
+\vspace{1mm}
+\noindent\begingroup\small\setlength{\tabcolsep}{3pt}\begin{tabularx}{\linewidth}{|L\BLOCK{for tier in sheet.final_header[1:]}|C{34mm}\BLOCK{endfor}|}
+\hline
+\rowcolor{mhpblue}\BLOCK{for cell in sheet.final_header}\small\hdrs{\VAR{cell}}\BLOCK{if not loop.last} & \BLOCK{endif}\BLOCK{endfor} \\
+\hline
+\BLOCK{for row in sheet.final_rows}
+\textrowtop{}\VAR{row.label}\textrowend{}\BLOCK{for value in row.values} & \textrowtop{}\textbf{\VAR{value}}\textrowend{}\BLOCK{endfor} \\
+\hline
+\BLOCK{endfor}
+\end{tabularx}\endgroup\par
+\vspace{1mm}
+\noindent\begingroup\small\setlength{\tabcolsep}{4pt}\begin{tabularx}{\linewidth}{|L|C{30mm}|}
+\hline
+\rowcolor{mhplight}\textrowtop{}\VAR{sheet.final_weight_label}\textrowend{} & \textrowtop{}\textbf{\VAR{sheet.final_weight_value}}\textrowend{} \\
+\hline
+\end{tabularx}\endgroup\par
+\vspace{1mm}
+\hint{\VAR{sheet.final_note}}
+\pagereport
+\BLOCK{if sheet.debrief}
+
+\clearpage
+\attacktitle{\VAR{sheet.debrief.title}}
+{\small{} \VAR{sheet.debrief.intro}\par}
+\vspace{1mm}
+\begingroup\small\setlength{\parskip}{1mm}
+\BLOCK{for section in sheet.debrief.stages}
+\step{\VAR{section.title}}
+{\footnotesize{} \textbf{\VAR{sheet.debrief.guide_label}:} \VAR{section.guide}\par}
+\BLOCK{for text in section.questions}
+\noindent\hangindent=6mm\hangafter=1\textbf{\VAR{sheet.debrief.questions_label}:}\hspace{1.5mm}\VAR{text}\par
+\BLOCK{endfor}
+\BLOCK{for text in section.prompts}
+\noindent\hangindent=6mm\hangafter=1\textbf{\VAR{sheet.debrief.prompts_label}:}\hspace{1.5mm}\VAR{text}\par
+\BLOCK{endfor}
+\BLOCK{endfor}
+{\footnotesize{} \textbf{\VAR{sheet.debrief.total_label}:} \VAR{sheet.debrief.total_value}\par}
+\endgroup
+\BLOCK{if sheet.debrief.pitch_text}
+\step{\VAR{sheet.debrief.pitch_title}}
+{\small{} \VAR{sheet.debrief.pitch_text}\par}
+{\footnotesize{} \textbf{\VAR{sheet.debrief.pitch_limit_label}:} \VAR{sheet.debrief.pitch_limit}\par}
+\BLOCK{endif}
+\step{\VAR{sheet.debrief.compare_title}}
+{\small{} \VAR{sheet.debrief.compare_intro}\par}
+\vspace{1mm}
+\noindent\begingroup\small\setlength{\tabcolsep}{3pt}\begin{tabularx}{\linewidth}{|L|C{34mm}|C{34mm}|C{34mm}|}
+\hline
+\rowcolor{mhpblue}\BLOCK{for cell in sheet.debrief.compare_header}\hdrs{\VAR{cell}}\BLOCK{if not loop.last} & \BLOCK{endif}\BLOCK{endfor} \\
+\hline
+\BLOCK{for row in sheet.debrief.compare_rows}
+\rule{0pt}{9mm}\textbf{\VAR{row}} & & & \\
+\hline
+\BLOCK{endfor}
+\end{tabularx}\endgroup\par
+\pagereport
+\BLOCK{endif}
+\BLOCK{if sheet.welle0}
+
+\clearpage
+\attacktitle{\VAR{sheet.welle0.title}}
+{\small{} \VAR{sheet.welle0.intro}\par}
+\vspace{1mm}
+\noindent\begingroup\footnotesize\setlength{\tabcolsep}{3pt}\begin{tabularx}{\linewidth}{|L|C{58mm}|}
+\hline
+\rowcolor{mhpblue}\BLOCK{for cell in sheet.welle0.header}\hdrs{\VAR{cell}}\BLOCK{if not loop.last} & \BLOCK{endif}\BLOCK{endfor} \\
+\hline
+\BLOCK{for row in sheet.welle0.rows}
+\textrowtop{}\VAR{row.label}\textrowend{}\BLOCK{for value in row.values} & \textrowtop{}\textbf{\VAR{value}}\textrowend{}\BLOCK{endfor} \\
+\hline
+\BLOCK{endfor}
+\end{tabularx}\endgroup\par
+\pagereport
+\BLOCK{endif}
+\BLOCK{for group in sheet.clue_groups}
+
+\clearpage
+\BLOCK{if loop.first}
+\attacktitle{\VAR{sheet.clues_title}}
+{\small{} \VAR{sheet.clues_intro}\par}
+\BLOCK{endif}
+\step{\VAR{group.title}}
+\vspace{1mm}
+\noindent\begingroup\small\setlength{\tabcolsep}{3pt}\begin{tabularx}{\linewidth}{|C{7mm}|>{\raggedright\arraybackslash}p{47mm}|L|L|C{19mm}|}
+\hline
+\rowcolor{mhpblue}\small\hdrs{\VAR{sheet.clue_header[0]}} & \small\hdrs{\VAR{sheet.clue_header[1]} / \VAR{sheet.clue_header[2]}} & \small\hdrs{\VAR{sheet.clue_header[3]}} & \small\hdrs{\VAR{sheet.clue_header[4]}} & \small\hdrs{\VAR{sheet.clue_header[5]}} \\
+\hline
+\BLOCK{for row in group.rows}
+\textrowtop{}\VAR{row.number}\textrowend{} & \textrowtop{}\textbf{\VAR{row.document}}\newline{} \VAR{row.section}\textrowend{} & \textrowtop{}\VAR{row.quote}\textrowend{} & \textrowtop{}\VAR{row.why}\textrowend{} & \textrowtop{}\VAR{row.measures}\textrowend{} \\
+\hline
+\BLOCK{endfor}
+\end{tabularx}\endgroup\par
+\pagereport
+\BLOCK{endfor}
+\end{document}

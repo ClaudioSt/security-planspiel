@@ -1,0 +1,54 @@
+\#{ Booklet tracking page: loops and inserts only. One column per point in time, rows in calculation order; grey cells are crossed out. }
+\attacktitle{\VAR{booklet.tracking.title}}
+{\small{} \VAR{booklet.tracking.intro}\par}
+\BLOCK{set ncols = (booklet.tracking.columns|length + 1)|string}
+\vspace{1mm}
+\noindent\begingroup\setlength{\tabcolsep}{4pt}\begin{tabularx}{\linewidth}{|L\BLOCK{for column in booklet.tracking.columns[:-1]}|C{18mm}\BLOCK{endfor}|C{25mm}|}
+\hline
+\rowcolor{mhpblue}\multicolumn{1}{|l|}{\hdrs{}}\BLOCK{for column in booklet.tracking.columns} & \multicolumn{1}{c|}{\small\hdrs{\VAR{column}}}\BLOCK{endfor} \\
+\hline
+\BLOCK{for row in booklet.tracking.rows}
+\BLOCK{if row.group == "own" and loop.previtem.group != "own"}
+\rowcolor{mhpblue}\multicolumn{\VAR{ncols}}{|l|}{\small\hdrs{\VAR{booklet.tracking.block_own}}} \\
+\hline
+\BLOCK{endif}
+\BLOCK{if row.group == "external" and loop.previtem.group != "external"}
+\rowcolor{mhpblue}\multicolumn{\VAR{ncols}}{|l|}{\small\hdrs{\VAR{booklet.tracking.block_external}}} \\
+\hline
+\BLOCK{endif}
+\rowstrutgrid{}\BLOCK{if row.group in ("budget", "review")}\bfseries{}\BLOCK{endif}\VAR{row.label}\rowpad{}\BLOCK{for cell in row.cells} & \BLOCK{if cell == "shaded"}\shadedcell{}\BLOCK{endif}\BLOCK{endfor} \\
+\hline
+\BLOCK{endfor}
+\end{tabularx}\endgroup\par
+\vspace{1mm}
+\begingroup\setlength{\parskip}{0.3mm}
+{\footnotesize\bfseries{} \VAR{booklet.tracking.clamp_text}.\mdseries{} \VAR{booklet.tracking.hints[0]}\par}
+\BLOCK{for text in booklet.tracking.hints[1:]}
+\hint{\VAR{text}}
+\BLOCK{endfor}
+\endgroup
+\BLOCK{if booklet.tracking.windows}
+
+\vspace{1mm}
+{\small{}\VAR{booklet.tracking.window_intro}\par}
+\noindent\begingroup\setlength{\tabcolsep}{2pt}\begin{tabularx}{\linewidth}{|L\BLOCK{for block in booklet.tracking.windows}|C{24mm}|C{20mm}\BLOCK{endfor}|}
+\hline
+\rowcolor{mhpblue}\multicolumn{1}{|l|}{\small\hdrs{\VAR{booklet.tracking.measure_header}}}\BLOCK{for block in booklet.tracking.windows} & \multicolumn{2}{c|}{\small\hdrs{\VAR{block.after_wave}}}\BLOCK{endfor} \\
+\hline
+\rowcolor{mhplight}\strut\BLOCK{for block in booklet.tracking.windows} & \rule{0pt}{3.6mm}\small\bfseries{} \VAR{booklet.tracking.window_columns[0]}\rowpad{} & \small\bfseries{} \VAR{booklet.tracking.window_columns[1]}\BLOCK{endfor} \\
+\hline
+\BLOCK{for label in booklet.tracking.windows[0].measure_rows}
+\rowstrutgrid{}\small{}\VAR{label}\rowpad{}\BLOCK{for block in booklet.tracking.windows} & & \BLOCK{endfor} \\
+\hline
+\BLOCK{endfor}
+\BLOCK{for row in booklet.tracking.summary_rows}
+\rowstrutgrid{}\small{}\VAR{row.label}\rowpad{}\BLOCK{for cell in row.cells} & \multicolumn{2}{c|}{\BLOCK{if cell == "shaded"}\shadedcell{}\BLOCK{endif}}\BLOCK{endfor} \\
+\hline
+\BLOCK{endfor}
+\end{tabularx}\endgroup\par
+\begingroup\setlength{\parskip}{0.3mm}
+\BLOCK{for text in booklet.tracking.window_hints}
+\hint{\VAR{text}}
+\BLOCK{endfor}
+\endgroup
+\BLOCK{endif}

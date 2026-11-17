@@ -1,0 +1,286 @@
+"""The final-index weights live in config and every caller reads them (PRINT-10 part 1, D-23, T-05-45).
+
+The index is weight_kz * KZ + weight_ros * RoS2 with RoS2 the RoS rounded to two decimals (BAL-03, D-15); the tests
+below check that every caller follows the weights of its config, not a pinned scale.
+"""
+import contextlib
+import dataclasses
+import io
+import json
+from fractions import Fraction
+
+import pytest
+
+from planspiel import analyze, balance, rules
+from planspiel.config import FinalIndexWeights, load_config
+from planspiel.enumerate import enumerate_tier
+from planspiel.report import dump_record, summarize_tier
+from planspiel.rounding import round_half_away_frac
+from planspiel.validate import validate
+from tests.support import CONFIG_PATH, REPO_ROOT, harness
+
+MINI = REPO_ROOT / "tests" / "fixtures" / "mini_config.json"
+ONE = FinalIndexWeights(Fraction(1), Fraction(1))
+
+RESULTS = {
+    "results": [
+        {"kz_final": 70, "total_damage": 40, "costs": {"security_spend": 100, "total": 110, "event_opex": 10}, "selection": {"M1": 1, "M2": 2}},
+        {"kz_final": 55, "total_damage": 10, "costs": {"security_spend": 50, "total": 50, "event_opex": 0}, "selection": {"M1": 0, "M2": 3}},
+        {"kz_final": 90, "total_damage": 200, "costs": {"security_spend": 300, "total": 300, "event_opex": 0}, "selection": {"M1": 3, "M2": 3}},
+    ]
+}
+
+
+def _captured(function, *args):
+    buffer = io.StringIO()
+    with contextlib.redirect_stdout(buffer):
+        function(*args)
+    return buffer.getvalue()
+
+
+def _write_config(tmp_path, source, weights, name="weighted.json"):
+    raw = json.loads(source.read_text(encoding="utf-8"))
+    raw["final_index"] = weights
+    target = tmp_path / name
+    target.write_text(json.dumps(raw, ensure_ascii=False), encoding="utf-8")
+    return target
+
+
+@pytest.fixture(scope="module")
+def mini():
+    return harness.load_config(MINI)
+
+
+# --- config ---------------------------------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(("path", "k"), [(CONFIG_PATH, 10), (MINI, 1)], ids=["real", "mini"])
+def test_both_configs_carry_the_weights_of_the_form_kz_plus_k_ros(path, k):
+    raw = json.loads(path.read_text(encoding="utf-8"))
+    assert raw["final_index"] == {"weight_kz": 1, "weight_ros": k}
+    assert load_config(path).final_index == FinalIndexWeights(Fraction(1), Fraction(k))
+
+
+def test_final_index_precedes_practice_in_the_config_fields():
+    names = [field.name for field in dataclasses.fields(load_config(MINI).__class__)]
+    assert names.index("final_index") < names.index("practice")
+    assert names[-1] == "practice"
+
+
+# --- validator -------------------------------------------------------------------------------------------------
+
+
+def _issues(mutate):
+    """Schema errors of the mutated config; the hand-calc finding on the weights is tested in test_hand_calc_level."""
+    raw = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
+    mutate(raw)
+    return [issue for issue in validate(raw, hand_calc_level="warning") if issue.level == "error"]
+
+
+def _delete_block(raw):
+    del raw["final_index"]
+
+
+def _delete_key(raw):
+    del raw["final_index"]["weight_ros"]
+
+
+def _negative(raw):
+    raw["final_index"]["weight_kz"] = -1
+
+
+def _both_zero(raw):
+    raw["final_index"] = {"weight_kz": 0, "weight_ros": 0}
+
+
+def _not_a_number(raw):
+    raw["final_index"]["weight_ros"] = "viel"
+
+
+def _not_an_object(raw):
+    raw["final_index"] = [1, 1]
+
+
+@pytest.mark.parametrize(
+    ("mutate", "code", "path_fragment"),
+    [
+        (_delete_block, "schema.top_level", "final_index"),
+        (_delete_key, "schema.keys", "final_index.weight_ros"),
+        (_negative, "schema.range", "final_index.weight_kz"),
+        (_both_zero, "schema.range", "final_index"),
+        (_not_a_number, "schema.type", "final_index.weight_ros"),
+        (_not_an_object, "schema.type", "final_index"),
+    ],
+    ids=["missing-block", "missing-key", "negative", "both-zero", "not-a-number", "not-an-object"],
+)
+def test_broken_weights_are_validator_errors(mutate, code, path_fragment):
+    errors = _issues(mutate)
+    assert any(issue.code == code and issue.path.startswith(path_fragment) for issue in errors), errors
+
+
+def test_a_one_sided_zero_weight_is_allowed():
+    assert _issues(lambda raw: raw["final_index"].update(weight_kz=0)) == []
+
+
+# --- rules.final_index has no defaults -------------------------------------------------------------------------
+
+
+def test_final_index_requires_both_weights():
+    with pytest.raises(TypeError):
+        rules.final_index(80, Fraction(1, 2))
+    with pytest.raises(TypeError):
+        rules.final_index(80, None)
+    assert rules.final_index(80, Fraction(1, 2), Fraction(1), Fraction(1)) == Fraction(161, 2)
+
+
+# --- every caller reads the config -----------------------------------------------------------------------------
+
+
+def _weighted(mini, kz, ros):
+    return dataclasses.replace(mini, final_index=FinalIndexWeights(Fraction(kz), Fraction(ros)))
+
+
+def test_summary_final_index_follows_the_config_weights(mini):
+    plain = summarize_tier(mini, "low", enumerate_tier(mini, "low"), top_k=1000)
+    heavy = summarize_tier(_weighted(mini, 2, 1), "low", enumerate_tier(mini, "low"), top_k=1000)
+    plain_by_code = {entry["code"]: entry for entry in plain["top"]["final_index"]}
+    heavy_by_code = {entry["code"]: entry for entry in heavy["top"]["final_index"]}
+    assert plain_by_code and plain_by_code.keys() == heavy_by_code.keys()
+    changed = 0
+    for code, entry in heavy_by_code.items():
+        base = plain_by_code[code]
+        assert entry["kz_final"] == base["kz_final"] and entry["ros"] == base["ros"]
+        expected = Fraction(2 * entry["kz_final"])
+        if entry["ros"] is not None:
+            expected += Fraction(round_half_away_frac(Fraction(str(entry["ros"])) * 100), 100)
+        assert Fraction(str(entry["final_index"])) == expected
+        changed += entry["final_index"] != base["final_index"]
+    assert changed > 0
+
+
+def test_weight_ros_zero_makes_the_summary_index_equal_to_the_kz(mini):
+    summary = summarize_tier(_weighted(mini, 1, 0), "low", enumerate_tier(mini, "low"), top_k=1000)
+    entries = summary["top"]["final_index"]
+    assert entries
+    assert all(Fraction(str(entry["final_index"])) == entry["kz_final"] for entry in entries)
+
+
+def test_summary_final_index_follows_weight_ros_alone(mini):
+    k1 = summarize_tier(_weighted(mini, 1, 1), "low", enumerate_tier(mini, "low"), top_k=1000)
+    k20 = summarize_tier(_weighted(mini, 1, 20), "low", enumerate_tier(mini, "low"), top_k=1000)
+    by_code = {entry["code"]: entry for entry in k1["top"]["final_index"]}
+    checked = 0
+    for entry in k20["top"]["final_index"]:
+        base = by_code.get(entry["code"])
+        if base is None or entry["ros"] is None:
+            continue
+        ros2 = Fraction(round_half_away_frac(Fraction(str(entry["ros"])) * 100), 100)
+        assert Fraction(str(entry["final_index"])) - Fraction(str(base["final_index"])) == 19 * ros2
+        checked += 1
+    assert checked > 0
+
+
+def test_dump_record_follows_weight_ros_and_zero_gives_the_kz(mini):
+    outcome = rules.CompactOutcome(
+        kz_final=70, own_cost=100, total_cost=104, damage_eur=5000, event_opex=4,
+        event_budget=0, over_budget=False, kz_after=(70, 70, 70), kz_pre_review=70, remaining=0,
+    )
+    base = rules.base_losses(mini.waves, mini.attacks)
+    zero = dump_record(mini.measure_ids, 5, outcome, base, FinalIndexWeights(Fraction(1), Fraction(0)))
+    twenty = dump_record(mini.measure_ids, 5, outcome, base, FinalIndexWeights(Fraction(1), Fraction(20)))
+    assert Fraction(str(zero["final_index"])) == 70
+    ros2 = Fraction(round_half_away_frac(Fraction(str(twenty["ros"])) * 100), 100)
+    assert Fraction(str(twenty["final_index"])) == 70 + 20 * ros2
+
+
+def test_analyze_final_index_follows_the_weights(tmp_path, capsys):
+    results = tmp_path / "results.json"
+    results.write_text(json.dumps(RESULTS), encoding="utf-8")
+    analyze.main(["--input", str(results), "--config", str(MINI), "--weight-ros", "0"])
+    zero = capsys.readouterr().out
+    analyze.main(["--input", str(results), "--config", str(MINI), "--weight-ros", "20"])
+    twenty = capsys.readouterr().out
+    assert zero != twenty
+    assert "Final-Index: min 55,00, max 90,00" in zero
+
+
+def test_analyze_handles_fractional_damage_from_the_legacy_file(capsys):
+    data = {
+        "results": [
+            {"kz_final": 70, "total_damage": 40.5, "costs": {"security_spend": 100, "total": 110, "event_opex": 10}, "selection": {}},
+        ]
+    }
+    analyze.compute_summary(data, 1, 620, Fraction(1), Fraction(20))
+    # RoS = (620 - 40.5 - 100) / 100 = 4.795 -> 4.80 (half away from zero), index = 70 + 20 * 4.80
+    assert "Final-Index: 166,00" in capsys.readouterr().out
+
+
+def test_dump_record_takes_the_weights(mini):
+    outcome = rules.CompactOutcome(
+        kz_final=70, own_cost=100, total_cost=104, damage_eur=5000, event_opex=4,
+        event_budget=0, over_budget=False, kz_after=(70, 70, 70), kz_pre_review=70, remaining=0,
+    )
+    base = rules.base_losses(mini.waves, mini.attacks)
+    one = dump_record(mini.measure_ids, 5, outcome, base, ONE)
+    two = dump_record(mini.measure_ids, 5, outcome, base, FinalIndexWeights(Fraction(2), Fraction(1)))
+    assert one["final_index"] != two["final_index"]
+    assert one["ros"] == two["ros"]
+    with pytest.raises(TypeError):
+        dump_record(mini.measure_ids, 5, outcome, base)
+
+
+def test_balance_report_reads_the_config_weights(tmp_path):
+    content = REPO_ROOT / "tests" / "fixtures" / "mini_content"
+    plain = balance.build_balance_report(MINI, content)
+    heavy_path = _write_config(tmp_path, MINI, {"weight_kz": 1, "weight_ros": 2})
+    heavy = balance.build_balance_report(heavy_path, content)
+
+    def top_final_index(report):
+        summary = report["tiers"]["low"]["distribution"]["data"]["static"]
+        return [entry["final_index"] for entry in summary["top_in_budget"]["final_index"]]
+
+    assert top_final_index(plain) != top_final_index(heavy)
+    assert plain["final_index_weights"] == {"weight_kz": 1, "weight_ros": 1}
+    assert heavy["final_index_weights"] == {"weight_kz": 1, "weight_ros": 2}
+    assert heavy["cross_tier"]["final_index"]["data"]["weight_ros"] == 2
+    assert heavy["index_weights_source"] == "Konfiguration"
+
+
+def test_analyze_resolves_weights_from_the_given_config(tmp_path, capsys):
+    results = tmp_path / "results.json"
+    results.write_text(json.dumps(RESULTS), encoding="utf-8")
+    heavy = _write_config(tmp_path, MINI, {"weight_kz": 1, "weight_ros": 2})
+
+    analyze.main(["--input", str(results), "--config", str(MINI)])
+    plain_out = capsys.readouterr().out
+    analyze.main(["--input", str(results), "--config", str(heavy)])
+    heavy_out = capsys.readouterr().out
+    assert plain_out != heavy_out
+
+    analyze.main(["--input", str(results), "--config", str(heavy), "--weight-kz", "1", "--weight-ros", "1"])
+    assert capsys.readouterr().out == plain_out
+
+
+def test_analyze_without_config_uses_the_repository_config(tmp_path, capsys, monkeypatch):
+    results = tmp_path / "results.json"
+    results.write_text(json.dumps(RESULTS), encoding="utf-8")
+
+    analyze.main(["--input", str(results)])
+    plain_out = capsys.readouterr().out
+    assert "Final-Index: min 55,00, max 90,00" in plain_out
+
+    real = load_config(CONFIG_PATH)
+    weighted = dataclasses.replace(real, final_index=FinalIndexWeights(Fraction(2), Fraction(1)))
+    monkeypatch.setattr(analyze, "load_config", lambda path: weighted)
+    analyze.main(["--input", str(results)])
+    assert "Final-Index: min 110,00, max 180,00" in capsys.readouterr().out
+
+    analyze.main(["--input", str(results), "--weight-kz", "3"])
+    assert "Final-Index: min 165,00, max 270,00" in capsys.readouterr().out
+
+
+def test_analyze_weight_flags_default_to_none():
+    args = analyze.parse_args([])
+    assert args.weight_kz is None and args.weight_ros is None
+    args = analyze.parse_args(["--weight-kz", "2", "--weight-ros", "1/2"])
+    assert (args.weight_kz, args.weight_ros) == (Fraction(2), Fraction(1, 2))

@@ -1,0 +1,105 @@
+\#{ Attack worksheet body, shared by the revealed worksheets and the Welle 0 document: loops and inserts only. Every number arrives as a finished string from the print model. A box with a value is printed filled (Welle 0), an empty one stays for the players. The document sets `sheet`, and optionally `intro`. }
+\BLOCK{macro fillline(parts)}
+\#{ Called as a statement (call ... endcall): Jinja then applies no escaping to the macro output. The next line only lets the macro accept the call block. }
+\BLOCK{if caller}\BLOCK{endif}
+\fillline{\BLOCK{for part in parts}\BLOCK{if part is string}\VAR{part}\BLOCK{elif part.value is none}\ibox{\VAR{part.size}}\BLOCK{else}\ifilled{\VAR{part.size}}{\VAR{part.value}}\BLOCK{endif}\BLOCK{endfor}}
+\BLOCK{endmacro}
+\attacktitle{\VAR{sheet.title}}
+\VAR{sheet.narrative}\par
+\BLOCK{if intro is defined}
+\refline{\VAR{intro}}
+\BLOCK{endif}
+
+\step{\VAR{sheet.step_headings.cia}}
+\hint{\VAR{sheet.intro.start_values_intro}}
+\hint{\VAR{sheet.intro.cia_table_instruction}}
+\vspace{1mm}
+\noindent\begin{tabularx}{\linewidth}{|X|C{22mm}|C{16mm}|C{16mm}|C{16mm}|}
+\hline
+\rowcolor{mhpblue}\BLOCK{for cell in sheet.cia_header}\hdr{\VAR{cell}}\BLOCK{if not loop.last} & \BLOCK{endif}\BLOCK{endfor} \\
+\hline
+\rowcolor{mhplight}\rowstrut{}\BLOCK{for cell in sheet.cia_base_row}\VAR{cell}\BLOCK{if not loop.last} & \BLOCK{endif}\BLOCK{endfor} \\
+\hline
+\BLOCK{if sheet.cia_filled}
+\BLOCK{for row in sheet.cia_filled}
+\rowstrut{}\VAR{row[0]} & \levelbadge{\VAR{row[1]}} & \VAR{row[2]} & \VAR{row[3]} & \VAR{row[4]} \\
+\hline
+\BLOCK{endfor}
+\BLOCK{else}
+\BLOCK{for row in range(sheet.cia_rows)}
+\rowstrut{} & \textcolor{mhpgrey}{\footnotesize \VAR{sheet.level_hint}} & & & \\
+\hline
+\BLOCK{endfor}
+\BLOCK{endif}
+\rowcolor{mhplight}\rowstrut{}\textbf{\VAR{sheet.labels.sum}} & &\BLOCK{if sheet.cia_sum} \textbf{\VAR{sheet.cia_sum[0]}}\BLOCK{endif} &\BLOCK{if sheet.cia_sum} \textbf{\VAR{sheet.cia_sum[1]}}\BLOCK{endif} &\BLOCK{if sheet.cia_sum} \textbf{\VAR{sheet.cia_sum[2]}}\BLOCK{endif} \\
+\hline
+\end{tabularx}
+
+\step{\VAR{sheet.step_headings.e_value}}
+\hint{\VAR{sheet.intro.e_value_intro}}
+\hint{\VAR{sheet.cia_rationale}}
+\BLOCK{call fillline(sheet.e_value_line)}\BLOCK{endcall}
+
+\step{\VAR{sheet.step_headings.bonus}}
+\hint{\VAR{sheet.intro.bonus_intro}}
+\vspace{1mm}
+\noindent\begin{tabularx}{\linewidth}{|X|C{20mm}|C{16mm}|C{18mm}|}
+\hline
+\rowcolor{mhpblue}\hdr{\VAR{sheet.bonus_header[0]}} & \hdr{\VAR{sheet.bonus_header[1]}} & \hdr{\VAR{sheet.bonus_header[2]}} & \hdr{\VAR{sheet.labels.fulfilled}} \\
+\hline
+\BLOCK{for row in sheet.bonus_table}
+\rowstrut{}\VAR{row[0]}\newline\textcolor{mhpgrey}{\footnotesize \VAR{row[3]}} & \levelbadge{\VAR{row[1]}} & \VAR{row[2]} & \BLOCK{if sheet.bonus_fulfilled}\tickfilled{\VAR{sheet.bonus_fulfilled[loop.index0]}}\BLOCK{else}\tickbox\BLOCK{endif} \\
+\hline
+\BLOCK{endfor}
+\end{tabularx}
+\BLOCK{call fillline(sheet.total_bonus_line)}\BLOCK{endcall}
+
+\step{\VAR{sheet.step_headings.reduction}}
+\BLOCK{call fillline(sheet.reduction_line)}\BLOCK{endcall}
+
+\fillreport{1}
+\clearpage
+\step{\VAR{sheet.step_headings.cases}}
+\hint{\VAR{sheet.intro.cap_intro}}
+\refline{\VAR{sheet.cap_line[0]}}
+\BLOCK{for case in sheet.cases}
+\par\vspace{1mm}\textbf{\VAR{case.heading}}\par
+\VAR{case.text}\par
+\BLOCK{if case.outcome}
+\textbf{\VAR{case.outcome}}\par
+\BLOCK{endif}
+\BLOCK{if case.lines}
+\hint{\VAR{sheet.intro.case_3_hint}}
+\BLOCK{for line in case.lines}
+\BLOCK{call fillline(line)}\BLOCK{endcall}
+\BLOCK{endfor}
+\hint{\VAR{sheet.kz_hint}}
+\BLOCK{endif}
+\BLOCK{endfor}
+
+\BLOCK{if sheet.with_recovery}
+\step{\VAR{sheet.step_headings.recovery}}
+\hint{\VAR{sheet.intro.recovery_intro}}
+\vspace{1mm}
+\noindent\begin{tabularx}{\linewidth}{|C{22mm}|X|C{40mm}|}
+\hline
+\rowcolor{mhpblue}\hdr{\VAR{sheet.recovery_header[0]}} & \hdr{\VAR{sheet.recovery_header[1]}} & \hdr{\VAR{sheet.recovery_header[2]}} \\
+\hline
+\BLOCK{for row in sheet.recovery_table}
+\rowstrut{}\levelbadge{\VAR{row[0]}} & \VAR{row[1]} & \VAR{row[2]} \\
+\hline
+\BLOCK{endfor}
+\end{tabularx}
+\BLOCK{call fillline(sheet.recovery_line)}\BLOCK{endcall}
+
+\BLOCK{endif}
+\step{\VAR{sheet.step_headings.wave_kz}}
+\BLOCK{call fillline(sheet.wave_kz_line)}\BLOCK{endcall}
+\hint{\VAR{sheet.intro.events_hint}}
+\vspace{2mm}
+\BLOCK{call fillline(sheet.result_line)}\BLOCK{endcall}
+\BLOCK{if sheet.reality_line}
+\vspace{2mm}
+\BLOCK{call fillline(sheet.reality_line)}\BLOCK{endcall}
+\BLOCK{endif}
+\fillreport{2}

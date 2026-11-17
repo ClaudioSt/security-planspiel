@@ -1,0 +1,493 @@
+# Mini-Inhalt für die Tests der Texte-Prüfungen (passt zu tests/fixtures/mini_config.json).
+# Hand-prüfbar und bewusst kurz; die echten Texte stehen in content/texte.toml.
+
+[measures.M1]
+focus = "Zugriffe regeln"
+description = "Wer darf was im Unternehmen? Die Maßnahme legt fest, wer sich wo anmelden darf."
+[measures.M1.levels_desc]
+1 = "Zentrale Benutzerverwaltung mit Zwei-Faktor-Anmeldung für Admins"
+2 = "Rollenmodell und regelmäßige Rechteprüfung"
+3 = "Privilegierte Zugänge nur zeitlich begrenzt und aufgezeichnet"
+[measures.M1.levels_simple]
+1 = "Zentrale Benutzerverwaltung, Admins brauchen zwei Faktoren zum Einloggen."
+2 = "Klare Rollen, Rechte werden regelmäßig geprüft."
+3 = "Besonders mächtige Zugänge gibt es nur auf Zeit und werden aufgezeichnet."
+
+[measures.M2]
+focus = "Ereignisse erkennen"
+description = "Ungewöhnliches wird gesammelt und ausgewertet, damit es auffällt."
+[measures.M2.levels_desc]
+1 = "Zentrale Protokolle, 30 Tage Aufbewahrung"
+2 = "Auswertung mit Alarmregeln"
+3 = "Externes Team überwacht rund um die Uhr"
+[measures.M2.levels_simple]
+1 = "Protokolle werden gesammelt und aufbewahrt."
+2 = "Auffälligkeiten lösen automatisch einen Alarm aus."
+3 = "Externe Sicherheitsexperten überwachen rund um die Uhr."
+
+[measures.M4]
+focus = "Daten sichern"
+description = "Daten werden gesichert, damit der Betrieb nach einem Vorfall weiterläuft."
+[measures.M4.levels_desc]
+1 = "Regelmäßige Sicherung der wichtigsten Systeme"
+2 = "Getrennte Sicherungskopie, Wiederherstellung wird getestet"
+3 = "Ausgefeilte Wiederanlaufplanung mit geübtem Ablauf"
+[measures.M4.levels_simple]
+1 = "Wichtige Daten werden regelmäßig gesichert."
+2 = "Eine Kopie liegt getrennt, das Zurückspielen wird geübt."
+3 = "Der Wiederanlauf ist geplant und eingeübt."
+
+[measures.M6]
+focus = "Menschen schulen"
+description = "Mitarbeitende lernen, Gefahren zu erkennen und richtig zu reagieren."
+[measures.M6.levels_desc]
+1 = "Kurzes E-Learning"
+2 = "Regelmäßige Schulungen und Übungen"
+3 = "Rollenbezogene Trainings, klarer Meldeprozess"
+[measures.M6.levels_simple]
+1 = "Ein kurzes Online-Training für alle."
+2 = "Regelmäßige Schulungen und Übungen."
+3 = "Spezielle Trainings je nach Rolle, klarer Prozess zum Melden von Verdachtsfällen."
+
+[attacks.ransomware.veiled]
+title = "Angriff"
+
+[attacks.ransomware.revealed]
+name = "Ransomware"
+narrative = "Ein Mitarbeiter hat auf eine gefälschte E-Mail geklickt. Die Angreifer versuchen, Daten zu verschlüsseln."
+cia_rationale = "Bei Ransomware zählen Vertraulichkeit (C) und Integrität (I) stärker."
+case_1 = "Eure Maßnahmen reichen nicht aus, der Angriff setzt sich durch."
+case_2 = "Ihr wehrt den Angriff vollständig ab."
+case_3 = "Ihr mindert die Auswirkungen teilweise."
+[attacks.ransomware.revealed.bonus_reasons]
+M4 = "Backup ermöglicht schnelle Wiederherstellung"
+M6 = "Geschulte Mitarbeiter erkennen Phishing"
+
+[attacks.ot.veiled]
+title = "Angriff"
+
+[attacks.ot.revealed]
+name = "OT-Störung"
+narrative = "In eurer Produktionssteuerung wurde eine Schwachstelle ausgenutzt."
+cia_rationale = "Bei OT-Störungen ist Verfügbarkeit (A) entscheidend."
+case_1 = "Eure Maßnahmen reichen nicht aus, die Produktion fällt aus."
+case_2 = "Ihr verhindert den Ausfall vollständig."
+case_3 = "Ihr mindert die Auswirkungen teilweise."
+
+[attacks.exfil.veiled]
+title = "Angriff"
+
+[attacks.exfil.revealed]
+name = "Datenexfiltration"
+narrative = "Über einen kompromittierten Lieferanten-Zugang wurden vertrauliche Konstruktionsdaten abgegriffen."
+cia_rationale = "Bei Exfiltration zählt Vertraulichkeit (C) am meisten."
+case_1 = "Eure Maßnahmen reichen nicht aus, der Datenabfluss gelingt."
+case_2 = "Ihr verhindert die Exfiltration vollständig."
+case_3 = "Ihr reduziert die Auswirkungen teilweise."
+[attacks.exfil.revealed.bonus_reasons]
+M1 = "IAM/PAM verhindert unbefugten Zugriff"
+M2 = "SIEM erkennt Datenabfluss"
+
+[events.kurswechsel]
+narrative = "Nach den neuesten Erkenntnissen entscheidet die Geschäftsführung: Eure Sicherheitsstrategie wird neu ausgerichtet."
+rule = """Die Geschäftsführung richtet die Sicherheitsstrategie neu aus. Im Change-Fenster nach dieser Welle führt jedes Team genau einen Maßnahmentausch durch: Eine in dieser Welle aktive Maßnahme fällt ganz weg, eine in dieser Welle nicht aktive Maßnahme kommt auf einem frei wählbaren Level hinzu. Der Kunde übernimmt die Init-Kosten der neuen Maßnahme bis zur Höhe der Init-Kosten der wegfallenden Maßnahme auf ihrem Level in dieser Welle; nur einen Mehrbetrag zahlt das Team, eine günstigere neue Maßnahme bringt keine Erstattung. Abhängige Maßnahmen der wegfallenden Maßnahme senkt das Team im selben Fenster passend ab. Ist in dieser Welle keine oder jede Maßnahme aktiv, entfällt der Tausch. Normale Levelwechsel im selben Change-Fenster bleiben erlaubt."""
+
+[events.operative_unterstuetzung]
+narrative = "Ihr bekommt operative Unterstützung: Ein zentraler Rahmenvertrag senkt kurzfristig die laufenden Betriebskosten."
+rule = "Zählt für jede Maßnahme, die in dieser Welle aktiv ist."
+
+[events.sparprogramm]
+narrative = "Der CFO verkündet ein konzernweites Sparprogramm. Das Budget wird gekürzt."
+rule = "Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet)."
+
+[events.oem_audit]
+narrative = "Der große Automobilkunde prüft die Sicherheitsstandards."
+checklist_heading = "Audit Checkliste"
+
+[events.kritische_schwachstelle]
+narrative = "Ihr werdet von einem Softwarehersteller informiert: In einem von euch genutzten System wurde eine kritische Schwachstelle entdeckt."
+[events.kritische_schwachstelle.tier_labels]
+0 = "Patch verzögert/chaotisch"
+1 = "Patch gelingt, aber mit Reibung"
+2 = "Patch planbar und zügig"
+3 = "Patch routiniert, mit Nachweis/Reporting"
+
+[events.exzellenz_bonus]
+narrative = "Maßnahmen, die nachweislich „enterprise-ready“ umgesetzt sind, erhöhen das Vertrauen."
+
+[events.nervige_authentifizierung]
+narrative = "Ihr zieht die Zugriffskontrollen an, aber die Belegschaft wurde nicht vorbereitet."
+
+[final_events.budget_review]
+narrative = "Nach Abschluss eurer Beauftragung macht der CFO den Kassensturz."
+rule = "Prüft euer Restbudget."
+
+[sheets.angriff]
+start_values_intro = "Euer Unternehmen startet je Schutzziel mit einem Basiswert. Eure gewählten Maßnahmen erhöhen diese Werte."
+cia_table_instruction = "Tragt die CIA-Werte eurer Maßnahmen ein und berechnet euren Gesamtschutz über alle Schutzziele."
+e_value_intro = "Als Nächstes berechnet ihr den Effektivitätswert (E-Wert). Er zeigt, wie gut ihr gegen diesen Angriffstyp geschützt seid:"
+bonus_intro = "Zusätzlich bekommt ihr einen Bonus, wenn ihr passende Maßnahmen für diesen Angriff mindestens auf dem richtigen Level habt. Der Bonus wird zur Gesamtreduktion addiert."
+case_3_hint = "Berechnet Schaden und KZ:"
+step_cia = "CIA-Werte eintragen"
+step_e_value = "E-Wert berechnen"
+step_bonus = "Bonus prüfen"
+step_reduction = "Gesamtreduktion berechnen"
+step_cases = "Fall bestimmen, Schaden und KZ berechnen"
+step_recovery = "Recovery anrechnen"
+step_wave_kz = "KZ-Änderung dieser Welle"
+label_step = "Schritt"
+label_gr = "GR"
+label_kz = "KZ"
+label_kz_attack = "KZ Angriff"
+label_kz_events = "KZ Events"
+label_result = "Ergebnis dieses Angriffs"
+label_damage_before_recovery = "Schaden vor Recovery"
+label_damage_after_recovery = "Schaden nach Recovery"
+label_recovery_factor = "Recovery-Faktor r"
+label_threshold = "Schwelle"
+label_cap = "Kappung"
+label_upper = "Obergrenze"
+cap_intro = "Nur der Teil eurer Gesamtreduktion über der Schwelle wirkt, höchstens bis zur Kappung. Erreicht ihr die Obergrenze, wehrt ihr den Angriff vollständig ab."
+recovery_intro = "Eure Backup- und Recovery-Fähigkeit senkt den Schaden dieses Angriffs. Lest den Faktor r am Level eurer Maßnahme ab:"
+kz_decimals_hint = "Rechnet genau; zwei Nachkommastellen genügen."
+kz_fraction_hint = "Multipliziert zuerst mit der oberen Zahl und teilt dann durch die untere. Rundet nur das Ergebnis auf zwei Nachkommastellen, nie die Steigung."
+events_hint = "KZ Events ist die KZ-Wirkung aller Events dieser Welle zusammen; die Spielleitung nennt sie euch."
+wave_kz_rounding = "gerundet (ab der Hälfte vom Betrag aufrunden)"
+
+[sheets.budget]
+title = "Budget"
+intro = "Das Budget ist das Geld, das euch Beratern für die Umsetzung von Maßnahmen zur Verfügung steht. Mit dem Budget müsst ihr Maßnahmen initiieren und betreiben."
+init_what = "Einmalige Anschaffungskosten für eine Maßnahme (Hardware, Software, Einrichtung)"
+init_when = "Einmal zu Spielbeginn"
+opex_what = "Laufende Betriebskosten (Lizenzen, Personal, Wartung)"
+opex_when = "Jede Welle erneut"
+tier_intro = "Im Planspiel wählt ihr zu Beginn ein Budget-Tier. Je höher euer Budget, desto mehr bzw. stärkere Maßnahmen könnt ihr umsetzen. Gleichzeitig sind die Erwartungen höher, was sich in einem entsprechend angepassten Startwert der Kundenzufriedenheit (KZ) widerspiegelt. Legt daher zuerst euer Budget-Tier fest, bevor ihr eure Maßnahmen auswählt."
+anticipated_sum_intro = "In diesem Sheet plant und trackt ihr euer Budget über alle Wellen. Init-Kosten fallen nur einmalig an, wenn ihr eine Maßnahme einführt oder auf ein höheres Level upgraded. OPEX-Kosten fallen dagegen in jeder Welle an, in der die Maßnahme aktiv ist."
+
+[sheets.ros]
+title = "Return on Security"
+instruction = "Trag die folgenden Werte ein:"
+purpose = "Der RoS zeigt, ob sich eure Security-Investition finanziell gelohnt hat."
+
+[sheets.teamheft]
+planning_title = "Budget und Planung"
+planning_instruction = "Tragt je geplanter Maßnahme das Level sowie Init-Kosten und OPEX je Welle von der Maßnahmenkarte ein. Maßnahmen, die ihr nicht umsetzt, bleiben leer."
+step_costs = "Kostenarten"
+step_tiers = "Budget-Tier"
+step_planning = "Planung eurer Maßnahmen"
+kz_start = "KZ Start"
+opex_per_wave = "OPEX je Welle"
+ros_title = "Return on Security und Budget Review"
+ros_carry_hint = "Die Summen übernehmt ihr von den vorherigen Seiten."
+window_differences = "Init-Differenzen aus Change-Fenstern (inkl. Kurswechsel)"
+init_differences = "Init-Differenzen"
+own_costs = "Eigene Kosten"
+damage_sum = "Summe der Schäden"
+ros_short = "RoS"
+review_title = "Budget Review"
+review_intro = "Aus dem Restbudget am Ende des Spiels ergibt sich die KZ-Änderung des Budget Reviews. Rechnet zuerst das Restbudget aus."
+tier_budget = "Tier-Budget"
+budget_event = "Budgetänderung durch Events"
+event_opex = "OPEX-Änderung durch Events"
+review_costs = "Gesamtkosten inkl. OPEX-Änderung"
+remaining_budget = "Restbudget"
+sign_hint = "Event-Werte tragt ihr mit dem Vorzeichen ein, das auf der Eventkarte steht. Ein Minus bei der OPEX-Änderung ist eine Entlastung: Sie senkt die Kosten und steht deshalb bei den Kosten."
+kz_change = "KZ-Änderung"
+penalty_title = "Überzogenes Budget"
+penalty_intro = "Ist das Restbudget negativ, lest die KZ-Änderung für den überzogenen Betrag hier ab."
+overspend_header = "Überzogen um"
+
+[sheets.tracking]
+title = "Tracking-Bogen"
+intro = "Pro Welle eine Spalte, von oben nach unten: Werte vom Angriffsblatt, den Maßnahmenkarten und den Eventkarten."
+wave = "Welle"
+row_kz_before = "KZ vor der Welle"
+row_kz_change = "KZ-Änderung der Welle"
+row_kz_after = "KZ nach der Welle"
+row_damage = "Schaden der Welle"
+block_own = "Eigene Kosten (zählen für den RoS)"
+row_own_opex = "OPEX dieser Welle"
+row_own_window = "Init-Differenz netto"
+block_external = "Externe Effekte (zählen nicht für den RoS)"
+row_external_budget = "Event: Budget"
+row_external_opex = "Event: OPEX"
+row_remaining = "Restbudget (laufend)"
+row_kz_review = "KZ-Änderung Review"
+row_kz_final = "KZ final"
+kz_after_last = "KZ nach der letzten Welle"
+remaining_previous = "Restbudget der Spalte davor"
+rounding_hint = "Gerundet wird nur auf dem Angriffsblatt."
+clamp_lead = "KZ nach der Welle und KZ final werden begrenzt auf"
+clamp_to = "bis"
+external_hint = "Externe Effekte ändern nur das Budget, nicht den RoS. Event-Werte tragt ihr mit dem Vorzeichen der Eventkarte ein; bei Event: OPEX gilt der Wert je aktive Maßnahme mal der Zahl eurer aktiven Maßnahmen."
+window_title = "Change-Fenster nach Welle"
+window_intro = "Je Änderung das Level nach dem Fenster eintragen, bei einer Erhöhung auch Δ Init; beim Senken und Kündigen bleibt Δ Init leer. Unveränderte Maßnahmen bleiben leer, beliebig viele Änderungen sind möglich."
+window_level = "Level nach dem Fenster"
+window_delta = "Δ Init"
+window_sum = "Summe Init-Erhöhungen"
+window_credit = "Kurswechsel: Gutschrift Kunde"
+window_credit_short = "Gutschrift"
+window_net = "Init-Differenz netto"
+never_refund = "nie eine Erstattung"
+credit_hint = "Gutschrift Kunde = Init der wegfallenden Maßnahme (Level der Kurswechsel-Welle), höchstens Init der neuen."
+next_wave_hint = "Wirkung und OPEX zählen ab der nächsten Welle. Init-Differenz netto: in die Spalte der Welle davor."
+
+[sheets.welle]
+title = "So funktioniert eine Welle"
+intro = "Jede Welle läuft in dieser Reihenfolge ab (folgt den Pfeilen). Die Werte der Welle stehen erst auf dem Angriffsblatt."
+text_events = "Die Spielleitung nennt euch die Events der Welle. Ihre KZ-Wirkung zählt erst in der KZ-Änderung der Welle; Budget und OPEX tragt ihr im Tracking-Bogen ein."
+text_cia = "Tragt die CIA-Werte eurer Maßnahmen ein und addiert sie zum Basisschutz."
+text_e_value_lead = "Der E-Wert gewichtet euren Schutz je Schutzziel:"
+text_e_value_reveal = "Wie stark C, I und A zählen, steht auf dem Angriffsblatt."
+text_bonus = "Passende Maßnahmen auf dem verlangten Level bringen einen Bonus. Welche das sind, steht auf dem Angriffsblatt."
+text_reduction = "Mit der GR rechnet ihr in allen weiteren Schritten."
+text_cases_lead = "Nur der Teil der GR über der Schwelle wirkt, höchstens bis zur Kappung."
+case_1 = "Die GR liegt bei der Schwelle oder darunter: voller Schaden und die schlechteste KZ-Wirkung."
+case_2 = "Die GR erreicht die Obergrenze (Schwelle plus Kappung) oder liegt darüber: kein Schaden und die beste KZ-Wirkung."
+case_3 = "Die GR liegt dazwischen: Schaden und KZ ändern sich linear mit der GR."
+text_recovery = "Greift eure Backup- und Recovery-Maßnahme, senkt der Faktor r den Schaden (Tabelle unten). Ob die Welle Recovery zulässt, steht auf dem Angriffsblatt."
+rounding_lead = "Die KZ-Änderung der Welle (Angriff plus Events) wird genau einmal"
+clamp_next = "Das Ergebnis ist der Ausgangswert der nächsten Welle."
+window_rules = "Ihr dürft Level hoch oder runter setzen, Maßnahmen kündigen und neue hinzufügen, beliebig viele. Die Init-Differenz zahlt ihr netto und sofort, es gibt nie eine Erstattung. Wirkung und OPEX zählen ab der nächsten Welle."
+step_window = "Change-Fenster"
+effects_attacks_head = "Angriffe wirken auf"
+effects_events_head = "Events wirken auf"
+effect_damage = "Schaden in Euro"
+effect_kz = "Kundenzufriedenheit (KZ)"
+effect_budget = "Budget"
+effect_opex = "OPEX"
+ros_note = "Für den RoS zählen eure eigenen Kosten (Init, OPEX, Init-Differenzen) und die Schäden. Event-Effekte auf Budget und OPEX zählen nicht."
+
+[sheets.backup_recovery]
+title = "Backup & Recovery"
+subtitle = "Event: Nach jeder Welle mit Recovery-Option"
+narrative = "Nach einem Angriff mit entstandenem Schaden prüft ihr, ob Systeme wiederhergestellt werden müssen oder ob der Betrieb stabil geblieben ist. Falls überhaupt ein Schaden entstanden ist, entscheidet eure Backup- und Recovery-Fähigkeit darüber, wie stark ihr den finanziellen Impact senken könnt."
+
+[sheets.backup_recovery.level_labels]
+0 = "kein Recovery"
+1 = "Basis-Recovery"
+2 = "teilw. Recovery"
+3 = "starke Recovery"
+
+[sheets.karten]
+legend_title = "So liest du eine Maßnahmenkarte"
+legend_intro = "Jede Karte zeigt eine Maßnahme auf einem Level. Die Nummern auf der Beispielkarte gehören zu den Erklärungen darunter."
+legend_cia = "Der CIA-Beitrag wird zu eurem Basisschutz addiert und geht in euren E-Wert ein. C steht für Vertraulichkeit, I für Integrität, A für Verfügbarkeit."
+legend_formula = "E-Wert = C · wC + I · wI + A · wA"
+legend_reveal = "Wie stark C, I und A in einer Welle zählen (wC, wI, wA) und welche Maßnahmen gegen den Angriff einen Bonus bringen, erfahrt ihr erst mit dem Angriffsblatt der Welle."
+legend_costs = "Init zahlt ihr einmal, wenn ihr die Maßnahme einführt oder auf ein höheres Level hebt. OPEX zahlt ihr in jeder Welle, in der die Maßnahme aktiv ist."
+legend_dependency = "Das Schloss bedeutet: Dieses Level gibt es nur mit der genannten Voraussetzung. Karten ohne Schloss haben keine Voraussetzung."
+legend_levels = "Die Farbe des Abzeichens zeigt das Level: grün für das niedrigste, gelb für das mittlere, grau für das höchste."
+per_wave = "je Welle"
+requires = "Voraussetzung"
+
+[sheets.eventkarten]
+review_header = "Event: Zum Abschluss"
+kz = "KZ"
+fulfilled = "erfüllt"
+each_at_least = "jeweils mindestens auf Level"
+level_of_measure = "Level der Maßnahme"
+per_measure_at_level = "Je Maßnahme auf Level"
+level_or_higher = "oder höher"
+condition_if = "Wenn"
+condition_and = "und"
+level_equals = "auf Level"
+otherwise = "Sonst"
+total_budget = "Gesamtbudget"
+opex_costs = "OPEX"
+per_active_measure = "je aktiver Maßnahme"
+kurswechsel_window = "Maßnahmentausch im Change-Fenster nach Welle"
+tier_heading = "Restbudget am Ende"
+tier_from = "ab"
+overspend_label = "Überzogen:"
+per_started = "je angefangene"
+
+[sheets.labels]
+measure = "Maßnahme"
+level = "Level"
+base_protection = "Basisschutz"
+sum = "Summe"
+from_level = "Ab Level"
+bonus = "Bonus"
+fulfilled = "Erfüllt"
+total_bonus = "Gesamtbonus"
+total_reduction = "Gesamtreduktion"
+e_value = "E-Wert"
+damage = "Schaden"
+satisfaction = "Kundenzufriedenheit"
+case = "Fall"
+cost_type = "Kostenart"
+what = "Was ist das?"
+when = "Wann fällig?"
+tier = "Tier"
+available_budget = "Verfügbares Budget"
+period = "Zeitraum"
+init_costs = "Init-Kosten"
+opex = "OPEX"
+anticipated_sum = "Antizipierte Summe"
+budget_remaining = "Budget verbleibend"
+damage_wave = "Schaden (Welle)"
+start = "Start"
+after_wave = "Nach Welle"
+events = "Events"
+metric = "Kennzahl"
+value = "Wert"
+total_init = "Gesamt Init-Kosten"
+total_opex = "Gesamt OPEX Kosten"
+total_costs = "Gesamtkosten"
+avoided_damage = "Vermiedener Schaden"
+event_after_wave = "Event: Nach Welle"
+condition_met = "Bedingung erfüllt"
+effect = "Auswirkung"
+no_implementation = "Keine Umsetzung"
+final_damage = "Endschaden"
+min_level = "mindestens auf Level"
+mail_from = "Von"
+mail_to = "An"
+mail_subject = "Betreff"
+
+
+[sheets.spielleitung]
+title = "Spielleitung: Kennwerte, Prüfzeilen und Lösungsschlüssel"
+notice = "Nur für die Spielleitung – nicht an Teams ausgeben"
+intro = "Dieses Heft enthält je Welle die Kennwerte, Prüfzeilen, den Ereignisplan und die Lösungsschlüssel. Es verrät die Angriffe und darf die Teams vor der jeweiligen Welle nicht erreichen."
+gr_legend = "GR steht für Gesamtreduktion: E-Wert plus Gesamtbonus."
+contents_title = "Inhalt"
+how_to_title = "So prüft ihr ein Arbeitsblatt"
+how_to = [
+    "Lest die GR des Teams vom Arbeitsblatt ab und sucht ihren Bereich in den Prüfzeilen der Welle: In den beiden äußeren Fällen sind Schaden und KZ fest, im mittleren Fall lest ihr sie aus der Tabelle der ganzen GR-Schritte ab.",
+    "Liegt die GR zwischen zwei Zeilen, rechnet das Team linear: Der Schaden fällt je GR-Punkt um den festen Betrag, die KZ steigt je GR-Punkt um die Steigung.",
+    "Weicht ein Wert ab, folgt dem Lösungsschlüssel in Rechenreihenfolge, bis ihr die erste abweichende Zeile findet.",
+]
+paths_title = "Referenzpfade der Lösungsschlüssel"
+paths_intro = "Die Schlüssel folgen je Budget-Tier einem zulässigen Spielverlauf: Start, Maßnahmentausch des Kurswechsels und ein freiwilliger Zug im Change-Fenster danach. Ein Team mit anderer Auswahl hat andere Werte; die Prüfzeilen gelten für jedes Team."
+path_start = "Start"
+path_window = "Change-Fenster nach Welle"
+path_swap = "Tausch"
+params_title = "Kennwerte der Welle"
+param_weights = "Gewichte C / I / A"
+param_unit = "Schaden je GR-Punkt unter der Obergrenze"
+param_slope = "KZ-Steigung je GR-Punkt"
+param_kz_full_damage = "KZ Angriff bei vollem Schaden"
+param_kz_full_defence = "KZ Angriff bei voller Abwehr"
+param_recovery = "Recovery"
+recovery_allowed = "zulässig, r nach dem Level von"
+recovery_not_allowed = "nicht zulässig"
+bonus_title = "Bonus-Tabelle mit Begründung"
+bonus_reason_head = "Begründung"
+check_title = "Prüfzeilen"
+check_case_head = "Bereich der GR"
+check_kz_head = "KZ Angriff"
+check_table_intro = "Ganze GR-Schritte im mittleren Fall"
+events_title = "Ereignisplan der Welle"
+events_none = "Keine Events in dieser Welle."
+event_head_name = "Event"
+event_head_kind = "Wirkung auf"
+event_head_effect = "Bedingung und Effekt"
+kind_window = "Change-Fenster"
+kind_external_opex = "OPEX (extern)"
+kind_external_budget = "Budget (extern)"
+kind_kz = "KZ"
+kind_review = "Budget Review"
+keys_title = "Lösungsschlüssel"
+keys_intro = "Werte je Budget-Tier auf dem Referenzpfad, in Rechenreihenfolge."
+key_head = "Wert"
+key_selection = "Auswahl in dieser Welle"
+key_cia = "CIA-Summe C / I / A"
+key_e_value = "E-Wert"
+key_bonus = "Gesamtbonus (erfüllt ×, verfehlt –)"
+key_gr = "GR"
+key_case = "Fall"
+key_damage_before = "Schaden vor Recovery"
+key_recovery = "Recovery-Faktor r"
+key_damage_after = "Schaden nach Recovery"
+key_kz_attack = "KZ Angriff"
+key_kz_event = "KZ Events"
+key_kz_exact = "KZ-Änderung vor dem Runden"
+key_kz_change = "KZ-Änderung der Welle (gerundet)"
+key_kz_before = "KZ vor der Welle"
+key_kz_unclamped = "KZ vor der Begrenzung"
+key_kz_after = "KZ nach der Welle"
+key_own_opex = "Eigene OPEX dieser Welle"
+key_window_cost = "Kosten des Change-Fensters danach"
+key_external_budget = "Budgetänderung durch Events"
+key_external_opex = "OPEX-Änderung durch Events (Plus: Kosten)"
+key_remaining = "Restbudget nach der Welle"
+review_intro = "Aus dem Restbudget am Ende folgt die KZ-Änderung des Budget Reviews. Ist das Restbudget negativ, kostet jeder angefangene Schritt X Punkte KZ."
+review_x = "X: KZ-Abzug je angefangenem Schritt"
+review_step = "Schrittweite"
+final_title = "Endergebnis je Tier"
+final_intro = "Werte der Referenzpfade nach der letzten Welle und dem Budget Review."
+final_head = "Kennzahl"
+final_remaining = "Restbudget am Ende"
+final_review_delta = "KZ-Änderung des Budget Reviews"
+final_kz = "KZ am Ende"
+final_own_spend = "Eigene Kosten (Init, OPEX, Init-Differenzen)"
+final_total_damage = "Summe der Schäden"
+final_ros = "RoS"
+final_index = "Final-Index"
+final_index_weight = "Gewicht k des RoS im Final-Index"
+final_index_note = "Der Final-Index ist der Vergleichswert der Spielleitung für das Debriefing: KZ am Ende plus k mal RoS, der RoS vorher auf zwei Nachkommastellen gerundet."
+welle0_title = "Lösungsschlüssel der Übungswelle"
+welle0_intro = "Alle Zwischenwerte des Übungsbeispiels, in Rechenreihenfolge."
+clues_title = "Hinweis-Matrix für die Discovery-Phase"
+clues_intro = "Je Angriff die Hinweise in den Vorab-Dokumenten: Quelle, wörtliches Zitat und Begründung."
+clue_head_nr = "Nr."
+clue_head_document = "Dokument"
+clue_head_section = "Abschnitt"
+clue_head_quote = "Zitat"
+clue_head_why = "Warum es hinweist"
+clue_head_measures = "Maßnahmen (Gewicht)"
+clue_section_anfrage_mail_lage = "Lage"
+clue_section_audit_mail_einleitung = "Einleitung"
+clue_section_zeitungsartikel = "Ticker"
+
+[story.steckbrief]
+doc_title = "MECHTECH GmbH: Unternehmenssteckbrief"
+[story.steckbrief.kurzprofil]
+heading = "Kurzprofil"
+text = "Die MECHTECH GmbH ist ein mittelständischer Präzisionsfertiger mit ca. 80 Mitarbeitenden."
+[story.steckbrief.produkte]
+heading = "Produkte & Leistungen"
+bullets = ["Präzisions-Getriebeteile", "Prototyping und Kleinserien"]
+[story.steckbrief.betrieb]
+heading = "Betrieb & IT"
+bullets = [
+    "Büro und Produktion nutzen dasselbe Netzwerk",
+    "Sicherung der Daten nur einmal im Monat",
+    "Ein Lieferanten-Portal ist aus dem Internet erreichbar",
+]
+
+[story.zeitungsartikel]
+doc_title = "AUTO TIMES"
+[story.zeitungsartikel.aufmacher]
+heading = "OEM verschärft Anforderungen"
+text = "Ein führender Hersteller kündigt Audits für alle Zulieferer an."
+caption = "Symbolbild: Audits für Zulieferer."
+[story.zeitungsartikel.bericht]
+heading = "Vorfall bei einem Zulieferer"
+paragraphs = [
+    "Drei Fertigungslinien standen still, Liefertermine wurden nicht gehalten.",
+    "„Wir hatten kein funktionierendes Backup-Konzept“, so der Geschäftsführer.",
+]
+caption = "Symbolbild: Stillstand in der Fertigung."
+
+[story.anfrage_mail]
+doc_title = "Anfrage: IT-Security-Beratung für MechTech GmbH"
+[story.anfrage_mail.kopf]
+von = "\"Dr. Thomas Weber\" <t.weber@mechtech-gmbh.de>"
+an = "\"VWI Security Consulting <security-consulting@vwi.de>\""
+[story.anfrage_mail.anrede]
+text = "Sehr geehrte Damen und Herren,"
+[story.anfrage_mail.lage]
+heading = "Lage"
+paragraphs = ["Wir wissen nicht genau, wer überall administrativen Zugriff auf unsere Systeme hat."]
+
+[story.audit_mail]
+doc_title = "Information Security Assessment - Supplier Audit"
+[story.audit_mail.kopf]
+von = "\"Klaus Hoffmann\" <k.hoffmann@premium-oem.com>"
+an = "\"Dr. Thomas Weber <t.weber@mechtech-gmbh.de>\""
+[story.audit_mail.einleitung]
+heading = "Einleitung"
+text = "Wir werden alle strategischen Zulieferer einem umfassenden IT-Security-Audit unterziehen."
