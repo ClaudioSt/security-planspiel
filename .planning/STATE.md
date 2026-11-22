@@ -6,14 +6,14 @@ current_phase: 07.2
 current_phase_name: protection-need-analysis-instead-of-likelihood-axis-per-asse
 status: executing
 stopped_at: Completed 07.2-04-PLAN.md
-last_updated: "2026-11-22T17:09:19.169Z"
+last_updated: "2026-11-22T17:25:52.927Z"
 last_activity: 2026-11-22
 last_activity_desc: Phase 07.2 execution started
 progress:
   total_phases: 9
   completed_phases: 7
   total_plans: 78
-  completed_plans: 75
+  completed_plans: 76
   percent: 78
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-10-27)
 ## Current Position
 
 Phase: 07.2 (protection-need-analysis-instead-of-likelihood-axis-per-asse) — EXECUTING
-Plan: 5 of 6
+Plan: 6 of 6
 Status: Ready to execute
 Last activity: 2026-11-22 — Phase 07.2 execution started
 
@@ -130,6 +130,7 @@ Progress: [█████████░] 86% (6 of 7 phases)
 | Phase 07.1 P09 | 55min | 3 tasks | 4 files |
 | Phase 07.2 P03 | 50min | 2 tasks | 9 files |
 | Phase 07.2 P04 | 35 min | 2 tasks | 6 files |
+| Phase 07.2 P05 | ~60 min | 3 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -232,6 +233,7 @@ Recent decisions affecting current work:
 - [Phase 07.2]: 07.2-02: gesamt is a tick set like C/I/A; its example word is computed by the maximum principle in code; compact tickboxsmall and writelinecompact macros keep page 1 at 721.2 of 731.2 pt
 - [Phase 07.2]: Cheat-sheet goal column is C{10mm} after the case column; coverage of C, I and A pinned as a guard test (07.2-03)
 - [Phase 07.2]: Retired-matrix sweep covers six patterns over README and every texte.toml leaf; selten/möglich stay unswept as ordinary words
+- [Phase 07.2]: Intro slide 32 is the Schutzbedarf slide: two example rows, slide 31 diagram unchanged, table without fills (user-approved 2026-11-22)
 
 ### Pending Todos
 
@@ -260,6 +262,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-11-22T17:09:19.152Z
+Last session: 2026-11-22T17:25:52.899Z
 Stopped at: Completed 07.2-03-PLAN.md
 Resume file: .planning/phases/07.2-protection-need-analysis-instead-of-likelihood-axis-per-asse/07.2-04-PLAN.md

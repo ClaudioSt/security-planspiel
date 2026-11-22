@@ -429,7 +429,7 @@ Plans:
   4. README, Was ist neu, debriefing, booklet texts and intro slide 32 describe the protection-need analysis.
   5. RC4 is built clean, passes all gates and is printed and approved by the user before 2026-11-25.
 
-**Plans:** 4/6 plans executed
+**Plans:** 5/6 plans executed
 
 Plans:
 **Wave 1**
@@ -450,7 +450,7 @@ Plans:
 
 **Wave 5** *(blocked on Wave 4 completion)*
 
-- [ ] 07.2-05-PLAN.md — PROT-05: intro slide 32 becomes the protection-need slide from an approved checklist, user review, one binary commit, deck test pinned (wave 5, checkpoints)
+- [x] 07.2-05-PLAN.md — PROT-05: intro slide 32 becomes the protection-need slide from an approved checklist, user review, one binary commit, deck test pinned (wave 5, checkpoints)
 
 **Wave 6** *(blocked on Wave 5 completion)*
 
