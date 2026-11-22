@@ -714,7 +714,7 @@ direction = "Pause. Legt währenddessen die Story-Unterlagen für jedes Team ber
 
 [sheets.ablauf.blocks.story_groups]
 label = "Story-Gruppenarbeit"
-direction = "Gebt jedem Team die Story-Unterlagen und das Teamheft. Die Teams lesen, sammeln Hinweise und füllen das Risikoregister auf der ersten Seite des Teamhefts aus. Fragt ein Team, was ein Schaden fürs Geschäft bedeuten würde, antwortet mit der Tabelle Geschäftsfolgen: Antworten der Geschäftsführung."
+direction = "Gebt jedem Team die Story-Unterlagen und das Teamheft. Die Teams lesen, sammeln Hinweise und füllen auf der ersten Seite des Teamhefts erst den Schutzbedarf je Wert, dann das Risikoregister aus. Fragt ein Team je Wert und Schutzziel, was ein Schaden fürs Geschäft bedeuten würde, antwortet mit der Tabelle Geschäftsfolgen: Antworten der Geschäftsführung."
 
 [sheets.ablauf.blocks.wave_0]
 direction = "Gebt das Übungsblatt und die Erklärseite So funktioniert eine Welle aus. Rechnet das Beispiel gemeinsam durch, bevor die erste echte Welle beginnt."
@@ -760,7 +760,7 @@ spielleitung-probelauf = "Probelauf-Protokoll"
 
 [sheets.debrief]
 title = "Debriefing-Fragen"
-intro = "Besprecht den Verlauf in dieser festen Reihenfolge: erst die Reaktion, dann die Beschreibung, dann die Analyse, zuletzt die Anwendung. Es gibt kein Blatt für die Teams. Lest die Fragen vor und lasst die Teams antworten. Die Richtzeiten der Stufen füllen zusammen den Debriefing-Block des Ablaufplans. Die Teams legen dafür ihr Teamheft mit dem ausgefüllten Risikoregister samt Rückblick bereit."
+intro = "Besprecht den Verlauf in dieser festen Reihenfolge: erst die Reaktion, dann die Beschreibung, dann die Analyse, zuletzt die Anwendung. Es gibt kein Blatt für die Teams. Lest die Fragen vor und lasst die Teams antworten. Die Richtzeiten der Stufen füllen zusammen den Debriefing-Block des Ablaufplans. Die Teams legen dafür ihr Teamheft mit Schutzbedarf und ausgefülltem Risikoregister samt Rückblick bereit."
 pitch_title = "Management-Pitch"
 pitch_text = "Wenn Zeit bleibt: Jedes Team erklärt der Geschäftsführung von MechTech in einem kurzen Pitch: Warum war unser Budget gut investiert? Ihr entscheidet vor Ort, ob dafür Zeit ist; der Pitch hat keine Richtzeit."
 pitch_limit_label = "Redezeit je Team"
@@ -803,7 +803,7 @@ title = "Analyse"
 questions = [
     "Welche Risiken aus eurem Register haben die Angriffe getroffen, und welcher Angriff stand gar nicht darin? Lest dazu eure Spalte Rückblick vor.",
     "Welches akzeptierte Risiko hat euch getroffen? Würdet ihr es heute wieder akzeptieren?",
-    "Passt eure Einstufung nach Vertraulichkeit, Integrität und Verfügbarkeit zur Gewichtung der Wellen?",
+    "Schaut auf eure Schutzbedarfstabelle: Passt euer Schutzbedarf für Vertraulichkeit, Integrität und Verfügbarkeit zur Gewichtung der Wellen, und hattet ihr für eure Risiken das richtige Hauptziel?",
     "Gegen welche Risiken hat sich euer Geld ausgezahlt? Die RoS zeigt, wie viel Schaden jeder investierte Euro über seine eigenen Kosten hinaus verhindert hat.",
 ]
 
