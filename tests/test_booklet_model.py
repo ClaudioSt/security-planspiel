@@ -4,12 +4,15 @@ Every number on these two parts comes from config through `rules`, `review_text`
 printed RoS and remaining-budget formulas with the numbers of legal paths, using only the operations and signs the
 sheet prints, and compare them with `rules.evaluate_path` (T-05-21).
 """
+import dataclasses
 import json
+import re
 from fractions import Fraction
 
 import pytest
 
 from planspiel import audience, fmt, review_text, risk, rules, veil
+from planspiel import booklet as booklet_module
 from planspiel.booklet import (
     BOOKLET_JOB,
     EN_DASH,
@@ -27,7 +30,7 @@ from planspiel.config import load_config
 from planspiel.eventtext import effect_rows
 from planspiel.printmodel import PrintModelError
 from planspiel.rules import Path, Window
-from planspiel.texts import PreAttackView, load_clues, load_content, load_texts, required_keys
+from planspiel.texts import REGISTER_GROUPS, PreAttackView, load_clues, load_content, load_texts, required_keys
 from tests.support import CONFIG_PATH, CONTENT_DIR, MINI_CONTENT_DIR, REPO_ROOT
 
 MINI = REPO_ROOT / "tests" / "fixtures" / "mini_config.json"
@@ -345,17 +348,22 @@ def test_the_axis_labels_follow_the_config_bands(real):
     assert booklet.register.band_labels == tuple(words["bands"][band.id] for band in bands)
 
 
-def test_the_matrix_has_high_likelihood_on_top_and_zones_from_zone_of(real):
-    cfg, texts, booklet = real
-    words = _register_words(texts)
-    rows = booklet.register.matrix_rows
-    assert len(rows) == 3
-    assert [row.label for row in rows] == [words["likelihood"][level] for level in ("high", "medium", "low")]
-    for row, likelihood in zip(rows, (3, 2, 1)):
-        assert len(row.zones) == len(cfg.risk_matrix.bands)
-        for impact, cell in enumerate(row.zones, start=1):
-            assert cell.kind == risk.zone_of(likelihood, impact)
-            assert cell.word == words["zones"][cell.kind]
+def test_the_matrix_only_code_is_gone(real):
+    """PROT-01, D-14: nothing of the likelihood matrix is left in code, texts or style."""
+    _, texts, _ = real
+    assert not hasattr(risk, "zone_of")
+    assert not hasattr(risk, "ZONES")
+    assert not hasattr(booklet_module, "MatrixRow")
+    assert not hasattr(booklet_module, "MatrixCell")
+    names = {field.name for field in dataclasses.fields(RegisterPage)}
+    assert not names & {"matrix_rows", "axis_likelihood", "example_cell"}
+    assert "likelihood" not in REGISTER_GROUPS and "zones" not in REGISTER_GROUPS
+    assert "cell" not in REGISTER_GROUPS["example"]
+    register = texts.subtree("sheets.register")
+    assert not {"likelihood", "zones", "axis_likelihood"} & set(register)
+    assert "cell" not in register["example"]
+    style = (REPO_ROOT / "print" / "planspiel.sty").read_text(encoding="utf-8")
+    assert not re.search(r"\\definecolor\{risk", style)
 
 
 def test_the_example_row_comes_from_the_clinic_texts(real):
@@ -367,10 +375,7 @@ def test_the_example_row_comes_from_the_clinic_texts(real):
         example["asset"], example["threat"], example["goal"], example["impact"],
         fmt.format_number(RANK_FIRST), example["decision"], words["review"]["correct"],
     )
-    assert register.example_cell == example["cell"]
-    assert any(word in register.example_cell for word in words["likelihood"].values())
-    assert any(word in register.example_cell for word in words["bands"].values())
-    for text in (*register.example, register.example_cell):
+    for text in register.example:
         assert "MechTech" not in text
 
 
@@ -516,19 +521,6 @@ def test_the_printed_formulas_reproduce_evaluate_path(replay_world, path, enforc
 
 
 # ---- the risk register helpers (RISK-02, D-03, D-04) ---------------------------------------------------------------
-
-
-def test_risk_zone_of_gives_three_cells_per_zone():
-    zones = {(likelihood, impact): risk.zone_of(likelihood, impact) for likelihood in (1, 2, 3) for impact in (1, 2, 3)}
-    assert sorted(zones.values()).count("green") == 3
-    assert sorted(zones.values()).count("yellow") == 3
-    assert sorted(zones.values()).count("red") == 3
-    assert zones[(1, 1)] == "green"
-    assert zones[(1, 3)] == "yellow"
-    assert zones[(3, 1)] == "yellow"
-    assert zones[(2, 2)] == "yellow"
-    assert zones[(2, 3)] == "red"
-    assert zones[(3, 3)] == "red"
 
 
 def test_risk_band_ranges_compose_the_axis_labels():
