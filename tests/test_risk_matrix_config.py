@@ -1,4 +1,7 @@
-"""The risk_matrix block (RISK-01, D-01, D-04, D-20, D-22, D-24): loader, invisibility to the rules and the band product rules.
+"""The risk_matrix block (RISK-01, PROT-01, D-01, D-04, D-11, D-12, D-20, D-22, D-24): loader, invisibility to the rules and the band product rules.
+
+PROT-01 (07.2 D-11, D-12): the block carries the rows of the protection-need table (`asset_rows`) and a protection goal
+(c, i or a) per cheat-sheet case; an anchored case carries one of its attack's strongest goals.
 
 The block is read only by the validator, the print models and tests, never by rules or enumeration. The product rules
 (five register rows, limits 0 / 50 / 150 thousand euros) live here and not in the validator, so a future band change is
@@ -53,6 +56,7 @@ def test_the_real_config_carries_the_matrix(cfg):
     matrix = cfg.risk_matrix
     assert isinstance(matrix, RiskMatrix)
     assert matrix.register_rows == 5
+    assert matrix.asset_rows == 4
     assert all(isinstance(band, RiskBand) for band in matrix.bands)
     assert [(band.id, band.minimum) for band in matrix.bands] == [("low", 0), ("medium", 50), ("high", 150)]
 
@@ -154,6 +158,16 @@ def test_zero_register_rows_are_rejected():
     assert "schema.range" in _codes(raw)
 
 
+def test_a_missing_asset_rows_is_rejected():
+    raw = _mutated(lambda block: block.pop("asset_rows"))
+    assert "schema.keys" in _codes(raw)
+
+
+def test_zero_asset_rows_are_rejected():
+    raw = _mutated(lambda block: block.update(asset_rows=0))
+    assert "schema.range" in _codes(raw)
+
+
 def test_the_block_must_be_an_object():
     raw = _raw()
     raw["risk_matrix"] = []
@@ -211,8 +225,8 @@ def test_an_anchored_case_has_the_band_of_the_attack_damage(cfg):
 
 def test_only_anchored_cases_are_tied_to_the_attack_damage(cfg):
     anchored = {case.id for case in cfg.risk_matrix.cases if case.like_attack}
-    assert anchored == {"production_days", "production_week", "design_data"}
-    for case_id in ("audit_findings", "oem_hold"):
+    assert anchored == {"data_trust", "production_week", "design_data"}
+    for case_id in ("audit_findings", "oem_hold", "production_days"):
         for band_id in ("low", "medium", "high"):
             raw = _mutated(lambda block: _case(block, case_id).update(band=band_id))
             assert "risk.case_consistency" not in _codes(raw)
@@ -251,3 +265,53 @@ def test_a_like_attack_must_be_an_attack_of_the_config():
 def test_the_exfil_case_set_to_high_is_inconsistent():
     raw = _mutated(lambda block: _case(block, "design_data").update(band="high"))
     assert "risk.case_consistency" in _codes(raw)
+
+
+# --- protection goal per case (PROT-01, D-11, D-12) ------------------------------------------------------------------
+
+
+def _strongest(impact):
+    peak = max(abs(value) for value in impact.values())
+    return {goal for goal, value in impact.items() if abs(value) == peak}
+
+
+def test_every_case_carries_a_goal_of_c_i_or_a(cfg):
+    assert all(case.goal in ("c", "i", "a") for case in cfg.risk_matrix.cases)
+    assert {case.goal for case in cfg.risk_matrix.cases} == {"c", "i", "a"}
+
+
+def test_a_case_without_a_goal_is_rejected():
+    raw = _mutated(lambda block: block["cases"][0].pop("goal"))
+    assert "risk.case_goal" in _codes(raw)
+
+
+def test_an_unknown_goal_is_rejected():
+    for goal in ("x", "C"):
+        raw = _mutated(lambda block: block["cases"][0].update(goal=goal))
+        assert "risk.case_goal" in _codes(raw), goal
+
+
+def test_an_anchored_goal_must_be_a_strongest_goal_of_its_attack():
+    anchored = [case for case in _raw()["risk_matrix"]["cases"] if "like_attack" in case]
+    assert anchored
+    for case in anchored:
+        strongest = _strongest(_raw()["attacks"][case["like_attack"]]["cia_impact"])
+        for goal in ("c", "i", "a"):
+            raw = _mutated(lambda block: _case(block, case["id"]).update(goal=goal))
+            assert ("risk.case_goal_attack" in _codes(raw)) == (goal not in strongest), (case["id"], goal)
+    assert _strongest(_raw()["attacks"]["ransomware"]["cia_impact"]) == {"c", "i"}
+
+
+def test_an_unanchored_case_may_carry_any_goal():
+    for goal in ("c", "i", "a"):
+        raw = _mutated(lambda block: _case(block, "production_days").update(goal=goal))
+        assert "risk.case_goal_attack" not in _codes(raw)
+        assert "risk.case_goal" not in _codes(raw)
+
+
+def test_each_wave_attack_anchors_a_case_with_one_of_its_strongest_goals(cfg):
+    for attack_id in {wave.attack_id for wave in cfg.waves}:
+        cases = [case for case in cfg.risk_matrix.cases if case.like_attack == attack_id]
+        assert cases, attack_id
+        strongest = _strongest(cfg.attacks[attack_id].cia_impact)
+        assert any(case.goal in strongest for case in cases), attack_id
