@@ -6,14 +6,14 @@ current_phase: 07.2
 current_phase_name: protection-need-analysis-instead-of-likelihood-axis-per-asse
 status: executing
 stopped_at: Completed 07.1-09-PLAN.md
-last_updated: "2026-11-22T16:08:53.159Z"
+last_updated: "2026-11-22T16:36:46.663Z"
 last_activity: 2026-11-22
 last_activity_desc: Phase 07.2 execution started
 progress:
   total_phases: 9
   completed_phases: 7
   total_plans: 78
-  completed_plans: 72
+  completed_plans: 73
   percent: 78
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-10-27)
 ## Current Position
 
 Phase: 07.2 (protection-need-analysis-instead-of-likelihood-axis-per-asse) — EXECUTING
-Plan: 2 of 6
+Plan: 3 of 6
 Status: Ready to execute
 Last activity: 2026-11-22 — Phase 07.2 execution started
 
@@ -227,6 +227,7 @@ Recent decisions affecting current work:
 - [Phase 07.1]: 07.1-07: the optional management pitch stays outside debrief_stages; pitch_seconds (60) is config, composed in code; Was-ist-neu debrief line unchanged
 - [Phase 07.1-09]: Slide-31 material box widened (cx 9300000) so the material line no longer wraps onto the footer; deck patched surgically, docProps/app.xml untouched
 - [Phase 07.2]: Ransomware cheat-sheet anchor moves to new integrity case data_trust (band high, goal i); production_days keeps goal a without anchor (D-11 conflict resolution); risk_matrix block name kept (D-15)
+- [Phase 07.2]: 07.2-02: gesamt is a tick set like C/I/A; its example word is computed by the maximum principle in code; compact tickboxsmall and writelinecompact macros keep page 1 at 721.2 of 731.2 pt
 
 ### Pending Todos
 
@@ -255,6 +256,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-11-22T16:08:53.143Z
+Last session: 2026-11-22T16:36:46.646Z
 Stopped at: Completed 07.1-09-PLAN.md
 Resume file: .planning/phases/07.1-risk-based-learning-chain-cia-risk-register-from-the-mechtec/07.1-01-PLAN.md

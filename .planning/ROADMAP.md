@@ -429,7 +429,7 @@ Plans:
   4. README, Was ist neu, debriefing, booklet texts and intro slide 32 describe the protection-need analysis.
   5. RC4 is built clean, passes all gates and is printed and approved by the user before 2026-11-25.
 
-**Plans:** 1/6 plans executed
+**Plans:** 2/6 plans executed
 
 Plans:
 **Wave 1**
@@ -438,7 +438,7 @@ Plans:
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 07.2-02-PLAN.md — PROT-02: Teamheft page 1 opens with the protection-need table (W1–W4, C/I/A and gesamt ticks, € legend, clinic example), register points to W# and its main goal, Rückblick reads the band from the table, one-page proof (wave 2)
+- [x] 07.2-02-PLAN.md — PROT-02: Teamheft page 1 opens with the protection-need table (W1–W4, C/I/A and gesamt ticks, € legend, clinic example), register points to W# and its main goal, Rückblick reads the band from the table, one-page proof (wave 2)
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
