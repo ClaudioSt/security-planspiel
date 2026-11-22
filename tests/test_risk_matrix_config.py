@@ -315,3 +315,10 @@ def test_each_wave_attack_anchors_a_case_with_one_of_its_strongest_goals(cfg):
         assert cases, attack_id
         strongest = _strongest(cfg.attacks[attack_id].cia_impact)
         assert any(case.goal in strongest for case in cases), attack_id
+
+
+def test_every_protection_goal_has_a_case(cfg):
+    cases = cfg.risk_matrix.cases
+    assert {case.goal for case in cases} == {"c", "i", "a"}
+    assert 6 <= len(cases) <= 8
+    assert any(case.goal == "i" for case in cases)

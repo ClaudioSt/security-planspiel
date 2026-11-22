@@ -557,6 +557,28 @@ def test_cheat_sheet_intro_names_the_management_role_and_case_texts_hold_no_amou
             assert not any(char.isdigit() for char in text) and "€" not in text, text
 
 
+def test_cheat_sheet_cases_carry_their_goal_letter(cfg, texts, cheat_page):
+    assert [case.goal for case in cheat_page.cases] == [
+        texts.get(f"sheets.register.goals.{case.goal}") for case in cfg.risk_matrix.cases
+    ]
+
+
+def test_cheat_sheet_goal_header_comes_from_the_texts(texts, cheat_page):
+    assert cheat_page.goal_header == texts.get("sheets.cheatsheet.head_goal")
+    assert cheat_page.header == (
+        texts.get("sheets.cheatsheet.head_case"),
+        texts.get("sheets.cheatsheet.head_answer"),
+        texts.get("sheets.cheatsheet.head_band"),
+    )
+
+
+def test_cheat_sheet_intro_asks_per_asset_and_goal(cheat_page):
+    assert "Geschäftsführung" in cheat_page.intro
+    assert "Schutzziel" in cheat_page.intro
+    assert "Matrix" not in cheat_page.intro
+    assert "Matrix" not in cheat_page.bands_title
+
+
 def test_cheat_sheet_more_cases_than_the_maximum_stop_the_build(cfg, texts):
     extra = tuple(
         dataclasses.replace(cfg.risk_matrix.cases[0], id=f"extra_{index}")
