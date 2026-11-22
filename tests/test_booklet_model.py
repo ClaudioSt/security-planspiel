@@ -325,7 +325,7 @@ def test_the_register_review_hint_fixes_the_comparison_direction(real):
     register = booklet.register
     hint = register.review_hint
     assert hint == words["review_hint"]
-    assert register.matrix_title in hint and "Realitätscheck" in hint
+    assert register.need_title in hint and register.header[2] in hint and "Realitätscheck" in hint
     under, over, correct = words["review"]["under"], words["review"]["over"], words["review"]["correct"]
     order = [hint.index(part) for part in ("höher", under, "niedriger", over, "gleich", correct)]
     assert order == sorted(order) and len(set(order)) == len(order)
@@ -340,12 +340,82 @@ def test_every_wave_attack_has_a_story_clue_for_the_register_source_column():
         assert any(clue.attack == attack_id and clue.source.startswith("story.") for clue in clues), attack_id
 
 
-def test_the_axis_labels_follow_the_config_bands(real):
+def test_the_band_ticks_and_legend_follow_the_config_bands(real):
     cfg, texts, booklet = real
     words = _register_words(texts)
     bands = cfg.risk_matrix.bands
-    assert booklet.register.band_ranges == risk.band_ranges(bands, words)
     assert booklet.register.band_labels == tuple(words["bands"][band.id] for band in bands)
+    ranges = risk.band_ranges(bands, words)
+    assert booklet.register.band_legend == tuple(
+        f"{label}: {span}" for label, span in zip(booklet.register.band_labels, ranges)
+    )
+    assert booklet.register.legend_title == words["legend_title"]
+
+
+def test_the_need_table_has_one_row_per_asset_row(real):
+    cfg, texts, booklet = real
+    words = _register_words(texts)
+    count = cfg.risk_matrix.asset_rows
+    labels = tuple(f"{words['asset_prefix']}{fmt.format_number(number)}" for number in range(1, count + 1))
+    assert booklet.register.asset_rows == labels == ("W1", "W2", "W3", "W4")
+
+
+def test_the_need_header_is_asset_c_i_a_and_total(real):
+    _, texts, booklet = real
+    words = _register_words(texts)
+    goals = words["goals"]
+    assert booklet.register.need_header == (
+        words["need_head_asset"], goals["c"], goals["i"], goals["a"], words["head_total"]
+    )
+    assert booklet.register.page_title == words["page_title"]
+    assert booklet.register.need_title == words["need_title"]
+    assert booklet.register.need_instruction == words["need_instruction"]
+
+
+def test_the_need_example_follows_the_maximum_principle(real):
+    cfg, texts, booklet = real
+    words = _register_words(texts)
+    example = words["need_example"]
+    order = {words["bands"][band.id]: index for index, band in enumerate(cfg.risk_matrix.bands)}
+    rated = [example[goal] for goal in ("c", "i", "a")]
+    highest = max(rated, key=lambda word: order[word])
+    first = booklet.register.asset_rows[0]
+    assert booklet.register.need_example == (f"{first} {example['asset']}", *rated, highest)
+    assert len(booklet.register.need_example) == 5
+
+
+def test_a_need_example_word_that_is_no_band_word_stops_the_build(tmp_path):
+    source = (CONTENT_DIR / "texte.toml").read_text(encoding="utf-8")
+    head, marker, tail = source.partition("[sheets.register.need_example]")
+    assert marker, "the need example table must exist"
+    assert 'c = "hoch"' in tail
+    tail = tail.replace('c = "hoch"', 'c = "riesig"', 1)
+    path = tmp_path / "texte.toml"
+    path.write_text(head + marker + tail, encoding="utf-8", newline="\n")
+    cfg = load_config(CONFIG_PATH)
+    with pytest.raises(PrintModelError, match="need_example"):
+        build_team_booklet(cfg, load_texts(path))
+
+
+def test_the_register_example_reads_its_band_from_the_need_example(real):
+    _, texts, booklet = real
+    words = _register_words(texts)
+    register = booklet.register
+    assert register.example[0] == register.asset_rows[0]
+    goal_id = next(goal for goal, letter in words["goals"].items() if letter == words["example"]["goal"])
+    assert words["need_example"][goal_id] in register.example[5]
+
+
+def test_too_many_asset_rows_stop_the_build(tmp_path):
+    from planspiel.booklet import MAX_ASSET_ROWS
+
+    raw = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
+    raw["risk_matrix"]["asset_rows"] = MAX_ASSET_ROWS + 1
+    path = tmp_path / "config.json"
+    path.write_text(json.dumps(raw, ensure_ascii=False, indent=2), encoding="utf-8", newline="\n")
+    cfg = load_config(path)
+    with pytest.raises(PrintModelError, match="MAX_ASSET_ROWS"):
+        build_team_booklet(cfg, load_texts(CONTENT_DIR / "texte.toml"))
 
 
 def test_the_matrix_only_code_is_gone(real):
@@ -372,7 +442,7 @@ def test_the_example_row_comes_from_the_clinic_texts(real):
     register = booklet.register
     example = words["example"]
     assert register.example == (
-        example["asset"], example["threat"], example["goal"], example["impact"],
+        register.asset_rows[0], example["threat"], example["goal"], example["impact"],
         fmt.format_number(RANK_FIRST), example["decision"], words["review"]["correct"],
     )
     for text in register.example:
@@ -391,7 +461,10 @@ def test_no_register_string_names_an_attack(real):
 def test_only_generated_register_strings_carry_digits(real):
     _, _, booklet = real
     register = booklet.register
-    generated = {*register.rows, register.rank_hint, register.example[4], *register.band_ranges}
+    generated = {
+        *register.rows, *register.asset_rows, register.rank_hint, register.example[0], register.example[4],
+        register.need_example[0], *register.band_legend, *register.band_ranges,
+    }
     for text in register.printed_fragments():
         if any(char.isdigit() for char in text):
             assert text in generated, text
