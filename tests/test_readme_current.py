@@ -1,9 +1,11 @@
 """README currency (LEG-02, D-20, ROADMAP SC4): the German rulebook describes the current rules and the print pipeline.
 
 The retired pre-2026 model must be gone, the pipeline terms must be present, every PDF name must be a job the
-print pipeline renders today, and the prose must not type a count that the config holds (waves, teams, stages).
+print pipeline renders today, and the prose must not type a count that the config holds (waves, teams, stages). PROT-04: the 07.1 risk-matrix vocabulary
+(matrix, likelihood, colour zones) is retired in the README and in every text of content/texte.toml.
 """
 import re
+import tomllib
 
 import pytest
 
@@ -47,6 +49,19 @@ REQUIRED_TERMS = (
     "Debriefing",
     "Was ist neu",
     "Final-Index",
+    "Schutzbedarf",
+    "Maximumprinzip",
+)
+
+# PROT-04: the 07.1 matrix vocabulary as it stood in sheets.register before 07.2-01. The low and medium likelihood
+# words ("selten", "möglich") are ordinary German words used in unrelated texts, so they are not swept.
+RETIRED_MATRIX_PATTERNS = (
+    r"risiko[-‑]?matrix",
+    r"eintrittswahrscheinlichkeit",
+    r"wahrscheinlich",
+    r"tragbar",
+    r"abwägen",
+    r"vorrangig",
 )
 
 ORDER_LINE = re.compile(r"simulation_config\.json.*README\.md.*content/texte\.toml.*planspiel print")
@@ -107,3 +122,26 @@ def test_prose_types_no_config_count(readme):
         text = text.replace(phrase, "")
     assert COUNT_PHRASES.findall(text) == []
     assert WAVES_ONE_TO_THREE.search(text) is None
+
+
+def _string_leaves(node, path=""):
+    if isinstance(node, str):
+        yield path, node
+    elif isinstance(node, dict):
+        for key, value in node.items():
+            yield from _string_leaves(value, f"{path}.{key}" if path else key)
+    elif isinstance(node, list):
+        for index, value in enumerate(node):
+            yield from _string_leaves(value, f"{path}[{index}]")
+
+
+@pytest.mark.parametrize("pattern", RETIRED_MATRIX_PATTERNS)
+def test_the_readme_names_no_retired_matrix_term(readme, pattern):
+    assert re.search(pattern, readme, re.IGNORECASE) is None
+
+
+@pytest.mark.parametrize("pattern", RETIRED_MATRIX_PATTERNS)
+def test_no_text_names_a_retired_matrix_term(pattern):
+    data = tomllib.loads((CONTENT_DIR / "texte.toml").read_text(encoding="utf-8"))
+    hits = [key for key, text in _string_leaves(data) if re.search(pattern, text.replace("‑", "-"), re.IGNORECASE)]
+    assert hits == [], hits
