@@ -1,5 +1,9 @@
 \#{ Booklet register page: loops and inserts only; R-labels, ranges and zone words arrive as finished strings. }
-\attacktitle{\VAR{booklet.register.title}}
+\attacktitle{\VAR{booklet.register.page_title}}
+{\small\bfseries{} \VAR{booklet.register.need_title}\par}
+{\footnotesize{} \VAR{booklet.register.need_instruction}\par}
+{\footnotesize{} \BLOCK{for word in booklet.register.need_header}\VAR{word} \BLOCK{endfor}\BLOCK{for label in booklet.register.asset_rows}\VAR{label} \BLOCK{endfor}\BLOCK{for word in booklet.register.need_example}\VAR{word} \BLOCK{endfor}\VAR{booklet.register.legend_title} \BLOCK{for entry in booklet.register.band_legend}\VAR{entry} \BLOCK{endfor}\par}
+{\small\bfseries{} \VAR{booklet.register.title}\par}
 {\small{} \VAR{booklet.register.instruction}\par}
 {\small\bfseries{} \VAR{booklet.register.rank_hint}\par}
 \vspace{1mm}

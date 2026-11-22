@@ -10,8 +10,8 @@ facilitator comparator and has no place here (D-23).
 The module is a pre-wave builder: it reads the veiled attack titles and the wave count, never a wave's weights,
 thresholds or bonus data, and nothing under the revealed text namespace (VEIL-02).
 
-The register page opens the booklet (RISK-02, D-08); its € bands come from `cfg.risk_matrix` through
-`planspiel.risk`.
+The register page opens the booklet with the protection-need table (PROT-02, D-05) and the risk register below it;
+its rows and € bands come from `cfg.risk_matrix` through `planspiel.risk`.
 """
 from dataclasses import dataclass
 from typing import Optional
@@ -35,6 +35,9 @@ EN_DASH = "–"
 # Register rows the one-page register is proven for by the PDF fill report; a larger `register_rows` needs a new
 # layout proof of that page.
 MAX_REGISTER_ROWS = 5
+# Asset rows the one-page protection-need table is proven for by the PDF fill report; a larger `asset_rows` needs a
+# new layout proof of that page.
+MAX_ASSET_ROWS = 4
 # Ranks start at one; the last rank is `register_rows`.
 RANK_FIRST = 1
 
@@ -157,6 +160,14 @@ class TrackingPage:
 
 @dataclass(frozen=True)
 class RegisterPage:
+    page_title: str
+    need_title: str
+    need_instruction: str
+    need_header: tuple[str, str, str, str, str]
+    asset_rows: tuple[str, ...]
+    need_example: tuple[str, str, str, str, str]
+    legend_title: str
+    band_legend: tuple[str, ...]
     title: str
     instruction: str
     rank_hint: str
@@ -224,11 +235,40 @@ def _register_page(cfg: Config, texts: Texts) -> Optional[RegisterPage]:
             "belegt (MAX_REGISTER_ROWS in planspiel/booklet.py); die Konstante nur zusammen mit einem neuen "
             "Layout-Nachweis dieser Seite anheben."
         )
+    if matrix.asset_rows > MAX_ASSET_ROWS:
+        raise PrintModelError(
+            f"Die Schutzbedarfstabelle hat {matrix.asset_rows} Zeilen, die Seite ist für höchstens {MAX_ASSET_ROWS} "
+            "belegt (MAX_ASSET_ROWS in planspiel/booklet.py); die Konstante nur zusammen mit einem neuen "
+            "Layout-Nachweis dieser Seite anheben."
+        )
     words = PreAttackView(cfg, texts).sheet("register")
+    asset_rows = tuple(
+        f"{words['asset_prefix']}{fmt.format_number(number)}" for number in range(1, matrix.asset_rows + 1)
+    )
+    band_labels = tuple(words["bands"][band.id] for band in matrix.bands)
+    need = words["need_example"]
+    rated = tuple(need[goal] for goal in ("c", "i", "a"))
+    for goal, word in zip(("c", "i", "a"), rated):
+        if word not in band_labels:
+            raise PrintModelError(
+                f"sheets.register.need_example.{goal} ist '{word}', kein Bandwort ({', '.join(band_labels)})"
+            )
+    highest = max(rated, key=band_labels.index)
     rows = tuple(f"{words['risk_prefix']}{fmt.format_number(number)}" for number in range(1, matrix.register_rows + 1))
     last_rank = fmt.format_number(matrix.register_rows)
     example = words["example"]
+    goals = words["goals"]
     return RegisterPage(
+        page_title=words["page_title"],
+        need_title=words["need_title"],
+        need_instruction=words["need_instruction"],
+        need_header=(words["need_head_asset"], goals["c"], goals["i"], goals["a"], words["head_total"]),
+        asset_rows=asset_rows,
+        need_example=(f"{asset_rows[0]} {need['asset']}", *rated, highest),
+        legend_title=words["legend_title"],
+        band_legend=tuple(
+            f"{label}: {span}" for label, span in zip(band_labels, risk.band_ranges(matrix.bands, words))
+        ),
         title=words["title"],
         instruction=words["instruction"],
         rank_hint=f"{words['rank_hint']} {fmt.format_number(RANK_FIRST)} {EN_DASH} {last_rank}",
@@ -240,7 +280,7 @@ def _register_page(cfg: Config, texts: Texts) -> Optional[RegisterPage]:
             )
         ),
         example=(
-            example["asset"], example["threat"], example["goal"], example["impact"], fmt.format_number(RANK_FIRST),
+            asset_rows[0], example["threat"], example["goal"], example["impact"], fmt.format_number(RANK_FIRST),
             example["decision"], words["review"]["correct"],
         ),
         rows=rows,
@@ -253,7 +293,7 @@ def _register_page(cfg: Config, texts: Texts) -> Optional[RegisterPage]:
         review_hint=words["review_hint"],
         matrix_title=words["matrix_title"],
         axis_impact=words["axis_impact"],
-        band_labels=tuple(words["bands"][band.id] for band in matrix.bands),
+        band_labels=band_labels,
         band_ranges=risk.band_ranges(matrix.bands, words),
     )
 

@@ -15,7 +15,7 @@ Ein **konfigurationsgetriebenes IT-Security-Planspiel** für einen Automotive-Zu
 - **Spieler-Agency:** Entscheidungen haben **sichtbare, nachvollziehbare Effekte** (KZ, CIA-Erfüllung, Schäden, RoS).
 - **Realitätsnähe:** Maßnahmen, Abhängigkeiten, Events und Angriffe spiegeln gängige Security-Praxis in der **Fertigungs-/OT- und SaaS-Realität**.
 - **Von Hand rechenbar:** Alle Formeln sind linear; die Spielleitung rechnet am Arbeitsblatt live nach.
-- **Risikobasiert entscheiden:** Die Teams leiten aus dem Unternehmensprofil ihre Risiken ab (Schutzziel C / I / A, Eintrittswahrscheinlichkeit, Schaden fürs Geschäft), wählen darauf ihre Maßnahmen und priorisieren mit dem Budget.
+- **Risikobasiert entscheiden:** Die Teams stellen aus dem Unternehmensprofil den Schutzbedarf ihrer Werte je Schutzziel C / I / A fest, leiten daraus ihre Risiken mit dem Schaden fürs Geschäft ab, wählen darauf ihre Maßnahmen und priorisieren mit dem Budget.
 
 ---
 
@@ -200,7 +200,7 @@ Alle Dateien liegen als PDF in `final_documents/generated/` und werden aus `simu
 
 **Für die Teams:**
 
-- `spieler-teamheft.pdf`: Teamheft mit dem Risikoregister (Risiken mit Schutzziel, Folge fürs Geschäft, Rang, behandeln oder akzeptieren und Rückblick, dazu die Risiko-Matrix mit den € Bändern), Budget und Planung, einer Tracking-Seite je Welle und der Seite zu RoS und Budget Review. Es ersetzt die früheren Auswertungstabellen.
+- `spieler-teamheft.pdf`: Teamheft mit der Schutzbedarfstabelle (Werte aus der Story, je Schutzziel C / I / A gering, mittel oder hoch mit den € Bändern, gesamt nach dem Maximumprinzip) und dem Risikoregister (Risiken mit Wert W#, Hauptziel, Folge fürs Geschäft, Rang, behandeln oder akzeptieren und Rückblick; das Band jedes Risikos steht in der Tabelle), Budget und Planung, einer Tracking-Seite je Welle und der Seite zu RoS und Budget Review. Es ersetzt die früheren Auswertungstabellen.
 - `spieler-massnahmenkarten.pdf` und `spieler-eventkarten.pdf`: die Karten, Werte und Texte aus der Konfiguration.
 - `spieler-so-funktioniert-eine-welle.pdf`: die Erklärseite zum Ablauf einer Welle.
 - `spieler-unternehmenssteckbrief.pdf`, `spieler-anfrage-mail.pdf`, `spieler-audit-mail.pdf`, `spieler-zeitungsartikel.pdf`: die Story-Dokumente mit den Hinweisen.

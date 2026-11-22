@@ -208,14 +208,16 @@ _REGISTER_KEYS = (
     "title", "instruction", "rank_hint", "risk_prefix", "example_label", "head_asset", "head_threat", "head_goal",
     "head_impact", "head_rank", "head_decision", "head_review", "source_label", "reason_label", "review_hint",
     "matrix_title", "axis_impact", "range_below", "range_to", "range_from", "planning_column",
-    "planning_hint",
+    "planning_hint", "page_title", "need_title", "need_instruction", "asset_prefix", "need_head_asset", "head_total",
+    "legend_title",
 )
 REGISTER_GROUPS = {
     "goals": ("c", "i", "a"),
     "categories": ("production", "customer", "knowhow", "costs"),
     "decision": ("treat", "accept"),
     "review": ("correct", "under", "over"),
-    "example": ("asset", "threat", "goal", "impact", "decision"),
+    "need_example": ("asset", "c", "i", "a"),
+    "example": ("threat", "goal", "impact", "decision"),
 }
 # Required only when the config carries a risk_matrix, so the mini fixture needs no register texts (RISK-02).
 REGISTER_KEYS = (
