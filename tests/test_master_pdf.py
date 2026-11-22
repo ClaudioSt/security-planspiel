@@ -261,5 +261,12 @@ def test_the_cheat_sheet_follows_the_print_list_and_precedes_the_waves(printed_s
         assert squash(part) in text, part
 
 
+def test_the_cheat_sheet_prints_a_goal_column(printed_set, sheet):
+    pages = _pages(printed_set)
+    cheat_page = _first_page_with(pages, sheet.cheat.intro, start=1)
+    head_case, head_answer, _ = sheet.cheat.header
+    assert squash(head_case + " " + sheet.cheat.goal_header + " " + head_answer) in pages[cheat_page]
+
+
 def test_the_contents_list_names_the_cheat_sheet(printed_set, sheet):
     assert squash(sheet.cheat.title) in _pages(printed_set)[0]
