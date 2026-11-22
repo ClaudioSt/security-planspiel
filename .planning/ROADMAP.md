@@ -373,7 +373,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 3 
   5. The schedule (story block 35, debriefing 30, total 215 minutes), print list, dry-run protocol and record, intro deck (new "Risiko-Matrix" slide), README and "Was ist neu" sheet match the new flow, and no game formula or balance value has changed.
   6. Release candidate 3 is built clean (no "+lokal", `print --check` exit 0, fast and pdf tests pass), printed and approved by the user before 2026-11-25.
 
-**Plans:** 9/10 plans executed
+**Plans:** 10/10 plans complete
 
 Plans:
 **Wave 1**
@@ -415,6 +415,7 @@ Plans:
 **Wave 10** *(blocked on Wave 9 completion)*
 
 - [x] 07.1-10-PLAN.md — RISK-10: release candidate 3 built, verified, printed and approved before 2026-11-25 (wave 10, checkpoint)
+
 ### Phase 07.2: Protection-Need Analysis: per-asset Schutzbedarfsfeststellung (C/I/A in the existing € bands, maximum principle) replaces the likelihood × impact matrix; register risks read their band from the table, cheat sheet tagged by goal, intro slide 32 reworked; ships as print RC4 before the 2026-11-25 dry run (INSERTED)
 
 **Goal:** Teams rate the damage to the assets they derive from the story per protection goal instead of guessing a likelihood. A protection-need table (assets × C/I/A, gering/mittel/hoch, maximum principle) opens the Teamheft, every register risk reads its band from it, and the Rückblick, cheat sheet, texts and intro deck follow. Print material, texts, config structure and deck only; no game formula or balance value changes. The set ships as print release candidate 4 before the dry run on 2026-11-25.
