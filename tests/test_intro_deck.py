@@ -6,6 +6,11 @@ approved in `.planning/phases/07-session-flow-handoff/07-DECK-CHECKLIST.md` and,
 07.1-DECK-CHECKLIST.md`; this test pins them. Every minute figure and the team size are composed from
 `session_schedule` at test time, so a later schedule or team-format change fails here until the deck follows. Set
 `PLANSPIEL_DECK` to run the test against a working copy.
+
+Slide 32 was turned into the protection-need slide (Schutzbedarf) per
+`.planning/phases/07.2-protection-need-analysis-instead-of-likelihood-axis-per-asse/07.2-DECK-CHECKLIST.md`
+(PROT-05, D-16); its expected words come from `content/texte.toml` `[sheets.register]` and the band order from
+`cfg.risk_matrix.bands`, only the approved title and the literal "Maximumprinzip" are typed here.
 """
 import os
 import re
@@ -18,14 +23,9 @@ from planspiel import audience, veil
 from planspiel.config import load_config
 from planspiel.texts import load_content
 from tests.support import CONFIG_PATH, CONTENT_DIR, REPO_ROOT
+from tests.test_readme_current import RETIRED_MATRIX_PATTERNS
 
 DECK = REPO_ROOT / "final_documents" / "Planspiel_Einführung + Grundlagen.pptx"
-
-# Bridge: slide 32 still shows the 07.1 risk matrix until 07.2-05 (PROT-05) replaces it.
-SLIDE_32_BRIDGE = pytest.mark.xfail(
-    strict=True,
-    reason="slide 32 still shows the 07.1 risk matrix; 07.2-05 (PROT-05) replaces it with the protection-need slide",
-)
 
 # slide number -> block ids behind its minute figure (slide 36: closing plus debrief; slide 35 is composed per wave below)
 MINUTE_SLIDES = {
@@ -76,9 +76,12 @@ MATERIAL_JOBS = {
     36: ("spieler-teamheft",),
 }
 
-# RISK-09 (D-19): the Risiko-Matrix slide sits directly after the story slide 31; checklist 07.1-DECK-CHECKLIST.md
-RISK_SLIDE = 32
-RISK_TITLE = "Risiko-Matrix"
+# PROT-05 (D-16): the Schutzbedarf slide sits directly after the story slide 31; checklist 07.2-DECK-CHECKLIST.md
+# (it replaced the 07.1 Risiko-Matrix slide); title and second example row are the user-approved wording
+NEED_SLIDE = 32
+NEED_TITLE = "Schutzbedarf"
+NEED_SECOND_ROW = ("Speiseplan der Kantine", "gering", "gering", "mittel", "mittel")
+MAXIMUM_PRINCIPLE = "Maximumprinzip"
 CLOSING_REVIEW_TEXT = "Und wie gut stimmte euer Risikoregister im Rückblick (richtig, unterschätzt, überschätzt)?"
 MONEY_FIGURE = re.compile(r"\d[\d.]*\s*(€|Euro)")
 
@@ -223,64 +226,70 @@ def test_the_deck_has_the_expected_slides(slides):
     assert len(slides) == 37
 
 
-# --- Risiko-Matrix slide (RISK-09, D-19, D-26) -------------------------------------------------------------------
+# --- Schutzbedarf slide (PROT-05, D-16) --------------------------------------------------------------------------
 
 
-def _risk_table(slide):
+def _need_table(slide):
     tables = [shape.table for shape in slide.shapes if getattr(shape, "has_table", False) and shape.has_table]
-    assert len(tables) == 1, "the Risiko-Matrix slide holds exactly one table"
+    assert len(tables) == 1, "the Schutzbedarf slide holds exactly one table"
     return tables[0]
 
 
-def test_risk_slide_is_visible_and_titled(slides):
-    slide = slides[RISK_SLIDE - 1]
+def test_need_slide_is_visible_and_titled(slides):
+    slide = slides[NEED_SLIDE - 1]
     assert slide._element.get("show") != "0"
-    assert slide.shapes.title.text_frame.text == RISK_TITLE
+    assert slide.shapes.title.text_frame.text == NEED_TITLE
 
 
-def test_risk_slide_holds_the_three_by_three_matrix_with_headers(slides):
-    table = _risk_table(slides[RISK_SLIDE - 1])
-    assert len(table.rows) == 4
-    assert len(table.columns) == 4
+def test_need_slide_table_rates_assets_by_goal(slides, content, cfg):
+    register = content.texts.subtree("sheets.register")
+    band_words = [register["bands"][band.id] for band in cfg.risk_matrix.bands]
+    table = _need_table(slides[NEED_SLIDE - 1])
+    assert len(table.columns) == 5
+    header = [table.cell(0, column).text_frame.text for column in range(5)]
+    goals = register["goals"]
+    assert header == [register["need_head_asset"], goals["c"], goals["i"], goals["a"], register["head_total"]]
+    rows = [[table.cell(row, column).text_frame.text for column in range(5)] for row in range(1, len(table.rows))]
+    assert len(rows) == 2
+    for asset, *ratings, total in rows:
+        assert asset
+        assert all(word in band_words for word in (*ratings, total)), rows
+        assert total == max(ratings, key=band_words.index), (asset, "gesamt is the highest of the three ratings")
+    example = register["need_example"]
+    first = rows[0]
+    assert first[:4] == [example["asset"], example["c"], example["i"], example["a"]]
+    assert first[4] == max((example["c"], example["i"], example["a"]), key=band_words.index)
+    assert tuple(rows[1]) == NEED_SECOND_ROW
+    assert rows[1][4] != first[4], "the second row shows that gesamt is not always the same"
 
 
-@SLIDE_32_BRIDGE
-def test_risk_slide_uses_the_register_vocabulary(content, slide_texts):
+def test_need_slide_uses_the_teamheft_vocabulary(content, slide_texts):
     register = content.texts.subtree("sheets.register")
     words = [
-        *register["zones"].values(),
-        *register["likelihood"].values(),
+        register["need_title"],
         *register["bands"].values(),
-        register["axis_likelihood"],
-        register["planning_column"],
+        register["head_total"],
+        register["title"],
+        register["head_goal"],
         register["head_review"],
+        MAXIMUM_PRINCIPLE,
     ]
     for word in words:
-        assert word in slide_texts[RISK_SLIDE], word
+        assert word in slide_texts[NEED_SLIDE], word
 
 
-@SLIDE_32_BRIDGE
-def test_risk_slide_matrix_cells_carry_their_zone_word_and_colour(slides, content):
-    from planspiel import risk
-
-    register = content.texts.subtree("sheets.register")
-    levels = ("low", "medium", "high")
-    fills = {"green": "CFE8CF", "yellow": "FFF0A8", "red": "F2B8B8"}
-    table = _risk_table(slides[RISK_SLIDE - 1])
-    # body row 1 is the highest likelihood (top), the last row the lowest; columns follow the impact bands
-    for row_index, likelihood in enumerate((3, 2, 1), start=1):
-        assert table.cell(row_index, 0).text_frame.text == register["likelihood"][levels[likelihood - 1]]
-        for impact in (1, 2, 3):
-            cell = table.cell(row_index, impact)
-            zone = risk.zone_of(likelihood, impact)
-            assert cell.text_frame.text == register["zones"][zone]
-            assert str(cell.fill.fore_color.rgb) == fills[zone]
-    for impact in (1, 2, 3):
-        assert table.cell(0, impact).text_frame.text == register["bands"][levels[impact - 1]]
+def test_need_slide_shows_no_likelihood_or_zone(slides, slide_texts):
+    text = slide_texts[NEED_SLIDE].replace("‑", "-")
+    for pattern in RETIRED_MATRIX_PATTERNS:
+        assert re.search(pattern, text, re.IGNORECASE) is None, pattern
+    table = _need_table(slides[NEED_SLIDE - 1])
+    for row in table.rows:
+        for cell in row.cells:
+            assert cell._tc.tcPr is None or not cell._tc.tcPr.xpath("./a:solidFill"), "no cell fill, no zone colour"
 
 
-def test_risk_slide_names_no_company_attack_or_amount(cfg, content, slide_texts):
-    text = slide_texts[RISK_SLIDE]
+def test_need_slide_names_no_company_attack_or_amount(cfg, content, slide_texts):
+    text = slide_texts[NEED_SLIDE]
     assert "mechtech" not in text.lower()
     assert "€" not in text and "Euro" not in text
     assert not MONEY_FIGURE.search(text)
