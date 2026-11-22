@@ -429,8 +429,29 @@ Plans:
   4. README, Was ist neu, debriefing, booklet texts and intro slide 32 describe the protection-need analysis.
   5. RC4 is built clean, passes all gates and is printed and approved by the user before 2026-11-25.
 
-**Plans:** 0 plans
+**Plans:** 6 plans
 
 Plans:
+**Wave 1**
 
-- [ ] TBD (run /gsd-plan-phase 07.2 to break down)
+- [ ] 07.2-01-PLAN.md — PROT-01: `risk_matrix` gains `asset_rows` (4) and a goal per case, validator rule "anchored goal = one of the attack's strongest goals", integrity case `data_trust` takes the ransomware anchor, matrix-only code and words removed, deck-test bridge (wave 1)
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [ ] 07.2-02-PLAN.md — PROT-02: Teamheft page 1 opens with the protection-need table (W1–W4, C/I/A and gesamt ticks, € legend, clinic example), register points to W# and its main goal, Rückblick reads the band from the table, one-page proof (wave 2)
+
+**Wave 3** *(blocked on Wave 2 completion)*
+
+- [ ] 07.2-03-PLAN.md — PROT-03: cheat sheet prints the goal of every case (goal column), C/I/A coverage pinned, intro asks per asset and goal (wave 3)
+
+**Wave 4** *(blocked on Wave 3 completion)*
+
+- [ ] 07.2-04-PLAN.md — PROT-04: story direction, debriefing question and README flow describe the protection-need table; retired matrix vocabulary swept from texts and README (wave 4)
+
+**Wave 5** *(blocked on Wave 4 completion)*
+
+- [ ] 07.2-05-PLAN.md — PROT-05: intro slide 32 becomes the protection-need slide from an approved checklist, user review, one binary commit, deck test pinned (wave 5, checkpoints)
+
+**Wave 6** *(blocked on Wave 5 completion)*
+
+- [ ] 07.2-06-PLAN.md — PROT-06: release candidate 4 built, verified, printed and approved before 2026-11-25; dry-run record names RC4 (wave 6, checkpoint)
