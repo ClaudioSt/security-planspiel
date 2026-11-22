@@ -182,10 +182,7 @@ class RegisterPage:
     source_label: str
     reason_label: str
     review_hint: str
-    matrix_title: str
-    axis_impact: str
     band_labels: tuple[str, ...]
-    band_ranges: tuple[str, ...]
 
     def printed_fragments(self) -> tuple[str, ...]:
         return _fragments(self)
@@ -291,10 +288,7 @@ def _register_page(cfg: Config, texts: Texts) -> Optional[RegisterPage]:
         source_label=words["source_label"],
         reason_label=words["reason_label"],
         review_hint=words["review_hint"],
-        matrix_title=words["matrix_title"],
-        axis_impact=words["axis_impact"],
         band_labels=band_labels,
-        band_ranges=risk.band_ranges(matrix.bands, words),
     )
 
 
