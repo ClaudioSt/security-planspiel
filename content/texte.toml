@@ -388,9 +388,10 @@ high = "hoch"
 
 [sheets.cheatsheet]
 title = "Geschäftsfolgen: Antworten der Geschäftsführung"
-intro = "Teams dürfen fragen, was ein Schaden fürs Geschäft bedeuten würde. Antwortet in der Rolle der Geschäftsführung von MechTech mit dem Band aus dieser Tabelle, nie mit einem genauen Betrag, und nennt nie einen Angriff."
-bands_title = "Bänder der Risiko-Matrix"
+intro = "Teams fragen je Wert und Schutzziel, was ein Schaden fürs Geschäft bedeuten würde, etwa: Was wäre, wenn diese Daten bekannt, verfälscht oder nicht verfügbar wären? Sucht den Fall mit dem passenden Schutzziel und antwortet in der Rolle der Geschäftsführung von MechTech mit seinem Band, nie mit einem genauen Betrag, und nennt nie einen Angriff."
+bands_title = "Bänder für den Schaden fürs Geschäft"
 head_case = "Folge fürs Geschäft"
+head_goal = "Ziel"
 head_answer = "Antwort der Geschäftsführung"
 head_band = "Band"
 

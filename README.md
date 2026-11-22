@@ -209,7 +209,7 @@ Alle Dateien liegen als PDF in `final_documents/generated/` und werden aus `simu
 
 **Nur für die Spielleitung (nicht an Teams ausgeben):**
 
-- `spielleitung-uebersicht.pdf`: das Spielleitungs-Heft mit Ablaufplan, Druckliste, Kennwerten, Prüfzeilen, Lösungsschlüsseln, Debriefing-Fragen, Antworten zu Geschäftsfolgen (Bänder der Risiko-Matrix) und der Hinweis-Matrix.
+- `spielleitung-uebersicht.pdf`: das Spielleitungs-Heft mit Ablaufplan, Druckliste, Kennwerten, Prüfzeilen, Lösungsschlüsseln, Debriefing-Fragen, Antworten zu Geschäftsfolgen (Band und Schutzziel je Fall) und der Hinweis-Matrix.
 - `spielleitung-was-ist-neu.pdf`: das Blatt „Was ist neu“ für Spielleitungen der MHP-Runde mit den geänderten Regeln, dem geänderten Ablauf, dem neuen Material und der Gegenüberstellung alter und neuer Werte. Die alten Werte stammen aus `content/mhp_baseline.json`, dem eingefrorenen Stand der MHP-Runde; nur dieses Blatt liest die Datei.
 - `spielleitung-probelauf.pdf`: das Probelauf-Protokoll.
 

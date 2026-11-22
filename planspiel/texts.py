@@ -225,7 +225,7 @@ REGISTER_KEYS = (
     *(f"sheets.register.{group}.{item}" for group, items in REGISTER_GROUPS.items() for item in items),
 )
 
-_CHEAT_KEYS = ("title", "intro", "bands_title", "head_case", "head_answer", "head_band")
+_CHEAT_KEYS = ("title", "intro", "bands_title", "head_case", "head_goal", "head_answer", "head_band")
 # Required only when the risk_matrix carries cases, like REGISTER_KEYS (RISK-05); not part of SHEET_KEYS.
 CHEAT_KEYS = tuple(f"sheets.cheatsheet.{name}" for name in _CHEAT_KEYS)
 
