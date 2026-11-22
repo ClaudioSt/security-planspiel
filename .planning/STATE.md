@@ -6,15 +6,15 @@ current_phase: 07.1
 current_phase_name: risk-based-learning-chain-cia-risk-register-from-the-mechtec
 status: executing
 stopped_at: Completed 07.1-09-PLAN.md
-last_updated: "2026-11-14T00:29:49.915Z"
+last_updated: "2026-11-21T07:26:25.433Z"
 last_activity: 2026-11-13
 last_activity_desc: Phase 07.1 execution started
 progress:
-  total_phases: 8
+  total_phases: 9
   completed_phases: 6
   total_plans: 72
   completed_plans: 70
-  percent: 75
+  percent: 67
 ---
 
 # Project State
@@ -241,6 +241,7 @@ None. The veiling todo (2026-06-23) is closed (moved to `todos/completed/` in Ph
 
 - Phase 07.1 inserted after Phase 7: Risk-based learning chain (pedagogical review 2026-11-12); must ship as print RC3 before the 07-12 dry run on 2026-11-25 (URGENT)
 - Phase 07.1 planned 2026-11-13: RISK-01..RISK-10, one plan each, 10 waves; plan checker passed with no blockers after 2 revisions
+- Phase 07.2 inserted after Phase 07.1: Per-asset protection-need analysis replaces the likelihood axis (user decision 2026-11-21); RC4 supersedes RC3 for the dry run (URGENT)
 
 ## Deferred Items
 

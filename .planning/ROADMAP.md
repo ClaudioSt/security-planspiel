@@ -414,4 +414,22 @@ Plans:
 
 **Wave 10** *(blocked on Wave 9 completion)*
 
-- [ ] 07.1-10-PLAN.md — RISK-10: release candidate 3 built, verified, printed and approved before 2026-11-25 (wave 10, checkpoint)
+- [x] 07.1-10-PLAN.md — RISK-10: release candidate 3 built, verified, printed and approved before 2026-11-25 (wave 10, checkpoint)
+### Phase 07.2: Protection-Need Analysis: per-asset Schutzbedarfsfeststellung (C/I/A in the existing € bands, maximum principle) replaces the likelihood × impact matrix; register risks read their band from the table, cheat sheet tagged by goal, intro slide 32 reworked; ships as print RC4 before the 2026-11-25 dry run (INSERTED)
+
+**Goal:** Teams rate the damage to the assets they derive from the story per protection goal instead of guessing a likelihood. A protection-need table (assets × C/I/A, gering/mittel/hoch, maximum principle) opens the Teamheft, every register risk reads its band from it, and the Rückblick, cheat sheet, texts and intro deck follow. Print material, texts, config structure and deck only; no game formula or balance value changes. The set ships as print release candidate 4 before the dry run on 2026-11-25.
+**Requirements**: PROT-01, PROT-02, PROT-03, PROT-04, PROT-05, PROT-06
+**Depends on:** Phase 07.1
+**Success Criteria** (what must be TRUE):
+
+  1. The first Teamheft page holds a protection-need table with empty asset rows, a gering/mittel/hoch rating per C, I and A with the config € ranges, and a "gesamt" column by the maximum principle; no player page asks for a likelihood.
+  2. Every register risk names an asset row and a main goal, and the Rückblick compares the band read from the table with the attack's full damage, as in 07.1.
+  3. The cheat sheet tags every case with C, I or A, covers all three goals and stays consistent with the game values; the validator checks the goals.
+  4. README, Was ist neu, debriefing, booklet texts and intro slide 32 describe the protection-need analysis.
+  5. RC4 is built clean, passes all gates and is printed and approved by the user before 2026-11-25.
+
+**Plans:** 0 plans
+
+Plans:
+
+- [ ] TBD (run /gsd-plan-phase 07.2 to break down)

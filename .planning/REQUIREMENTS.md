@@ -86,7 +86,18 @@ Added 2026-11-12 for the inserted Phase 07.1 (pedagogical review): make the chai
 - [x] **RISK-07**: The debriefing is rebuilt around the chain: questions per stage on register vs. reality, accepted risks that hit, the team's C/I/A assessment vs. the wave weightings, which risks the money paid off against (RoS, net framing) and transfer to real risk management, plus an optional 60-second management pitch per team without planned minutes
 - [x] **RISK-08**: The session schedule gives the story block 35 and the debriefing 30 minutes (stages 3/5/14/8), 215 minutes in total; the Teamheft is handed out in the story block, the closing block directs the Rückblick, and the print list, the dry-run protocol and the dry-run record follow
 - [x] **RISK-09**: The intro deck has a new "Risiko-Matrix" slide (likelihood × impact, zones, how the register is used; no MechTech or attack content) and its minute figures follow the new schedule; the deck is edited once from a user-approved checklist and pinned by the deck test
-- [ ] **RISK-10**: The print set is rebuilt and released as release candidate 3: clean stamp, `print --check` exit 0, fast and pdf test suites pass, printed and approved by the user before the dry run on 2026-11-25
+- [x] **RISK-10**: The print set is rebuilt and released as release candidate 3: clean stamp, `print --check` exit 0, fast and pdf test suites pass, printed and approved by the user before the dry run on 2026-11-25
+
+### Protection-Need Analysis (PROT)
+
+Added 2026-11-22 for the inserted Phase 07.2: a per-asset protection-need analysis (C/I/A in the existing € bands, maximum principle) replaces the likelihood × impact matrix of RISK-02. Print material, texts, config structure and deck only; no game formula or balance value changes.
+
+- [ ] **PROT-01**: The `risk_matrix` config block carries the number of asset rows and a protection goal (c/i/a) per cheat-sheet case; the validator rejects a missing or unknown goal and, for a case anchored to an attack, a goal that is not one of that attack's strongest `cia_impact` goals; matrix-only code (zones, likelihood) is removed
+- [ ] **PROT-02**: The Teamheft register page opens with a protection-need table (empty asset rows W1–W4, per row C/I/A each gering/mittel/hoch with the config € ranges, a "gesamt" column by the maximum principle, an example row from another industry) instead of the 3×3 matrix; register risks reference an asset W# and a main goal, the Rückblick reads the risk's band from the table; the page stays one page and passes the veil, digit and fill checks
+- [ ] **PROT-03**: The facilitator cheat sheet prints each case's protection goal; C, I and A each have at least one case, 6–8 cases in total, bands consistent with the game values
+- [ ] **PROT-04**: README, "Was ist neu", the debriefing questions and the booklet direction texts describe the protection-need table; no player or facilitator text names the risk matrix, a likelihood or the colour zones
+- [ ] **PROT-05**: Intro deck slide 32 explains the protection-need analysis (assets × C/I/A, gering/mittel/hoch, maximum principle, register reads its band from the table; no MechTech or attack content); edited once from a user-approved checklist and pinned by the deck test
+- [ ] **PROT-06**: The print set is rebuilt and released as release candidate 4: clean stamp, `print --check` exit 0, fast and pdf suites pass, only `risk_matrix` differs in the config, the dry-run material record names RC4, printed and approved by the user before the dry run on 2026-11-25
 
 ## v2 Requirements
 
@@ -191,14 +202,20 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RISK-07 | Phase 07.1 | Complete |
 | RISK-08 | Phase 07.1 | Complete |
 | RISK-09 | Phase 07.1 | Complete |
-| RISK-10 | Phase 07.1 | Pending |
+| RISK-10 | Phase 07.1 | Complete (paper approval moved to PROT-06) |
+| PROT-01 | Phase 07.2 | Pending |
+| PROT-02 | Phase 07.2 | Pending |
+| PROT-03 | Phase 07.2 | Pending |
+| PROT-04 | Phase 07.2 | Pending |
+| PROT-05 | Phase 07.2 | Pending |
+| PROT-06 | Phase 07.2 | Pending |
 
 **Coverage:**
 
-- v1 requirements: 57 total
-- Mapped to phases: 57
+- v1 requirements: 63 total
+- Mapped to phases: 63
 - Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-09-29*
-*Last updated: 2026-11-12 — RISK-01..RISK-10 added for Phase 07.1 (plan-phase requirements review)*
+*Last updated: 2026-11-22 — PROT-01..PROT-06 added for Phase 07.2 (protection-need analysis)*
