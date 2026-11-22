@@ -79,6 +79,16 @@ def test_the_analysis_follows_the_chain(texts, page):
         all(word in question for word in ("Gewichtung", "Vertraulichkeit", "Integrität", "Verfügbarkeit"))
         for question in questions
     )
+    # PROT-04 (D-10): the C/I/A question starts from the protection-need table and asks for the main goal.
+    need_title = texts.get("sheets.register.need_title")
+    head_goal = texts.get("sheets.register.head_goal")
+    assert any(
+        all(
+            word in question
+            for word in ("Gewichtung", "Vertraulichkeit", "Integrität", "Verfügbarkeit", need_title, head_goal)
+        )
+        for question in questions
+    )
     assert any(all(word in question for word in ("RoS", "Kosten", "Euro")) for question in questions)
 
 
