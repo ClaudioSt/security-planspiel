@@ -227,7 +227,7 @@ Alle Dateien liegen als PDF in `final_documents/generated/` und werden aus `simu
 - **Final-Index** (`final_index`): Gewichte von KZ und RoS.
 - **Übung** (`practice`): die Werte des Übungsblatts für Welle 0.
 - **Veranstaltung** (`session_schedule`): Blöcke mit Dauern, Teamzahl, Personen je Team, Druckliste, Debriefing-Stufen und die Redezeit des optionalen Management-Pitches.
-- **Risikomatrix** (`risk_matrix`): Zeilen des Risikoregisters und die Untergrenzen der € Bänder (gering, mittel, hoch) auf der Schadensachse der Risiko-Matrix. Die Bänder steigen streng an, und kein ungeschützter Angriffsschaden liegt auf einer Bandgrenze. Dazu kommen die Geschäftsfälle der Spielleitung mit ihrem Band; ein Fall, der der Folge eines Angriffs entspricht, trägt dessen Band.
+- **Schutzbedarf und Register** (`risk_matrix`, der Name des Blocks ist historisch): Zahl der Zeilen der Schutzbedarfstabelle (`asset_rows`) und des Risikoregisters (`register_rows`), dazu die Untergrenzen der € Bänder gering, mittel und hoch. Die Bänder steigen streng an, und kein ungeschützter Angriffsschaden liegt auf einer Bandgrenze. Dazu kommen die Geschäftsfälle der Spielleitung mit Band und Schutzziel (c, i, a); ein Fall, der der Folge eines Angriffs entspricht, trägt dessen Band, und sein Schutzziel ist eines der am stärksten getroffenen Schutzziele dieses Angriffs.
 - **Referenzpläne** (`reference_plans`) und **Referenzstrategien** (`reference_strategies`): Grundlage der Lösungsschlüssel und der Balance-Prüfungen.
 - **Prosa** liegt in `content/texte.toml`; Ziffern in dieser Prosa sind nur erlaubt, wenn sie in `content/digit_allowlist.toml` stehen. `content/clues.toml` ordnet die Hinweise den Angriffen zu, `content/mhp_baseline.json` hält den eingefrorenen Stand der MHP-Runde.
 

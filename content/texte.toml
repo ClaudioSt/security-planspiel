@@ -416,6 +416,10 @@ answer = "Eine Woche ohne Anlage heißt Vertragsstrafen und Sonderschichten."
 case = "Konstruktionsdaten landen bei einem Wettbewerber."
 answer = "Das kostet uns Aufträge und Vertrauen, aber nicht sofort die Produktion."
 
+[sheets.cheatsheet.cases.data_trust]
+case = "Fertigungs- und Auftragsdaten sind nicht mehr verlässlich und müssen Satz für Satz geprüft werden."
+answer = "Bis wir unseren Daten wieder trauen, können wir nicht sicher liefern; das wird teuer."
+
 [sheets.cheatsheet.cases.oem_hold]
 case = "Der OEM legt Bestellungen auf Eis."
 answer = "Ohne Abrufe des Hauptkunden fehlt uns der größte Teil des Umsatzes."

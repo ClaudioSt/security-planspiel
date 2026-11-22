@@ -35,10 +35,10 @@ SCHEDULE_KEYS = ("total_minutes", "teams", "persons_per_team", "blocks", "print_
 DEBRIEF_STAGE_KEYS = ("id", "minutes")
 SCHEDULE_BLOCK_KEYS = ("id", "minutes", "wave")
 PRINT_ROW_KEYS = ("job", "per_team", "facilitator")
-RISK_MATRIX_KEYS = ("register_rows", "bands", "cases")
-RISK_CASE_KEYS = ("id", "band", "like_attack")
+RISK_MATRIX_KEYS = ("register_rows", "asset_rows", "bands", "cases")
+RISK_CASE_KEYS = ("id", "band", "goal", "like_attack")
 RISK_BAND_KEYS = ("id", "min")
-RISK_BAND_COUNT = 3  # the matrix is 3 x 3 (D-03)
+RISK_BAND_COUNT = 3  # three € bands gering, mittel, hoch (07.1 D-24)
 SNAKE_ID = re.compile(r"[a-z][a-z0-9_]*")
 PRINT_JOB = re.compile(r"[a-z0-9][a-z0-9_-]*")
 
@@ -645,7 +645,7 @@ class _Validator:
             self.check_debrief_stages(stages, debrief_minutes)
 
     def check_risk_matrix(self, block: Any, attacks: Any, waves: Any) -> None:
-        """Risikomatrix (RISK-01, D-04, D-22, D-24): Zeilen des Registers und € Bänder; nur Zahlen und IDs, Prosa steht in content/texte.toml."""
+        """Schutzbedarf und Register (RISK-01, PROT-01, D-04, D-22, D-24): Zeilen der Tabelle und des Registers, € Bänder; nur Zahlen und IDs, Prosa steht in content/texte.toml."""
         path = "risk_matrix"
         if not self.container(block, dict, path):
             return
@@ -653,6 +653,7 @@ class _Validator:
             if key not in RISK_MATRIX_KEYS:
                 self.error("schema.keys", f"{path}.{key}", f"Unbekannter Schlüssel '{key}' in der Risikomatrix")
         self.int_field(block, "register_rows", path, lo=1)
+        self.int_field(block, "asset_rows", path, lo=1)
         bands = self.field(block, "bands", path)
         if bands is None or not self.container(bands, list, f"{path}.bands"):
             return
@@ -717,9 +718,10 @@ class _Validator:
     def check_risk_cases(
         self, block: dict, band_ids: set, bands: Optional[tuple], attacks: Any, waves: Any,
     ) -> None:
-        """Geschäftsfälle der Spielleitung (RISK-05, D-06, D-22): ID, Band und optionaler Angriffs-Anker; nur ein
-        verankerter Fall muss das Band des ungeschützten Schadens seines Angriffs tragen, die anderen sind
-        Plausibilitätsurteile ohne Spielwert."""
+        """Geschäftsfälle der Spielleitung (RISK-05, PROT-01, D-06, D-11, D-22): ID, Band, Schutzziel und optionaler
+        Angriffs-Anker; nur ein verankerter Fall muss das Band des ungeschützten Schadens seines Angriffs und eines
+        der am stärksten getroffenen Schutzziele seines Angriffs tragen, die anderen sind Plausibilitätsurteile
+        ohne Spielwert."""
         path = "risk_matrix.cases"
         if "cases" not in block:
             return
@@ -747,6 +749,14 @@ class _Validator:
             band_known = isinstance(band, str) and band in band_ids
             if band is not None and not band_known:
                 self.error("risk.case_band", f"{case_path}.band", f"Fall '{case_id}': '{band}' ist keine Band-ID")
+            goal = case.get("goal")
+            goal_known = isinstance(goal, str) and goal in CIA_KEYS
+            if "goal" not in case:
+                self.error("risk.case_goal", f"{case_path}.goal", f"Fall '{case_id}': Schutzziel fehlt")
+            elif not goal_known:
+                self.error(
+                    "risk.case_goal", f"{case_path}.goal", f"Fall '{case_id}': {goal!r} ist kein Schutzziel (c, i, a)",
+                )
             if "like_attack" not in case:
                 continue
             anchor = case["like_attack"]
@@ -760,6 +770,26 @@ class _Validator:
                     "risk.case_consistency", f"{case_path}.band",
                     f"Fall '{case_id}': Band passt nicht zum ungeschützten Schaden des Angriffs",
                 )
+            if goal_known and isinstance(anchor, str) and isinstance(attacks, dict) and anchor in attacks:
+                strongest = self.strongest_goals(
+                    attacks[anchor].get("cia_impact") if isinstance(attacks[anchor], dict) else None
+                )
+                if strongest and goal not in strongest:
+                    self.error(
+                        "risk.case_goal_attack", f"{case_path}.goal",
+                        f"Fall '{case_id}': Schutzziel '{goal}' ist nicht unter den am stärksten getroffenen "
+                        f"Schutzzielen von '{anchor}' (erlaubt: {sorted(strongest)})",
+                    )
+
+    @staticmethod
+    def strongest_goals(impact: Any) -> set:
+        """Schutzziele mit dem größten Betrag in einem rohen `cia_impact` (leer, wenn kein gültiges c/i/a-Objekt)."""
+        if not isinstance(impact, dict) or set(impact) != CIA_KEYS:
+            return set()
+        if not all(isinstance(value, int) and not isinstance(value, bool) for value in impact.values()):
+            return set()
+        peak = max(abs(value) for value in impact.values())
+        return {goal for goal, value in impact.items() if abs(value) == peak}
 
     @staticmethod
     def defined_unprotected_damages(attacks: Any) -> Dict[str, int]:
