@@ -463,11 +463,24 @@ def test_only_generated_register_strings_carry_digits(real):
     register = booklet.register
     generated = {
         *register.rows, *register.asset_rows, register.rank_hint, register.example[0], register.example[4],
-        register.need_example[0], *register.band_legend, *register.band_ranges,
+        register.need_example[0], *register.band_legend,
     }
     for text in register.printed_fragments():
         if any(char.isdigit() for char in text):
             assert text in generated, text
+
+
+def test_no_register_string_asks_for_a_likelihood_or_names_the_matrix(real):
+    """PROT-02, D-01: nothing on the page asks for a likelihood, nothing names the risk matrix."""
+    from planspiel.texts import _REGISTER_KEYS
+
+    _, _, booklet = real
+    for text in booklet.register.printed_fragments():
+        assert "wahrscheinlich" not in text.lower(), text
+        assert "matrix" not in text.lower(), text
+    names = {field.name for field in dataclasses.fields(RegisterPage)}
+    assert not names & {"matrix_title", "axis_impact", "band_ranges"}
+    assert not {"matrix_title", "axis_impact"} & set(_REGISTER_KEYS)
 
 
 def test_the_register_fragments_open_the_booklet_fragments(real):

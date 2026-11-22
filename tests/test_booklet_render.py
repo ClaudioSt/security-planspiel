@@ -111,6 +111,49 @@ def test_the_register_page_is_rendered_only_with_a_risk_matrix(loaded):
         )
 
 
+def _step(text):
+    return f"\\step{{{render.tex_escape(text)}}}"
+
+
+def _row_cells(source, start):
+    return UNESCAPED_AMPERSAND.split(source[start : source.index("\\\\", start)])
+
+
+def test_the_need_table_comes_before_the_register_and_the_partial_has_no_cell_colour(loaded):
+    cfg, _, booklet, source = loaded
+    if cfg.risk_matrix is None:
+        pytest.skip("the mini config has no register")
+    register = booklet.register
+    assert source.index(f"\\attacktitle{{{render.tex_escape(register.page_title)}}}") < source.index(
+        _step(register.need_title)
+    )
+    assert source.index(_step(register.need_title)) < source.index(_step(register.title))
+    partial = (TEMPLATES / REGISTER).read_text(encoding="utf-8")
+    assert "\\cellcolor" not in partial
+
+
+def test_every_asset_row_has_five_cells_with_band_ticks(loaded):
+    cfg, _, booklet, source = loaded
+    if cfg.risk_matrix is None:
+        pytest.skip("the mini config has no register")
+    register = booklet.register
+    assert len(register.asset_rows) == cfg.risk_matrix.asset_rows
+    for label in register.asset_rows:
+        cells = _row_cells(source, source.index(f"\\textbf{{{label}}}"))
+        assert len(cells) == 5, cells
+        assert "\\writeline" in cells[0]
+        for cell in cells[1:]:
+            assert cell.count("\\tickbox") == len(register.band_labels), cell
+            assert all(render.tex_escape(word) in cell for word in register.band_labels), cell
+    start = source.index("\\rowcolor{mhpblue}", source.index(_step(register.need_title)))
+    header = _row_cells(source, start)
+    assert len(header) == 5
+    for word, cell in zip(register.need_header, header):
+        assert render.tex_escape(word) in cell
+    example = _row_cells(source, source.index(render.tex_escape(register.need_example[0])))
+    assert len(example) == 5
+
+
 def _register_body_rows(source, booklet):
     rows = []
     for label in booklet.register.rows:
@@ -142,12 +185,13 @@ def test_every_register_row_has_seven_cells_with_its_writing_areas(loaded):
         assert all(render.tex_escape(tick) in decision for tick in register.decision_ticks)
         review_ticks = all(render.tex_escape(tick) in review for tick in register.review_ticks)
         assert review.count("\\tickbox") == 3 and review_ticks
-    header = source[source.index("\\rowcolor{mhpblue}", source.index(render.tex_escape(register.title))):]
+    header = source[source.index("\\rowcolor{mhpblue}", source.index(_step(register.title))):]
     header = header[: header.index("\\\\")]
     assert len(UNESCAPED_AMPERSAND.split(header)) == 7
     for text in register.header:
         assert render.tex_escape(text) in header
-    example = source[source.index(render.tex_escape(register.example[0])):]
+    anchor = source.index(render.tex_escape(register.example[1]))
+    example = source[source.rindex("\\rowcolor{mhplight}", 0, anchor):]
     example = example[: example.index("\\\\")]
     assert len(UNESCAPED_AMPERSAND.split(example)) == 7
 
