@@ -104,12 +104,12 @@
 \BLOCK{endfor}
 \end{tabularx}\endgroup\par
 \vspace{2mm}
-\noindent\begingroup\small\setlength{\tabcolsep}{3pt}\begin{tabularx}{\linewidth}{|L|L|>{\raggedright\arraybackslash}p{38mm}|}
+\noindent\begingroup\small\setlength{\tabcolsep}{3pt}\begin{tabularx}{\linewidth}{|L|C{10mm}|L|>{\raggedright\arraybackslash}p{38mm}|}
 \hline
-\rowcolor{mhpblue}\BLOCK{for cell in sheet.cheat.header}\hdrs{\VAR{cell}}\BLOCK{if not loop.last} & \BLOCK{endif}\BLOCK{endfor} \\
+\rowcolor{mhpblue}\hdrs{\VAR{sheet.cheat.header[0]}} & \hdrs{\VAR{sheet.cheat.goal_header}}\BLOCK{for cell in sheet.cheat.header[1:]} & \hdrs{\VAR{cell}}\BLOCK{endfor} \\
 \hline
 \BLOCK{for row in sheet.cheat.cases}
-\textrowtop{}\VAR{row.case}\textrowend{} & \textrowtop{}\VAR{row.answer}\textrowend{} & \textrowtop{}\textbf{\VAR{row.band}}\textrowend{} \\
+\textrowtop{}\VAR{row.case}\textrowend{} & \textrowtop{}\textbf{\VAR{row.goal}}\textrowend{} & \textrowtop{}\VAR{row.answer}\textrowend{} & \textrowtop{}\textbf{\VAR{row.band}}\textrowend{} \\
 \hline
 \BLOCK{endfor}
 \end{tabularx}\endgroup\par
