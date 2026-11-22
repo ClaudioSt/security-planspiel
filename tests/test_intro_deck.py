@@ -21,6 +21,12 @@ from tests.support import CONFIG_PATH, CONTENT_DIR, REPO_ROOT
 
 DECK = REPO_ROOT / "final_documents" / "Planspiel_Einführung + Grundlagen.pptx"
 
+# Bridge: slide 32 still shows the 07.1 risk matrix until 07.2-05 (PROT-05) replaces it.
+SLIDE_32_BRIDGE = pytest.mark.xfail(
+    strict=True,
+    reason="slide 32 still shows the 07.1 risk matrix; 07.2-05 (PROT-05) replaces it with the protection-need slide",
+)
+
 # slide number -> block ids behind its minute figure (slide 36: closing plus debrief; slide 35 is composed per wave below)
 MINUTE_SLIDES = {
     26: ("break_1",),
@@ -238,6 +244,7 @@ def test_risk_slide_holds_the_three_by_three_matrix_with_headers(slides):
     assert len(table.columns) == 4
 
 
+@SLIDE_32_BRIDGE
 def test_risk_slide_uses_the_register_vocabulary(content, slide_texts):
     register = content.texts.subtree("sheets.register")
     words = [
@@ -252,6 +259,7 @@ def test_risk_slide_uses_the_register_vocabulary(content, slide_texts):
         assert word in slide_texts[RISK_SLIDE], word
 
 
+@SLIDE_32_BRIDGE
 def test_risk_slide_matrix_cells_carry_their_zone_word_and_colour(slides, content):
     from planspiel import risk
 

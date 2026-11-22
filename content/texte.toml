@@ -349,7 +349,6 @@ source_label = "Quelle:"
 reason_label = "Grund:"
 review_hint = "Rückblick im Abschluss: Euer Band ist die Spalte der Risiko-Matrix, in der die Nummer des Risikos steht. Getroffen ist ein Risiko, wenn ihr es auf der Realitätscheck-Zeile eines Arbeitsblatts genannt habt. Sucht dann das Band, in dem der volle Schaden dieses Angriffs ohne Maßnahmen liegt (der Schaden im ersten Fall des Arbeitsblatts); haben mehrere Angriffe das Risiko getroffen, nehmt den mit dem größten vollen Schaden: Liegt es höher als euer Band, habt ihr unterschätzt; liegt es niedriger, überschätzt; ist es gleich, richtig. Hat kein Angriff das Risiko getroffen, gilt es als überschätzt."
 matrix_title = "Risiko-Matrix"
-axis_likelihood = "Eintrittswahrscheinlichkeit"
 axis_impact = "Schaden fürs Geschäft"
 range_below = "unter"
 range_to = "bis unter"
@@ -376,16 +375,6 @@ accept = "akzeptieren"
 correct = "richtig"
 under = "unterschätzt"
 over = "überschätzt"
-
-[sheets.register.likelihood]
-low = "selten"
-medium = "möglich"
-high = "wahrscheinlich"
-
-[sheets.register.zones]
-green = "tragbar"
-yellow = "abwägen"
-red = "vorrangig"
 
 [sheets.register.bands]
 low = "gering"
@@ -438,7 +427,6 @@ threat = "Serverausfall im Rechenzentrum (Mail der Klinikleitung)"
 goal = "A"
 impact = "Kosten: Operationen werden verschoben, die Klinik verliert Einnahmen."
 decision = "behandeln: der Schaden wäre zu hoch"
-cell = "Im Raster: wahrscheinlich × hoch"
 
 [sheets.tracking]
 title = "Tracking-Bogen"

@@ -41,20 +41,14 @@
 \noindent\begin{minipage}[t]{0.66\linewidth}
 {\small\bfseries{} \VAR{booklet.register.matrix_title}\par}
 \vspace{1mm}
-\noindent\begingroup\scriptsize\setlength{\tabcolsep}{3pt}\begin{tabular}{|C{34mm}|C{21mm}|C{21mm}|C{21mm}|}
+\noindent\begingroup\scriptsize\setlength{\tabcolsep}{3pt}\begin{tabular}{|C{24mm}|C{24mm}|C{24mm}|}
 \hline
-\rowcolor{mhpblue}\multicolumn{1}{|l|}{\scriptsize\hdrs{\VAR{booklet.register.axis_likelihood}}} & \multicolumn{3}{c|}{\scriptsize\hdrs{\VAR{booklet.register.axis_impact}}} \\
+\rowcolor{mhpblue}\multicolumn{3}{|c|}{\scriptsize\hdrs{\VAR{booklet.register.axis_impact}}} \\
 \hline
-\rowcolor{mhplight}\strut\BLOCK{for index in range(booklet.register.band_labels|length)} & \bfseries{} \VAR{booklet.register.band_labels[index]}\par\mdseries{} \VAR{booklet.register.band_ranges[index]}\rowpad{}\BLOCK{endfor} \\
+\rowcolor{mhplight}\strut\BLOCK{for index in range(booklet.register.band_labels|length)}\BLOCK{if index} &\BLOCK{endif} \bfseries{} \VAR{booklet.register.band_labels[index]}\par\mdseries{} \VAR{booklet.register.band_ranges[index]}\rowpad{}\BLOCK{endfor} \\
 \hline
-\BLOCK{for row in booklet.register.matrix_rows}
-\rule[-11mm]{0pt}{3mm}\bfseries{} \VAR{row.label}\BLOCK{for cell in row.zones} & \cellcolor{risk\VAR{cell.kind}}\rule[-11mm]{0pt}{3mm}\VAR{cell.word}\BLOCK{endfor} \\
-\hline
-\BLOCK{endfor}
 \end{tabular}\endgroup
 \end{minipage}\hfill
 \begin{minipage}[t]{0.31\linewidth}
-\hint{\VAR{booklet.register.example_cell}}
-\vspace{1mm}
 \hint{\VAR{booklet.register.review_hint}}
 \end{minipage}\par
