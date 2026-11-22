@@ -429,7 +429,7 @@ Plans:
   4. README, Was ist neu, debriefing, booklet texts and intro slide 32 describe the protection-need analysis.
   5. RC4 is built clean, passes all gates and is printed and approved by the user before 2026-11-25.
 
-**Plans:** 2/6 plans executed
+**Plans:** 3/6 plans executed
 
 Plans:
 **Wave 1**
@@ -442,7 +442,7 @@ Plans:
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
-- [ ] 07.2-03-PLAN.md — PROT-03: cheat sheet prints the goal of every case (goal column), C/I/A coverage pinned, intro asks per asset and goal (wave 3)
+- [x] 07.2-03-PLAN.md — PROT-03: cheat sheet prints the goal of every case (goal column), C/I/A coverage pinned, intro asks per asset and goal (wave 3)
 
 **Wave 4** *(blocked on Wave 3 completion)*
 

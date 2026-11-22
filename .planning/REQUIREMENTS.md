@@ -94,7 +94,7 @@ Added 2026-11-22 for the inserted Phase 07.2: a per-asset protection-need analys
 
 - [x] **PROT-01**: The `risk_matrix` config block carries the number of asset rows and a protection goal (c/i/a) per cheat-sheet case; the validator rejects a missing or unknown goal and, for a case anchored to an attack, a goal that is not one of that attack's strongest `cia_impact` goals; matrix-only code (zones, likelihood) is removed
 - [x] **PROT-02**: The Teamheft register page opens with a protection-need table (empty asset rows W1–W4, per row C/I/A each gering/mittel/hoch with the config € ranges, a "gesamt" column by the maximum principle, an example row from another industry) instead of the 3×3 matrix; register risks reference an asset W# and a main goal, the Rückblick reads the risk's band from the table; the page stays one page and passes the veil, digit and fill checks
-- [ ] **PROT-03**: The facilitator cheat sheet prints each case's protection goal; C, I and A each have at least one case, 6–8 cases in total, bands consistent with the game values
+- [x] **PROT-03**: The facilitator cheat sheet prints each case's protection goal; C, I and A each have at least one case, 6–8 cases in total, bands consistent with the game values
 - [ ] **PROT-04**: README, "Was ist neu", the debriefing questions and the booklet direction texts describe the protection-need table; no player or facilitator text names the risk matrix, a likelihood or the colour zones
 - [ ] **PROT-05**: Intro deck slide 32 explains the protection-need analysis (assets × C/I/A, gering/mittel/hoch, maximum principle, register reads its band from the table; no MechTech or attack content); edited once from a user-approved checklist and pinned by the deck test
 - [ ] **PROT-06**: The print set is rebuilt and released as release candidate 4: clean stamp, `print --check` exit 0, fast and pdf suites pass, only `risk_matrix` differs in the config, the dry-run material record names RC4, printed and approved by the user before the dry run on 2026-11-25
@@ -205,7 +205,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RISK-10 | Phase 07.1 | Complete (paper approval moved to PROT-06) |
 | PROT-01 | Phase 07.2 | Complete |
 | PROT-02 | Phase 07.2 | Complete |
-| PROT-03 | Phase 07.2 | Pending |
+| PROT-03 | Phase 07.2 | Complete |
 | PROT-04 | Phase 07.2 | Pending |
 | PROT-05 | Phase 07.2 | Pending |
 | PROT-06 | Phase 07.2 | Pending |
