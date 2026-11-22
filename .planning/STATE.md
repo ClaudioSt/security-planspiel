@@ -3,17 +3,17 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 current_phase: 07.2
-current_phase_name: C/I/A in the existing € bands, maximum principle
+current_phase_name: protection-need-analysis-instead-of-likelihood-axis-per-asse
 status: executing
 stopped_at: Completed 07.1-09-PLAN.md
-last_updated: "2026-11-22T15:30:22.787Z"
+last_updated: "2026-11-22T16:08:53.159Z"
 last_activity: 2026-11-22
-last_activity_desc: Phase 07.1 complete, transitioned to Phase 07.2
+last_activity_desc: Phase 07.2 execution started
 progress:
   total_phases: 9
   completed_phases: 7
-  total_plans: 72
-  completed_plans: 71
+  total_plans: 78
+  completed_plans: 72
   percent: 78
 ---
 
@@ -24,14 +24,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-10-27)
 
 **Core value:** Facilitators and players can run the game by hand without ambiguity: every rule is unambiguous, every printed number matches `simulation_config.json`, and no strategy exploits a rule loophole.
-**Current focus:** Phase 07.1 — risk-based-learning-chain-cia-risk-register-from-the-mechtec
+**Current focus:** Phase 07.2 — protection-need-analysis-instead-of-likelihood-axis-per-asse
 
 ## Current Position
 
-Phase: 07.2 — Protection-Need Analysis: per-asset Schutzbedarfsfeststellung (C/I/A in the existing € bands, maximum principle) replaces the likelihood × impact matrix; register risks read their band from the table, cheat sheet tagged by goal, intro slide 32 reworked; ships as print RC4 before the 2026-11-25 dry run
-Plan: Not started
+Phase: 07.2 (protection-need-analysis-instead-of-likelihood-axis-per-asse) — EXECUTING
+Plan: 2 of 6
 Status: Ready to execute
-Last activity: 2026-11-22 — Phase 07.1 complete, transitioned to Phase 07.2
+Last activity: 2026-11-22 — Phase 07.2 execution started
 
 Progress: [█████████░] 86% (6 of 7 phases)
 
@@ -226,6 +226,7 @@ Recent decisions affecting current work:
 - [Phase 07.1]: 07.1-05: cheat-sheet case bands tied to attack damage only for like_attack-anchored cases; risk.case_attack accepts any defined attack
 - [Phase 07.1]: 07.1-07: the optional management pitch stays outside debrief_stages; pitch_seconds (60) is config, composed in code; Was-ist-neu debrief line unchanged
 - [Phase 07.1-09]: Slide-31 material box widened (cx 9300000) so the material line no longer wraps onto the footer; deck patched surgically, docProps/app.xml untouched
+- [Phase 07.2]: Ransomware cheat-sheet anchor moves to new integrity case data_trust (band high, goal i); production_days keeps goal a without anchor (D-11 conflict resolution); risk_matrix block name kept (D-15)
 
 ### Pending Todos
 
@@ -254,6 +255,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-11-14T00:29:43.346Z
+Last session: 2026-11-22T16:08:53.143Z
 Stopped at: Completed 07.1-09-PLAN.md
 Resume file: .planning/phases/07.1-risk-based-learning-chain-cia-risk-register-from-the-mechtec/07.1-01-PLAN.md

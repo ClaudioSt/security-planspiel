@@ -429,12 +429,12 @@ Plans:
   4. README, Was ist neu, debriefing, booklet texts and intro slide 32 describe the protection-need analysis.
   5. RC4 is built clean, passes all gates and is printed and approved by the user before 2026-11-25.
 
-**Plans:** 6 plans
+**Plans:** 1/6 plans executed
 
 Plans:
 **Wave 1**
 
-- [ ] 07.2-01-PLAN.md — PROT-01: `risk_matrix` gains `asset_rows` (4) and a goal per case, validator rule "anchored goal = one of the attack's strongest goals", integrity case `data_trust` takes the ransomware anchor, matrix-only code and words removed, deck-test bridge (wave 1)
+- [x] 07.2-01-PLAN.md — PROT-01: `risk_matrix` gains `asset_rows` (4) and a goal per case, validator rule "anchored goal = one of the attack's strongest goals", integrity case `data_trust` takes the ransomware anchor, matrix-only code and words removed, deck-test bridge (wave 1)
 
 **Wave 2** *(blocked on Wave 1 completion)*
 

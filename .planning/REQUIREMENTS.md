@@ -92,7 +92,7 @@ Added 2026-11-12 for the inserted Phase 07.1 (pedagogical review): make the chai
 
 Added 2026-11-22 for the inserted Phase 07.2: a per-asset protection-need analysis (C/I/A in the existing € bands, maximum principle) replaces the likelihood × impact matrix of RISK-02. Print material, texts, config structure and deck only; no game formula or balance value changes.
 
-- [ ] **PROT-01**: The `risk_matrix` config block carries the number of asset rows and a protection goal (c/i/a) per cheat-sheet case; the validator rejects a missing or unknown goal and, for a case anchored to an attack, a goal that is not one of that attack's strongest `cia_impact` goals; matrix-only code (zones, likelihood) is removed
+- [x] **PROT-01**: The `risk_matrix` config block carries the number of asset rows and a protection goal (c/i/a) per cheat-sheet case; the validator rejects a missing or unknown goal and, for a case anchored to an attack, a goal that is not one of that attack's strongest `cia_impact` goals; matrix-only code (zones, likelihood) is removed
 - [ ] **PROT-02**: The Teamheft register page opens with a protection-need table (empty asset rows W1–W4, per row C/I/A each gering/mittel/hoch with the config € ranges, a "gesamt" column by the maximum principle, an example row from another industry) instead of the 3×3 matrix; register risks reference an asset W# and a main goal, the Rückblick reads the risk's band from the table; the page stays one page and passes the veil, digit and fill checks
 - [ ] **PROT-03**: The facilitator cheat sheet prints each case's protection goal; C, I and A each have at least one case, 6–8 cases in total, bands consistent with the game values
 - [ ] **PROT-04**: README, "Was ist neu", the debriefing questions and the booklet direction texts describe the protection-need table; no player or facilitator text names the risk matrix, a likelihood or the colour zones
@@ -203,7 +203,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RISK-08 | Phase 07.1 | Complete |
 | RISK-09 | Phase 07.1 | Complete |
 | RISK-10 | Phase 07.1 | Complete (paper approval moved to PROT-06) |
-| PROT-01 | Phase 07.2 | Pending |
+| PROT-01 | Phase 07.2 | Complete |
 | PROT-02 | Phase 07.2 | Pending |
 | PROT-03 | Phase 07.2 | Pending |
 | PROT-04 | Phase 07.2 | Pending |
