@@ -133,7 +133,7 @@
 
 **Phase 7 timing depends on a single dry run:**
 - Files: `.planning/phases/07-session-flow-handoff/07-DRYRUN.md`, `simulation_config.json` (`session_schedule`), `planspiel/schedule.py`
-- Why fragile: The session plan targets a total of 195 minutes. The solo measurement of wave 1 was 30 minutes against a re-budget of 25 (D-34 deviation, user-approved 2026-11-04). The dry run on 2026-11-25 (FLOW-05) decides whether the 25-minute budget holds.
+- Why fragile: The session plan targets a total of 215 minutes (`session_schedule.total_minutes`). The solo measurement of wave 1 was 30 minutes against a re-budget of 25 (D-34 deviation, user-approved 2026-11-04). The dry run on 2026-11-25 (FLOW-05) decides whether the 25-minute budget holds.
 - Safe modification: Change timings only in `session_schedule` in the config, then regenerate the intro deck slide and print set.
 - Test coverage: Schedule rows are generated from the config, but real durations are measured only in the dry run.
 
@@ -145,8 +145,8 @@
 - Scaling path: Prune with the existing dependency rules before enumeration; keep the balance report at summary granularity.
 
 **Team and session count:**
-- Current capacity: 3 teams of 5, one afternoon of about 3 hours (195 minutes planned in `session_schedule`).
-- Limit: The schedule has no slack beyond the planned total of 195 minutes. A larger group or a longer session breaks the timed plan.
+- Current capacity: 3 teams of 5, one afternoon (215 minutes planned in `session_schedule.total_minutes`).
+- Limit: The schedule has no slack beyond the planned total of 215 minutes. A larger group or a longer session breaks the timed plan.
 - Scaling path: Re-run the schedule validator (`uv run planspiel validate`) with the new numbers in the config.
 
 ## Dependencies at Risk
