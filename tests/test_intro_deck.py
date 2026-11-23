@@ -109,6 +109,13 @@ THEORY_RISK_SLIDE = 21
 THEORY_BRIDGE_TEXT = "Im Planspiel tritt jeder Angriff ein: Bewertet wird nur der Schaden je Schutzziel (Schutzbedarf)."
 THEORY_NEED_SLIDE = 22
 RETIRED_NEED_TITLE = "Sicherheitsbedarf"
+THEORY_NEED_QUESTIONS = (
+    "Welche Werte braucht das Unternehmen: Daten, Anlagen, Know-how?",
+    "Wie groß wäre der Schaden fürs Geschäft: gering, mittel oder hoch?",
+    "Was wäre schlimmer: bekannt (C), verfälscht (I) oder nicht verfügbar (A)?",
+    "Welcher Schaden ist der höchste? Er bestimmt den Schutzbedarf des Werts.",
+    "Verlangen Gesetze (z.B. DSGVO) oder Kunden (z.B. OEM-Audit) mehr Schutz?",
+)
 
 MEASURE_CATEGORY_TEXT = {
     "Physische": "Schutz von Gebäuden, Räumen und Hardware vor unbefugtem Zutritt und Umwelteinflüssen.",
@@ -312,6 +319,18 @@ def test_theory_need_slide_is_titled_schutzbedarf_and_shown(slides, slide_texts)
     assert slide._element.get("show") != "0"
     for number, text in slide_texts.items():
         assert RETIRED_NEED_TITLE not in text, number
+
+
+def test_theory_need_slide_asks_the_protection_need_questions_in_order(slides):
+    # Quick task 261123-oav follow-up: the five questions lead through the method (values, damage, C/I/A,
+    # maximum principle, external requirements) instead of generic security requirements
+    slide = slides[THEORY_NEED_SLIDE - 1]
+    questions = sorted(
+        (shape.top, shape.text_frame.text.strip())
+        for shape in slide.shapes
+        if shape.has_text_frame and shape.name.startswith("Textfeld")
+    )
+    assert tuple(text for _, text in questions) == THEORY_NEED_QUESTIONS
 
 
 # --- Schutzbedarf slide (PROT-05, D-16) --------------------------------------------------------------------------
