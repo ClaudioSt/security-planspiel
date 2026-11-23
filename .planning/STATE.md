@@ -2,19 +2,19 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_phase: 07.2
-current_phase_name: protection-need-analysis-instead-of-likelihood-axis-per-asse
-status: verifying
-stopped_at: Completed 07.2-04-PLAN.md
-last_updated: "2026-11-23T13:53:46.318Z"
-last_activity: 2026-11-22
-last_activity_desc: Phase 07.2 execution started
+current_phase: 07
+status: executing
+stopped_at: Phase 07.2 complete (RC4 approved); next 07-12 dry run
+last_updated: "2026-11-23T14:01:55.112Z"
+last_activity: 2026-11-23
+last_activity_desc: Phase 07.2 complete
 progress:
   total_phases: 9
   completed_phases: 8
   total_plans: 78
   completed_plans: 77
   percent: 89
+current_phase_name: session-flow-handoff
 ---
 
 # Project State
@@ -24,14 +24,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-10-27)
 
 **Core value:** Facilitators and players can run the game by hand without ambiguity: every rule is unambiguous, every printed number matches `simulation_config.json`, and no strategy exploits a rule loophole.
-**Current focus:** Phase 07.2 — protection-need-analysis-instead-of-likelihood-axis-per-asse
+**Current focus:** Phase 07 — session-flow-handoff (plan 07-12, timed dry run on 2026-11-25 with print RC4)
 
 ## Current Position
 
-Phase: 07.2 (protection-need-analysis-instead-of-likelihood-axis-per-asse) — EXECUTING
-Plan: 6 of 6
-Status: Phase complete — ready for verification
-Last activity: 2026-11-22 — Phase 07.2 execution started
+Phase: 07 (session-flow-handoff) — EXECUTING
+Plan: 12 of 12 (07-12 timed dry run, 2026-11-25)
+Status: Phase 07.2 complete and verified (5/5); RC4 approved on paper 2026-11-23; waiting for the dry run
+Last activity: 2026-11-23 — Phase 07.2 complete
 
 Progress: [█████████░] 86% (6 of 7 phases)
 
@@ -39,7 +39,7 @@ Progress: [█████████░] 86% (6 of 7 phases)
 
 **Velocity:**
 
-- Total plans completed: 60
+- Total plans completed: 66
 - Average duration: -
 - Total execution time: 0 hours
 
@@ -54,6 +54,7 @@ Progress: [█████████░] 86% (6 of 7 phases)
 | 5 | 16 | - | - |
 | 6 | 10 | - | - |
 | 07.1 | 10 | - | - |
+| 07.2 | 6 | - | - |
 
 **Recent Trend:**
 
