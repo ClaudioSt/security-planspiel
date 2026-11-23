@@ -384,6 +384,28 @@ def test_the_need_example_follows_the_maximum_principle(real):
     assert len(booklet.register.need_example) == 5
 
 
+@pytest.mark.parametrize(
+    ("c", "i", "a", "expected"),
+    [
+        pytest.param("gering", "hoch", "mittel", "hoch", id="highest-in-the-middle"),
+        pytest.param("mittel", "gering", "hoch", "hoch", id="highest-last"),
+        pytest.param("gering", "mittel", "gering", "mittel", id="no-top-band-present"),
+    ],
+)
+def test_the_need_example_total_is_the_highest_band_wherever_it_sits(tmp_path, c, i, a, expected):
+    source = (CONTENT_DIR / "texte.toml").read_text(encoding="utf-8")
+    head, marker, tail = source.partition("[sheets.register.need_example]")
+    assert marker, "the need example table must exist"
+    section, bracket, rest = tail.partition("\n[")
+    assert bracket, "a section must follow the need example table"
+    asset = next(line for line in section.splitlines() if line.startswith("asset = "))
+    body = f"\n{asset}\nc = \"{c}\"\ni = \"{i}\"\na = \"{a}\"\n"
+    path = tmp_path / "texte.toml"
+    path.write_text(head + marker + body + bracket + rest, encoding="utf-8", newline="\n")
+    booklet = build_team_booklet(load_config(CONFIG_PATH), load_texts(path))
+    assert booklet.register.need_example[1:] == (c, i, a, expected)
+
+
 def test_a_need_example_word_that_is_no_band_word_stops_the_build(tmp_path):
     source = (CONTENT_DIR / "texte.toml").read_text(encoding="utf-8")
     head, marker, tail = source.partition("[sheets.register.need_example]")
