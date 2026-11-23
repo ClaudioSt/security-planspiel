@@ -429,7 +429,7 @@ Plans:
   4. README, Was ist neu, debriefing, booklet texts and intro slide 32 describe the protection-need analysis.
   5. RC4 is built clean, passes all gates and is printed and approved by the user before 2026-11-25.
 
-**Plans:** 5/6 plans executed
+**Plans:** 6/6 plans complete
 
 Plans:
 **Wave 1**
@@ -454,4 +454,4 @@ Plans:
 
 **Wave 6** *(blocked on Wave 5 completion)*
 
-- [ ] 07.2-06-PLAN.md — PROT-06: release candidate 4 built, verified, printed and approved before 2026-11-25; dry-run record names RC4 (wave 6, checkpoint)
+- [x] 07.2-06-PLAN.md — PROT-06: release candidate 4 built, verified, printed and approved before 2026-11-25; dry-run record names RC4 (wave 6, checkpoint)

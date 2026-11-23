@@ -97,7 +97,7 @@ Added 2026-11-22 for the inserted Phase 07.2: a per-asset protection-need analys
 - [x] **PROT-03**: The facilitator cheat sheet prints each case's protection goal; C, I and A each have at least one case, 6–8 cases in total, bands consistent with the game values
 - [x] **PROT-04**: README, "Was ist neu", the debriefing questions and the booklet direction texts describe the protection-need table; no player or facilitator text names the risk matrix, a likelihood or the colour zones
 - [x] **PROT-05**: Intro deck slide 32 explains the protection-need analysis (assets × C/I/A, gering/mittel/hoch, maximum principle, register reads its band from the table; no MechTech or attack content); edited once from a user-approved checklist and pinned by the deck test
-- [ ] **PROT-06**: The print set is rebuilt and released as release candidate 4: clean stamp, `print --check` exit 0, fast and pdf suites pass, only `risk_matrix` differs in the config, the dry-run material record names RC4, printed and approved by the user before the dry run on 2026-11-25
+- [x] **PROT-06**: The print set is rebuilt and released as release candidate 4: clean stamp, `print --check` exit 0, fast and pdf suites pass, only `risk_matrix` differs in the config, the dry-run material record names RC4, printed and approved by the user before the dry run on 2026-11-25
 
 ## v2 Requirements
 
@@ -208,7 +208,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PROT-03 | Phase 07.2 | Complete |
 | PROT-04 | Phase 07.2 | Complete |
 | PROT-05 | Phase 07.2 | Complete |
-| PROT-06 | Phase 07.2 | Pending |
+| PROT-06 | Phase 07.2 | Complete |
 
 **Coverage:**
 

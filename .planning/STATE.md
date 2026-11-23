@@ -4,17 +4,17 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: 07.2
 current_phase_name: protection-need-analysis-instead-of-likelihood-axis-per-asse
-status: executing
+status: verifying
 stopped_at: Completed 07.2-04-PLAN.md
-last_updated: "2026-11-22T17:25:52.927Z"
+last_updated: "2026-11-23T13:53:46.318Z"
 last_activity: 2026-11-22
 last_activity_desc: Phase 07.2 execution started
 progress:
   total_phases: 9
-  completed_phases: 7
+  completed_phases: 8
   total_plans: 78
-  completed_plans: 76
-  percent: 78
+  completed_plans: 77
+  percent: 89
 ---
 
 # Project State
@@ -30,7 +30,7 @@ See: .planning/PROJECT.md (updated 2026-10-27)
 
 Phase: 07.2 (protection-need-analysis-instead-of-likelihood-axis-per-asse) — EXECUTING
 Plan: 6 of 6
-Status: Ready to execute
+Status: Phase complete — ready for verification
 Last activity: 2026-11-22 — Phase 07.2 execution started
 
 Progress: [█████████░] 86% (6 of 7 phases)
@@ -131,6 +131,7 @@ Progress: [█████████░] 86% (6 of 7 phases)
 | Phase 07.2 P03 | 50min | 2 tasks | 9 files |
 | Phase 07.2 P04 | 35 min | 2 tasks | 6 files |
 | Phase 07.2 P05 | ~60 min | 3 tasks | 5 files |
+| Phase 07.2 P06 | 1h | 3 tasks | 17 files |
 
 ## Accumulated Context
 
@@ -234,6 +235,7 @@ Recent decisions affecting current work:
 - [Phase 07.2]: Cheat-sheet goal column is C{10mm} after the case column; coverage of C, I and A pinned as a guard test (07.2-03)
 - [Phase 07.2]: Retired-matrix sweep covers six patterns over README and every texte.toml leaf; selten/möglich stay unswept as ordinary words
 - [Phase 07.2]: Intro slide 32 is the Schutzbedarf slide: two example rows, slide 31 diagram unchanged, table without fills (user-approved 2026-11-22)
+- [Phase 07.2]: RC4 released on paper without a colour or grayscale choice; recorded as not fixed, both equivalent (no zone colours, words carry the meaning)
 
 ### Pending Todos
 
@@ -262,6 +264,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-11-22T17:25:52.899Z
+Last session: 2026-11-23T13:53:46.261Z
 Stopped at: Completed 07.2-03-PLAN.md
 Resume file: .planning/phases/07.2-protection-need-analysis-instead-of-likelihood-axis-per-asse/07.2-04-PLAN.md
