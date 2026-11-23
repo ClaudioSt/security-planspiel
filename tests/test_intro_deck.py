@@ -11,6 +11,11 @@ Slide 32 was turned into the protection-need slide (Schutzbedarf) per
 `.planning/phases/07.2-protection-need-analysis-instead-of-likelihood-axis-per-asse/07.2-DECK-CHECKLIST.md`
 (PROT-05, D-16); its expected words come from `content/texte.toml` `[sheets.register]` and the band order from
 `cfg.risk_matrix.bands`, only the approved title and the literal "Maximumprinzip" are typed here.
+
+Quick task 261123-oav added the Übungswelle slide 33 and fixed slides 31, 21 and 22 and the slide-number fields per
+`.planning/quick/261123-oav-close-open-items-after-07-2-deck-review-/261123-oav-DECK-CHECKLIST.md` (follow-up to
+PROT-05 and LEG-02); minute, title and material words come from config and texte.toml, only the approved slide texts
+are typed here.
 """
 import os
 import re
@@ -27,28 +32,31 @@ from tests.test_readme_current import RETIRED_MATRIX_PATTERNS
 
 DECK = REPO_ROOT / "final_documents" / "Planspiel_Einführung + Grundlagen.pptx"
 
-# slide number -> block ids behind its minute figure (slide 36: closing plus debrief; slide 35 is composed per wave below)
+# slide number -> block ids behind its minute figure (slide 37: closing plus debrief; slide 36 is composed per wave
+# below; slide 33 is the Übungswelle slide of quick task 261123-oav)
 MINUTE_SLIDES = {
     26: ("break_1",),
     31: ("story_groups",),
-    33: ("measures_budget",),
-    34: ("break_2",),
-    36: ("closing", "debrief"),
+    33: ("wave_0",),
+    34: ("measures_budget",),
+    35: ("break_2",),
+    37: ("closing", "debrief"),
 }
 MINUTE_TEXT = {
     26: "{n} Minuten Pause",
     31: "{n} min",
     33: "{n} min",
-    34: "{n} Minuten Pause",
-    36: "{n} min",
+    34: "{n} min",
+    35: "{n} Minuten Pause",
+    37: "{n} min",
 }
-SUMMED_SLIDES = {36}
+SUMMED_SLIDES = {37}
 MINUTE_FIGURE = re.compile(r"(\d+)\s*(?:Minuten|min)\b")
 CLOCK_TIME = re.compile(r"(?<!\d)\d{1,2}:\d{2}(?!\d)")
 
 # The wave slide names wave 1 and the other waves separately since the D-34 re-budget of wave 1 (user-approved
-# 2026-11-04); it is slide 35 since the Risiko-Matrix slide was inserted after slide 31 (07.1-09)
-WAVE_SLIDE = 35
+# 2026-11-04); it is slide 36 since the Übungswelle slide was inserted at 33 (quick task 261123-oav)
+WAVE_SLIDE = 36
 WAVE_TEXT = "{first} min Welle 1, je {rest} min Welle 2 und 3"
 
 TEAM_SIZE_SLIDE = 30
@@ -63,17 +71,19 @@ DATE_FIGURE = re.compile(r"\d{1,2}\.\d{1,2}\.\d{4}")
 # Material lines (approved rows) and the print_list jobs behind them
 MATERIAL = {
     31: "Material: Unternehmenssteckbrief, Anfrage-Mail, Zeitungsartikel, Audit-Mail, Teamheft",
-    33: "Material: Teamheft, Maßnahmenkarten",
-    35: "Material: Arbeitsblatt der Welle, Eventkarten, So funktioniert eine Welle",
-    36: "Material: Teamheft",
+    33: "Material: Übungsblatt, So funktioniert eine Welle",
+    34: "Material: Teamheft, Maßnahmenkarten",
+    36: "Material: Arbeitsblatt der Welle, Eventkarten, So funktioniert eine Welle",
+    37: "Material: Teamheft",
 }
 MATERIAL_JOBS = {
     31: ("spieler-unternehmenssteckbrief", "spieler-anfrage-mail", "spieler-zeitungsartikel", "spieler-audit-mail",
          "spieler-teamheft"),
-    33: ("spieler-teamheft", "spieler-massnahmenkarten"),
-    35: ("angriff-1_ransomware", "angriff-2_ot", "angriff-3_exfil", "spieler-eventkarten",
+    33: ("uebung-welle-0", "spieler-so-funktioniert-eine-welle"),
+    34: ("spieler-teamheft", "spieler-massnahmenkarten"),
+    36: ("angriff-1_ransomware", "angriff-2_ot", "angriff-3_exfil", "spieler-eventkarten",
          "spieler-so-funktioniert-eine-welle"),
-    36: ("spieler-teamheft",),
+    37: ("spieler-teamheft",),
 }
 
 # PROT-05 (D-16): the Schutzbedarf slide sits directly after the story slide 31; checklist 07.2-DECK-CHECKLIST.md
@@ -84,6 +94,21 @@ NEED_SECOND_ROW = ("Speiseplan der Kantine", "gering", "gering", "mittel", "mitt
 MAXIMUM_PRINCIPLE = "Maximumprinzip"
 CLOSING_REVIEW_TEXT = "Und wie gut stimmte euer Risikoregister im Rückblick (richtig, unterschätzt, überschätzt)?"
 MONEY_FIGURE = re.compile(r"\d[\d.]*\s*(€|Euro)")
+
+# Quick task 261123-oav: the Übungswelle slide, the damage-per-protection-goal wording on the story slide 31, the bridge
+# line on theory slide 21 and the shown theory slide 22; the texts are the approved ones of the deck checklist
+PRACTICE_SLIDE = 33
+PRACTICE_BODY_WORDS = ("E-Wert", "Gesamtreduktion", "Schaden", "Kundenzufriedenheit")
+PRACTICE_NOT_SCORED = "zählt nicht für eure Wertung"
+STORY_SLIDE = 31
+RISK_ASSESSMENT_TEXT = (
+    "Wie groß wäre der Schaden fürs Geschäft, wenn Vertraulichkeit, Integrität oder Verfügbarkeit verletzt würden? "
+    "→ Welchen Schutzbedarf haben eure Werte?"
+)
+THEORY_RISK_SLIDE = 21
+THEORY_BRIDGE_TEXT = "Im Planspiel tritt jeder Angriff ein: Bewertet wird nur der Schaden je Schutzziel (Schutzbedarf)."
+THEORY_NEED_SLIDE = 22
+RETIRED_NEED_TITLE = "Sicherheitsbedarf"
 
 MEASURE_CATEGORY_TEXT = {
     "Physische": "Schutz von Gebäuden, Räumen und Hardware vor unbefugtem Zutritt und Umwelteinflüssen.",
@@ -165,7 +190,7 @@ def test_wave_slide_composes_the_minutes_per_wave_from_the_session_schedule(cfg,
     assert figures == {by_id["wave_1"], by_id["wave_2"]}
 
 
-@pytest.mark.parametrize("number", [26, 34])
+@pytest.mark.parametrize("number", [26, 35])
 def test_break_slides_carry_no_clock_time(slide_texts, number):
     assert not CLOCK_TIME.search(slide_texts[number])
     assert not re.search(r"bis\s*\d", slide_texts[number])
@@ -205,14 +230,14 @@ def test_measures_slide_describes_measures_not_threats(slide_texts):
 
 
 def test_budget_slide_names_no_amount(slide_texts):
-    assert "Budget zur Umsetzung eurer Maßnahmen" in slide_texts[33]
-    assert "€" not in slide_texts[33]
+    assert "Budget zur Umsetzung eurer Maßnahmen" in slide_texts[34]
+    assert "€" not in slide_texts[34]
 
 
 def test_last_block_slide_is_closing_and_debriefing(slide_texts):
-    assert "Abschluss und Debriefing" in slide_texts[36]
-    assert "Endergebnis und Reflexion" not in slide_texts[36]
-    assert CLOSING_REVIEW_TEXT in slide_texts[36]
+    assert "Abschluss und Debriefing" in slide_texts[37]
+    assert "Endergebnis und Reflexion" not in slide_texts[37]
+    assert CLOSING_REVIEW_TEXT in slide_texts[37]
 
 
 def test_no_old_phrase_and_no_board_term_remains(slide_texts):
@@ -223,7 +248,70 @@ def test_no_old_phrase_and_no_board_term_remains(slide_texts):
 
 
 def test_the_deck_has_the_expected_slides(slides):
-    assert len(slides) == 37
+    assert len(slides) == 38
+
+
+# --- Übungswelle slide and the bridged theory slides (quick task 261123-oav) -------------------------------------
+
+
+def test_practice_slide_is_visible_and_titled(slides, content):
+    slide = slides[PRACTICE_SLIDE - 1]
+    assert slide._element.get("show") != "0"
+    assert slide.shapes.title.text_frame.text == content.texts.subtree("sheets.ablauf")["practice_label"]
+
+
+def test_practice_slide_material_uses_the_print_labels(content, slide_texts):
+    labels = content.texts.subtree("sheets.ablauf.print")
+    line = "Material: " + ", ".join(labels[job] for job in MATERIAL_JOBS[PRACTICE_SLIDE])
+    assert line == MATERIAL[PRACTICE_SLIDE]
+    assert line in slide_texts[PRACTICE_SLIDE]
+
+
+def test_practice_slide_explains_one_wave_without_scoring(content, slide_texts):
+    text = slide_texts[PRACTICE_SLIDE]
+    for word in PRACTICE_BODY_WORDS:
+        assert word in text, word
+    assert PRACTICE_NOT_SCORED in text
+    assert PRACTICE_NOT_SCORED in content.texts.subtree("practice")["intro"]
+    assert "€" not in text and "Euro" not in text
+    assert not MONEY_FIGURE.search(text)
+
+
+def test_block_slides_follow_the_session_schedule(cfg):
+    slide_of = {block_id: number for number, ids in MINUTE_SLIDES.items() for block_id in ids}
+    slide_of.update({f"wave_{wave}": WAVE_SLIDE for wave in (1, 2, 3)})
+    numbers = [slide_of[block.id] for block in cfg.session_schedule.blocks if block.id in slide_of]
+    assert numbers == sorted(numbers), numbers
+    ids = [block.id for block in cfg.session_schedule.blocks]
+    assert ids.index("story_groups") < ids.index("wave_0") < ids.index("measures_budget")
+    assert slide_of["story_groups"] < slide_of["wave_0"] < slide_of["measures_budget"]
+
+
+def test_slide_number_fields_show_the_slide_position(slides):
+    for number, slide in enumerate(slides, start=1):
+        cached = slide._element.xpath('.//a:fld[@type="slidenum"]/a:t/text()')
+        assert all(text == str(number) for text in cached), (number, cached)
+
+
+def test_story_slide_assesses_damage_per_protection_goal(slide_texts):
+    text = slide_texts[STORY_SLIDE]
+    assert RISK_ASSESSMENT_TEXT in text
+    assert "Schutzbedarf" in text
+    for pattern in RETIRED_MATRIX_PATTERNS:
+        assert re.search(pattern, text.replace("‑", "-"), re.IGNORECASE) is None, pattern
+
+
+def test_theory_risk_slide_keeps_the_method_and_bridges_to_the_game(slide_texts):
+    assert "Eintrittswahrscheinlichkeit" in slide_texts[THEORY_RISK_SLIDE]
+    assert THEORY_BRIDGE_TEXT in slide_texts[THEORY_RISK_SLIDE]
+
+
+def test_theory_need_slide_is_titled_schutzbedarf_and_shown(slides, slide_texts):
+    slide = slides[THEORY_NEED_SLIDE - 1]
+    assert slide.shapes.title.text_frame.text == NEED_TITLE
+    assert slide._element.get("show") != "0"
+    for number, text in slide_texts.items():
+        assert RETIRED_NEED_TITLE not in text, number
 
 
 # --- Schutzbedarf slide (PROT-05, D-16) --------------------------------------------------------------------------
