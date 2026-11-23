@@ -255,6 +255,12 @@ None. The veiling todo (2026-06-23) is closed (moved to `todos/completed/` in Ph
 - Phase 07.1 planned 2026-11-13: RISK-01..RISK-10, one plan each, 10 waves; plan checker passed with no blockers after 2 revisions
 - Phase 07.2 inserted after Phase 07.1: Per-asset protection-need analysis replaces the likelihood axis (user decision 2026-11-21); RC4 supersedes RC3 for the dry run (URGENT)
 
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 261123-oav | Close the open items after phase 07.2: Übungswelle slide 33 and slide-number fields in the intro deck, slide 21/22/31 wording, WR-01/WR-02 review fixes, CONCERNS 215 minutes | 2026-11-23 | 3a9e2b0 | [261123-oav-close-open-items-after-07-2-deck-review-](./quick/261123-oav-close-open-items-after-07-2-deck-review-/) |
+
 ## Deferred Items
 
 Items acknowledged and carried forward from previous milestone close:
