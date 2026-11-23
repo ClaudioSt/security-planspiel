@@ -114,3 +114,15 @@ None. Threat T-oav-01 (veil): all deck veil tests green on every slide; no attac
 - Files present: DECK-CHECKLIST.md, the 38-slide deck (`git show --stat HEAD~0` of 3a9e2b0), INVENTORY.md row with "38 slides", renders on disk.
 - Commits cbfa0a2, 4334a9a, 84ab11e, 8b2b0ae, d0708d3, 6719283, 3a9e2b0 exist; RED commits precede the validator GREEN and the deck commit.
 - `git log -- "final_documents/Planspiel_Einführung + Grundlagen.pptx"` shows exactly one quick-task commit (3a9e2b0) on top of b550f8b.
+
+## Follow-up (2026-11-23): slide 22 questions
+
+After the review of the renders the user asked to correct slide 22 ("Korrigiere"): its five generic security-requirement questions did not match the new title "Schutzbedarf". They now lead through the method, one run text each, icons and layout unchanged:
+
+1. Welche Werte braucht das Unternehmen: Daten, Anlagen, Know-how?
+2. Wie groß wäre der Schaden fürs Geschäft: gering, mittel oder hoch?
+3. Was wäre schlimmer: bekannt (C), verfälscht (I) oder nicht verfügbar (A)?
+4. Welcher Schaden ist der höchste? Er bestimmt den Schutzbedarf des Werts.
+5. Verlangen Gesetze (z.B. DSGVO) oder Kunden (z.B. OEM-Audit) mehr Schutz?
+
+RED test 0628edd pins the questions in order; the deck test and inventory test pass (49), `print --check` exit 0. python-pptx renumbered the slide part names on save (same 524 entries, slide content unchanged apart from slide 22). Render: `build/deck/quick-261123-oav/renders/slide-22-v2.png`.
