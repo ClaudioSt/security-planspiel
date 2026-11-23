@@ -76,4 +76,12 @@ Slide-22 visibility, answered 2026-11-23 via the orchestrator's question dialog:
 
 ## Result review
 
-Left for Task 3.
+Date: 2026-11-23. The user's look-over of the renders is pending via the orchestrator; the render PNGs are under `build/deck/quick-261123-oav/renders/` (slides 21, 22, 28, 31, 32, 33, 34, 36, 37 of the patched deck, plus `committed-old-slide-33.png` of the committed deck).
+
+Build facts: surgical zip patch of the committed deck, script in the session scratchpad, not committed. 522 entries before, 524 after; `[Content_Types].xml` first, original entry order kept, every entry deflated. Changed entries (9): `[Content_Types].xml`, `ppt/presentation.xml`, `ppt/_rels/presentation.xml.rels`, `ppt/slides/slide21.xml` (row 1), `slide22.xml` (row 2), `slide31.xml` (row 3), `slide32.xml` (cached number 34, row 5), `slide34.xml` (cached number 36, row 5), `slide35.xml` (cached number 37, row 5). Added (2): `ppt/slides/slide38.xml` (new slide 33, row 4) and `ppt/slides/_rels/slide38.xml.rels` (layout relationship only, no notes slide). Removed: none. `docProps/app.xml` byte-identical (CRC 63C77E31).
+
+Text diff of all slides (python-pptx, old against new, mapped around the insertion): only slides 21, 22 and 31 differ, plus the new slide 33; every difference maps to rows 1 to 4. The `show` attribute of slide 22 went from "0" to absent (shown).
+
+Render findings: the bridge line on slide 21 stands right of the matrix without touching cells, axis label or separator; slide 31's reworded box needs four lines and clears the material line; slide 33 reads like slides 34 and 36 (kicker, title, 18 pt body, material line, "15 min" at the single-line position); footers show 33, 34, 36 on the patched deck. PowerPoint recomputes slide-number fields when it renders: the committed deck already showed the right number 33 on the old budget slide, so the stale cache was visible only to tools that read the cached text (python-pptx, other viewers), not in PowerPoint itself.
+
+Slide 22 visibility as applied: shown (user answer "Einblenden").
