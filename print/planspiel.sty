@@ -26,11 +26,6 @@
 \definecolor{levelone}{HTML}{00CC67}
 \definecolor{leveltwo}{HTML}{DDEF03}
 \definecolor{levelthree}{HTML}{575757}
-% Zone tints of the risk matrix (light, so handwritten numbers stay readable; the printed zone word carries the
-% meaning in grayscale).
-\definecolor{riskgreen}{HTML}{CFE8CF}
-\definecolor{riskyellow}{HTML}{FFF0A8}
-\definecolor{riskred}{HTML}{F2B8B8}
 \definecolor{mhpwarn}{HTML}{B00020}
 
 % Version stamp "Stand <date> · <hash>": `planspiel print` writes it to stamp.tex (outside the
@@ -107,9 +102,17 @@
 % One handwriting line in a table cell: starts on a new line, 6 mm high, light grey baseline across the cell width.
 \newcommand{\writeline}{\par\noindent\rule{0pt}{6mm}\textcolor{mhpshade}{\rule{\linewidth}{0.4pt}}\par}
 
+% The same handwriting line, 5 mm high, for the dense tables of the register page (the line is a text of \writeline, so a test that
+% looks for \writeline in a cell finds both).
+\newcommand{\writelinecompact}{\par\noindent\rule{0pt}{5mm}\textcolor{mhpshade}{\rule{\linewidth}{0.4pt}}\par}
+
 % Empty square for the "Erfuellt" column (no tick glyphs: Arial lacks them).
 \newcommand{\tickbox}{\raisebox{-1.2mm}[3mm][1mm]{{\setlength{\fboxsep}{0pt}\setlength{\fboxrule}{0.5pt}%
   \fcolorbox{mhpblue}{white}{\rule{0pt}{4mm}\rule{4mm}{0pt}}}}}
+
+% Smaller empty square (3.2 mm) for the dense protection-need table of the register page: three ticks stack in one cell.
+\newcommand{\tickboxsmall}{\raisebox{-0.9mm}[2.4mm][0.8mm]{{\setlength{\fboxsep}{0pt}\setlength{\fboxrule}{0.5pt}%
+  \fcolorbox{mhpblue}{white}{\rule{0pt}{3.2mm}\rule{3.2mm}{0pt}}}}}
 
 % The same square with a mark in it (the Welle 0 worked example: a cross for met, a dash for missed).
 \newcommand{\tickfilled}[1]{\raisebox{-1.2mm}[3mm][1mm]{{\setlength{\fboxsep}{0pt}\setlength{\fboxrule}{0.5pt}%

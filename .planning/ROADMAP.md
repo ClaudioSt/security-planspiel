@@ -373,7 +373,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 (Phase 3 
   5. The schedule (story block 35, debriefing 30, total 215 minutes), print list, dry-run protocol and record, intro deck (new "Risiko-Matrix" slide), README and "Was ist neu" sheet match the new flow, and no game formula or balance value has changed.
   6. Release candidate 3 is built clean (no "+lokal", `print --check` exit 0, fast and pdf tests pass), printed and approved by the user before 2026-11-25.
 
-**Plans:** 9/10 plans executed
+**Plans:** 10/10 plans complete
 
 Plans:
 **Wave 1**
@@ -414,4 +414,44 @@ Plans:
 
 **Wave 10** *(blocked on Wave 9 completion)*
 
-- [ ] 07.1-10-PLAN.md — RISK-10: release candidate 3 built, verified, printed and approved before 2026-11-25 (wave 10, checkpoint)
+- [x] 07.1-10-PLAN.md — RISK-10: release candidate 3 built, verified, printed and approved before 2026-11-25 (wave 10, checkpoint)
+
+### Phase 07.2: Protection-Need Analysis: per-asset Schutzbedarfsfeststellung (C/I/A in the existing € bands, maximum principle) replaces the likelihood × impact matrix; register risks read their band from the table, cheat sheet tagged by goal, intro slide 32 reworked; ships as print RC4 before the 2026-11-25 dry run (INSERTED)
+
+**Goal:** Teams rate the damage to the assets they derive from the story per protection goal instead of guessing a likelihood. A protection-need table (assets × C/I/A, gering/mittel/hoch, maximum principle) opens the Teamheft, every register risk reads its band from it, and the Rückblick, cheat sheet, texts and intro deck follow. Print material, texts, config structure and deck only; no game formula or balance value changes. The set ships as print release candidate 4 before the dry run on 2026-11-25.
+**Requirements**: PROT-01, PROT-02, PROT-03, PROT-04, PROT-05, PROT-06
+**Depends on:** Phase 07.1
+**Success Criteria** (what must be TRUE):
+
+  1. The first Teamheft page holds a protection-need table with empty asset rows, a gering/mittel/hoch rating per C, I and A with the config € ranges, and a "gesamt" column by the maximum principle; no player page asks for a likelihood.
+  2. Every register risk names an asset row and a main goal, and the Rückblick compares the band read from the table with the attack's full damage, as in 07.1.
+  3. The cheat sheet tags every case with C, I or A, covers all three goals and stays consistent with the game values; the validator checks the goals.
+  4. README, Was ist neu, debriefing, booklet texts and intro slide 32 describe the protection-need analysis.
+  5. RC4 is built clean, passes all gates and is printed and approved by the user before 2026-11-25.
+
+**Plans:** 6/6 plans complete
+
+Plans:
+**Wave 1**
+
+- [x] 07.2-01-PLAN.md — PROT-01: `risk_matrix` gains `asset_rows` (4) and a goal per case, validator rule "anchored goal = one of the attack's strongest goals", integrity case `data_trust` takes the ransomware anchor, matrix-only code and words removed, deck-test bridge (wave 1)
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [x] 07.2-02-PLAN.md — PROT-02: Teamheft page 1 opens with the protection-need table (W1–W4, C/I/A and gesamt ticks, € legend, clinic example), register points to W# and its main goal, Rückblick reads the band from the table, one-page proof (wave 2)
+
+**Wave 3** *(blocked on Wave 2 completion)*
+
+- [x] 07.2-03-PLAN.md — PROT-03: cheat sheet prints the goal of every case (goal column), C/I/A coverage pinned, intro asks per asset and goal (wave 3)
+
+**Wave 4** *(blocked on Wave 3 completion)*
+
+- [x] 07.2-04-PLAN.md — PROT-04: story direction, debriefing question and README flow describe the protection-need table; retired matrix vocabulary swept from texts and README (wave 4)
+
+**Wave 5** *(blocked on Wave 4 completion)*
+
+- [x] 07.2-05-PLAN.md — PROT-05: intro slide 32 becomes the protection-need slide from an approved checklist, user review, one binary commit, deck test pinned (wave 5, checkpoints)
+
+**Wave 6** *(blocked on Wave 5 completion)*
+
+- [x] 07.2-06-PLAN.md — PROT-06: release candidate 4 built, verified, printed and approved before 2026-11-25; dry-run record names RC4 (wave 6, checkpoint)

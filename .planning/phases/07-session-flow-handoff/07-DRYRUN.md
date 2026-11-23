@@ -12,8 +12,8 @@ Timed dry run of the full game with a test group. Prepared on 2026-11-06 from th
 
 ## Material used
 
-- **Print set:** release candidate 2, commit 8cf1972, stamp `Stand 2026-11-04 · 737ba65`, `dirty: false` (07-09, user release 2026-11-06). Freshness checked on 2026-11-06 with `uv run planspiel print --check`: exit 0, 15 documents current (T-07-39). On the day, compare the stamp on every printed page with this line.
-- **Intro deck:** `final_documents/Planspiel_Einführung + Grundlagen.pptx`, last changed in commit d4b0cb8 (slide 34 shows the per-wave minutes, D-34).
+- **Print set:** release candidate 4, commit 4cd9d8d, stamp `Stand 2026-11-22 · 7420259`, `dirty: false` (07.2-06, user release 2026-11-23, print mode: nicht festgelegt – Farbe und Graustufen gleichwertig (keine Farbzonen mehr, die Wörter tragen die Bedeutung)). It supersedes release candidate 3 (09a8f05, 07.1-10), which was built but never printed (07.2 D-17). Freshness checked on 2026-11-23 with `uv run planspiel print --check`: exit 0, 15 documents current. On the day, compare the stamp on every printed page with this line.
+- **Intro deck:** `final_documents/Planspiel_Einführung + Grundlagen.pptx`, last changed in commit b550f8b (07.2-05: slide 32 explains the protection-need table; 07.1-09: story block 35 min, closing and debriefing 40 min).
 - **Session total:** the stated total is 215 min. D-22 named 190 min; the D-34 deviation (07-09) raised it to 195; Phase 07.1 D-16 (story block 25 -> 35, debriefing 20 -> 30, stages 3/5/14/8) raised it to 215, superseding D-22 and D-34 only for these blocks. The booked slot is 240 min. The verdict below is judged against 215.
 
 ## Pass rule (D-25, verbatim from 07-CONTEXT.md)

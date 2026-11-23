@@ -1,9 +1,35 @@
-\#{ Booklet register page: loops and inserts only; R-labels, ranges and zone words arrive as finished strings. }
-\attacktitle{\VAR{booklet.register.title}}
-{\small{} \VAR{booklet.register.instruction}\par}
-{\small\bfseries{} \VAR{booklet.register.rank_hint}\par}
+\#{ Booklet register page: loops and inserts only; W- and R-labels, the legend and the example words arrive as finished strings. }
+\attacktitle{\VAR{booklet.register.page_title}}
+\step{\VAR{booklet.register.need_title}}
+{\footnotesize{} \VAR{booklet.register.need_instruction}\par}
 \vspace{1mm}
-\noindent\begingroup\footnotesize\setlength{\tabcolsep}{3pt}\begin{tabular}{|P{22mm}|P{29mm}|P{13mm}|P{30mm}|P{9mm}|P{26mm}|P{19mm}|}
+\noindent\begingroup\fontsize{8}{9.5}\selectfont\setlength{\tabcolsep}{3pt}\setlength{\parskip}{0pt}\begin{tabular}{|P{56mm}|P{19mm}|P{19mm}|P{19mm}|P{19mm}|}
+\hline
+\rowcolor{mhpblue}\BLOCK{for word in booklet.register.need_header}\scriptsize\hdr{\VAR{word}}\BLOCK{if not loop.last} &\BLOCK{endif} \BLOCK{endfor}\\
+\hline
+\rowcolor{mhplight}\multicolumn{5}{|l|}{\scriptsize\bfseries{} \VAR{booklet.register.example_label}} \\
+\hline
+\rowcolor{mhplight}\BLOCK{for word in booklet.register.need_example}\scriptsize{} \VAR{word}\BLOCK{if loop.last}\rowpad{}\BLOCK{else} &\BLOCK{endif} \BLOCK{endfor}\\
+\hline
+\BLOCK{for label in booklet.register.asset_rows}
+\textbf{\VAR{label}}\writelinecompact &
+\BLOCK{for rating in booklet.register.need_header[1:]}
+\BLOCK{for word in booklet.register.band_labels}
+\mbox{\tickboxsmall{} \VAR{word}}\BLOCK{if not loop.last}\par\vspace{0.4mm}\BLOCK{endif}
+\BLOCK{endfor}
+\rowpad{}\BLOCK{if not loop.last} &\BLOCK{endif}
+\BLOCK{endfor}
+\\
+\hline
+\BLOCK{endfor}
+\end{tabular}\endgroup\par
+\vspace{0.8mm}
+{\scriptsize\bfseries{} \VAR{booklet.register.legend_title}\BLOCK{for entry in booklet.register.band_legend}\quad\mdseries{} \VAR{entry}\BLOCK{endfor}\par}
+\step{\VAR{booklet.register.title}}
+{\footnotesize{} \VAR{booklet.register.instruction}\par}
+{\footnotesize\bfseries{} \VAR{booklet.register.rank_hint}\par}
+\vspace{1mm}
+\noindent\begingroup\footnotesize\setlength{\tabcolsep}{3pt}\setlength{\parskip}{0pt}\begin{tabular}{|P{14mm}|P{28mm}|P{15mm}|P{38mm}|P{9mm}|P{26mm}|P{18mm}|}
 \hline
 \rowcolor{mhpblue}\scriptsize\hdr{\VAR{booklet.register.header[0]}} & \scriptsize\hdr{\VAR{booklet.register.header[1]}} & \scriptsize\hdr{\VAR{booklet.register.header[2]}} & \scriptsize\hdr{\VAR{booklet.register.header[3]}} & \scriptsize\hdr{\VAR{booklet.register.header[4]}} & \scriptsize\hdr{\VAR{booklet.register.header[5]}} & \scriptsize\hdr{\VAR{booklet.register.header[6]}} \\
 \hline
@@ -12,49 +38,30 @@
 \rowcolor{mhplight}\scriptsize{} \VAR{booklet.register.example[0]} & \scriptsize{} \VAR{booklet.register.example[1]} & \scriptsize{} \VAR{booklet.register.example[2]} & \scriptsize{} \VAR{booklet.register.example[3]} & \scriptsize{} \VAR{booklet.register.example[4]} & \scriptsize{} \VAR{booklet.register.example[5]} & \scriptsize{} \VAR{booklet.register.example[6]}\rowpad{} \\
 \hline
 \BLOCK{for label in booklet.register.rows}
-\textbf{\VAR{label}}\writeline\writeline &
-\writeline{}{\scriptsize{} \VAR{booklet.register.source_label}}\writeline{} &
+\textbf{\VAR{label}}\writelinecompact &
+\writelinecompact{}{\scriptsize{} \VAR{booklet.register.source_label}}\writelinecompact{} &
 \BLOCK{for tick in booklet.register.goal_ticks}
-\mbox{\tickbox{} \VAR{tick}}\par\vspace{0.8mm}
+\mbox{\tickboxsmall{} \VAR{tick}}\par\vspace{0.4mm}
 \BLOCK{endfor}
 &
 \scriptsize
 \BLOCK{for tick in booklet.register.category_ticks}
-\mbox{\tickbox{} \VAR{tick}}\par
+\mbox{\tickboxsmall{} \VAR{tick}}\BLOCK{if loop.index is odd}\enspace\BLOCK{else}\par\BLOCK{endif}
 \BLOCK{endfor}
-\writeline{} &
-\rule[-14.5mm]{0pt}{3.5mm} &
+\writelinecompact{} &
+\rule[-12.5mm]{0pt}{3.5mm} &
 \scriptsize
 \BLOCK{for tick in booklet.register.decision_ticks}
-\mbox{\tickbox{} \VAR{tick}}\par\vspace{0.8mm}
+\mbox{\tickboxsmall{} \VAR{tick}}\par\vspace{0.4mm}
 \BLOCK{endfor}
-\VAR{booklet.register.reason_label}\writeline{} &
+\VAR{booklet.register.reason_label}\writelinecompact{} &
 \fontsize{6}{7}\selectfont
 \BLOCK{for tick in booklet.register.review_ticks}
-\mbox{\tickbox{} \VAR{tick}}\par\vspace{0.8mm}
+\mbox{\tickboxsmall{} \VAR{tick}}\par\vspace{0.4mm}
 \BLOCK{endfor}
 \\
 \hline
 \BLOCK{endfor}
 \end{tabular}\endgroup\par
-\vspace{2mm}
-\noindent\begin{minipage}[t]{0.66\linewidth}
-{\small\bfseries{} \VAR{booklet.register.matrix_title}\par}
 \vspace{1mm}
-\noindent\begingroup\scriptsize\setlength{\tabcolsep}{3pt}\begin{tabular}{|C{34mm}|C{21mm}|C{21mm}|C{21mm}|}
-\hline
-\rowcolor{mhpblue}\multicolumn{1}{|l|}{\scriptsize\hdrs{\VAR{booklet.register.axis_likelihood}}} & \multicolumn{3}{c|}{\scriptsize\hdrs{\VAR{booklet.register.axis_impact}}} \\
-\hline
-\rowcolor{mhplight}\strut\BLOCK{for index in range(booklet.register.band_labels|length)} & \bfseries{} \VAR{booklet.register.band_labels[index]}\par\mdseries{} \VAR{booklet.register.band_ranges[index]}\rowpad{}\BLOCK{endfor} \\
-\hline
-\BLOCK{for row in booklet.register.matrix_rows}
-\rule[-11mm]{0pt}{3mm}\bfseries{} \VAR{row.label}\BLOCK{for cell in row.zones} & \cellcolor{risk\VAR{cell.kind}}\rule[-11mm]{0pt}{3mm}\VAR{cell.word}\BLOCK{endfor} \\
-\hline
-\BLOCK{endfor}
-\end{tabular}\endgroup
-\end{minipage}\hfill
-\begin{minipage}[t]{0.31\linewidth}
-\hint{\VAR{booklet.register.example_cell}}
-\vspace{1mm}
-\hint{\VAR{booklet.register.review_hint}}
-\end{minipage}\par
+{\scriptsize\itshape\color{mhpgrey}\VAR{booklet.register.review_hint}\par}

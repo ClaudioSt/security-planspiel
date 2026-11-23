@@ -54,8 +54,11 @@ def test_the_register_page_holds_every_register_string(pages, booklet):
     assert fragments
     for text in fragments:
         assert squash(text) in first, text
-    for text in (*booklet.register.rows, *booklet.register.band_ranges):
+    for text in (*booklet.register.rows, *booklet.register.asset_rows, *booklet.register.band_legend):
         assert squash(text) in first, text
+    assert first.index(squash(booklet.register.need_instruction)) < first.index(squash(booklet.register.instruction))
+    assert "wahrscheinlich" not in first.lower() and "matrix" not in first.lower()
+    assert _page_of(pages, booklet.register.title) == [0]
 
 
 def test_the_planning_page_holds_the_cost_table_the_tier_rows_and_the_anticipated_sum(pages, booklet):

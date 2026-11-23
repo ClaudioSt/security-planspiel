@@ -2,19 +2,19 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_phase: 07.1
-current_phase_name: risk-based-learning-chain-cia-risk-register-from-the-mechtec
+current_phase: 07
 status: executing
-stopped_at: Completed 07.1-09-PLAN.md
-last_updated: "2026-11-14T00:29:49.915Z"
-last_activity: 2026-11-13
-last_activity_desc: Phase 07.1 execution started
+stopped_at: Phase 07.2 complete (RC4 approved); next 07-12 dry run
+last_updated: "2026-11-23T14:01:55.112Z"
+last_activity: 2026-11-23
+last_activity_desc: Phase 07.2 complete
 progress:
-  total_phases: 8
-  completed_phases: 6
-  total_plans: 72
-  completed_plans: 70
-  percent: 75
+  total_phases: 9
+  completed_phases: 8
+  total_plans: 78
+  completed_plans: 77
+  percent: 89
+current_phase_name: session-flow-handoff
 ---
 
 # Project State
@@ -24,14 +24,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-10-27)
 
 **Core value:** Facilitators and players can run the game by hand without ambiguity: every rule is unambiguous, every printed number matches `simulation_config.json`, and no strategy exploits a rule loophole.
-**Current focus:** Phase 07.1 — risk-based-learning-chain-cia-risk-register-from-the-mechtec
+**Current focus:** Phase 07 — session-flow-handoff (plan 07-12, timed dry run on 2026-11-25 with print RC4)
 
 ## Current Position
 
-Phase: 07.1 (risk-based-learning-chain-cia-risk-register-from-the-mechtec) — EXECUTING
-Plan: 9 of 10 complete (07.1-01..09); next 07.1-10
-Status: Ready to execute
-Last activity: 2026-11-13 — Phase 07.1 execution started
+Phase: 07 (session-flow-handoff) — EXECUTING
+Plan: 12 of 12 (07-12 timed dry run, 2026-11-25)
+Status: Phase 07.2 complete and verified (5/5); RC4 approved on paper 2026-11-23; waiting for the dry run
+Last activity: 2026-11-23 — Phase 07.2 complete
 
 Progress: [█████████░] 86% (6 of 7 phases)
 
@@ -39,7 +39,7 @@ Progress: [█████████░] 86% (6 of 7 phases)
 
 **Velocity:**
 
-- Total plans completed: 50
+- Total plans completed: 66
 - Average duration: -
 - Total execution time: 0 hours
 
@@ -53,6 +53,8 @@ Progress: [█████████░] 86% (6 of 7 phases)
 | 4 | 6 | - | - |
 | 5 | 16 | - | - |
 | 6 | 10 | - | - |
+| 07.1 | 10 | - | - |
+| 07.2 | 6 | - | - |
 
 **Recent Trend:**
 
@@ -127,6 +129,10 @@ Progress: [█████████░] 86% (6 of 7 phases)
 | Phase 07.1 P05 | 75min | 3 tasks | 13 files |
 | Phase 07.1 P07 | 50min | 3 tasks | 11 files |
 | Phase 07.1 P09 | 55min | 3 tasks | 4 files |
+| Phase 07.2 P03 | 50min | 2 tasks | 9 files |
+| Phase 07.2 P04 | 35 min | 2 tasks | 6 files |
+| Phase 07.2 P05 | ~60 min | 3 tasks | 5 files |
+| Phase 07.2 P06 | 1h | 3 tasks | 17 files |
 
 ## Accumulated Context
 
@@ -225,6 +231,12 @@ Recent decisions affecting current work:
 - [Phase 07.1]: 07.1-05: cheat-sheet case bands tied to attack damage only for like_attack-anchored cases; risk.case_attack accepts any defined attack
 - [Phase 07.1]: 07.1-07: the optional management pitch stays outside debrief_stages; pitch_seconds (60) is config, composed in code; Was-ist-neu debrief line unchanged
 - [Phase 07.1-09]: Slide-31 material box widened (cx 9300000) so the material line no longer wraps onto the footer; deck patched surgically, docProps/app.xml untouched
+- [Phase 07.2]: Ransomware cheat-sheet anchor moves to new integrity case data_trust (band high, goal i); production_days keeps goal a without anchor (D-11 conflict resolution); risk_matrix block name kept (D-15)
+- [Phase 07.2]: 07.2-02: gesamt is a tick set like C/I/A; its example word is computed by the maximum principle in code; compact tickboxsmall and writelinecompact macros keep page 1 at 721.2 of 731.2 pt
+- [Phase 07.2]: Cheat-sheet goal column is C{10mm} after the case column; coverage of C, I and A pinned as a guard test (07.2-03)
+- [Phase 07.2]: Retired-matrix sweep covers six patterns over README and every texte.toml leaf; selten/möglich stay unswept as ordinary words
+- [Phase 07.2]: Intro slide 32 is the Schutzbedarf slide: two example rows, slide 31 diagram unchanged, table without fills (user-approved 2026-11-22)
+- [Phase 07.2]: RC4 released on paper without a colour or grayscale choice; recorded as not fixed, both equivalent (no zone colours, words carry the meaning)
 
 ### Pending Todos
 
@@ -241,6 +253,13 @@ None. The veiling todo (2026-06-23) is closed (moved to `todos/completed/` in Ph
 
 - Phase 07.1 inserted after Phase 7: Risk-based learning chain (pedagogical review 2026-11-12); must ship as print RC3 before the 07-12 dry run on 2026-11-25 (URGENT)
 - Phase 07.1 planned 2026-11-13: RISK-01..RISK-10, one plan each, 10 waves; plan checker passed with no blockers after 2 revisions
+- Phase 07.2 inserted after Phase 07.1: Per-asset protection-need analysis replaces the likelihood axis (user decision 2026-11-21); RC4 supersedes RC3 for the dry run (URGENT)
+
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 261123-oav | Close the open items after phase 07.2: Übungswelle slide 33 and slide-number fields in the intro deck, slide 21/22/31 wording, WR-01/WR-02 review fixes, CONCERNS 215 minutes | 2026-11-23 | 3a9e2b0 | [261123-oav-close-open-items-after-07-2-deck-review-](./quick/261123-oav-close-open-items-after-07-2-deck-review-/) |
 
 ## Deferred Items
 
@@ -252,6 +271,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-11-14T00:29:43.346Z
-Stopped at: Completed 07.1-09-PLAN.md
-Resume file: .planning/phases/07.1-risk-based-learning-chain-cia-risk-register-from-the-mechtec/07.1-01-PLAN.md
+Last session: 2026-11-23T13:53:46.261Z
+Stopped at: Completed 07.2-03-PLAN.md
+Resume file: .planning/phases/07.2-protection-need-analysis-instead-of-likelihood-axis-per-asse/07.2-04-PLAN.md

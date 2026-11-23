@@ -15,7 +15,7 @@ Ein **konfigurationsgetriebenes IT-Security-Planspiel** für einen Automotive-Zu
 - **Spieler-Agency:** Entscheidungen haben **sichtbare, nachvollziehbare Effekte** (KZ, CIA-Erfüllung, Schäden, RoS).
 - **Realitätsnähe:** Maßnahmen, Abhängigkeiten, Events und Angriffe spiegeln gängige Security-Praxis in der **Fertigungs-/OT- und SaaS-Realität**.
 - **Von Hand rechenbar:** Alle Formeln sind linear; die Spielleitung rechnet am Arbeitsblatt live nach.
-- **Risikobasiert entscheiden:** Die Teams leiten aus dem Unternehmensprofil ihre Risiken ab (Schutzziel C / I / A, Eintrittswahrscheinlichkeit, Schaden fürs Geschäft), wählen darauf ihre Maßnahmen und priorisieren mit dem Budget.
+- **Risikobasiert entscheiden:** Die Teams stellen aus dem Unternehmensprofil den Schutzbedarf ihrer Werte je Schutzziel C / I / A fest, leiten daraus ihre Risiken mit dem Schaden fürs Geschäft ab, wählen darauf ihre Maßnahmen und priorisieren mit dem Budget.
 
 ---
 
@@ -49,7 +49,7 @@ Der Ablaufplan mit Blöcken, Dauern und Pausen steht in `session_schedule` und w
 1. **Einführung (Intro)**  
    Das Intro-Deck erklärt Spielidee und Rollen.
 2. **Story und Gruppenarbeit**  
-   Teams lesen die Story-Dokumente und erhalten dazu das Teamheft. Auf seiner ersten Seite, dem Risikoregister, leiten sie aus dem Unternehmen ihre Risiken ab, ordnen sie in der Risiko-Matrix ein, vergeben einen Rang und entscheiden, welche sie behandeln oder akzeptieren. Die Spielleitung beantwortet Fragen **kontextbezogen** und benennt keine Lücken. Fragen die Teams, was ein Schaden fürs Geschäft bedeuten würde, antwortet die Spielleitung als Geschäftsführung mit einem Band der Risiko-Matrix, nie mit einem genauen Betrag.
+   Teams lesen die Story-Dokumente und erhalten dazu das Teamheft. Auf seiner ersten Seite stellen sie den Schutzbedarf fest: Sie listen die Werte des Unternehmens und schätzen je Schutzziel C / I / A den Schaden fürs Geschäft als gering, mittel oder hoch; gesamt ist die höchste Stufe (Maximumprinzip). Im Risikoregister darunter zeigt jedes Risiko auf einen Wert und sein Hauptziel, sein Band steht in der Tabelle; die Teams vergeben einen Rang und entscheiden, welche Risiken sie behandeln oder akzeptieren. Die Spielleitung beantwortet Fragen **kontextbezogen** und benennt keine Lücken. Fragen die Teams je Wert und Schutzziel, was ein Schaden fürs Geschäft bedeuten würde, antwortet die Spielleitung als Geschäftsführung mit einem Band, nie mit einem genauen Betrag.
 3. **Welle 0 (Übung)**  
    Ein durchgerechnetes Übungsbeispiel (`uebung-welle-0.pdf`) mit eigenen Werten aus dem Block `practice`; es zählt nicht für die Wertung.
 4. **Budgetverhandlung und Maßnahmenwahl**  
@@ -59,9 +59,9 @@ Der Ablaufplan mit Blöcken, Dauern und Pausen steht in `session_schedule` und w
 6. **Change-Fenster**  
    Nach jeder Welle außer der letzten: Levelwechsel, Kündigen, Hinzufügen (wirksam **ab der nächsten Welle**); nach der Kurswechsel-Welle zusätzlich der Pflicht-Maßnahmentausch.
 7. **Abschluss und Budget Review**  
-   Einmal nach der letzten Welle: Restbudget-Bonus oder Überziehungsstrafe, danach Klammerung der KZ. Dazu füllen die Teams die Spalte Rückblick im Risikoregister: Welches Risiko hat ein Angriff getroffen, und stimmte das Band?
+   Einmal nach der letzten Welle: Restbudget-Bonus oder Überziehungsstrafe, danach Klammerung der KZ. Dazu füllen die Teams die Spalte Rückblick im Risikoregister: Welches Risiko hat ein Angriff getroffen, und stimmte das Band aus der Schutzbedarfstabelle?
 8. **Debriefing**  
-   Feste Reihenfolge der Stufen (Reaktion, Beschreibung, Analyse, Anwendung) mit den Fragen der Seite „Debriefing-Fragen“ im Spielleitungs-Heft. Die Fragen folgen der Kette: Risikoregister gegen die Wirklichkeit, getroffene akzeptierte Risiken, die eigene Einstufung nach Vertraulichkeit, Integrität und Verfügbarkeit gegen die Gewichtung der Wellen, wo sich das Geld ausgezahlt hat (RoS), Übertrag auf echtes Risikomanagement. Wenn Zeit bleibt, folgt ein kurzer Management-Pitch je Team ohne eigene Richtzeit.
+   Feste Reihenfolge der Stufen (Reaktion, Beschreibung, Analyse, Anwendung) mit den Fragen der Seite „Debriefing-Fragen“ im Spielleitungs-Heft. Die Fragen folgen der Kette: Risikoregister gegen die Wirklichkeit, getroffene akzeptierte Risiken, der eigene Schutzbedarf nach Vertraulichkeit, Integrität und Verfügbarkeit gegen die Gewichtung der Wellen samt der Wahl des Hauptziels, wo sich das Geld ausgezahlt hat (RoS), Übertrag auf echtes Risikomanagement. Wenn Zeit bleibt, folgt ein kurzer Management-Pitch je Team ohne eigene Richtzeit.
 
 > **Hinweis:** Anzahl der Wellen, Events und der Blöcke des Ablaufs sind in der Konfiguration festgelegt.
 
@@ -200,7 +200,7 @@ Alle Dateien liegen als PDF in `final_documents/generated/` und werden aus `simu
 
 **Für die Teams:**
 
-- `spieler-teamheft.pdf`: Teamheft mit dem Risikoregister (Risiken mit Schutzziel, Folge fürs Geschäft, Rang, behandeln oder akzeptieren und Rückblick, dazu die Risiko-Matrix mit den € Bändern), Budget und Planung, einer Tracking-Seite je Welle und der Seite zu RoS und Budget Review. Es ersetzt die früheren Auswertungstabellen.
+- `spieler-teamheft.pdf`: Teamheft mit der Schutzbedarfstabelle (Werte aus der Story, je Schutzziel C / I / A gering, mittel oder hoch mit den € Bändern, gesamt nach dem Maximumprinzip) und dem Risikoregister (Risiken mit Wert W#, Hauptziel, Folge fürs Geschäft, Rang, behandeln oder akzeptieren und Rückblick; das Band jedes Risikos steht in der Tabelle), Budget und Planung, einer Tracking-Seite je Welle und der Seite zu RoS und Budget Review. Es ersetzt die früheren Auswertungstabellen.
 - `spieler-massnahmenkarten.pdf` und `spieler-eventkarten.pdf`: die Karten, Werte und Texte aus der Konfiguration.
 - `spieler-so-funktioniert-eine-welle.pdf`: die Erklärseite zum Ablauf einer Welle.
 - `spieler-unternehmenssteckbrief.pdf`, `spieler-anfrage-mail.pdf`, `spieler-audit-mail.pdf`, `spieler-zeitungsartikel.pdf`: die Story-Dokumente mit den Hinweisen.
@@ -209,7 +209,7 @@ Alle Dateien liegen als PDF in `final_documents/generated/` und werden aus `simu
 
 **Nur für die Spielleitung (nicht an Teams ausgeben):**
 
-- `spielleitung-uebersicht.pdf`: das Spielleitungs-Heft mit Ablaufplan, Druckliste, Kennwerten, Prüfzeilen, Lösungsschlüsseln, Debriefing-Fragen, Antworten zu Geschäftsfolgen (Bänder der Risiko-Matrix) und der Hinweis-Matrix.
+- `spielleitung-uebersicht.pdf`: das Spielleitungs-Heft mit Ablaufplan, Druckliste, Kennwerten, Prüfzeilen, Lösungsschlüsseln, Debriefing-Fragen, Antworten zu Geschäftsfolgen (Band und Schutzziel je Fall) und der Hinweis-Matrix.
 - `spielleitung-was-ist-neu.pdf`: das Blatt „Was ist neu“ für Spielleitungen der MHP-Runde mit den geänderten Regeln, dem geänderten Ablauf, dem neuen Material und der Gegenüberstellung alter und neuer Werte. Die alten Werte stammen aus `content/mhp_baseline.json`, dem eingefrorenen Stand der MHP-Runde; nur dieses Blatt liest die Datei.
 - `spielleitung-probelauf.pdf`: das Probelauf-Protokoll.
 
@@ -227,7 +227,7 @@ Alle Dateien liegen als PDF in `final_documents/generated/` und werden aus `simu
 - **Final-Index** (`final_index`): Gewichte von KZ und RoS.
 - **Übung** (`practice`): die Werte des Übungsblatts für Welle 0.
 - **Veranstaltung** (`session_schedule`): Blöcke mit Dauern, Teamzahl, Personen je Team, Druckliste, Debriefing-Stufen und die Redezeit des optionalen Management-Pitches.
-- **Risikomatrix** (`risk_matrix`): Zeilen des Risikoregisters und die Untergrenzen der € Bänder (gering, mittel, hoch) auf der Schadensachse der Risiko-Matrix. Die Bänder steigen streng an, und kein ungeschützter Angriffsschaden liegt auf einer Bandgrenze. Dazu kommen die Geschäftsfälle der Spielleitung mit ihrem Band; ein Fall, der der Folge eines Angriffs entspricht, trägt dessen Band.
+- **Schutzbedarf und Register** (`risk_matrix`, der Name des Blocks ist historisch): Zahl der Zeilen der Schutzbedarfstabelle (`asset_rows`) und des Risikoregisters (`register_rows`), dazu die Untergrenzen der € Bänder gering, mittel und hoch. Die Bänder steigen streng an, und kein ungeschützter Angriffsschaden liegt auf einer Bandgrenze. Dazu kommen die Geschäftsfälle der Spielleitung mit Band und Schutzziel (c, i, a); ein Fall, der der Folge eines Angriffs entspricht, trägt dessen Band, und sein Schutzziel ist eines der am stärksten getroffenen Schutzziele dieses Angriffs. Jedes Schutzziel c, i und a hat mindestens einen Fall.
 - **Referenzpläne** (`reference_plans`) und **Referenzstrategien** (`reference_strategies`): Grundlage der Lösungsschlüssel und der Balance-Prüfungen.
 - **Prosa** liegt in `content/texte.toml`; Ziffern in dieser Prosa sind nur erlaubt, wenn sie in `content/digit_allowlist.toml` stehen. `content/clues.toml` ordnet die Hinweise den Angriffen zu, `content/mhp_baseline.json` hält den eingefrorenen Stand der MHP-Runde.
 

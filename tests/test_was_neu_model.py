@@ -172,6 +172,11 @@ def test_one_material_row_per_material_id_naming_the_clue_matrix(texts, sheet):
     assert texts.get("sheets.spielleitung.clues_title") in sheet.material[2]
 
 
+def test_the_teamheft_line_names_the_protection_need(texts):
+    # PROT-04 (D-13): the Teamheft line of the sheet names the protection-need table.
+    assert texts.get("sheets.register.need_title") in texts.get("sheets.was_neu.material.teamheft")
+
+
 # --- value rows --------------------------------------------------------------------------------------------------
 
 

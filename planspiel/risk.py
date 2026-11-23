@@ -1,5 +1,5 @@
-"""Risk-matrix helpers (RISK-01, D-04, D-24): pure functions over `cfg.risk_matrix`; read by the validator's band
-checks, print models and tests. Reads no formula operand (the unprotected damage comes from
+"""Band helpers of the `risk_matrix` block (RISK-01, PROT-01, D-04, D-24): pure functions over `cfg.risk_matrix`; read
+by the validator's band checks, print models and tests. Reads no formula operand (the unprotected damage comes from
 `rules.unprotected_damage`)."""
 from planspiel import fmt
 from planspiel.config import RiskBand
@@ -11,20 +11,6 @@ def band_of(bands: tuple[RiskBand, ...], amount_k) -> RiskBand:
     if not fitting:
         raise ValueError(f"Betrag {amount_k} liegt unter der ersten Bandgrenze")
     return max(fitting, key=lambda band: band.minimum)
-
-
-# Zone id and the largest product of the two 1-based levels it covers; a layout constant of the printed 3 x 3 matrix,
-# not a game number (A7).
-ZONES = (("green", 2), ("yellow", 4), ("red", 9))
-
-
-def zone_of(likelihood: int, impact: int) -> str:
-    """Zone of a matrix cell from its 1-based likelihood and impact levels."""
-    product = likelihood * impact
-    for zone, limit in ZONES:
-        if product <= limit:
-            return zone
-    raise ValueError(f"Zelle ({likelihood}, {impact}) liegt außerhalb der Matrix")
 
 
 def band_ranges(bands: tuple[RiskBand, ...], words: dict) -> tuple[str, ...]:

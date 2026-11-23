@@ -1,6 +1,7 @@
 """Facilitator-only cheat sheet (RISK-05, D-05, D-06, D-22): business consequences with management answers and the
 band of each case. Bands and ids from `cfg.risk_matrix`, prose from `sheets.cheatsheet` and `sheets.register.bands`;
-never an exact amount, never an attack name."""
+never an exact amount, never an attack name. PROT-03 (D-11): each case carries its protection goal letter, taken from
+the config goal through `sheets.register.goals`, so the facilitator answers per asset and goal."""
 from dataclasses import dataclass
 from typing import Optional
 
@@ -24,6 +25,7 @@ class CheatBand:
 @dataclass(frozen=True)
 class CheatCase:
     case: str
+    goal: str
     answer: str
     band: str
 
@@ -35,6 +37,7 @@ class CheatSheetPage:
     bands_title: str
     bands: tuple[CheatBand, ...]
     header: tuple[str, str, str]
+    goal_header: str
     cases: tuple[CheatCase, ...]
 
     def printed_fragments(self) -> tuple[str, ...]:
@@ -66,9 +69,11 @@ def build_cheat_sheet_page(cfg: Config, texts: Texts) -> Optional[CheatSheetPage
         bands_title=words["bands_title"],
         bands=tuple(bands[band.id] for band in matrix.bands),
         header=(words["head_case"], words["head_answer"], words["head_band"]),
+        goal_header=words["head_goal"],
         cases=tuple(
             CheatCase(
                 case=words["cases"][case.id]["case"],
+                goal=register["goals"][case.goal],
                 answer=words["cases"][case.id]["answer"],
                 band=f"{bands[case.band].word} ({bands[case.band].range})",
             )

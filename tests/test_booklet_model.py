@@ -4,12 +4,15 @@ Every number on these two parts comes from config through `rules`, `review_text`
 printed RoS and remaining-budget formulas with the numbers of legal paths, using only the operations and signs the
 sheet prints, and compare them with `rules.evaluate_path` (T-05-21).
 """
+import dataclasses
 import json
+import re
 from fractions import Fraction
 
 import pytest
 
 from planspiel import audience, fmt, review_text, risk, rules, veil
+from planspiel import booklet as booklet_module
 from planspiel.booklet import (
     BOOKLET_JOB,
     EN_DASH,
@@ -27,7 +30,7 @@ from planspiel.config import load_config
 from planspiel.eventtext import effect_rows
 from planspiel.printmodel import PrintModelError
 from planspiel.rules import Path, Window
-from planspiel.texts import PreAttackView, load_clues, load_content, load_texts, required_keys
+from planspiel.texts import REGISTER_GROUPS, PreAttackView, load_clues, load_content, load_texts, required_keys
 from tests.support import CONFIG_PATH, CONTENT_DIR, MINI_CONTENT_DIR, REPO_ROOT
 
 MINI = REPO_ROOT / "tests" / "fixtures" / "mini_config.json"
@@ -322,7 +325,7 @@ def test_the_register_review_hint_fixes_the_comparison_direction(real):
     register = booklet.register
     hint = register.review_hint
     assert hint == words["review_hint"]
-    assert register.matrix_title in hint and "Realitätscheck" in hint
+    assert register.need_title in hint and register.header[2] in hint and "Realitätscheck" in hint
     under, over, correct = words["review"]["under"], words["review"]["over"], words["review"]["correct"]
     order = [hint.index(part) for part in ("höher", under, "niedriger", over, "gleich", correct)]
     assert order == sorted(order) and len(set(order)) == len(order)
@@ -337,25 +340,122 @@ def test_every_wave_attack_has_a_story_clue_for_the_register_source_column():
         assert any(clue.attack == attack_id and clue.source.startswith("story.") for clue in clues), attack_id
 
 
-def test_the_axis_labels_follow_the_config_bands(real):
+def test_the_band_ticks_and_legend_follow_the_config_bands(real):
     cfg, texts, booklet = real
     words = _register_words(texts)
     bands = cfg.risk_matrix.bands
-    assert booklet.register.band_ranges == risk.band_ranges(bands, words)
     assert booklet.register.band_labels == tuple(words["bands"][band.id] for band in bands)
+    ranges = risk.band_ranges(bands, words)
+    assert booklet.register.band_legend == tuple(
+        f"{label}: {span}" for label, span in zip(booklet.register.band_labels, ranges)
+    )
+    assert booklet.register.legend_title == words["legend_title"]
 
 
-def test_the_matrix_has_high_likelihood_on_top_and_zones_from_zone_of(real):
+def test_the_need_table_has_one_row_per_asset_row(real):
     cfg, texts, booklet = real
     words = _register_words(texts)
-    rows = booklet.register.matrix_rows
-    assert len(rows) == 3
-    assert [row.label for row in rows] == [words["likelihood"][level] for level in ("high", "medium", "low")]
-    for row, likelihood in zip(rows, (3, 2, 1)):
-        assert len(row.zones) == len(cfg.risk_matrix.bands)
-        for impact, cell in enumerate(row.zones, start=1):
-            assert cell.kind == risk.zone_of(likelihood, impact)
-            assert cell.word == words["zones"][cell.kind]
+    count = cfg.risk_matrix.asset_rows
+    labels = tuple(f"{words['asset_prefix']}{fmt.format_number(number)}" for number in range(1, count + 1))
+    assert booklet.register.asset_rows == labels == ("W1", "W2", "W3", "W4")
+
+
+def test_the_need_header_is_asset_c_i_a_and_total(real):
+    _, texts, booklet = real
+    words = _register_words(texts)
+    goals = words["goals"]
+    assert booklet.register.need_header == (
+        words["need_head_asset"], goals["c"], goals["i"], goals["a"], words["head_total"]
+    )
+    assert booklet.register.page_title == words["page_title"]
+    assert booklet.register.need_title == words["need_title"]
+    assert booklet.register.need_instruction == words["need_instruction"]
+
+
+def test_the_need_example_follows_the_maximum_principle(real):
+    cfg, texts, booklet = real
+    words = _register_words(texts)
+    example = words["need_example"]
+    order = {words["bands"][band.id]: index for index, band in enumerate(cfg.risk_matrix.bands)}
+    rated = [example[goal] for goal in ("c", "i", "a")]
+    highest = max(rated, key=lambda word: order[word])
+    first = booklet.register.asset_rows[0]
+    assert booklet.register.need_example == (f"{first} {example['asset']}", *rated, highest)
+    assert len(booklet.register.need_example) == 5
+
+
+@pytest.mark.parametrize(
+    ("c", "i", "a", "expected"),
+    [
+        pytest.param("gering", "hoch", "mittel", "hoch", id="highest-in-the-middle"),
+        pytest.param("mittel", "gering", "hoch", "hoch", id="highest-last"),
+        pytest.param("gering", "mittel", "gering", "mittel", id="no-top-band-present"),
+    ],
+)
+def test_the_need_example_total_is_the_highest_band_wherever_it_sits(tmp_path, c, i, a, expected):
+    source = (CONTENT_DIR / "texte.toml").read_text(encoding="utf-8")
+    head, marker, tail = source.partition("[sheets.register.need_example]")
+    assert marker, "the need example table must exist"
+    section, bracket, rest = tail.partition("\n[")
+    assert bracket, "a section must follow the need example table"
+    asset = next(line for line in section.splitlines() if line.startswith("asset = "))
+    body = f"\n{asset}\nc = \"{c}\"\ni = \"{i}\"\na = \"{a}\"\n"
+    path = tmp_path / "texte.toml"
+    path.write_text(head + marker + body + bracket + rest, encoding="utf-8", newline="\n")
+    booklet = build_team_booklet(load_config(CONFIG_PATH), load_texts(path))
+    assert booklet.register.need_example[1:] == (c, i, a, expected)
+
+
+def test_a_need_example_word_that_is_no_band_word_stops_the_build(tmp_path):
+    source = (CONTENT_DIR / "texte.toml").read_text(encoding="utf-8")
+    head, marker, tail = source.partition("[sheets.register.need_example]")
+    assert marker, "the need example table must exist"
+    assert 'c = "hoch"' in tail
+    tail = tail.replace('c = "hoch"', 'c = "riesig"', 1)
+    path = tmp_path / "texte.toml"
+    path.write_text(head + marker + tail, encoding="utf-8", newline="\n")
+    cfg = load_config(CONFIG_PATH)
+    with pytest.raises(PrintModelError, match="need_example"):
+        build_team_booklet(cfg, load_texts(path))
+
+
+def test_the_register_example_reads_its_band_from_the_need_example(real):
+    _, texts, booklet = real
+    words = _register_words(texts)
+    register = booklet.register
+    assert register.example[0] == register.asset_rows[0]
+    goal_id = next(goal for goal, letter in words["goals"].items() if letter == words["example"]["goal"])
+    assert words["need_example"][goal_id] in register.example[5]
+
+
+def test_too_many_asset_rows_stop_the_build(tmp_path):
+    from planspiel.booklet import MAX_ASSET_ROWS
+
+    raw = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
+    raw["risk_matrix"]["asset_rows"] = MAX_ASSET_ROWS + 1
+    path = tmp_path / "config.json"
+    path.write_text(json.dumps(raw, ensure_ascii=False, indent=2), encoding="utf-8", newline="\n")
+    cfg = load_config(path)
+    with pytest.raises(PrintModelError, match="MAX_ASSET_ROWS"):
+        build_team_booklet(cfg, load_texts(CONTENT_DIR / "texte.toml"))
+
+
+def test_the_matrix_only_code_is_gone(real):
+    """PROT-01, D-14: nothing of the likelihood matrix is left in code, texts or style."""
+    _, texts, _ = real
+    assert not hasattr(risk, "zone_of")
+    assert not hasattr(risk, "ZONES")
+    assert not hasattr(booklet_module, "MatrixRow")
+    assert not hasattr(booklet_module, "MatrixCell")
+    names = {field.name for field in dataclasses.fields(RegisterPage)}
+    assert not names & {"matrix_rows", "axis_likelihood", "example_cell"}
+    assert "likelihood" not in REGISTER_GROUPS and "zones" not in REGISTER_GROUPS
+    assert "cell" not in REGISTER_GROUPS["example"]
+    register = texts.subtree("sheets.register")
+    assert not {"likelihood", "zones", "axis_likelihood"} & set(register)
+    assert "cell" not in register["example"]
+    style = (REPO_ROOT / "print" / "planspiel.sty").read_text(encoding="utf-8")
+    assert not re.search(r"\\definecolor\{risk", style)
 
 
 def test_the_example_row_comes_from_the_clinic_texts(real):
@@ -364,13 +464,10 @@ def test_the_example_row_comes_from_the_clinic_texts(real):
     register = booklet.register
     example = words["example"]
     assert register.example == (
-        example["asset"], example["threat"], example["goal"], example["impact"],
+        register.asset_rows[0], example["threat"], example["goal"], example["impact"],
         fmt.format_number(RANK_FIRST), example["decision"], words["review"]["correct"],
     )
-    assert register.example_cell == example["cell"]
-    assert any(word in register.example_cell for word in words["likelihood"].values())
-    assert any(word in register.example_cell for word in words["bands"].values())
-    for text in (*register.example, register.example_cell):
+    for text in register.example:
         assert "MechTech" not in text
 
 
@@ -386,10 +483,26 @@ def test_no_register_string_names_an_attack(real):
 def test_only_generated_register_strings_carry_digits(real):
     _, _, booklet = real
     register = booklet.register
-    generated = {*register.rows, register.rank_hint, register.example[4], *register.band_ranges}
+    generated = {
+        *register.rows, *register.asset_rows, register.rank_hint, register.example[0], register.example[4],
+        register.need_example[0], *register.band_legend,
+    }
     for text in register.printed_fragments():
         if any(char.isdigit() for char in text):
             assert text in generated, text
+
+
+def test_no_register_string_asks_for_a_likelihood_or_names_the_matrix(real):
+    """PROT-02, D-01: nothing on the page asks for a likelihood, nothing names the risk matrix."""
+    from planspiel.texts import _REGISTER_KEYS
+
+    _, _, booklet = real
+    for text in booklet.register.printed_fragments():
+        assert "wahrscheinlich" not in text.lower(), text
+        assert "matrix" not in text.lower(), text
+    names = {field.name for field in dataclasses.fields(RegisterPage)}
+    assert not names & {"matrix_title", "axis_impact", "band_ranges"}
+    assert not {"matrix_title", "axis_impact"} & set(_REGISTER_KEYS)
 
 
 def test_the_register_fragments_open_the_booklet_fragments(real):
@@ -516,19 +629,6 @@ def test_the_printed_formulas_reproduce_evaluate_path(replay_world, path, enforc
 
 
 # ---- the risk register helpers (RISK-02, D-03, D-04) ---------------------------------------------------------------
-
-
-def test_risk_zone_of_gives_three_cells_per_zone():
-    zones = {(likelihood, impact): risk.zone_of(likelihood, impact) for likelihood in (1, 2, 3) for impact in (1, 2, 3)}
-    assert sorted(zones.values()).count("green") == 3
-    assert sorted(zones.values()).count("yellow") == 3
-    assert sorted(zones.values()).count("red") == 3
-    assert zones[(1, 1)] == "green"
-    assert zones[(1, 3)] == "yellow"
-    assert zones[(3, 1)] == "yellow"
-    assert zones[(2, 2)] == "yellow"
-    assert zones[(2, 3)] == "red"
-    assert zones[(3, 3)] == "red"
 
 
 def test_risk_band_ranges_compose_the_axis_labels():

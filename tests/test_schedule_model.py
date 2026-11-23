@@ -161,6 +161,11 @@ def test_the_teamheft_is_handed_out_in_the_story_block(cfg, texts):
     assert first == "story_groups"
     story = dict(directions)["story_groups"]
     assert texts.get("sheets.register.title") in story
+    # PROT-04 (D-13): the protection-need table comes first, the register second.
+    need_title = texts.get("sheets.register.need_title")
+    assert need_title in story
+    assert story.index(need_title) < story.index(texts.get("sheets.register.title"))
+    assert "Schutzziel" in story
 
 
 def test_the_measures_block_hands_out_the_measure_cards(texts):

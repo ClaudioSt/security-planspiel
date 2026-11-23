@@ -17,6 +17,7 @@ MINI = REPO_ROOT / "tests" / "fixtures" / "mini_config.json"
 TEMPLATE = TEMPLATES / "master.tex.j2"
 PLAIN_VARIABLE = re.compile(r"^[A-Za-z_][A-Za-z0-9_.\[\]'\"]*$")
 VARIABLE = re.compile(r"\\VAR\{([^}]*)\}")
+UNESCAPED_AMPERSAND = re.compile(r"(?<!\\)&")
 
 
 @pytest.fixture(scope="module")
@@ -188,3 +189,18 @@ def test_a_was_neu_job_clash_stops_the_render(monkeypatch, tmp_path):
     monkeypatch.setattr(render, "was_neu_sheet", lambda cfg, texts, env, baseline: {WAS_NEU_JOB: "y"})
     with pytest.raises(ValueError, match="mehreren"):
         render.render_all(None, None, tmp_path, baseline=object())
+
+
+def test_every_cheat_row_carries_its_goal_after_the_case(real, sheet):
+    source = real[3][master.MASTER_JOB]
+    header_start = source.index(r"\hdrs{" + render.tex_escape(sheet.cheat.header[0]) + "}")
+    header = UNESCAPED_AMPERSAND.split(source[header_start : source.index("\\\\", header_start)])
+    assert len(header) == 4
+    assert render.tex_escape(sheet.cheat.goal_header) in header[1]
+    for case in sheet.cheat.cases:
+        start = source.index(r"\textrowtop{}" + render.tex_escape(case.case) + r"\textrowend{}", header_start)
+        cells = UNESCAPED_AMPERSAND.split(source[start : source.index("\\\\", start)])
+        assert len(cells) == 4, case.case
+        assert r"\textbf{" +render.tex_escape(case.goal) + "}" in cells[1], case.case
+        assert render.tex_escape(case.answer) in cells[2], case.case
+        assert render.tex_escape(case.band) in cells[3], case.case

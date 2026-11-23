@@ -207,17 +207,17 @@ WAS_NEU_KEYS = (
 _REGISTER_KEYS = (
     "title", "instruction", "rank_hint", "risk_prefix", "example_label", "head_asset", "head_threat", "head_goal",
     "head_impact", "head_rank", "head_decision", "head_review", "source_label", "reason_label", "review_hint",
-    "matrix_title", "axis_likelihood", "axis_impact", "range_below", "range_to", "range_from", "planning_column",
-    "planning_hint",
+    "range_below", "range_to", "range_from", "planning_column",
+    "planning_hint", "page_title", "need_title", "need_instruction", "asset_prefix", "need_head_asset", "head_total",
+    "legend_title",
 )
 REGISTER_GROUPS = {
     "goals": ("c", "i", "a"),
     "categories": ("production", "customer", "knowhow", "costs"),
     "decision": ("treat", "accept"),
     "review": ("correct", "under", "over"),
-    "likelihood": ("low", "medium", "high"),
-    "zones": ("green", "yellow", "red"),
-    "example": ("asset", "threat", "goal", "impact", "decision", "cell"),
+    "need_example": ("asset", "c", "i", "a"),
+    "example": ("threat", "goal", "impact", "decision"),
 }
 # Required only when the config carries a risk_matrix, so the mini fixture needs no register texts (RISK-02).
 REGISTER_KEYS = (
@@ -225,7 +225,7 @@ REGISTER_KEYS = (
     *(f"sheets.register.{group}.{item}" for group, items in REGISTER_GROUPS.items() for item in items),
 )
 
-_CHEAT_KEYS = ("title", "intro", "bands_title", "head_case", "head_answer", "head_band")
+_CHEAT_KEYS = ("title", "intro", "bands_title", "head_case", "head_goal", "head_answer", "head_band")
 # Required only when the risk_matrix carries cases, like REGISTER_KEYS (RISK-05); not part of SHEET_KEYS.
 CHEAT_KEYS = tuple(f"sheets.cheatsheet.{name}" for name in _CHEAT_KEYS)
 
