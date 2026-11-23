@@ -277,7 +277,6 @@ def _strongest(impact):
 
 def test_every_case_carries_a_goal_of_c_i_or_a(cfg):
     assert all(case.goal in ("c", "i", "a") for case in cfg.risk_matrix.cases)
-    assert {case.goal for case in cfg.risk_matrix.cases} == {"c", "i", "a"}
 
 
 def test_a_case_without_a_goal_is_rejected():
@@ -321,4 +320,30 @@ def test_every_protection_goal_has_a_case(cfg):
     cases = cfg.risk_matrix.cases
     assert {case.goal for case in cases} == {"c", "i", "a"}
     assert 6 <= len(cases) <= 8
-    assert any(case.goal == "i" for case in cases)
+
+
+def _without_the_integrity_case(block):
+    block["cases"] = [case for case in block["cases"] if case["id"] != "data_trust"]
+
+
+def _retagged_integrity_case(block):
+    _case(block, "data_trust").update(goal="c")
+
+
+@pytest.mark.parametrize(
+    "mutate",
+    [
+        pytest.param(_without_the_integrity_case, id="case-removed"),
+        pytest.param(_retagged_integrity_case, id="case-retagged"),
+    ],
+)
+def test_a_protection_goal_without_a_business_case_is_rejected(mutate):
+    raw = _mutated(mutate)
+    issues = [issue for issue in validate(raw) if issue.code == "risk.case_goal_coverage"]
+    assert issues
+    assert all(issue.path == "risk_matrix.cases" for issue in issues)
+    assert any("Schutzziel i:" in issue.message for issue in issues)
+
+
+def test_the_shipped_config_covers_every_protection_goal():
+    assert "risk.case_goal_coverage" not in _codes(_raw())
