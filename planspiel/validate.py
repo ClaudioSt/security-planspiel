@@ -718,10 +718,10 @@ class _Validator:
     def check_risk_cases(
         self, block: dict, band_ids: set, bands: Optional[tuple], attacks: Any, waves: Any,
     ) -> None:
-        """Geschäftsfälle der Spielleitung (RISK-05, PROT-01, D-06, D-11, D-22): ID, Band, Schutzziel und optionaler
-        Angriffs-Anker; nur ein verankerter Fall muss das Band des ungeschützten Schadens seines Angriffs und eines
-        der am stärksten getroffenen Schutzziele seines Angriffs tragen, die anderen sind Plausibilitätsurteile
-        ohne Spielwert."""
+        """Geschäftsfälle der Spielleitung (RISK-05, PROT-01, D-06, D-11, D-12, D-22): ID, Band, Schutzziel und
+        optionaler Angriffs-Anker; nur ein verankerter Fall muss das Band des ungeschützten Schadens seines Angriffs
+        und eines der am stärksten getroffenen Schutzziele seines Angriffs tragen, die anderen sind
+        Plausibilitätsurteile ohne Spielwert. Jedes Schutzziel (c, i, a) braucht mindestens einen Fall (D-12)."""
         path = "risk_matrix.cases"
         if "cases" not in block:
             return
@@ -730,6 +730,7 @@ class _Validator:
             return
         damages = self.defined_unprotected_damages(attacks)
         seen: set = set()
+        covered: set = set()
         for index, case in enumerate(cases):
             case_path = f"{path}[{index}]"
             if not self.container(case, dict, case_path):
@@ -751,6 +752,8 @@ class _Validator:
                 self.error("risk.case_band", f"{case_path}.band", f"Fall '{case_id}': '{band}' ist keine Band-ID")
             goal = case.get("goal")
             goal_known = isinstance(goal, str) and goal in CIA_KEYS
+            if goal_known:
+                covered.add(goal)
             if "goal" not in case:
                 self.error("risk.case_goal", f"{case_path}.goal", f"Fall '{case_id}': Schutzziel fehlt")
             elif not goal_known:
@@ -780,6 +783,13 @@ class _Validator:
                         f"Fall '{case_id}': Schutzziel '{goal}' ist nicht unter den am stärksten getroffenen "
                         f"Schutzzielen von '{anchor}' (erlaubt: {sorted(strongest)})",
                     )
+        missing = sorted(CIA_KEYS - covered)
+        if missing:
+            self.error(
+                "risk.case_goal_coverage", path,
+                f"Kein Geschäftsfall für Schutzziel {', '.join(missing)}: jedes Schutzziel (c, i, a) braucht "
+                "mindestens einen Fall",
+            )
 
     @staticmethod
     def strongest_goals(impact: Any) -> set:
