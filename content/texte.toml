@@ -331,6 +331,8 @@ kz_change = "KZ-Änderung"
 penalty_title = "Überzogenes Budget"
 penalty_intro = "Ist das Restbudget negativ, lest die KZ-Änderung für den überzogenen Betrag hier ab."
 overspend_header = "Überzogen um"
+penalty_follow_lead = "Bei einer Überziehung von mehr als"
+penalty_follow_tail = "rechnet ihr nach der Regel oben weiter."
 
 [sheets.register]
 page_title = "Schutzbedarf und Risikoregister"

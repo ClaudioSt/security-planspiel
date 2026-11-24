@@ -96,7 +96,7 @@ def _baseline_of_current(raw, tmp_path):
     out["budget_review"] = {
         "boundary": "inclusive",
         "tiers": review["tiers"],
-        "overspend": dict(review["overspend_penalty"]),
+        "overspend": {key: review["overspend_penalty"][key] for key in ("kz_per_step", "step")},
     }
     return out
 
