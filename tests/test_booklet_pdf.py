@@ -91,20 +91,16 @@ def test_the_ros_part_starts_on_a_new_page_and_holds_the_ros_formula(pages, book
     assert squash(ros.ros_line.note) not in pages[1]
 
 
-def test_the_budget_review_page_holds_all_tier_rows_and_all_penalty_rows(pages, booklet):
+def test_the_budget_review_page_holds_the_remaining_budget_and_the_result_line_but_no_review_value(pages, booklet):
     ros = booklet.ros
     review_page = _page_of(pages, ros.review_title)[-1]
     assert review_page == len(pages) - 1, "the Budget Review is the last page of the booklet"
     page = pages[review_page]
-    for row in (ros.tier_header, *ros.tier_rows, ros.penalty_header, *ros.penalty_rows):
-        for cell in row:
-            assert squash(cell) in page, cell
-    for metric in (*ros.budget_rows, ros.remaining_line):
+    assert "angefangene" not in page
+    for metric in (*ros.budget_rows, ros.remaining_line, ros.result_line):
         assert squash(metric.label) in page, metric.label
         if metric.note:
             assert squash(metric.note) in page, metric.note
-    assert squash(ros.overspend_rule) in page
-    assert squash(ros.penalty_follow) in page
     assert squash(ros.sign_hint) in page
 
 
@@ -123,8 +119,7 @@ def test_every_page_fits_the_text_height_as_measured_in_the_log(printed_set, pag
         assert float(used) <= float(limit), f"Seite {number}: {used}pt > {limit}pt"
 
 
-def test_the_review_page_is_proven_for_the_current_row_count(printed_set, booklet):
-    assert len(booklet.ros.penalty_rows) == 3
+def test_the_review_page_fits_the_text_height(printed_set):
     used, limit = (float(value) for value in FILL.findall(_log(printed_set))[-1][1:])
     assert used <= limit
 

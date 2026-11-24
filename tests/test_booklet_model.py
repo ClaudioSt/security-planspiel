@@ -180,70 +180,44 @@ def test_the_ros_formula_divides_by_the_own_costs(loaded):
     assert note == f"= ({avoided} {MINUS} {own}) {DIVIDED} {own}"
 
 
-def test_the_budget_review_tiers_equal_review_tier_rows(loaded):
-    cfg, texts, booklet = loaded
+REMOVED_REVIEW_FIELDS = (
+    "tier_header", "tier_rows", "overspend_rule", "penalty_title", "penalty_intro", "penalty_header", "penalty_rows",
+    "penalty_follow",
+)
+
+
+def test_the_budget_review_page_has_no_tier_or_penalty_fields(loaded):
+    ros = loaded[2].ros
+    for name in REMOVED_REVIEW_FIELDS:
+        assert not hasattr(ros, name), f"RosPage.{name} gives the Budget Review event away"
+
+
+def test_the_budget_review_page_prints_no_review_value(real):
+    cfg, texts, booklet = real
+    printed = " ".join(booklet.ros.printed_fragments())
     final = next(event for event in cfg.final_events if event.type == "final_budget_tier")
-    start = str(texts.get("sheets.eventkarten.tier_from"))
-    expected = []
-    for index, (from_eur, to_eur, kz) in enumerate(review_text.tier_rows(final.params["tiers"])):
-        if index == 0 and to_eur is not None:
-            span = f"{review_text.format_eur(from_eur)} – {review_text.format_eur(to_eur)} €"
-        else:
-            span = f"{start} {review_text.format_eur(from_eur)} €"
-        value = "±0" if kz == 0 else (f"+{kz}" if kz > 0 else f"−{-kz}")
-        expected.append((span, value))
-    assert list(booklet.ros.tier_rows) == expected
-
-
-def test_the_overspend_rule_is_the_card_line(loaded):
-    cfg, texts, booklet = loaded
-    final = next(event for event in cfg.final_events if event.type == "final_budget_tier")
-    assert booklet.ros.overspend_rule == effect_rows(final, cfg, texts).rows[-1].text
-
-
-def _table_rows(cfg) -> int:
-    event = next(e for e in cfg.final_events if e.type == "final_budget_tier")
-    return event.params["overspend_penalty"]["table_rows"]
-
-
-def test_the_penalty_table_is_the_first_table_rows_of_review_penalty_rows(loaded):
-    cfg, _, booklet = loaded
-    expected = [
-        (f"{review_text.format_eur(low)} – {review_text.format_eur(high)} €", f"−{-kz}")
-        for low, high, kz in review_text.penalty_rows(*rules.penalty_params(cfg.final_events))
-    ]
-    assert _table_rows(cfg) == 3
-    assert list(booklet.ros.penalty_rows) == expected[: _table_rows(cfg)]
-
-
-def test_the_real_overspend_table_has_three_rows_and_ends_at_thirty_thousand(real):
-    cfg, _, booklet = real
     kz_per_step, step_k = rules.penalty_params(cfg.final_events)
-    rows = booklet.ros.penalty_rows
-    assert len(rows) == 3
-    assert rows[0] == (f"1 – {fmt.format_money(step_k * 1000)}", f"{MINUS}{kz_per_step}")
-    assert rows[-1] == ("20.001 – 30.000 €", f"{MINUS}9")
+    assert "angefangene" not in printed
+    assert f"{review_text.format_eur(step_k * 1000)} €" not in printed
+    for from_eur, _, kz in review_text.tier_rows(final.params["tiers"])[1:]:
+        assert f"{review_text.format_eur(from_eur)} €" not in printed
+        assert f"ab {review_text.format_eur(from_eur)}" not in printed
+    assert f"{MINUS}{kz_per_step} KZ" not in printed
 
 
-def test_the_follow_up_line_names_the_last_table_amount_and_sends_to_the_rule_above(real):
+def test_the_budget_review_page_ends_in_one_write_in_line_that_points_to_the_event_card(loaded):
+    _, texts, booklet = loaded
+    ros = booklet.ros
+    assert ros.result_line.label and ros.result_line.note
+    assert "Eventkarte" in ros.result_line.note
+    assert ros.result_line.label in ros.printed_fragments()
+    assert ros.result_line.note in ros.printed_fragments()
+
+
+def test_the_review_intro_does_not_promise_a_table_on_the_page(real):
     _, _, booklet = real
-    line = booklet.ros.penalty_follow
-    assert line == "Bei einer Überziehung von mehr als 30.000 € rechnet ihr nach der Regel oben weiter."
-    assert line in booklet.ros.printed_fragments()
-
-
-def test_the_table_row_count_is_a_config_value_and_a_smaller_step_does_not_add_rows(tmp_path):
-    raw = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
-    raw["final_events"][0]["overspend_penalty"]["kz_per_step"] = 2
-    raw["final_events"][0]["overspend_penalty"]["table_rows"] = 4
-    path = tmp_path / "config.json"
-    path.write_text(json.dumps(raw, ensure_ascii=False, indent=2), encoding="utf-8", newline="\n")
-    cfg = load_config(path)
-    texts = load_texts(CONTENT_DIR / "texte.toml")
-    booklet = build_team_booklet(cfg, texts)
-    assert len(booklet.ros.penalty_rows) == 4
-    assert booklet.ros.penalty_rows[-1] == ("30.001 – 40.000 €", f"{MINUS}8")
-    assert "40.000 €" in booklet.ros.penalty_follow
+    assert "Tabelle" not in booklet.ros.review_intro
+    assert "Eventkarte" in booklet.ros.review_intro + booklet.ros.result_line.note
 
 
 def test_the_budget_review_explains_the_remaining_budget_with_signed_event_values(loaded):

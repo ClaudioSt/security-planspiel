@@ -270,12 +270,11 @@ def test_templates_print_only_plain_variables(template):
         assert PLAIN_VARIABLE.match(expression), f"{template}: {expression}"
 
 
-def test_the_budget_review_prints_every_tier_and_penalty_row(loaded):
+def test_the_budget_review_prints_the_result_line_and_no_tier_or_penalty_row(loaded):
     _, _, booklet, source = loaded
-    for span, value in (*booklet.ros.tier_rows, *booklet.ros.penalty_rows):
-        assert render.tex_escape(span) in source
-        assert render.tex_escape(value) in source
-    assert render.tex_escape(booklet.ros.penalty_follow) in source
+    assert render.tex_escape(booklet.ros.result_line.label) in source
+    assert render.tex_escape(booklet.ros.result_line.note) in source
+    assert "angefangene" not in source
 
 
 @pytest.mark.parametrize("setup", SETUPS)
