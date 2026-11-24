@@ -3,7 +3,7 @@
 \step{\VAR{booklet.register.need_title}}
 {\footnotesize{} \VAR{booklet.register.need_instruction}\par}
 \vspace{1mm}
-\noindent\begingroup\fontsize{8}{9.5}\selectfont\setlength{\tabcolsep}{3pt}\setlength{\parskip}{0pt}\begin{tabular}{|P{56mm}|P{25mm}|P{25mm}|P{25mm}|}
+\noindent\begingroup\fontsize{8}{9.5}\selectfont\setlength{\tabcolsep}{3pt}\setlength{\parskip}{0pt}\begin{tabular}{|P{58mm}|P{32mm}|P{32mm}|P{32mm}|}
 \hline
 \rowcolor{mhpblue}\BLOCK{for word in booklet.register.need_header}\scriptsize\hdr{\VAR{word}}\BLOCK{if not loop.last} &\BLOCK{endif} \BLOCK{endfor}\\
 \hline
@@ -15,7 +15,7 @@
 \textbf{\VAR{label}}\writelinecompact &
 \BLOCK{for rating in booklet.register.need_header[1:]}
 \BLOCK{for word in booklet.register.band_labels}
-\mbox{\tickbox{} \VAR{word}}\BLOCK{if not loop.last}\par\vspace{0.4mm}\BLOCK{endif}
+\mbox{\tickboxsmall{} \VAR{word}}\BLOCK{if not loop.last}\par\vspace{0.4mm}\BLOCK{endif}
 \BLOCK{endfor}
 \rowpad{}\BLOCK{if not loop.last} &\BLOCK{endif}
 \BLOCK{endfor}
