@@ -266,7 +266,7 @@
       "name": "Budget Review",
       "type": "final_budget_tier",
       "tiers": [[0, 0], [25, 9], [50, 18], [75, 27]],
-      "overspend_penalty": {"kz_per_step": 3, "step": 10, "table_rows": 3}
+      "overspend_penalty": {"kz_per_step": 3, "step": 10}
     }
   ],
   "practice": {

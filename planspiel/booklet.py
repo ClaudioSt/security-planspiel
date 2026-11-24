@@ -19,9 +19,8 @@ from typing import Optional
 from planspiel import fmt, risk, rules
 from planspiel.cards import printed_strings
 from planspiel.config import Config
-from planspiel.eventtext import EFFECT_KINDS, effect_rows
+from planspiel.eventtext import EFFECT_KINDS
 from planspiel.printmodel import PrintModelError
-from planspiel.review_text import _tier_value_text, format_eur, penalty_rows, tier_rows
 from planspiel.texts import PreAttackView, Texts
 
 BOOKLET_JOB = "spieler-teamheft"
@@ -98,14 +97,7 @@ class RosPage:
     sign_hint: str
     budget_rows: tuple[Metric, ...]
     remaining_line: Metric
-    tier_header: tuple[str, str]
-    tier_rows: tuple[tuple[str, str], ...]
-    overspend_rule: str
-    penalty_title: str
-    penalty_intro: str
-    penalty_header: tuple[str, str]
-    penalty_rows: tuple[tuple[str, str], ...]
-    penalty_follow: str  # what to do above the last printed row
+    result_line: Metric  # write-in line for the KZ change; the value comes from the event card, never from this page
 
     def printed_fragments(self) -> tuple[str, ...]:
         return _fragments(self)
@@ -207,13 +199,6 @@ class TeamBooklet:
 def _fragments(page: object) -> tuple[str, ...]:
     """Every string of a page that ends up on the paper, without duplicates and without empty strings."""
     return tuple(dict.fromkeys(text for text in printed_strings(page) if text))
-
-
-def _review_event(cfg: Config):
-    for event in cfg.final_events:
-        if event.type == "final_budget_tier":
-            return event
-    raise PrintModelError("Die Config hat kein Budget-Review-Event (final_budget_tier)")
 
 
 def _register_page(cfg: Config, texts: Texts) -> Optional[RegisterPage]:
@@ -329,34 +314,9 @@ def _planning_page(cfg: Config, texts: Texts) -> PlanningPage:
     )
 
 
-def _tier_texts(cfg: Config, texts: Texts) -> tuple[tuple[str, str], ...]:
-    """Restbudget tiers as (span, KZ change), with the same inclusive boundaries as the Budget Review card."""
-    start = PreAttackView(cfg, texts).sheet("eventkarten")["tier_from"]
-    rows = []
-    for index, (from_eur, to_eur, kz) in enumerate(tier_rows(_review_event(cfg).params["tiers"])):
-        if index == 0 and to_eur is not None:
-            span = f"{format_eur(from_eur)} {EN_DASH} {format_eur(to_eur)} €"
-        else:
-            span = f"{start} {format_eur(from_eur)} €"
-        rows.append((span, _tier_value_text(kz)))
-    return tuple(rows)
-
-
-def _printed_penalty_rows(cfg: Config) -> list[tuple[int, int, int]]:
-    """The first `table_rows` rows of the overspend table; larger amounts follow the rule line above it."""
-    table_rows = _review_event(cfg).params["overspend_penalty"]["table_rows"]
-    return penalty_rows(*rules.penalty_params(cfg.final_events))[:table_rows]
-
-
 def _ros_page(cfg: Config, texts: Texts) -> RosPage:
     view = PreAttackView(cfg, texts)
-    labels, words, eventkarten = view.sheet("labels"), view.sheet("teamheft"), view.sheet("eventkarten")
-    final = _review_event(cfg)
-    penalty_raw = _printed_penalty_rows(cfg)
-    penalty = tuple(
-        (f"{format_eur(low)} {EN_DASH} {format_eur(high)} €", _tier_value_text(kz)) for low, high, kz in penalty_raw
-    )
-    penalty_follow = f"{words['penalty_follow_lead']} {format_eur(penalty_raw[-1][1])} € {words['penalty_follow_tail']}"
+    labels, words = view.sheet("labels"), view.sheet("teamheft")
     base_losses = fmt.format_money(rules.base_losses(cfg.waves, cfg.attacks) * 1000)
 
     total_init, total_opex = labels["total_init"], labels["total_opex"]
@@ -398,14 +358,7 @@ def _ros_page(cfg: Config, texts: Texts) -> RosPage:
         sign_hint=words["sign_hint"],
         budget_rows=budget_rows,
         remaining_line=remaining,
-        tier_header=(eventkarten["tier_heading"], words["kz_change"]),
-        tier_rows=_tier_texts(cfg, texts),
-        overspend_rule=effect_rows(final, cfg, texts).rows[-1].text,
-        penalty_title=words["penalty_title"],
-        penalty_intro=words["penalty_intro"],
-        penalty_header=(words["overspend_header"], words["kz_change"]),
-        penalty_rows=penalty,
-        penalty_follow=penalty_follow,
+        result_line=Metric(words["review_result"], words["review_result_note"]),
     )
 
 

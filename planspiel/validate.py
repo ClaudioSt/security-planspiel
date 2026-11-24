@@ -573,17 +573,8 @@ class _Validator:
         penalty = event["overspend_penalty"]
         if not self.container(penalty, dict, penalty_path):
             return
-        kz_per_step = self.int_field(penalty, "kz_per_step", penalty_path, lo=1)
+        self.int_field(penalty, "kz_per_step", penalty_path, lo=1)
         step = self.int_field(penalty, "step", penalty_path, lo=1)
-        table_rows = self.int_field(penalty, "table_rows", penalty_path, lo=1)
-        if kz_per_step is not None and table_rows is not None:
-            full_rows = -(-100 // kz_per_step)
-            if table_rows > full_rows:
-                self.error(
-                    "schema.range",
-                    f"{penalty_path}.table_rows",
-                    f"{table_rows} Zeilen, die volle Überziehungstabelle hat nur {full_rows} (bis die Strafe die KZ-Skala erreicht)",
-                )
         if step is not None and step != 10:
             self._hand_calc(
                 "hand_calc.penalty_step",

@@ -44,28 +44,8 @@
 \end{tabularx}
 
 \vspace{2mm}
-\noindent\begin{tabularx}{\linewidth}{|Z|Z|}
+\noindent\begin{tabularx}{\linewidth}{|X|C{52mm}|}
 \hline
-\rowcolor{mhpblue}\hdr{\VAR{booklet.ros.tier_header[0]}} & \hdr{\VAR{booklet.ros.tier_header[1]}} \\
+\rowcolor{mhplight}\rowstrutmid{}\textbf{\VAR{booklet.ros.result_line.label}}\newline\textcolor{mhpgrey}{\small \VAR{booklet.ros.result_line.note}}\rowpad{} & \\
 \hline
-\BLOCK{for row in booklet.ros.tier_rows}
-\rowstrutlookup{}\VAR{row[0]} & \VAR{row[1]} \\
-\hline
-\BLOCK{endfor}
 \end{tabularx}
-
-\step{\VAR{booklet.ros.penalty_title}}
-\textbf{\VAR{booklet.ros.overspend_rule}}\par
-\VAR{booklet.ros.penalty_intro}\par
-\vspace{1mm}
-\noindent\begin{tabular}{|C{38mm}|C{26mm}|}
-\hline
-\rowcolor{mhpblue}\hdr{\VAR{booklet.ros.penalty_header[0]}} & \hdr{\VAR{booklet.ros.penalty_header[1]}} \\
-\hline
-\BLOCK{for row in booklet.ros.penalty_rows}
-\rowstrutlookup{}\VAR{row[0]} & \VAR{row[1]} \\
-\hline
-\BLOCK{endfor}
-\end{tabular}\par
-\vspace{1mm}
-\VAR{booklet.ros.penalty_follow}\par
