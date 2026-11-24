@@ -275,6 +275,7 @@ def test_the_budget_review_prints_every_tier_and_penalty_row(loaded):
     for span, value in (*booklet.ros.tier_rows, *booklet.ros.penalty_rows):
         assert render.tex_escape(span) in source
         assert render.tex_escape(value) in source
+    assert render.tex_escape(booklet.ros.penalty_follow) in source
 
 
 @pytest.mark.parametrize("setup", SETUPS)

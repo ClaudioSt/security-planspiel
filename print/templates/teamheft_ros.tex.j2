@@ -58,25 +58,14 @@
 \textbf{\VAR{booklet.ros.overspend_rule}}\par
 \VAR{booklet.ros.penalty_intro}\par
 \vspace{1mm}
-\noindent\begin{minipage}[t]{0.485\linewidth}
-\begin{tabular}{|C{38mm}|C{26mm}|}
+\noindent\begin{tabular}{|C{38mm}|C{26mm}|}
 \hline
 \rowcolor{mhpblue}\hdr{\VAR{booklet.ros.penalty_header[0]}} & \hdr{\VAR{booklet.ros.penalty_header[1]}} \\
 \hline
-\BLOCK{for row in booklet.ros.penalty_rows[:booklet.ros.penalty_per_table]}
+\BLOCK{for row in booklet.ros.penalty_rows}
 \rowstrutlookup{}\VAR{row[0]} & \VAR{row[1]} \\
 \hline
 \BLOCK{endfor}
-\end{tabular}
-\end{minipage}\hfill
-\begin{minipage}[t]{0.485\linewidth}
-\begin{tabular}{|C{38mm}|C{26mm}|}
-\hline
-\rowcolor{mhpblue}\hdr{\VAR{booklet.ros.penalty_header[0]}} & \hdr{\VAR{booklet.ros.penalty_header[1]}} \\
-\hline
-\BLOCK{for row in booklet.ros.penalty_rows[booklet.ros.penalty_per_table:]}
-\rowstrutlookup{}\VAR{row[0]} & \VAR{row[1]} \\
-\hline
-\BLOCK{endfor}
-\end{tabular}
-\end{minipage}
+\end{tabular}\par
+\vspace{1mm}
+\VAR{booklet.ros.penalty_follow}\par

@@ -16,7 +16,6 @@ from planspiel import booklet as booklet_module
 from planspiel.booklet import (
     BOOKLET_JOB,
     EN_DASH,
-    MAX_PENALTY_ROWS,
     MAX_REGISTER_ROWS,
     RANK_FIRST,
     PlanningPage,
@@ -202,35 +201,49 @@ def test_the_overspend_rule_is_the_card_line(loaded):
     assert booklet.ros.overspend_rule == effect_rows(final, cfg, texts).rows[-1].text
 
 
-def test_the_penalty_table_equals_review_penalty_rows(loaded):
+def _table_rows(cfg) -> int:
+    event = next(e for e in cfg.final_events if e.type == "final_budget_tier")
+    return event.params["overspend_penalty"]["table_rows"]
+
+
+def test_the_penalty_table_is_the_first_table_rows_of_review_penalty_rows(loaded):
     cfg, _, booklet = loaded
     expected = [
         (f"{review_text.format_eur(low)} – {review_text.format_eur(high)} €", f"−{-kz}")
         for low, high, kz in review_text.penalty_rows(*rules.penalty_params(cfg.final_events))
     ]
-    assert list(booklet.ros.penalty_rows) == expected
+    assert _table_rows(cfg) == 3
+    assert list(booklet.ros.penalty_rows) == expected[: _table_rows(cfg)]
 
 
-def test_the_real_overspend_table_has_exactly_the_proven_row_count(real):
+def test_the_real_overspend_table_has_three_rows_and_ends_at_thirty_thousand(real):
     cfg, _, booklet = real
     kz_per_step, step_k = rules.penalty_params(cfg.final_events)
     rows = booklet.ros.penalty_rows
-    assert MAX_PENALTY_ROWS == -(-100 // kz_per_step)
-    assert len(rows) == MAX_PENALTY_ROWS
+    assert len(rows) == 3
     assert rows[0] == (f"1 – {fmt.format_money(step_k * 1000)}", f"{MINUS}{kz_per_step}")
-    assert rows[-1][1] == f"{MINUS}{kz_per_step * MAX_PENALTY_ROWS}"
+    assert rows[-1] == ("20.001 – 30.000 €", f"{MINUS}9")
 
 
-def test_a_smaller_penalty_step_adds_rows_and_stops_the_build(tmp_path):
+def test_the_follow_up_line_names_the_last_table_amount_and_sends_to_the_rule_above(real):
+    _, _, booklet = real
+    line = booklet.ros.penalty_follow
+    assert line == "Bei einer Überziehung von mehr als 30.000 € rechnet ihr nach der Regel oben weiter."
+    assert line in booklet.ros.printed_fragments()
+
+
+def test_the_table_row_count_is_a_config_value_and_a_smaller_step_does_not_add_rows(tmp_path):
     raw = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
     raw["final_events"][0]["overspend_penalty"]["kz_per_step"] = 2
+    raw["final_events"][0]["overspend_penalty"]["table_rows"] = 4
     path = tmp_path / "config.json"
     path.write_text(json.dumps(raw, ensure_ascii=False, indent=2), encoding="utf-8", newline="\n")
     cfg = load_config(path)
-    assert len(review_text.penalty_rows(*rules.penalty_params(cfg.final_events))) == 50
     texts = load_texts(CONTENT_DIR / "texte.toml")
-    with pytest.raises(PrintModelError, match="MAX_PENALTY_ROWS"):
-        build_team_booklet(cfg, texts)
+    booklet = build_team_booklet(cfg, texts)
+    assert len(booklet.ros.penalty_rows) == 4
+    assert booklet.ros.penalty_rows[-1] == ("30.001 – 40.000 €", f"{MINUS}8")
+    assert "40.000 €" in booklet.ros.penalty_follow
 
 
 def test_the_budget_review_explains_the_remaining_budget_with_signed_event_values(loaded):

@@ -60,7 +60,7 @@ _TEAMHEFT_KEYS = (
     "opex_per_wave", "ros_title", "ros_carry_hint", "window_differences", "init_differences", "own_costs",
     "damage_sum", "ros_short", "review_title", "review_intro", "tier_budget", "budget_event", "event_opex",
     "review_costs", "remaining_budget", "sign_hint", "kz_change", "penalty_title", "penalty_intro",
-    "overspend_header",
+    "overspend_header", "penalty_follow_lead", "penalty_follow_tail",
 )
 
 _TRACKING_KEYS = (

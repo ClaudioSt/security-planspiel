@@ -104,6 +104,7 @@ def test_the_budget_review_page_holds_all_tier_rows_and_all_penalty_rows(pages, 
         if metric.note:
             assert squash(metric.note) in page, metric.note
     assert squash(ros.overspend_rule) in page
+    assert squash(ros.penalty_follow) in page
     assert squash(ros.sign_hint) in page
 
 
@@ -123,9 +124,7 @@ def test_every_page_fits_the_text_height_as_measured_in_the_log(printed_set, pag
 
 
 def test_the_review_page_is_proven_for_the_current_row_count(printed_set, booklet):
-    from planspiel.booklet import MAX_PENALTY_ROWS
-
-    assert len(booklet.ros.penalty_rows) == MAX_PENALTY_ROWS
+    assert len(booklet.ros.penalty_rows) == 3
     used, limit = (float(value) for value in FILL.findall(_log(printed_set))[-1][1:])
     assert used <= limit
 

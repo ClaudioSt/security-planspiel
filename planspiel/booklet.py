@@ -25,12 +25,6 @@ from planspiel.review_text import _tier_value_text, format_eur, penalty_rows, ti
 from planspiel.texts import PreAttackView, Texts
 
 BOOKLET_JOB = "spieler-teamheft"
-# Rows of the overspend table (calibrated X = 3 KZ per started step): rows until the penalty alone reaches the KZ cap
-# of 100, ceil(100 / 3) = 34. The Budget Review page is proven (pdf test, fill report) for at most this many rows. A
-# smaller X adds rows, so the constant is reviewed together with a new layout proof of that page.
-MAX_PENALTY_ROWS = 34
-# The overspend table is printed as this many side-by-side lookup tables (teamheft_ros.tex.j2), filled left to right.
-PENALTY_TABLES = 2
 EN_DASH = "–"
 # Register rows the one-page register is proven for by the PDF fill report; a larger `register_rows` needs a new
 # layout proof of that page.
@@ -111,7 +105,7 @@ class RosPage:
     penalty_intro: str
     penalty_header: tuple[str, str]
     penalty_rows: tuple[tuple[str, str], ...]
-    penalty_per_table: int  # rows of the first and second table; the last one holds the rest
+    penalty_follow: str  # what to do above the last printed row
 
     def printed_fragments(self) -> tuple[str, ...]:
         return _fragments(self)
@@ -348,24 +342,21 @@ def _tier_texts(cfg: Config, texts: Texts) -> tuple[tuple[str, str], ...]:
     return tuple(rows)
 
 
-def _penalty_texts(cfg: Config) -> tuple[tuple[str, str], ...]:
-    rows = penalty_rows(*rules.penalty_params(cfg.final_events))
-    if len(rows) > MAX_PENALTY_ROWS:
-        raise PrintModelError(
-            f"Die Überziehungstabelle hat {len(rows)} Zeilen, die Budget-Review-Seite ist für höchstens "
-            f"{MAX_PENALTY_ROWS} belegt (MAX_PENALTY_ROWS in planspiel/booklet.py); die Konstante nur zusammen "
-            "mit einem neuen Layout-Nachweis dieser Seite anheben, wenn Phase 6 die Strafe je Schritt senkt."
-        )
-    return tuple(
-        (f"{format_eur(low)} {EN_DASH} {format_eur(high)} €", _tier_value_text(kz)) for low, high, kz in rows
-    )
+def _printed_penalty_rows(cfg: Config) -> list[tuple[int, int, int]]:
+    """The first `table_rows` rows of the overspend table; larger amounts follow the rule line above it."""
+    table_rows = _review_event(cfg).params["overspend_penalty"]["table_rows"]
+    return penalty_rows(*rules.penalty_params(cfg.final_events))[:table_rows]
 
 
 def _ros_page(cfg: Config, texts: Texts) -> RosPage:
     view = PreAttackView(cfg, texts)
     labels, words, eventkarten = view.sheet("labels"), view.sheet("teamheft"), view.sheet("eventkarten")
     final = _review_event(cfg)
-    penalty = _penalty_texts(cfg)
+    penalty_raw = _printed_penalty_rows(cfg)
+    penalty = tuple(
+        (f"{format_eur(low)} {EN_DASH} {format_eur(high)} €", _tier_value_text(kz)) for low, high, kz in penalty_raw
+    )
+    penalty_follow = f"{words['penalty_follow_lead']} {format_eur(penalty_raw[-1][1])} € {words['penalty_follow_tail']}"
     base_losses = fmt.format_money(rules.base_losses(cfg.waves, cfg.attacks) * 1000)
 
     total_init, total_opex = labels["total_init"], labels["total_opex"]
@@ -414,7 +405,7 @@ def _ros_page(cfg: Config, texts: Texts) -> RosPage:
         penalty_intro=words["penalty_intro"],
         penalty_header=(words["overspend_header"], words["kz_change"]),
         penalty_rows=penalty,
-        penalty_per_table=-(-len(penalty) // PENALTY_TABLES),
+        penalty_follow=penalty_follow,
     )
 
 
