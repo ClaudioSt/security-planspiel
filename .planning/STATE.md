@@ -4,10 +4,10 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: 07
 status: executing
-stopped_at: Phase 07.2 complete (RC4 approved); next 07-12 dry run
+stopped_at: Print RC5 built (quick 261124-u23); next 07-12 dry run
 last_updated: "2026-11-23T14:01:55.112Z"
-last_activity: 2026-11-23
-last_activity_desc: Phase 07.2 complete
+last_activity: 2026-11-24
+last_activity_desc: Print RC5 (three-row overspend table, request mail to MHP)
 progress:
   total_phases: 9
   completed_phases: 8
@@ -260,6 +260,7 @@ None. The veiling todo (2026-06-23) is closed (moved to `todos/completed/` in Ph
 | # | Description | Date | Commit | Directory |
 |---|-------------|------|--------|-----------|
 | 261123-oav | Close the open items after phase 07.2: Übungswelle slide 33 and slide-number fields in the intro deck, slide 21/22/31 wording, WR-01/WR-02 review fixes, CONCERNS 215 minutes | 2026-11-23 | 3a9e2b0 | [261123-oav-close-open-items-after-07-2-deck-review-](./quick/261123-oav-close-open-items-after-07-2-deck-review-/) |
+| 261124-u23 | Overspend table on Teamheft page 5 shrinks to three rows (config `table_rows`) plus follow-up line; request mail goes to MHP; print RC5 (stamp Stand 2026-11-24 · cd836f6) | 2026-11-24 | c1ffdee | [261124-u23-overspend-table-three-rows-rc5](./quick/261124-u23-overspend-table-three-rows-rc5/) |
 
 ## Deferred Items
 
