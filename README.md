@@ -116,7 +116,7 @@ Der Ablaufplan mit Blöcken, Dauern und Pausen steht in `session_schedule` und w
 - **Gesamtreduktion:** `Gesamtreduktion = E-Wert + Gesamtbonus`
 - **Reduktion über Schwelle:**  
   `Reduktion über Schwelle = min(mitigation_cap, max(0, Gesamtreduktion − e_threshold))`  
-  Das sind die Fälle des Arbeitsblatts: Fall 1 (Gesamtreduktion höchstens Schwelle: keine Reduktion), Fall 2 (zwischen Schwelle und Deckel) und Fall 3 (Deckel erreicht).
+  Das sind die Fälle des Arbeitsblatts: Fall 1 (Gesamtreduktion höchstens Schwelle: keine Reduktion), Fall 2 (Deckel erreicht: kein Schaden) und Fall 3 (zwischen Schwelle und Deckel: linear).
 - **Schweregrad:**  
   `Schweregrad = max(0, base_severity * severity_multiplier − Reduktion über Schwelle)`
 - **Schaden:**  
