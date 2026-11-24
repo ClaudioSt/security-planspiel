@@ -258,6 +258,15 @@ def test_the_real_mails_keep_their_sections_in_toml_order(real):
     assert audit.subject == "Information Security Assessment - Supplier Audit Q2/2026"
 
 
+def test_the_request_mail_goes_to_mhp_and_no_story_document_names_vwi(real):
+    _, _, documents = real
+    anfrage = documents[2]
+    assert anfrage.recipient == '"MHP Cyber Security <cyber-security@mhp.com>"'
+    for document in documents:
+        for text in document.printed_strings():
+            assert "vwi" not in text.lower()
+
+
 # ---- headings, clues and content errors ---------------------------------------------------------------------------
 
 
