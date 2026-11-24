@@ -91,8 +91,7 @@ MATERIAL_JOBS = {
 # (it replaced the 07.1 Risiko-Matrix slide); title and second example row are the user-approved wording
 NEED_SLIDE = 32
 NEED_TITLE = "Schutzbedarf"
-NEED_SECOND_ROW = ("Speiseplan der Kantine", "gering", "gering", "mittel", "mittel")
-MAXIMUM_PRINCIPLE = "Maximumprinzip"
+NEED_SECOND_ROW = ("Speiseplan der Kantine", "gering", "gering", "mittel")
 CLOSING_REVIEW_TEXT = "Und wie gut stimmte euer Risikoregister im Rückblick (richtig, unterschätzt, überschätzt)?"
 MONEY_FIGURE = re.compile(r"\d[\d.]*\s*(€|Euro)")
 
@@ -114,7 +113,7 @@ THEORY_NEED_QUESTIONS = (
     "Welche Werte braucht das Unternehmen: Daten, Anlagen, Know-how?",
     "Wie groß wäre der Schaden fürs Geschäft: gering, mittel oder hoch?",
     "Was wäre schlimmer: Offenlegung (C), Verfälschung (I) oder Ausfall (A) von IT-Systemen?",
-    "Welcher Schaden ist der höchste? Er bestimmt den Schutzbedarf des Werts.",
+    "Welches Schutzziel trifft den Wert am härtesten? Das ist das Hauptziel im Register.",
     "Verlangen Gesetze (z.B. DSGVO) oder Kunden (z.B. Audit, Zertifikate) mehr Schutz?",
 )
 
@@ -353,22 +352,21 @@ def test_need_slide_table_rates_assets_by_goal(slides, content, cfg):
     register = content.texts.subtree("sheets.register")
     band_words = [register["bands"][band.id] for band in cfg.risk_matrix.bands]
     table = _need_table(slides[NEED_SLIDE - 1])
-    assert len(table.columns) == 5
-    header = [table.cell(0, column).text_frame.text for column in range(5)]
+    assert len(table.columns) == 4, "asset and the three protection goals, no gesamt column"
+    header = [table.cell(0, column).text_frame.text for column in range(4)]
     goals = register["goals"]
-    assert header == [register["need_head_asset"], goals["c"], goals["i"], goals["a"], register["head_total"]]
-    rows = [[table.cell(row, column).text_frame.text for column in range(5)] for row in range(1, len(table.rows))]
+    assert header == [register["need_head_asset"], goals["c"], goals["i"], goals["a"]]
+    rows = [[table.cell(row, column).text_frame.text for column in range(4)] for row in range(1, len(table.rows))]
     assert len(rows) == 2
-    for asset, *ratings, total in rows:
+    for asset, *ratings in rows:
         assert asset
-        assert all(word in band_words for word in (*ratings, total)), rows
-        assert total == max(ratings, key=band_words.index), (asset, "gesamt is the highest of the three ratings")
+        assert all(word in band_words for word in ratings), rows
     example = register["need_example"]
-    first = rows[0]
-    assert first[:4] == [example["asset"], example["c"], example["i"], example["a"]]
-    assert first[4] == max((example["c"], example["i"], example["a"]), key=band_words.index)
+    assert rows[0] == [example["asset"], example["c"], example["i"], example["a"]]
     assert tuple(rows[1]) == NEED_SECOND_ROW
-    assert rows[1][4] != first[4], "the second row shows that gesamt is not always the same"
+    widths = [column.width for column in table.columns]
+    assert max(widths[1:]) - min(widths[1:]) <= 1, "the three rating columns share the width"
+    assert sum(widths) >= 9_000_000, "the table keeps its width after the column is gone"
 
 
 def test_need_slide_uses_the_teamheft_vocabulary(content, slide_texts):
@@ -376,14 +374,14 @@ def test_need_slide_uses_the_teamheft_vocabulary(content, slide_texts):
     words = [
         register["need_title"],
         *register["bands"].values(),
-        register["head_total"],
         register["title"],
         register["head_goal"],
         register["head_review"],
-        MAXIMUM_PRINCIPLE,
     ]
     for word in words:
         assert word in slide_texts[NEED_SLIDE], word
+    for gone in ("gesamt", "Maximumprinzip"):
+        assert gone not in slide_texts[NEED_SLIDE], gone
 
 
 def test_need_slide_shows_no_likelihood_or_zone(slides, slide_texts):

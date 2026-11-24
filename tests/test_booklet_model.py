@@ -347,50 +347,33 @@ def test_the_need_table_has_one_row_per_asset_row(real):
     assert booklet.register.asset_rows == labels == ("W1", "W2", "W3", "W4")
 
 
-def test_the_need_header_is_asset_c_i_a_and_total(real):
+def test_the_need_header_is_asset_c_i_a_without_a_total_column(real):
     _, texts, booklet = real
     words = _register_words(texts)
     goals = words["goals"]
-    assert booklet.register.need_header == (
-        words["need_head_asset"], goals["c"], goals["i"], goals["a"], words["head_total"]
-    )
+    assert booklet.register.need_header == (words["need_head_asset"], goals["c"], goals["i"], goals["a"])
+    assert "head_total" not in words
     assert booklet.register.page_title == words["page_title"]
     assert booklet.register.need_title == words["need_title"]
     assert booklet.register.need_instruction == words["need_instruction"]
 
 
-def test_the_need_example_follows_the_maximum_principle(real):
+def test_the_need_instruction_does_not_name_a_total_or_the_maximum_principle(real):
+    instruction = real[2].register.need_instruction
+    assert "gesamt" not in instruction.lower()
+    assert "Maximum" not in instruction
+    assert "höchste Stufe" not in instruction
+
+
+def test_the_need_example_row_rates_the_three_goals_only(real):
     cfg, texts, booklet = real
     words = _register_words(texts)
     example = words["need_example"]
-    order = {words["bands"][band.id]: index for index, band in enumerate(cfg.risk_matrix.bands)}
-    rated = [example[goal] for goal in ("c", "i", "a")]
-    highest = max(rated, key=lambda word: order[word])
+    band_words = {words["bands"][band.id] for band in cfg.risk_matrix.bands}
+    rated = tuple(example[goal] for goal in ("c", "i", "a"))
+    assert set(rated) <= band_words
     first = booklet.register.asset_rows[0]
-    assert booklet.register.need_example == (f"{first} {example['asset']}", *rated, highest)
-    assert len(booklet.register.need_example) == 5
-
-
-@pytest.mark.parametrize(
-    ("c", "i", "a", "expected"),
-    [
-        pytest.param("gering", "hoch", "mittel", "hoch", id="highest-in-the-middle"),
-        pytest.param("mittel", "gering", "hoch", "hoch", id="highest-last"),
-        pytest.param("gering", "mittel", "gering", "mittel", id="no-top-band-present"),
-    ],
-)
-def test_the_need_example_total_is_the_highest_band_wherever_it_sits(tmp_path, c, i, a, expected):
-    source = (CONTENT_DIR / "texte.toml").read_text(encoding="utf-8")
-    head, marker, tail = source.partition("[sheets.register.need_example]")
-    assert marker, "the need example table must exist"
-    section, bracket, rest = tail.partition("\n[")
-    assert bracket, "a section must follow the need example table"
-    asset = next(line for line in section.splitlines() if line.startswith("asset = "))
-    body = f"\n{asset}\nc = \"{c}\"\ni = \"{i}\"\na = \"{a}\"\n"
-    path = tmp_path / "texte.toml"
-    path.write_text(head + marker + body + bracket + rest, encoding="utf-8", newline="\n")
-    booklet = build_team_booklet(load_config(CONFIG_PATH), load_texts(path))
-    assert booklet.register.need_example[1:] == (c, i, a, expected)
+    assert booklet.register.need_example == (f"{first} {example['asset']}", *rated)
 
 
 def test_a_need_example_word_that_is_no_band_word_stops_the_build(tmp_path):
