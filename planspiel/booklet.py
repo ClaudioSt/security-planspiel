@@ -149,9 +149,9 @@ class RegisterPage:
     page_title: str
     need_title: str
     need_instruction: str
-    need_header: tuple[str, str, str, str, str]
+    need_header: tuple[str, str, str, str]
     asset_rows: tuple[str, ...]
-    need_example: tuple[str, str, str, str, str]
+    need_example: tuple[str, str, str, str]
     legend_title: str
     band_legend: tuple[str, ...]
     title: str
@@ -229,7 +229,6 @@ def _register_page(cfg: Config, texts: Texts) -> Optional[RegisterPage]:
             raise PrintModelError(
                 f"sheets.register.need_example.{goal} ist '{word}', kein Bandwort ({', '.join(band_labels)})"
             )
-    highest = max(rated, key=band_labels.index)
     rows = tuple(f"{words['risk_prefix']}{fmt.format_number(number)}" for number in range(1, matrix.register_rows + 1))
     last_rank = fmt.format_number(matrix.register_rows)
     example = words["example"]
@@ -238,9 +237,9 @@ def _register_page(cfg: Config, texts: Texts) -> Optional[RegisterPage]:
         page_title=words["page_title"],
         need_title=words["need_title"],
         need_instruction=words["need_instruction"],
-        need_header=(words["need_head_asset"], goals["c"], goals["i"], goals["a"], words["head_total"]),
+        need_header=(words["need_head_asset"], goals["c"], goals["i"], goals["a"]),
         asset_rows=asset_rows,
-        need_example=(f"{asset_rows[0]} {need['asset']}", *rated, highest),
+        need_example=(f"{asset_rows[0]} {need['asset']}", *rated),
         legend_title=words["legend_title"],
         band_legend=tuple(
             f"{label}: {span}" for label, span in zip(band_labels, risk.band_ranges(matrix.bands, words))

@@ -207,7 +207,7 @@ _REGISTER_KEYS = (
     "title", "instruction", "rank_hint", "risk_prefix", "example_label", "head_asset", "head_threat", "head_goal",
     "head_impact", "head_rank", "head_decision", "head_review", "source_label", "reason_label", "review_hint",
     "range_below", "range_to", "range_from", "planning_column",
-    "planning_hint", "page_title", "need_title", "need_instruction", "asset_prefix", "need_head_asset", "head_total",
+    "planning_hint", "page_title", "need_title", "need_instruction", "asset_prefix", "need_head_asset",
     "legend_title",
 )
 REGISTER_GROUPS = {

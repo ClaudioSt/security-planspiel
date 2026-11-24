@@ -49,7 +49,7 @@ Der Ablaufplan mit Blöcken, Dauern und Pausen steht in `session_schedule` und w
 1. **Einführung (Intro)**  
    Das Intro-Deck erklärt Spielidee und Rollen.
 2. **Story und Gruppenarbeit**  
-   Teams lesen die Story-Dokumente und erhalten dazu das Teamheft. Auf seiner ersten Seite stellen sie den Schutzbedarf fest: Sie listen die Werte des Unternehmens und schätzen je Schutzziel C / I / A den Schaden fürs Geschäft als gering, mittel oder hoch; gesamt ist die höchste Stufe (Maximumprinzip). Im Risikoregister darunter zeigt jedes Risiko auf einen Wert und sein Hauptziel, sein Band steht in der Tabelle; die Teams vergeben einen Rang und entscheiden, welche Risiken sie behandeln oder akzeptieren. Die Spielleitung beantwortet Fragen **kontextbezogen** und benennt keine Lücken. Fragen die Teams je Wert und Schutzziel, was ein Schaden fürs Geschäft bedeuten würde, antwortet die Spielleitung als Geschäftsführung mit einem Band, nie mit einem genauen Betrag.
+   Teams lesen die Story-Dokumente und erhalten dazu das Teamheft. Auf seiner ersten Seite stellen sie den Schutzbedarf fest: Sie listen die Werte des Unternehmens und schätzen je Schutzziel C / I / A den Schaden fürs Geschäft als gering, mittel oder hoch. Im Risikoregister darunter zeigt jedes Risiko auf einen Wert und sein Hauptziel, sein Band steht in der Tabelle; die Teams vergeben einen Rang und entscheiden, welche Risiken sie behandeln oder akzeptieren. Die Spielleitung beantwortet Fragen **kontextbezogen** und benennt keine Lücken. Fragen die Teams je Wert und Schutzziel, was ein Schaden fürs Geschäft bedeuten würde, antwortet die Spielleitung als Geschäftsführung mit einem Band, nie mit einem genauen Betrag.
 3. **Welle 0 (Übung)**  
    Ein durchgerechnetes Übungsbeispiel (`uebung-welle-0.pdf`) mit eigenen Werten aus dem Block `practice`; es zählt nicht für die Wertung.
 4. **Budgetverhandlung und Maßnahmenwahl**  
@@ -201,7 +201,7 @@ Alle Dateien liegen als PDF in `final_documents/generated/` und werden aus `simu
 
 **Für die Teams:**
 
-- `spieler-teamheft.pdf`: Teamheft mit der Schutzbedarfstabelle (Werte aus der Story, je Schutzziel C / I / A gering, mittel oder hoch mit den € Bändern, gesamt nach dem Maximumprinzip) und dem Risikoregister (Risiken mit Wert W#, Hauptziel, Folge fürs Geschäft, Rang, behandeln oder akzeptieren und Rückblick; das Band jedes Risikos steht in der Tabelle), Budget und Planung, einer Tracking-Seite je Welle und der Seite zu RoS und Budget Review. Es ersetzt die früheren Auswertungstabellen.
+- `spieler-teamheft.pdf`: Teamheft mit der Schutzbedarfstabelle (Werte aus der Story, je Schutzziel C / I / A gering, mittel oder hoch mit den € Bändern) und dem Risikoregister (Risiken mit Wert W#, Hauptziel, Folge fürs Geschäft, Rang, behandeln oder akzeptieren und Rückblick; das Band jedes Risikos steht in der Tabelle), Budget und Planung, einer Tracking-Seite je Welle und der Seite zu RoS und Budget Review. Es ersetzt die früheren Auswertungstabellen.
 - `spieler-massnahmenkarten.pdf` und `spieler-eventkarten.pdf`: die Karten, Werte und Texte aus der Konfiguration.
 - `spieler-so-funktioniert-eine-welle.pdf`: die Erklärseite zum Ablauf einer Welle.
 - `spieler-unternehmenssteckbrief.pdf`, `spieler-anfrage-mail.pdf`, `spieler-audit-mail.pdf`, `spieler-zeitungsartikel.pdf`: die Story-Dokumente mit den Hinweisen.
