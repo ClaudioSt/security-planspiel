@@ -1093,7 +1093,7 @@ doc_title = "Anfrage: IT-Security-Beratung für MechTech GmbH"
 
 [story.anfrage_mail.kopf]
 von = "\"Dr. Thomas Weber\" <t.weber@mechtech-gmbh.de>"
-an = "\"VWI Security Consulting <security-consulting@vwi.de>\""
+an = "\"MHP Cyber Security <cyber-security@mhp.com>\""
 
 [story.anfrage_mail.anrede]
 text = "Sehr geehrte Damen und Herren,"
