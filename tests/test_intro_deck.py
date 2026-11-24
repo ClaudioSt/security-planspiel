@@ -60,7 +60,8 @@ WAVE_SLIDE = 36
 WAVE_TEXT = "{first} min Welle 1, je {rest} min Welle 2 und 3"
 
 TEAM_SIZE_SLIDE = 30
-TEAM_SIZE_TEXT = "Beratungsteam aus {n} Personen"
+# the consulting firm of the game is MHP (user, 2026-11-24)
+TEAM_SIZE_TEXT = "Beratungsteam von MHP aus {n} Personen"
 PERSON_FIGURE = re.compile(r"[\d–\-]+\s*Personen")
 
 FLOW_SLIDE = 28
@@ -112,9 +113,9 @@ RETIRED_NEED_TITLE = "Sicherheitsbedarf"
 THEORY_NEED_QUESTIONS = (
     "Welche Werte braucht das Unternehmen: Daten, Anlagen, Know-how?",
     "Wie groß wäre der Schaden fürs Geschäft: gering, mittel oder hoch?",
-    "Was wäre schlimmer: bekannt (C), verfälscht (I) oder nicht verfügbar (A)?",
+    "Was wäre schlimmer: Offenlegung (C), Verfälschung (I) oder Ausfall (A) von IT-Systemen?",
     "Welcher Schaden ist der höchste? Er bestimmt den Schutzbedarf des Werts.",
-    "Verlangen Gesetze (z.B. DSGVO) oder Kunden (z.B. OEM-Audit) mehr Schutz?",
+    "Verlangen Gesetze (z.B. DSGVO) oder Kunden (z.B. Audit, Zertifikate) mehr Schutz?",
 )
 
 MEASURE_CATEGORY_TEXT = {
