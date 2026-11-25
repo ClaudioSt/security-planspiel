@@ -102,7 +102,7 @@ PRACTICE_BODY_WORDS = ("E-Wert", "Gesamtreduktion", "Schaden", "Kundenzufriedenh
 PRACTICE_NOT_SCORED = "zählt nicht für eure Wertung"
 STORY_SLIDE = 31
 RISK_ASSESSMENT_TEXT = (
-    "Wie groß wäre der Schaden fürs Geschäft, wenn Vertraulichkeit, Integrität oder Verfügbarkeit verletzt würden? "
+    "Wie groß wäre der Schaden fürs Geschäft, wenn Vertraulichkeit, Integrität oder Verfügbarkeit verletzt würde? "
     "→ Welchen Schutzbedarf haben eure Werte?"
 )
 THEORY_RISK_SLIDE = 21
@@ -455,3 +455,11 @@ def test_no_slide_names_an_attack_and_story_hits_are_the_accepted_ones(cfg, cont
         if (hits := veil.name_hits(text, ctx, audience.PROFILE_STORY))
     }
     assert story == ACCEPTED_STORY_HITS
+
+
+def test_deck_uses_the_print_vocabulary_for_the_damage_scale(slide_texts):
+    # RC6 proofreading (quick 261125-0f4): the print material calls gering/mittel/hoch a "Stufe", and "oder"
+    # takes the singular verb; the deck follows
+    for number, text in slide_texts.items():
+        assert "Band" not in text, number
+        assert "verletzt würden" not in text, number
