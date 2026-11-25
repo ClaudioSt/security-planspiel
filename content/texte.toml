@@ -897,10 +897,10 @@ text = "Levelwechsel: dieselbe Maßnahme, anderes Level (auch Kündigen). Maßna
 
 [sheets.was_neu.rules.kurswechsel]
 heading = "Kurswechsel"
-text = "Das Event verlangt im Change-Fenster danach genau einen Maßnahmentausch (aktive Maßnahme raus, inaktive rein); der Kunde trägt die Init der neuen Maßnahme bis zur Höhe der Init der alten."
+text = "Das Event verlangt im Change-Fenster danach genau einen Maßnahmentausch (aktive Maßnahme raus, inaktive rein); der Kunde trägt die Init der neuen Maßnahme bis zur Init der alten."
 
 [sheets.was_neu.rules.downgrade]
-heading = "Senken und Kündigen"
+heading = "Senken, Kündigen"
 text = "Im Change-Fenster dürfen Teams Level senken oder Maßnahmen kündigen. Init wird nie erstattet, die OPEX sinken ab der nächsten Welle."
 
 [sheets.was_neu.rules.init_window]
@@ -909,7 +909,7 @@ text = "Wer im Change-Fenster ein Level erhöht oder eine Maßnahme hinzufügt, 
 
 [sheets.was_neu.rules.overspend]
 heading = "Überziehung"
-text = "Statt eines Pauschalabzugs kostet das Überziehen am Ende"
+text = "Statt Pauschalabzug kostet Überziehen am Ende"
 
 [sheets.was_neu.rules.sparprogramm]
 heading = "Sparprogramm"

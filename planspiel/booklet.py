@@ -258,7 +258,7 @@ def _register_page(cfg: Config, texts: Texts) -> Optional[RegisterPage]:
             )
         ),
         example=(
-            need["asset"], example["threat"], example["goal"], example["impact"], fmt.format_number(RANK_FIRST),
+            EN_DASH, example["threat"], example["goal"], example["impact"], fmt.format_number(RANK_FIRST),
             example["decision"], words["review"]["correct"],
         ),
         rows=rows,

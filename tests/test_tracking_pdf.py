@@ -29,7 +29,8 @@ def pages(printed_set):
 
 @pytest.fixture(scope="module")
 def tracking_index(pages, booklet):
-    found = [number for number, page in enumerate(pages) if squash(booklet.tracking.title) in page]
+    # other pages name the Tracking-Bogen in their instructions; the sheet itself starts with its title
+    found = [number for number, page in enumerate(pages) if page.startswith(squash(booklet.tracking.title))]
     assert len(found) == 1, "the tracking title is printed on exactly one page"
     return found[0]
 

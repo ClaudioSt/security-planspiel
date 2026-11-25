@@ -396,7 +396,7 @@ def test_the_register_example_reads_its_band_from_the_need_example(real):
     _, texts, booklet = real
     words = _register_words(texts)
     register = booklet.register
-    assert register.example[0] == words["need_example"]["asset"]
+    assert register.example[0] == "–", "the risk example names its asset in the table above, not by a W label"
     goal_id = next(goal for goal, letter in words["goals"].items() if letter == words["example"]["goal"])
     assert words["need_example"][goal_id] in register.example[5]
 
@@ -437,7 +437,7 @@ def test_the_example_row_comes_from_the_clinic_texts(real):
     register = booklet.register
     example = words["example"]
     assert register.example == (
-        words["need_example"]["asset"], example["threat"], example["goal"], example["impact"],
+        "–", example["threat"], example["goal"], example["impact"],
         fmt.format_number(RANK_FIRST), example["decision"], words["review"]["correct"],
     )
     for text in register.example:

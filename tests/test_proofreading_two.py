@@ -60,7 +60,7 @@ def test_the_register_examples_carry_no_wave_style_label(cfg, texts):
     register = build_team_booklet(cfg, texts).register
     asset = texts.get("sheets.register.need_example.asset")
     assert register.need_example[0] == asset
-    assert register.example[0] == asset
+    assert register.example[0] == "–" and not register.example[0].startswith(texts.get("sheets.register.asset_prefix"))
 
 
 def test_the_ros_page_explains_the_full_damage_amount(cfg, texts):
