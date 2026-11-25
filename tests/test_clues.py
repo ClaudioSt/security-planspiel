@@ -388,5 +388,5 @@ def test_a_mail_section_without_a_heading_prints_the_german_label():
             FacilitatorView(cfg, texts, clues).clue_matrix(),
         )
     }
-    assert sections["story.anfrage_mail.lage.paragraphs"] == "Lage"
-    assert sections["story.audit_mail.einleitung.paragraphs"] == "Einleitung"
+    assert sections["story.anfrage_mail.lage.paragraphs"] == "dritter Absatz"
+    assert sections["story.audit_mail.einleitung.paragraphs"] == "zweiter Absatz"

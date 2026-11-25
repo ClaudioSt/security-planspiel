@@ -42,3 +42,13 @@ why = "Dauer des E-Learnings, kein Spielparameter"
 key = "sheets.angriff.wave_kz_rounding"
 token = ",5"
 why = "Name der festen Rundungsregel (bei ,5 weg von der Null, rounding.round_half_away), kein Config-Parameter"
+
+[[allow]]
+key = "sheets.angriff.rounding_note"
+token = ",5"
+why = "Name der festen Rundungsregel (bei ,5 weg von der Null, rounding.round_half_away), kein Config-Parameter"
+
+[[allow]]
+key = "sheets.tracking.window_intro"
+token = "Level 0"
+why = "Das Level einer gekündigten Maßnahme heißt überall Level 0 (Eventkarten, Recovery-Tabelle), kein Spielparameter"

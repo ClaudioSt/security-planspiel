@@ -59,7 +59,8 @@ _TEAMHEFT_KEYS = (
     "planning_title", "planning_instruction", "step_costs", "step_tiers", "step_planning", "kz_start",
     "opex_per_wave", "ros_title", "ros_carry_hint", "window_differences", "init_differences", "own_costs",
     "damage_sum", "ros_short", "review_title", "review_intro", "tier_budget", "budget_event", "event_opex",
-    "review_costs", "remaining_budget", "sign_hint", "review_result", "review_result_note",
+    "review_costs", "remaining_budget", "sign_hint", "review_result", "review_result_note", "tier_field",
+    "sum_of_row", "sum_row_suffix",
 )
 
 _TRACKING_KEYS = (
@@ -127,6 +128,10 @@ SHEET_KEYS = (
     "sheets.angriff.kz_fraction_hint",
     "sheets.angriff.events_hint",
     "sheets.angriff.wave_kz_rounding",
+    "sheets.angriff.label_rounded",
+    "sheets.angriff.rounding_note",
+    "sheets.angriff.no_recovery_lead",
+    "sheets.angriff.no_recovery_tail",
     "sheets.budget.title",
     "sheets.budget.intro",
     "sheets.budget.init_what",
@@ -138,6 +143,7 @@ SHEET_KEYS = (
     "sheets.ros.title",
     "sheets.ros.instruction",
     "sheets.ros.purpose",
+    "sheets.ros.avoided_note",
     "sheets.backup_recovery.title",
     "sheets.backup_recovery.subtitle",
     "sheets.backup_recovery.narrative",
@@ -243,6 +249,7 @@ PRACTICE_KEYS = tuple(
     f"practice.{name}"
     for name in (
         "title", "intro", "narrative", "cia_rationale", *CASE_KEYS, "selection_title", "event_result", "tracking_title",
+        "start_budget", "start_kz", "start_remaining", "events_hint",
     )
 )
 

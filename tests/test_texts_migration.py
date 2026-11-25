@@ -13,11 +13,11 @@ BONUS_REASONS = {
     ("ransomware", "M3"): "EDR/XDR erkennt Ransomware früh",
     ("ransomware", "M4"): "Backup ermöglicht schnelle Wiederherstellung",
     ("ransomware", "M6"): "Geschulte Mitarbeitende erkennen Phishing",
-    ("ot", "M5"): "OT/IT-Segmentierung isoliert Produktion",
+    ("ot", "M5"): "OT/IT-Segmentierung isoliert die Produktion",
     ("ot", "M7"): "Patch Management schließt OT-Schwachstellen",
     ("exfil", "M1"): "IAM/PAM verhindert unbefugten Zugriff",
     ("exfil", "M2"): "SIEM erkennt Datenabfluss",
-    ("exfil", "M8"): "Supply Chain Security schützt Schnittstellen",
+    ("exfil", "M8"): "Supplier Security schützt die Schnittstellen zu Lieferanten",
 }
 
 ALLOWLIST_PINNED = {
@@ -29,6 +29,8 @@ ALLOWLIST_PINNED = {
     ("measures.M4.levels_desc.3", "<4h"),
     ("measures.M6.levels_desc.1", "30 Min"),
     ("sheets.angriff.wave_kz_rounding", ",5"),
+    ("sheets.angriff.rounding_note", ",5"),
+    ("sheets.tracking.window_intro", "Level 0"),
 }
 
 
@@ -57,13 +59,13 @@ def test_bonus_reasons_are_carried_as_revealed_only_keys():
 def test_kurswechsel_and_sparprogramm_rule_texts():
     rule = TEXTS.get("events.kurswechsel.rule")
     assert rule.startswith("Im Change-Fenster nach dieser Welle führt ihr genau einen Maßnahmentausch durch")
-    assert rule.endswith("Weitere Levelwechsel im selben Fenster bleiben erlaubt.")
+    assert rule.endswith("Weitere Änderungen im selben Fenster bleiben erlaubt.")
     narrative = TEXTS.get("events.kurswechsel.narrative")
     assert narrative.startswith("Nach den neuesten Erkenntnissen richtet die Geschäftsführung")
     assert narrative.endswith("der Kunde beteiligt sich an den Kosten.")
     assert TEXTS.get("events.sparprogramm.rule") == (
         "Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch "
-        "gegensteuern (Senken oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet)."
+        "gegensteuern (Senken oder Kündigen spart OPEX in der nächsten Welle, Init wird nicht erstattet)."
     )
 
 
