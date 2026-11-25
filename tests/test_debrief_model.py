@@ -154,10 +154,11 @@ def test_the_compare_prompt_names_the_three_figures(texts):
 def test_the_clue_prompt_points_to_the_clue_matrix_by_its_title(texts, page):
     title = texts.get("sheets.spielleitung.clues_title")
     analysis = page.stages[STAGE_ORDER.index("analysis")]
-    pointers = [prompt for prompt in analysis.prompts if prompt.endswith(title)]
+    tail = f"{texts.get('sheets.debrief.clue_pointer')} {title} {texts.get('sheets.debrief.clue_pointer_end')}"
+    pointers = [prompt for prompt in analysis.prompts if prompt.endswith(tail)]
     assert len(pointers) == 1
     assert texts.get("sheets.debrief.prompts.clues") in pointers[0]
-    assert texts.get("sheets.debrief.clue_pointer") in pointers[0]
+    assert pointers[0].endswith("Siehe die Hinweis-Matrix für die Story-Gruppenarbeit am Ende dieses Hefts.")
 
 
 def test_the_window_prompt_asks_about_the_change_window(texts):

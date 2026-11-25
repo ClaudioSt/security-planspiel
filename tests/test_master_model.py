@@ -255,7 +255,7 @@ def _expected_keys(cfg, wave, trace_wave) -> dict:
     marks = ", ".join(
         f"{row.measure} {TIMES if row.measure in trace_wave.bonus_met else DASH}" for row in constants.bonus_rows
     )
-    return {
+    keys = {
         "selection": _selection_text(trace_wave.selection),
         "cia": " / ".join(fmt.format_number(trace_wave.cia[key]) for key in "cia"),
         "e_value": fmt.format_approx(trace_wave.e_value),
@@ -278,10 +278,19 @@ def _expected_keys(cfg, wave, trace_wave) -> dict:
         "external_opex": f"{fmt.format_signed(trace_wave.event_opex_k * 1000)} €",
         "remaining": fmt.format_money(trace_wave.remaining_k * 1000),
     }
+    if not constants.with_recovery:
+        # C4 (quick 261125-djw): without Recovery the key has one damage row, as the sheet and the check rows do.
+        del keys["damage_before"], keys["recovery"]
+    return keys
 
 
-def test_the_key_rows_come_in_calculation_order(sheet):
+def test_the_key_rows_come_in_calculation_order(sheet, cfg):
     assert tuple(row.key for row in sheet.waves[0].key_rows) == master.KEY_ROW_IDS
+    for section, wave in zip(sheet.waves, cfg.waves):
+        if not rules.worksheet_constants(cfg, wave).with_recovery:
+            assert tuple(row.key for row in section.key_rows) == tuple(
+                key for key in master.KEY_ROW_IDS if key not in ("damage_before", "recovery")
+            )
     assert master.KEY_ROW_IDS.index("gr") < master.KEY_ROW_IDS.index("case") < master.KEY_ROW_IDS.index("damage_before")
     assert master.KEY_ROW_IDS.index("kz_attack") < master.KEY_ROW_IDS.index("kz_change") < master.KEY_ROW_IDS.index("kz_after")
 
@@ -314,7 +323,10 @@ def test_each_wave_key_equals_the_independent_worksheet_replay(sheet, cfg, texts
             result = replay_steps(printed, trace_wave.e_value, trace_wave.selection, trace_wave.kz_event)
             assert _row(section.key_rows, "gr").values[position] == fmt.format_approx(result.gr)
             assert _row(section.key_rows, "case").values[position] == str(result.case)
-            assert _row(section.key_rows, "damage_before").values[position] == fmt.format_money(result.damage_before_eur)
+            if rules.worksheet_constants(cfg, wave).with_recovery:
+                assert (
+                    _row(section.key_rows, "damage_before").values[position] == fmt.format_money(result.damage_before_eur)
+                )
             assert _row(section.key_rows, "damage_after").values[position] == fmt.format_money(result.damage_eur)
             assert _row(section.key_rows, "kz_attack").values[position] == _signed_approx(result.kz_attack)
             assert _row(section.key_rows, "kz_change").values[position] == fmt.format_signed(result.change)
@@ -323,8 +335,15 @@ def test_each_wave_key_equals_the_independent_worksheet_replay(sheet, cfg, texts
 def test_the_pinned_paths_touch_the_mechanics_the_keys_teach(sheet):
     cases = {value for section in sheet.waves for value in _row(section.key_rows, "case").values}
     assert cases == {"1", "2", "3"}
-    recoveries = {value for section in sheet.waves for value in _row(section.key_rows, "recovery").values}
-    assert DASH in recoveries and len(recoveries) > 1
+    recoveries = {
+        value
+        for section in sheet.waves
+        if any(row.key == "recovery" for row in section.key_rows)
+        for value in _row(section.key_rows, "recovery").values
+    }
+    assert len(recoveries) > 1
+    # C4: a wave without Recovery has no factor row at all, instead of a dash row.
+    assert any(all(row.key != "recovery" for row in section.key_rows) for section in sheet.waves)
 
 
 # ---- the reference paths on the overview ---------------------------------------------------------------------------

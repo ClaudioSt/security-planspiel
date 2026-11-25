@@ -124,6 +124,7 @@ class AttackSheet:
     bonus_fulfilled: tuple[str, ...] = ()
     # RISK-04 (D-12): which register risk the attack hit; None without a risk_matrix (Welle 0, mini fixture).
     reality_line: Optional[Line] = None
+    reality_hint: str = ""
     # The rounding rule under the wave KZ line, and the sentence that says why an attack without Recovery has no
     # Recovery step ('' for an attack with Recovery).
     rounding_note: str = ""
@@ -284,18 +285,18 @@ def build_attack_sheet(cfg: Config, texts: Texts, wave: Wave, *, view=None, job:
     case_texts = attack["cases"]
     outcome_1 = (
         f"{damage_label}: {fmt.format_money(constants.case_1_damage_eur)}"
-        f" · {labels['kz']}: {fmt.format_signed(constants.kz_case_1)}"
+        f" · {labels['kz_attack']}: {fmt.format_signed(constants.kz_case_1)}"
     )
     outcome_2 = (
         f"{damage_label}: {fmt.format_money(constants.case_2_damage_eur)}"
-        f" · {labels['kz']}: {fmt.format_signed(constants.kz_case_2)}"
+        f" · {labels['kz_attack']}: {fmt.format_signed(constants.kz_case_2)}"
     )
     damage_line: Line = (
         f"{damage_label} = ({number(constants.upper)} {MINUS} {gr} ", _short(),
         f") {fmt.TIMES} {fmt.format_money(constants.unit_eur)} = ", _long(),
     )
     kz_line: Line = (
-        f"{labels['kz']} = {number(constants.kz_case_1)} + ({gr} ", _short(),
+        f"{labels['kz_attack']} = {number(constants.kz_case_1)} + ({gr} ", _short(),
         f" {MINUS} {number(constants.lower)}) {fmt.format_factor(constants.slope)} = ", _long(),
     )
     cases = (
@@ -318,7 +319,7 @@ def build_attack_sheet(cfg: Config, texts: Texts, wave: Wave, *, view=None, job:
             for row in constants.recovery_rows
         )
         recovery_line = (
-            f"{labels['damage_after_recovery']} = {damage_label} ", _short(),
+            f"{labels['damage_after_recovery']} = {damage_label} ", _long(),
             f" € {fmt.TIMES} (1 {MINUS} r ", _short(), ") = ", _long(),
         )
 
@@ -333,8 +334,11 @@ def build_attack_sheet(cfg: Config, texts: Texts, wave: Wave, *, view=None, job:
     )
 
     reality_line: Optional[Line] = None
+    reality_hint = ""
     if cfg.risk_matrix is not None:
-        reality_line = (f"{angriff['reality_question']} ", _short(), f" {angriff['reality_hint']}")
+        # The hint stands on its own line under the question; the box is wide enough for "nicht im Register".
+        reality_line = (f"{angriff['reality_question']} ", _long())
+        reality_hint = angriff["reality_hint"]
 
     cases_position = keys.index("cases") + 1
     no_recovery_note = (
@@ -389,6 +393,7 @@ def build_attack_sheet(cfg: Config, texts: Texts, wave: Wave, *, view=None, job:
         recovery_line=recovery_line,
         wave_kz_line=wave_kz_line,
         reality_line=reality_line,
+        reality_hint=reality_hint,
         rounding_note=angriff["rounding_note"],
         no_recovery_note=no_recovery_note,
     )

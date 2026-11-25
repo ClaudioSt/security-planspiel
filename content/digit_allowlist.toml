@@ -52,3 +52,8 @@ why = "Name der festen Rundungsregel (bei ,5 weg von der Null, rounding.round_ha
 key = "sheets.tracking.window_intro"
 token = "Level 0"
 why = "Das Level einer gekündigten Maßnahme heißt überall Level 0 (Eventkarten, Recovery-Tabelle), kein Spielparameter"
+
+[[allow]]
+key = "sheets.angriff.events_hint"
+token = "±0"
+why = "Schreibweise des Werts keine KZ-Wirkung, wie im Lösungsschlüssel und auf den Arbeitsblättern, kein Spielparameter"

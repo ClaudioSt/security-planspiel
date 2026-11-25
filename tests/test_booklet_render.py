@@ -295,7 +295,9 @@ def test_every_shaded_cell_of_the_tracking_sheet_is_a_grey_cell_in_the_tex(loade
     tracking = booklet.tracking
     shaded = sum(row.cells.count("shaded") for row in (*tracking.rows, *tracking.summary_rows))
     assert shaded > 0
-    assert source.count("\\shadedcell") == shaded
+    # The planning sum row closes its Level cell, and with a register also its "gegen R#" cell (E2, quick 261125-djw).
+    planning_sum_cells = 1 + (1 if booklet.register is not None else 0)
+    assert source.count("\\shadedcell") == shaded + planning_sum_cells
     assert "\\newcommand{\\shadedcell}{\\cellcolor{mhpshade}}" in STYLE.read_text(encoding="utf-8")
 
 

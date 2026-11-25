@@ -67,7 +67,7 @@ _TRACKING_KEYS = (
     "title", "intro", "wave", "row_kz_before", "row_kz_change", "row_kz_after",
     "row_damage", "block_own", "row_own_opex", "row_own_window", "block_external", "row_external_budget",
     "row_external_opex", "row_remaining", "row_kz_review", "row_kz_final", "kz_after_last", "remaining_previous",
-    "rounding_hint", "clamp_lead", "clamp_to", "external_hint", "window_title", "window_intro",
+    "rounding_hint", "review_remaining_hint", "clamp_lead", "clamp_to", "external_hint", "window_title", "window_intro",
     "window_level", "window_delta", "window_sum", "window_credit", "window_credit_short", "window_net", "never_refund", "credit_hint",
     "next_wave_hint",
 )
@@ -168,7 +168,7 @@ ABLAUF_KEYS = tuple(f"sheets.ablauf.{name}" for name in _ABLAUF_KEYS)
 _DEBRIEF_KEYS = (
     "title", "intro", "guide_label", "questions_label", "prompts_label", "minutes_unit", "compare_title",
     "compare_intro", "compare_head_team", "compare_head_kz", "compare_head_ros", "compare_head_final_index",
-    "team_label", "clue_pointer", "total_label",
+    "team_label", "clue_pointer", "clue_pointer_end", "total_label",
 )
 # Required only when the config carries debrief_stages; stage and prompt keys follow the config ids (FLOW-03).
 DEBRIEF_KEYS = tuple(f"sheets.debrief.{name}" for name in _DEBRIEF_KEYS)
@@ -191,7 +191,7 @@ WAS_NEU_FLOW_IDS = ("whiteboard", "welle0", "debrief", "schedule")
 WAS_NEU_MATERIAL_IDS = ("generated", "veil", "clues", "teamheft", "wave_page", "practice")
 WAS_NEU_PART_IDS = (
     "kz", "per_started", "over_budget", "flat", "from_level", "level", "removed", "added", "yes", "no",
-    "boundary_above", "boundary_inclusive", "total", "per_wave", "tier_from", "ros",
+    "boundary_above", "boundary_inclusive", "total", "tier_from", "ros",
 )
 WAS_NEU_FIELD_IDS = (
     "budget", "kz_start", "severity_multiplier", "base_cia", "e_threshold", "weights", "bonus", "min_level", "kz_ends",

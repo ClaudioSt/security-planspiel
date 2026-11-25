@@ -24,7 +24,6 @@ from planspiel.booklet import (
 )
 from planspiel.cards import printed_strings
 from planspiel.config import load_config
-from planspiel.eventtext import EFFECT_KINDS
 from planspiel.printmodel import PrintModelError
 from planspiel.review_text import penalty_rows
 from planspiel.rules import Path, Window
@@ -155,22 +154,17 @@ def test_the_cell_states_follow_the_calculation(loaded):
         assert cells[review] == WRITE and all(c == SHADED for c in cells[:review]), key
 
 
-def test_the_external_cells_are_writable_exactly_where_an_event_of_that_kind_exists(loaded):
+def test_the_external_cells_are_open_in_every_wave_so_the_grey_pattern_does_not_reveal_the_events(loaded):
+    """V1 (quick 261125-djw): a grey cell would tell the teams in which wave a budget or OPEX event comes."""
     cfg, _, page = loaded
-    for key, kind in (("external_budget", "external_budget"), ("external_opex", "external_opex")):
-        expected = [SHADED]
-        for wave in cfg.waves:
-            kinds = {EFFECT_KINDS[event.type] for event in cfg.events.get(wave.wave_id, [])}
-            expected.append(WRITE if kind in kinds else SHADED)
-        expected.append(SHADED)
-        assert list(_row(page, key).cells) == expected, key
-    assert WRITE in _row(page, "external_budget").cells and WRITE in _row(page, "external_opex").cells
+    for key in ("external_budget", "external_opex"):
+        assert list(_row(page, key).cells) == [SHADED] + [WRITE] * len(cfg.waves) + [SHADED], key
 
 
-def test_on_the_real_config_the_sparprogramm_wave_and_the_opex_relief_wave_are_distinct(real):
+def test_on_the_real_config_the_external_rows_are_open_in_all_waves_and_the_window_row_in_two(real):
     page = real[2]
-    assert _row(page, "external_budget").cells == (SHADED, SHADED, WRITE, SHADED, SHADED)
-    assert _row(page, "external_opex").cells == (SHADED, WRITE, SHADED, SHADED, SHADED)
+    assert _row(page, "external_budget").cells == (SHADED, WRITE, WRITE, WRITE, SHADED)
+    assert _row(page, "external_opex").cells == (SHADED, WRITE, WRITE, WRITE, SHADED)
     assert _row(page, "own_window").cells == (SHADED, WRITE, WRITE, SHADED, SHADED)
 
 

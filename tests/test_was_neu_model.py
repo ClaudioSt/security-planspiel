@@ -157,6 +157,15 @@ def test_the_schedule_row_generates_the_wave_block_minutes(cfg, texts, baseline)
     assert minutes == [20, 25]  # D-34: wave 1 is re-budgeted to 25 minutes, waves 2 and 3 keep 20
     row = build_was_neu_sheet(cfg, texts, baseline).flow[3]
     assert all(fmt.format_number(figure) in row for figure in minutes)
+    # D3 (quick 261125-djw): the minutes stand per wave in wave order, so the long first wave does not read backwards.
+    wave_label = texts.get("sheets.ablauf.wave_label")
+    unit = texts.get("sheets.debrief.minutes_unit")
+    in_order = ", ".join(
+        f"{wave_label} {block.wave}: {fmt.format_number(block.minutes)}"
+        for block in cfg.session_schedule.blocks
+        if block.wave
+    )
+    assert f"{in_order} {unit}" in row
     blocks = tuple(
         dataclasses.replace(block, minutes=block.minutes + 5) if block.id == "wave_1" else block
         for block in cfg.session_schedule.blocks

@@ -35,6 +35,7 @@ KEY_ROW_IDS = (
     "kz_attack", "kz_event", "kz_exact", "kz_change", "kz_before", "kz_unclamped", "kz_after",
     "own_opex", "window_cost", "external_budget", "external_opex", "remaining",
 )
+NO_RECOVERY_DROPPED_ROWS = ("damage_before", "recovery")
 FINAL_ROW_IDS = ("remaining", "review_delta", "kz_final", "own_spend", "total_damage", "ros", "final_index")
 EFFECT_KIND_KEYS = {
     "window": "kind_window",
@@ -346,10 +347,18 @@ def _key_values(constants, trace_wave: rules.WaveTrace) -> dict[str, str]:
     }
 
 
-def _key_rows(words: dict, columns: list[dict[str, str]]) -> tuple[AnswerKeyRow, ...]:
-    return tuple(
-        AnswerKeyRow(key, words[f"key_{key}"], tuple(column[key] for column in columns)) for key in KEY_ROW_IDS
-    )
+def _key_rows(
+    words: dict, columns: list[dict[str, str]], damage_label: str, with_recovery: bool
+) -> tuple[AnswerKeyRow, ...]:
+    """The answer-key rows of one wave. Without Recovery the sheet has one damage step, so the key has one row
+    "Schaden" (the value before and after Recovery are equal, and the Recovery factor row has no meaning)."""
+    rows = []
+    for key in KEY_ROW_IDS:
+        if not with_recovery and key in NO_RECOVERY_DROPPED_ROWS:
+            continue
+        label = damage_label if not with_recovery and key == "damage_after" else words[f"key_{key}"]
+        rows.append(AnswerKeyRow(key, label, tuple(column[key] for column in columns)))
+    return tuple(rows)
 
 
 def _reference_traces(cfg: Config) -> dict[str, rules.PathTrace]:
@@ -456,7 +465,7 @@ def _welle_zero(cfg: Config, view: RevealView, words: dict) -> Optional[WelleZer
         title=words["welle0_title"],
         intro=words["welle0_intro"],
         header=(words["key_head"], f"{tracking_wave} {wave.wave_id}"),
-        rows=_key_rows(words, [column]),
+        rows=_key_rows(words, [column], view.sheet("labels")["damage"], constants.with_recovery),
     )
 
 
@@ -499,7 +508,7 @@ def build_master_sheet(cfg: Config, texts: Texts, clues: tuple[Clue, ...]) -> Op
                 events=events,
                 no_events="" if events else words["events_none"],
                 key_header=(words["key_head"], *tier_names),
-                key_rows=_key_rows(words, columns),
+                key_rows=_key_rows(words, columns, view.sheet("labels")["damage"], constants.with_recovery),
             )
         )
     results = _tier_results(cfg, traces, words)

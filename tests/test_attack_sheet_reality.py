@@ -43,7 +43,10 @@ def test_every_real_sheet_has_a_reality_line_with_one_box(real):
         assert len(_boxes(sheet.reality_line)) == 1, sheet.job
         joined = "".join(_strings(sheet.reality_line))
         assert _text(texts, QUESTION) in joined, sheet.job
-        assert _text(texts, HINT) in joined, sheet.job
+        assert _boxes(sheet.reality_line)[0].size == "long", sheet.job
+        # E1 (quick 261125-djw): the hint stands on its own line under the question, not behind the box.
+        assert _text(texts, HINT) not in joined, sheet.job
+        assert sheet.reality_hint == _text(texts, HINT), sheet.job
 
 
 def test_the_question_names_the_register_and_the_hint_names_the_answers(real):
