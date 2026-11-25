@@ -418,7 +418,7 @@
           15
         ]
       ],
-      "overspend_penalty": {"kz_per_step": 9, "step": 10, "table_rows": 3}
+      "overspend_penalty": {"kz_per_step": 9, "step": 10}
     }
   ],
   "reference_strategies": {

@@ -132,7 +132,7 @@ def test_the_need_table_comes_before_the_register_and_the_partial_has_no_cell_co
     assert "\\cellcolor" not in partial
 
 
-def test_every_asset_row_has_five_cells_with_band_ticks(loaded):
+def test_every_asset_row_has_four_cells_with_band_ticks(loaded):
     cfg, _, booklet, source = loaded
     if cfg.risk_matrix is None:
         pytest.skip("the mini config has no register")
@@ -140,18 +140,18 @@ def test_every_asset_row_has_five_cells_with_band_ticks(loaded):
     assert len(register.asset_rows) == cfg.risk_matrix.asset_rows
     for label in register.asset_rows:
         cells = _row_cells(source, source.index(f"\\textbf{{{label}}}"))
-        assert len(cells) == 5, cells
+        assert len(cells) == 4, cells
         assert "\\writeline" in cells[0]
         for cell in cells[1:]:
             assert cell.count("\\tickbox") == len(register.band_labels), cell
             assert all(render.tex_escape(word) in cell for word in register.band_labels), cell
     start = source.index("\\rowcolor{mhpblue}", source.index(_step(register.need_title)))
     header = _row_cells(source, start)
-    assert len(header) == 5
+    assert len(header) == 4
     for word, cell in zip(register.need_header, header):
         assert render.tex_escape(word) in cell
     example = _row_cells(source, source.index(render.tex_escape(register.need_example[0])))
-    assert len(example) == 5
+    assert len(example) == 4
 
 
 def _register_body_rows(source, booklet):
@@ -270,12 +270,11 @@ def test_templates_print_only_plain_variables(template):
         assert PLAIN_VARIABLE.match(expression), f"{template}: {expression}"
 
 
-def test_the_budget_review_prints_every_tier_and_penalty_row(loaded):
+def test_the_budget_review_prints_the_result_line_and_no_tier_or_penalty_row(loaded):
     _, _, booklet, source = loaded
-    for span, value in (*booklet.ros.tier_rows, *booklet.ros.penalty_rows):
-        assert render.tex_escape(span) in source
-        assert render.tex_escape(value) in source
-    assert render.tex_escape(booklet.ros.penalty_follow) in source
+    assert render.tex_escape(booklet.ros.result_line.label) in source
+    assert render.tex_escape(booklet.ros.result_line.note) in source
+    assert "angefangene" not in source
 
 
 @pytest.mark.parametrize("setup", SETUPS)

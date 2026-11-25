@@ -51,7 +51,7 @@ _KARTEN_KEYS = (
 _EVENTKARTEN_KEYS = (
     "review_header", "kz", "fulfilled", "each_at_least", "level_of_measure", "per_measure_at_level",
     "level_or_higher",
-    "condition_if", "condition_and", "level_equals", "otherwise", "total_budget", "opex_costs",
+    "condition_if", "condition_and", "level_equals", "not_active", "otherwise", "total_budget", "opex_costs",
     "per_active_measure", "kurswechsel_window", "tier_heading", "tier_from", "overspend_label", "per_started",
 )
 
@@ -59,8 +59,8 @@ _TEAMHEFT_KEYS = (
     "planning_title", "planning_instruction", "step_costs", "step_tiers", "step_planning", "kz_start",
     "opex_per_wave", "ros_title", "ros_carry_hint", "window_differences", "init_differences", "own_costs",
     "damage_sum", "ros_short", "review_title", "review_intro", "tier_budget", "budget_event", "event_opex",
-    "review_costs", "remaining_budget", "sign_hint", "kz_change", "penalty_title", "penalty_intro",
-    "overspend_header", "penalty_follow_lead", "penalty_follow_tail",
+    "review_costs", "remaining_budget", "sign_hint", "review_result", "review_result_note", "tier_field",
+    "sum_of_row", "sum_row_suffix",
 )
 
 _TRACKING_KEYS = (
@@ -128,6 +128,10 @@ SHEET_KEYS = (
     "sheets.angriff.kz_fraction_hint",
     "sheets.angriff.events_hint",
     "sheets.angriff.wave_kz_rounding",
+    "sheets.angriff.label_rounded",
+    "sheets.angriff.rounding_note",
+    "sheets.angriff.no_recovery_lead",
+    "sheets.angriff.no_recovery_tail",
     "sheets.budget.title",
     "sheets.budget.intro",
     "sheets.budget.init_what",
@@ -139,6 +143,7 @@ SHEET_KEYS = (
     "sheets.ros.title",
     "sheets.ros.instruction",
     "sheets.ros.purpose",
+    "sheets.ros.avoided_note",
     "sheets.backup_recovery.title",
     "sheets.backup_recovery.subtitle",
     "sheets.backup_recovery.narrative",
@@ -208,7 +213,7 @@ _REGISTER_KEYS = (
     "title", "instruction", "rank_hint", "risk_prefix", "example_label", "head_asset", "head_threat", "head_goal",
     "head_impact", "head_rank", "head_decision", "head_review", "source_label", "reason_label", "review_hint",
     "range_below", "range_to", "range_from", "planning_column",
-    "planning_hint", "page_title", "need_title", "need_instruction", "asset_prefix", "need_head_asset", "head_total",
+    "planning_hint", "page_title", "need_title", "need_instruction", "asset_prefix", "need_head_asset",
     "legend_title",
 )
 REGISTER_GROUPS = {
@@ -244,6 +249,7 @@ PRACTICE_KEYS = tuple(
     f"practice.{name}"
     for name in (
         "title", "intro", "narrative", "cia_rationale", *CASE_KEYS, "selection_title", "event_result", "tracking_title",
+        "start_budget", "start_kz", "start_remaining", "events_hint",
     )
 )
 

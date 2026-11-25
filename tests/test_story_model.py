@@ -173,8 +173,8 @@ def test_the_real_newspaper_sections_and_images(real):
     ]
     meldung, bericht = zeitung.sections
     assert len(meldung.paragraphs) == 3 and meldung.caption.startswith("Symbolbild")
-    assert bericht.dateline == "Kassel, 10.01.2026"
-    assert bericht.lead.startswith("Ein mittelständischer Automotive Zulieferer")
+    assert bericht.dateline == "Kassel"
+    assert bericht.lead.startswith("Ein mittelständischer Automotive-Zulieferer")
     assert bericht.caption.startswith("Symbolbild")
     assert [sub.heading for sub in bericht.subsections] == ["DER ANGRIFF", "FOLGEN"]
     assert [len(sub.paragraphs) for sub in bericht.subsections] == [2, 2]
@@ -246,7 +246,7 @@ def test_a_mail_loses_no_string_of_its_toml_subtree(loaded, doc):
 def test_the_real_mails_keep_their_sections_in_toml_order(real):
     _, _, documents = real
     anfrage, audit = documents[2], documents[3]
-    assert [section.heading for section in anfrage.sections] == ["", "", "IHRE AUFGABE:", ""]
+    assert [section.heading for section in anfrage.sections] == ["", "", "UNSER ANLIEGEN:", ""]
     assert anfrage.sections[2].bullets and anfrage.sections[2].paragraphs
     assert [section.heading for section in audit.sections] == [
         "",
@@ -255,13 +255,13 @@ def test_the_real_mails_keep_their_sections_in_toml_order(real):
         "UNTERSTÜTZUNG:",
     ]
     assert anfrage.sender == '"Dr. Thomas Weber" <t.weber@mechtech-gmbh.de>'
-    assert audit.subject == "Information Security Assessment - Supplier Audit Q2/2026"
+    assert audit.subject == "Information Security Assessment: Supplier Audit im kommenden Quartal"
 
 
 def test_the_request_mail_goes_to_mhp_and_no_story_document_names_vwi(real):
     _, _, documents = real
     anfrage = documents[2]
-    assert anfrage.recipient == '"MHP Cyber Security <cyber-security@mhp.com>"'
+    assert anfrage.recipient == '"MHP Cyber Security" <cyber-security@mhp.com>'
     for document in documents:
         for text in document.printed_strings():
             assert "vwi" not in text.lower()

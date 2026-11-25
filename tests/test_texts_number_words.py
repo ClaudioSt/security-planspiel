@@ -11,7 +11,11 @@ from tests.support import CONTENT_DIR
 
 NUMBER_WORDS = ("eins", "zwei", "drei", "vier", "fünf", "sechs", "sieben", "acht", "neun", "zehn", "elf", "zwölf")
 # (key, phrase) -> reason; a phrase is the matched number word as it stands in the text.
-ALLOWED: dict[tuple[str, str], str] = {}
+ALLOWED: dict[tuple[str, str], str] = {
+    ("sheets.was_neu.rules.final_index.text", "zwei"): (
+        "precision of the RoS rounding (two decimals), the wording of the Teamheft and the Spielleitungsheft; no count of config"
+    ),
+}
 PHASE7_PREFIXES = (
     "sheets.ablauf", "sheets.debrief", "sheets.was_neu", "sheets.probelauf",
     "sheets.eventkarten.level_or_higher", "sheets.labels.event_after_wave", "sheets.register",

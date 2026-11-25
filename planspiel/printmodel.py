@@ -124,6 +124,10 @@ class AttackSheet:
     bonus_fulfilled: tuple[str, ...] = ()
     # RISK-04 (D-12): which register risk the attack hit; None without a risk_matrix (Welle 0, mini fixture).
     reality_line: Optional[Line] = None
+    # The rounding rule under the wave KZ line, and the sentence that says why an attack without Recovery has no
+    # Recovery step ('' for an attack with Recovery).
+    rounding_note: str = ""
+    no_recovery_note: str = ""
 
     def printed_fragments(self) -> tuple[str, ...]:
         """Title, step headings and every number-bearing display string, without duplicates (D-11).
@@ -315,13 +319,13 @@ def build_attack_sheet(cfg: Config, texts: Texts, wave: Wave, *, view=None, job:
         )
         recovery_line = (
             f"{labels['damage_after_recovery']} = {damage_label} ", _short(),
-            f" {fmt.TIMES} (1 {MINUS} r ", _short(), ") = ", _long(),
+            f" € {fmt.TIMES} (1 {MINUS} r ", _short(), ") = ", _long(),
         )
 
     wave_kz_line: Line = (
         f"{angriff['step_wave_kz']} = {labels['kz_attack']} ", _short(),
         f" + {labels['kz_events']} ", _short(), " = ", _long(),
-        f", {angriff['wave_kz_rounding']}: ", _long(),
+        f", {labels['rounded']}: ", _long(),
     )
     final_damage_label = labels["damage_after_recovery"] if with_recovery else labels["damage"]
     result_line: Line = (
@@ -332,6 +336,12 @@ def build_attack_sheet(cfg: Config, texts: Texts, wave: Wave, *, view=None, job:
     if cfg.risk_matrix is not None:
         reality_line = (f"{angriff['reality_question']} ", _short(), f" {angriff['reality_hint']}")
 
+    cases_position = keys.index("cases") + 1
+    no_recovery_note = (
+        ""
+        if with_recovery
+        else f"{angriff['no_recovery_lead']} {labels['step']} {cases_position} {angriff['no_recovery_tail']}"
+    )
     hint_key = "kz_decimals_hint" if fmt.terminates(constants.slope) else "kz_fraction_hint"
     base_cia = (cfg.base_cia["c"], cfg.base_cia["i"], cfg.base_cia["a"])
     return AttackSheet(
@@ -379,6 +389,8 @@ def build_attack_sheet(cfg: Config, texts: Texts, wave: Wave, *, view=None, job:
         recovery_line=recovery_line,
         wave_kz_line=wave_kz_line,
         reality_line=reality_line,
+        rounding_note=angriff["rounding_note"],
+        no_recovery_note=no_recovery_note,
     )
 
 

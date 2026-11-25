@@ -274,7 +274,8 @@ def test_printed_fragments_are_unique_and_hold_the_bounds_and_the_wave_numbers(l
 def test_the_wording_pieces_of_the_sheet_hold_no_digit(loaded):
     cfg, texts, _ = loaded
     for key, value in PreAttackView(cfg, texts).sheet("tracking").items():
-        assert not any(char.isdigit() for char in value), key
+        # `Level 0` is the one allowlisted digit string (sheets.tracking.window_intro, content/digit_allowlist.toml)
+        assert not any(char.isdigit() for char in value.replace("Level 0", "")), key
 
 
 def test_the_tracking_sheet_is_pre_wave_and_legacy_tracker_keys_are_retired(loaded):

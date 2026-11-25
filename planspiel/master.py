@@ -143,6 +143,14 @@ class ClueGroup:
 
 
 @dataclass(frozen=True)
+class ContentsEntry:
+    """One line of the contents: the section title and the TeX label whose page number the template prints."""
+
+    title: str
+    label: str
+
+
+@dataclass(frozen=True)
 class MasterSheet:
     job: str
     title: str
@@ -150,6 +158,7 @@ class MasterSheet:
     intro: str
     gr_legend: str
     contents_title: str
+    contents: tuple[ContentsEntry, ...]
     how_to_title: str
     how_to: tuple[str, ...]
     paths_title: str
@@ -188,7 +197,7 @@ class MasterSheet:
         found = [
             text
             for field in dataclasses.fields(self)
-            if field.name not in ("job", "schedule")
+            if field.name not in ("job", "schedule", "contents")
             for text in printed_strings(getattr(self, field.name))
         ]
         if self.schedule is not None:  # its block ids are keys, not printed text
@@ -216,9 +225,11 @@ def _measure_label(cfg: Config, measure_id: str) -> str:
 
 def _parameters(cfg: Config, wave: Wave, constants, view: RevealView, words: dict, attack: dict) -> ParameterBlock:
     angriff = view.sheet("angriff")
-    slope = fmt.format_factor(constants.slope)
-    if not fmt.terminates(constants.slope):
-        slope = f"{slope} ({fmt.format_approx(constants.slope)})"
+    # The slope is a plain signed value per GR point; a non-terminating one keeps the fraction form with its decimals.
+    if fmt.terminates(constants.slope):
+        slope = fmt.format_signed(constants.slope)
+    else:
+        slope = f"{fmt.format_factor(constants.slope)} ({fmt.format_approx(constants.slope)})"
     if constants.with_recovery:
         factors = ", ".join(f"L{row.level} {fmt.format_percent(row.factor)}" for row in constants.recovery_rows)
         recovery = f"{words['recovery_allowed']} {_measure_label(cfg, constants.recovery_measure)}: {factors}"
@@ -410,7 +421,7 @@ def _tier_results(cfg: Config, traces: dict[str, rules.PathTrace], words: dict) 
                 kz_final=str(review.kz_final),
                 own_spend=fmt.format_money(review.own_spend_k * 1000),
                 total_damage=fmt.format_money(review.total_damage_eur),
-                ros=DASH if review.ros is None else fmt.format_number(rules.ros_two_decimals(review.ros)),
+                ros=DASH if review.ros is None else fmt.format_signed(rules.ros_two_decimals(review.ros)),
                 final_index=fmt.format_number(index),
             )
         )
@@ -492,6 +503,28 @@ def build_master_sheet(cfg: Config, texts: Texts, clues: tuple[Clue, ...]) -> Op
             )
         )
     results = _tier_results(cfg, traces, words)
+    schedule = build_schedule_page(cfg, texts)
+    debrief = build_debrief_page(cfg, texts)
+    cheat = build_cheat_sheet_page(cfg, texts)
+    welle0 = _welle_zero(cfg, view, words)
+    clue_groups = _clue_groups(cfg, texts, clues)
+    # The contents follow the order of the pages; the template prints a page number per label (aux-stable build).
+    contents = []
+    if schedule is not None:
+        contents += [ContentsEntry(schedule.title, "mschedule"), ContentsEntry(schedule.print_title, "mprint")]
+    if cheat is not None:
+        contents.append(ContentsEntry(cheat.title, "mcheat"))
+    if welle0 is not None:
+        contents.append(ContentsEntry(welle0.title, "mwelle0"))
+    contents += [ContentsEntry(section.title, f"mwave{index}") for index, section in enumerate(sections, start=1)]
+    contents += [
+        ContentsEntry(view.sheet("teamheft")["review_title"], "mreview"),
+        ContentsEntry(words["final_title"], "mfinal"),
+    ]
+    if debrief is not None:
+        contents.append(ContentsEntry(debrief.title, "mdebrief"))
+    if clue_groups:
+        contents.append(ContentsEntry(words["clues_title"], "mclues"))
     return MasterSheet(
         job=MASTER_JOB,
         title=words["title"],
@@ -499,6 +532,7 @@ def build_master_sheet(cfg: Config, texts: Texts, clues: tuple[Clue, ...]) -> Op
         intro=words["intro"],
         gr_legend=words["gr_legend"],
         contents_title=words["contents_title"],
+        contents=tuple(contents),
         how_to_title=words["how_to_title"],
         how_to=tuple(words["how_to"]),
         paths_title=words["paths_title"],
@@ -522,7 +556,7 @@ def build_master_sheet(cfg: Config, texts: Texts, clues: tuple[Clue, ...]) -> Op
         final_rows=_final_rows(words, results),
         final_weight_label=words["final_index_weight"],
         final_weight_value=fmt.format_number(cfg.final_index.weight_ros),
-        welle0=_welle_zero(cfg, view, words),
+        welle0=welle0,
         bonus_title=words["bonus_title"],
         clues_title=words["clues_title"],
         clues_intro=words["clues_intro"],
@@ -530,8 +564,8 @@ def build_master_sheet(cfg: Config, texts: Texts, clues: tuple[Clue, ...]) -> Op
             words["clue_head_nr"], words["clue_head_document"], words["clue_head_section"],
             words["clue_head_quote"], words["clue_head_why"], words["clue_head_measures"],
         ),
-        clue_groups=_clue_groups(cfg, texts, clues),
-        schedule=build_schedule_page(cfg, texts),
-        debrief=build_debrief_page(cfg, texts),
-        cheat=build_cheat_sheet_page(cfg, texts),
+        clue_groups=clue_groups,
+        schedule=schedule,
+        debrief=debrief,
+        cheat=cheat,
     )

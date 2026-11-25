@@ -156,7 +156,11 @@ class PracticeView:
         }
 
     def sheet(self, name: str) -> dict:
-        return copy.deepcopy(self._texts.subtree(f"sheets.{name}"))
+        words = copy.deepcopy(self._texts.subtree(f"sheets.{name}"))
+        if name == "angriff":
+            # The practice has no event card: its hint says where the event of the example is printed.
+            words["events_hint"] = self._texts.get("practice.events_hint")
+        return words
 
 
 @dataclasses.dataclass(frozen=True)
@@ -190,6 +194,7 @@ class EventBlock:
 @dataclasses.dataclass(frozen=True)
 class TrackingExcerpt:
     title: str
+    start_line: str
     columns: tuple[str, str]
     rows: tuple[tuple[str, str, str], ...]
     clamp_hint: str
@@ -256,7 +261,7 @@ def _fill_sheet(cfg: Config, sheet: AttackSheet, trace: PathTrace) -> AttackShee
         recovery_line=fill_line(
             sheet.recovery_line,
             (
-                fmt.format_number(wave.damage_before_eur),  # the short box has no room for the unit
+                fmt.format_number(wave.damage_before_eur),  # the euro sign follows the short box in the line text
                 fmt.format_percent(wave.recovery_factor),
                 fmt.format_money(wave.damage_eur),
             ),
@@ -342,6 +347,10 @@ def _tracking_excerpt(cfg: Config, texts: Texts, trace: PathTrace) -> TrackingEx
     labels = {row.key: row.label for row in page.rows}
     return TrackingExcerpt(
         title=texts.get("practice.tracking_title"),
+        start_line=(
+            f"{texts.get('practice.start_budget')} {fmt.format_money(cfg.practice.budget * 1000)} "
+            f"{texts.get('practice.start_kz')} {cfg.practice.kz_start}. {texts.get('practice.start_remaining')}"
+        ),
         columns=(page.columns[0], f"{texts.get('sheets.tracking.wave')} {wave.wave_id}"),
         rows=tuple((labels[key], *pair) for key, pair in cells.items()),
         clamp_hint=f"{page.clamp_text}: {wave.kz_unclamped} {ARROW} {wave.kz_after}",

@@ -10,16 +10,16 @@
 
 [measures.M1]
 focus = "Zugriffskontrolle, privilegierte Accounts"
-description = "Wer darf was im Unternehmen? Diese Maßnahme stellt sicher, dass nur berechtigte Personen Zugang zu sensiblen Systemen haben - wie ein digitaler Türsteher."
+description = "Wer darf was im Unternehmen? Diese Maßnahme stellt sicher, dass nur berechtigte Personen Zugang zu sensiblen Systemen haben – wie ein digitaler Türsteher."
 
 [measures.M1.levels_desc]
-1 = "Zentrale AD, MFA für Admins, Passwortrichtlinie"
+1 = "Zentrales AD, MFA für Admins, Passwortrichtlinie"
 2 = "PAM (Privileged Access Management), Rollenkonzept"
 3 = "JIT-Access, Session-Recording, Access-Reviews"
 
 [measures.M1.levels_simple]
 1 = "Zentrale Benutzerverwaltung, Admins brauchen zwei Faktoren zum Einloggen."
-2 = "Spezielle Verwaltung für Admin-Konten, klare Rollen wer was darf."
+2 = "Spezielle Verwaltung für Admin-Konten, klare Rollen, wer was darf."
 3 = "Zugriff nur bei Bedarf, alle Admin-Aktionen werden aufgezeichnet."
 
 [measures.M2]
@@ -33,7 +33,7 @@ description = "Wie ein Überwachungssystem für die IT: Alle wichtigen Ereigniss
 
 [measures.M2.levels_simple]
 1 = "Protokolle werden gesammelt und 30 Tage aufbewahrt."
-2 = "Automatische Alarme bei verdächtigen Mustern (z.B. viele fehlgeschlagene Logins)."
+2 = "Automatische Alarme bei verdächtigen Mustern (z. B. viele fehlgeschlagene Logins)."
 3 = "Externe Sicherheitsexperten überwachen rund um die Uhr."
 
 [measures.M3]
@@ -48,7 +48,7 @@ description = "Der Virenschutz für alle Computer im Unternehmen. Erkennt und st
 [measures.M3.levels_simple]
 1 = "Klassischer Virenscanner, der bekannte Schadsoftware erkennt."
 2 = "Erkennt auch unbekannte Bedrohungen anhand von verdächtigem Verhalten, isoliert befallene Rechner automatisch."
-3 = "Vernetzt alle Sicherheitssysteme - erkennt komplexe Angriffe über mehrere Systeme hinweg."
+3 = "Vernetzt alle Sicherheitssysteme – erkennt komplexe Angriffe über mehrere Systeme hinweg."
 
 [measures.M4]
 focus = "Daten wiederherstellen, Betrieb aufrechterhalten"
@@ -60,9 +60,9 @@ description = "Die Lebensversicherung für Unternehmensdaten. Regelmäßige Sich
 3 = "Immutable Backups (Air-Gap), DR-Plan, RTO <4h"
 
 [measures.M4.levels_simple]
-1 = "Tägliche Datensicherung, aber ohne regelmäßige Tests ob die Wiederherstellung funktioniert."
-2 = "Backups an mehreren Orten, monatlich wird geprüft ob Wiederherstellung klappt."
-3 = "Backups sind unveränderbar und vom Netzwerk getrennt - selbst Hacker können sie nicht löschen. Schnelle Wiederherstellung garantiert."
+1 = "Tägliche Datensicherung, aber ohne regelmäßige Tests, ob die Wiederherstellung funktioniert."
+2 = "Backups an mehreren Orten, monatlich wird geprüft, ob die Wiederherstellung klappt."
+3 = "Backups sind unveränderbar und vom Netzwerk getrennt – selbst Hacker können sie nicht löschen. Schnelle Wiederherstellung garantiert."
 
 [measures.M5]
 focus = "Produktionsnetz vom Office-Netz trennen"
@@ -75,15 +75,15 @@ description = "Baut digitale Brandmauern zwischen Büro und Produktion. Ein Angr
 
 [measures.M5.levels_simple]
 1 = "Netzwerke sind logisch getrennt, aber ohne strenge Zugangskontrollen."
-2 = "Echte Firewall zwischen Büro und Produktion - nur explizit erlaubter Datenverkehr kommt durch."
+2 = "Echte Firewall zwischen Büro und Produktion – nur explizit erlaubter Datenverkehr kommt durch."
 3 = "Jede Produktionslinie ist einzeln abgesichert, verdächtiger Datenverkehr wird automatisch blockiert."
 
 [measures.M6]
 focus = "Mitarbeitende sensibilisieren, Phishing abwehren"
-description = "Macht Mitarbeiter zur ersten Verteidigungslinie. Geschulte Mitarbeiter erkennen Betrugsversuche und gefährliche E-Mails, bevor Schaden entsteht."
+description = "Macht Mitarbeitende zur ersten Verteidigungslinie. Geschulte Mitarbeitende erkennen Betrugsversuche und gefährliche E-Mails, bevor Schaden entsteht."
 
 [measures.M6.levels_desc]
-1 = "Jährliche Pflicht-Schulung (E-Learning, 30 Min)"
+1 = "Jährliche Pflichtschulung (E-Learning, 30 Min)"
 2 = "Quartalsweise Schulungen + Phishing-Simulationen"
 3 = "Rollenspez. Training, Incident-Meldeprozess etabliert"
 
@@ -98,8 +98,8 @@ description = "Hält alle Systeme auf dem neuesten Stand. Sicherheitslücken wer
 
 [measures.M7.levels_desc]
 1 = "Automatische Windows-Updates, sporadisch OT-Patches"
-2 = "Monatliche Patch-Zyklen, Vulnerability-Scans (quartal)"
-3 = "Risk-based Patching (CVSS), wöchentliche Scans, Tool"
+2 = "Monatliche Patch-Zyklen, Vulnerability-Scans (quartalsweise)"
+3 = "Risk-based Patching (CVSS), wöchentliche Scans mit Tool-Unterstützung"
 
 [measures.M7.levels_simple]
 1 = "Windows-Updates laufen automatisch, Produktionssysteme werden unregelmäßig aktualisiert."
@@ -118,7 +118,7 @@ description = "Schützt vor Risiken durch Geschäftspartner. Denn auch über ein
 [measures.M8.levels_simple]
 1 = "Sicherheitsanforderungen stehen im Vertrag, gelegentliche Überprüfungen."
 2 = "Jährliche Sicherheitsbewertung aller wichtigen Lieferanten, Überwachung der Leistungsversprechen."
-3 = "Kontinuierliche Überwachung, Backup-Lieferanten für kritische Teile, Schutz bei Lieferanten-Insolvenz."
+3 = "Kontinuierliche Überwachung, Ersatzlieferanten für kritische Teile, Schutz bei Lieferanten-Insolvenz."
 
 [measures.M9]
 focus = "Cloud-Konfigurationen überwachen & absichern"
@@ -126,17 +126,17 @@ description = "Sichert Daten und Dienste in der Cloud ab. Prüft automatisch, ob
 
 [measures.M9.levels_desc]
 1 = "Basis-Monitoring Cloud-Backup (Veeam)"
-2 = "CSPM-Tool (z.B. Prisma Cloud), Compliance-Checks"
+2 = "CSPM-Tool (z. B. Prisma Cloud), Compliance-Checks"
 3 = "Multi-Cloud-Security, IaC-Scanning, CNAPP"
 
 [measures.M9.levels_simple]
 1 = "Einfache Überwachung der Cloud-Backups."
-2 = "Automatische Prüfung ob Cloud-Einstellungen den Sicherheitsrichtlinien entsprechen."
+2 = "Automatische Prüfung, ob die Cloud-Einstellungen den Sicherheitsrichtlinien entsprechen."
 3 = "Umfassende Sicherheit über mehrere Cloud-Anbieter, automatische Prüfung aller Cloud-Konfigurationen."
 
 [measures.M10]
 focus = "Smartphones/Tablets absichern"
-description = "Schützt mobile Geräte der Mitarbeiter. Verhindert Datenverlust bei Diebstahl und kontrolliert welche Apps genutzt werden dürfen."
+description = "Schützt mobile Geräte der Mitarbeitenden. Verhindert Datenverlust bei Diebstahl und kontrolliert, welche Apps genutzt werden dürfen."
 
 [measures.M10.levels_desc]
 1 = "PIN-Pflicht, Remote-Wipe bei Verlust"
@@ -144,7 +144,7 @@ description = "Schützt mobile Geräte der Mitarbeiter. Verhindert Datenverlust 
 3 = "UEM (Unified Endpoint Mgmt.), MTD (Mobile Threat Def.)"
 
 [measures.M10.levels_simple]
-1 = "PIN-Schutz Pflicht, bei Verlust kann das Gerät aus der Ferne gelöscht werden."
+1 = "PIN-Schutz ist Pflicht, bei Verlust kann das Gerät aus der Ferne gelöscht werden."
 2 = "Zentrale Verwaltung aller Mobilgeräte, nur zugelassene Apps können installiert werden."
 3 = "Einheitliche Verwaltung aller Endgeräte, aktiver Schutz vor mobilen Bedrohungen."
 
@@ -153,8 +153,8 @@ title = "Angriff"
 
 [attacks.ransomware.revealed]
 name = "Ransomware"
-narrative = "Ein Mitarbeiter hat auf eine gefälschte E-Mail geklickt. Die Angreifer versuchen, Ransomware zu platzieren, die Daten verschlüsselt und ggf. exfiltriert, um anschließend Lösegeld zu erpressen. Ob die Verschlüsselung tatsächlich gelingt und wie stark die Auswirkungen sind, wird im Folgenden anhand eurer Sicherheitsmaßnahmen berechnet."
-cia_rationale = "Bei Ransomware zählen Vertraulichkeit (C) und Integrität (I) stärker (Datendiebstahl + Verschlüsselung), Verfügbarkeit (A) ist häufig die Folge daraus."
+narrative = "Ein Mitarbeitender von MechTech hat auf einen Link in einer gefälschten E-Mail geklickt. Die Angreifer versuchen, Ransomware zu platzieren, die Daten verschlüsselt und möglicherweise abzieht, um anschließend Lösegeld zu erpressen. Ob die Verschlüsselung tatsächlich gelingt und wie stark die Auswirkungen sind, ermittelt ihr jetzt anhand eurer Sicherheitsmaßnahmen."
+cia_rationale = "Bei Ransomware zählen Vertraulichkeit (C) und Integrität (I) am stärksten (Datendiebstahl und Verschlüsselung); der Ausfall der Verfügbarkeit (A) ist meist die Folge daraus."
 case_1 = "Eure Maßnahmen reichen nicht aus, der Angriff setzt sich durch."
 case_2 = "Ihr wehrt den Angriff vollständig ab."
 case_3 = "Ihr mindert die Auswirkungen teilweise."
@@ -162,21 +162,21 @@ case_3 = "Ihr mindert die Auswirkungen teilweise."
 [attacks.ransomware.revealed.bonus_reasons]
 M3 = "EDR/XDR erkennt Ransomware früh"
 M4 = "Backup ermöglicht schnelle Wiederherstellung"
-M6 = "Geschulte Mitarbeiter erkennen Phishing"
+M6 = "Geschulte Mitarbeitende erkennen Phishing"
 
 [attacks.ot.veiled]
 title = "Angriff"
 
 [attacks.ot.revealed]
 name = "OT-Störung"
-narrative = "In eurer Produktionssteuerung wurde eine Schwachstelle ausgenutzt. Die Angreifer zielen darauf, die Fertigung zu stören bzw. stillzulegen. Ob die Produktion wirklich ausfällt und wie stark die Auswirkungen sind, ermittelt ihr im nächsten Schritt anhand eurer Sicherheitsmaßnahmen."
-cia_rationale = "Bei OT-Störungen ist Verfügbarkeit (A) entscheidend, weil ein Stillstand direkt zu Produktionsausfall und Lieferverzug führt; C und I sind hier nachgelagert."
+narrative = "In der Produktionssteuerung von MechTech wurde eine Schwachstelle ausgenutzt. Die Angreifer zielen darauf ab, die Fertigung zu stören oder stillzulegen. Ob die Produktion wirklich ausfällt und wie stark die Auswirkungen sind, ermittelt ihr jetzt anhand eurer Sicherheitsmaßnahmen."
+cia_rationale = "Bei OT-Störungen ist Verfügbarkeit (A) entscheidend, weil ein Stillstand direkt zu Produktionsausfall und Lieferverzug führt; C und I zählen hier weniger."
 case_1 = "Eure Maßnahmen reichen nicht aus, die Produktion fällt aus."
 case_2 = "Ihr verhindert den Ausfall vollständig."
 case_3 = "Ihr mindert die Auswirkungen teilweise."
 
 [attacks.ot.revealed.bonus_reasons]
-M5 = "OT/IT-Segmentierung isoliert Produktion"
+M5 = "OT/IT-Segmentierung isoliert die Produktion"
 M7 = "Patch Management schließt OT-Schwachstellen"
 
 [attacks.exfil.veiled]
@@ -184,35 +184,35 @@ title = "Angriff"
 
 [attacks.exfil.revealed]
 name = "Datenexfiltration"
-narrative = "Über einen kompromittierten Lieferanten-Zugang wurden über Wochen hinweg vertrauliche Konstruktionsdaten abgegriffen. Das Bundesamt für Sicherheit in der Informationstechnik (BSI) informiert euch: Eure Daten werden im Darknet angeboten. Ob (und wie stark) der Abfluss gelingt und welche Folgen daraus entstehen, ermittelt ihr jetzt anhand eurer Sicherheitsmaßnahmen."
-cia_rationale = "Bei Exfiltration zählt Vertraulichkeit (C) am meisten (IP-Diebstahl), Integrität (I) ist relevant (Daten werden kopiert/weiterverarbeitet), Verfügbarkeit (A) bleibt oft weitgehend erhalten."
+narrative = "Über einen kompromittierten Lieferanten-Zugang versuchen Angreifer seit Wochen, vertrauliche Konstruktionsdaten abzugreifen. Das Bundesamt für Sicherheit in der Informationstechnik (BSI) warnt: Im Darknet werden angeblich Daten von MechTech angeboten. Ob und wie viel tatsächlich abgeflossen ist und welche Folgen daraus entstehen, ermittelt ihr jetzt anhand eurer Sicherheitsmaßnahmen."
+cia_rationale = "Bei Datenexfiltration zählt Vertraulichkeit (C) am meisten (Diebstahl von Know-how). Integrität (I) zählt mit, weil Daten kopiert und weiterverarbeitet werden; die Verfügbarkeit (A) bleibt meist erhalten."
 case_1 = "Eure Maßnahmen reichen nicht aus, der Datenabfluss gelingt."
 case_2 = "Ihr verhindert die Exfiltration vollständig."
-case_3 = "Ihr reduziert die Auswirkungen teilweise."
+case_3 = "Ihr mindert die Auswirkungen teilweise."
 
 [attacks.exfil.revealed.bonus_reasons]
 M1 = "IAM/PAM verhindert unbefugten Zugriff"
 M2 = "SIEM erkennt Datenabfluss"
-M8 = "Supply Chain Security schützt Schnittstellen"
+M8 = "Supplier Security schützt die Schnittstellen zu Lieferanten"
 
 [events.kurswechsel]
-narrative = "Nach den neuesten Erkenntnissen entscheidet die Geschäftsführung: Eure Sicherheitsstrategie wird neu ausgerichtet. Ihr müsst euer Setup anpassen, könnt aber bestehende Investitionen teilweise weiterverwenden. Daher zählt nur die Kostendifferenz."
-rule = "Die Geschäftsführung richtet die Sicherheitsstrategie neu aus. Im Change-Fenster nach dieser Welle führt jedes Team genau einen Maßnahmentausch durch: Eine in dieser Welle aktive Maßnahme fällt ganz weg, eine in dieser Welle nicht aktive Maßnahme kommt auf einem frei wählbaren Level hinzu. Der Kunde übernimmt die Init-Kosten der neuen Maßnahme bis zur Höhe der Init-Kosten der wegfallenden Maßnahme auf ihrem Level in dieser Welle; nur einen Mehrbetrag zahlt das Team, eine günstigere neue Maßnahme bringt keine Erstattung. Abhängige Maßnahmen der wegfallenden Maßnahme senkt das Team im selben Fenster passend ab. Ist in dieser Welle keine oder jede Maßnahme aktiv, entfällt der Tausch. Normale Levelwechsel im selben Change-Fenster bleiben erlaubt."
+narrative = "Nach den neuesten Erkenntnissen richtet die Geschäftsführung die Sicherheitsstrategie neu aus. Ihr müsst eine Maßnahme austauschen; der Kunde beteiligt sich an den Kosten."
+rule = "Im Change-Fenster nach dieser Welle führt ihr genau einen Maßnahmentausch durch: Eine in dieser Welle aktive Maßnahme fällt ganz weg, eine in dieser Welle nicht aktive kommt auf einem Level eurer Wahl hinzu. Der Kunde übernimmt die Init-Kosten der neuen Maßnahme bis zur Höhe der Init-Kosten der wegfallenden (auf ihrem Level in dieser Welle). Einen Mehrbetrag zahlt ihr; ist die neue Maßnahme günstiger, gibt es keine Erstattung. Braucht eine andere Maßnahme die wegfallende als Voraussetzung, senkt ihr sie im selben Fenster auf ein Level ohne diese Voraussetzung. Ist in dieser Welle keine oder jede Maßnahme aktiv, entfällt der Tausch. Weitere Änderungen im selben Fenster bleiben erlaubt."
 
 [events.operative_unterstuetzung]
-narrative = "Ihr bekommt operative Unterstützung: Ein zentraler Rahmenvertrag bzw. Shared-Service senkt kurzfristig die laufenden Betriebskosten eurer Security-Maßnahmen. Für die nächste Runde wird der Betrieb günstiger, ohne dass ihr an Leistung verliert."
+narrative = "Ihr bekommt operative Unterstützung: Ein zentraler Rahmenvertrag senkt in dieser Welle die laufenden Betriebskosten eurer Security-Maßnahmen, ohne dass ihr an Leistung verliert."
 rule = "Zählt für jede Maßnahme, die in dieser Welle aktiv ist."
 
 [events.sparprogramm]
-narrative = "Der CFO verkündet ein konzernweites Sparprogramm, und auch eure Security-Initiativen bleiben nicht verschont. Das Budget wird gekürzt."
-rule = "Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Herabstufen oder Kündigen spart OPEX der folgenden Wellen, Init wird nicht erstattet)."
+narrative = "Der CFO verkündet ein unternehmensweites Sparprogramm, und auch eure Security-Initiativen bleiben nicht verschont. Das Budget wird gekürzt."
+rule = "Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser Welle könnt ihr noch gegensteuern (Senken oder Kündigen spart OPEX in der nächsten Welle, Init wird nicht erstattet)."
 
 [events.oem_audit]
-narrative = "Der große Automobilkunde prüft die Sicherheitsstandards. Im Audit zählt nicht, ob ihr „Best-in-Class“ seid - sondern ob ihr die grundlegenden Kontrollen überhaupt verlässlich umgesetzt habt."
-checklist_heading = "Audit Checkliste"
+narrative = "Der große Automobilkunde prüft die Sicherheitsstandards. Im Audit zählt nicht, ob ihr „Best-in-Class“ seid, sondern ob ihr die grundlegenden Kontrollen überhaupt verlässlich umgesetzt habt."
+checklist_heading = "Audit-Checkliste"
 
 [events.kritische_schwachstelle]
-narrative = "Ihr werdet von einem Softwarehersteller informiert: In einem von euch genutzten System wurde eine kritische Schwachstelle entdeckt, die aktiv ausgenutzt werden könnte."
+narrative = "Ein Softwarehersteller informiert MechTech: In einem dort genutzten System wurde eine kritische Schwachstelle entdeckt, die aktiv ausgenutzt werden könnte."
 
 [events.kritische_schwachstelle.tier_labels]
 0 = "Patch verzögert/chaotisch"
@@ -221,10 +221,10 @@ narrative = "Ihr werdet von einem Softwarehersteller informiert: In einem von eu
 3 = "Patch routiniert, mit Nachweis/Reporting"
 
 [events.exzellenz_bonus]
-narrative = "Maßnahmen, die nachweislich „enterprise-ready“ umgesetzt sind, erhöhen das Vertrauen. Für jede auf gehobenem Niveau betriebene Kontrolle gibt es einen Bonus auf eure Kundenzufriedenheit."
+narrative = "Maßnahmen, die nachweislich „enterprise-ready“ umgesetzt sind, erhöhen das Vertrauen. Für jede Maßnahme auf gehobenem Niveau gibt es einen Bonus auf eure Kundenzufriedenheit."
 
 [events.nervige_authentifizierung]
-narrative = "Ihr zieht die Zugriffskontrollen an, aber die Belegschaft wurde nicht vorbereitet. Die Folge sind viele Support-Tickets und Frust - intern entsteht der Eindruck, dass Security die Arbeit blockiert."
+narrative = "Ihr zieht die Zugriffskontrollen an, aber die Belegschaft wurde nicht vorbereitet. Die Folge sind viele Support-Tickets und Frust – intern entsteht der Eindruck, dass Security die Arbeit blockiert."
 
 [final_events.budget_review]
 narrative = "Nach Abschluss eurer Beauftragung macht der CFO den Kassensturz: Nicht nur das Sicherheitsniveau zählt, sondern auch, ob ihr das Budget im Griff hattet."
@@ -232,18 +232,22 @@ rule = "Prüft euer Restbudget."
 
 [practice]
 title = "Übung"
-intro = "Bevor die erste Welle beginnt, rechnet ihr gemeinsam ein Beispiel durch. Der Vorfall ist erfunden und zählt nicht für eure Wertung. Alle Felder sind schon ausgefüllt: Verfolgt Schritt für Schritt, wie aus den Maßnahmen eines Beispielteams Schutzwerte, Schaden und Kundenzufriedenheit werden."
-narrative = "Nach einem Firmware-Update fällt das zentrale Speichersystem im Büro aus. Der Dateiserver ist nicht mehr erreichbar, Projektordner und Vorlagen stehen niemandem mehr zur Verfügung. Ob der Betrieb schnell wieder läuft und wie groß der Schaden wird, wird im Folgenden anhand der Sicherheitsmaßnahmen des Beispielteams berechnet."
+intro = "Bevor die erste Welle beginnt, rechnet ihr gemeinsam ein Beispiel durch. Der Vorfall ist erfunden und zählt nicht für eure Wertung. Alle Felder sind schon ausgefüllt: Verfolgt Schritt für Schritt, wie aus den Maßnahmen eines Beispielteams Schutzwerte, Schaden und Kundenzufriedenheit werden. Die Anleitungstexte sind dieselben wie später auf euren Angriffsblättern."
+narrative = "Nach einem Firmware-Update fällt das zentrale Speichersystem im Büro aus. Der Dateiserver ist nicht mehr erreichbar, Projektordner und Vorlagen stehen niemandem mehr zur Verfügung. Ob der Betrieb schnell wieder läuft und wie groß der Schaden ausfällt, zeigt die folgende Rechnung anhand der Sicherheitsmaßnahmen des Beispielteams."
 cia_rationale = "Hier zählt Verfügbarkeit (A) am meisten, weil ohne Dateiserver niemand an die Daten kommt. Vertraulichkeit (C) und Integrität (I) zählen gleich viel, aber weniger."
 case_1 = "Die Maßnahmen reichen nicht aus, der Ausfall trifft das Unternehmen voll."
 case_2 = "Der Ausfall wird vollständig abgefangen."
 case_3 = "Die Auswirkungen werden teilweise gemindert."
 selection_title = "Auswahl des Beispielteams"
-event_result = "Wirkung des Ereignisses auf das Beispielteam"
+event_result = "Wirkung des Events auf das Beispielteam"
 tracking_title = "So sieht der Eintrag im Tracking-Bogen aus"
+start_budget = "Das Beispielteam startet mit einem Übungsbudget von"
+start_kz = "und einer KZ von"
+start_remaining = "Restbudget am Start = Übungsbudget − Init-Kosten."
+events_hint = "KZ Events ist die KZ-Wirkung aller Events dieser Welle zusammen; das Event dieser Übung steht auf der letzten Seite."
 
 [practice.bonus_reasons]
-M9 = "Geprüfte Cloud-Einstellungen: die Ersatzablage der Projektdaten in der Cloud steht sofort bereit"
+M9 = "Geprüfte Cloud-Einstellungen: Die Ersatzablage der Projektdaten in der Cloud steht sofort bereit"
 M10 = "Verwaltete Smartphones und Tablets mit freigegebenen Apps halten das Team auch ohne Dateiserver arbeitsfähig"
 
 [practice.event]
@@ -256,10 +260,10 @@ narrative = "Schon Tage vor dem Ausfall meldet das Speichersystem Plattenwarnung
 3 = "Fachleute greifen sofort ein und dokumentieren den Fall"
 
 [sheets.angriff]
-start_values_intro = "Euer Unternehmen startet je Schutzziel mit einem Basiswert. Eure gewählten Maßnahmen erhöhen diese Werte."
-cia_table_instruction = "Tragt die CIA-Werte eurer Maßnahmen ein und berechnet euren Gesamtschutz über alle Schutzziele."
-e_value_intro = "Als Nächstes berechnet ihr den Effektivitätswert (E-Wert). Er zeigt, wie gut ihr gegen diesen Angriffstyp geschützt seid:"
-bonus_intro = "Zusätzlich bekommt ihr einen Bonus, wenn ihr passende Maßnahmen für diesen Angriff mindestens auf dem richtigen Level habt. Der Bonus wird zur Gesamtreduktion addiert."
+start_values_intro = "MechTech startet je Schutzziel mit einem Basisschutz. Eure gewählten Maßnahmen erhöhen ihn."
+cia_table_instruction = "Tragt die CIA-Werte eurer Maßnahmen ein und bildet je Schutzziel die Summe."
+e_value_intro = "Als Nächstes berechnet ihr den Effektivitätswert (E-Wert). Er zeigt, wie gut ihr gegen diesen Angriffstyp geschützt seid."
+bonus_intro = "Zusätzlich bekommt ihr einen Bonus für jede passende Maßnahme, die mindestens das genannte Level hat. Gesamtbonus und E-Wert ergeben zusammen die Gesamtreduktion."
 case_3_hint = "Berechnet Schaden und KZ:"
 step_cia = "CIA-Werte eintragen"
 step_e_value = "E-Wert berechnen"
@@ -284,67 +288,70 @@ cap_intro = "Nur der Teil eurer Gesamtreduktion über der Schwelle wirkt, höchs
 recovery_intro = "Eure Backup- und Recovery-Fähigkeit senkt den Schaden dieses Angriffs. Lest den Faktor r am Level eurer Maßnahme ab:"
 kz_decimals_hint = "Rechnet genau; zwei Nachkommastellen genügen."
 kz_fraction_hint = "Multipliziert zuerst mit der oberen Zahl und teilt dann durch die untere. Rundet nur das Ergebnis auf zwei Nachkommastellen, nie die Steigung."
-events_hint = "KZ Events ist die KZ-Wirkung aller Events dieser Welle zusammen; die Spielleitung nennt sie euch."
-wave_kz_rounding = "gerundet (ab ,5 vom Betrag aufrunden)"
+events_hint = "KZ Events ist die KZ-Wirkung aller Events dieser Welle zusammen; ihr lest sie an den Eventkarten ab."
+wave_kz_rounding = "gerundet (bei ,5 weg von der Null, also zum größeren Betrag)"
+label_rounded = "gerundet"
+rounding_note = "Bei ,5 rundet ihr weg von der Null, also zum größeren Betrag."
+no_recovery_lead = "Bei diesem Angriff gibt es keine Recovery. Der Schaden aus"
+no_recovery_tail = "bleibt unverändert."
 reality_question = "Realitätscheck: Welches Risiko aus eurem Risikoregister hat dieser Angriff getroffen?"
 reality_hint = "R-Nummer oder „nicht im Register“; ihr braucht die Zeile für den Rückblick."
 
 [sheets.budget]
 title = "Budget"
-intro = "Das Budget ist das Geld, das euch Beratern für die Umsetzung von Maßnahmen zur Verfügung steht. Mit dem Budget müsst ihr Maßnahmen initiieren und betreiben."
+intro = "Das Budget ist das Geld, das euch als Beratungsteam für eure Maßnahmen zur Verfügung steht. Daraus bezahlt ihr die Einführung und den Betrieb der Maßnahmen."
 init_what = "Einmalige Anschaffungskosten für eine Maßnahme (Hardware, Software, Einrichtung)"
-init_when = "Einmal zu Spielbeginn"
+init_when = "Einmalig bei Einführung oder Level-Erhöhung"
 opex_what = "Laufende Betriebskosten (Lizenzen, Personal, Wartung)"
 opex_when = "Jede Welle erneut"
-tier_intro = "Im Planspiel wählt ihr zu Beginn ein Budget-Tier. Je höher euer Budget, desto mehr bzw. stärkere Maßnahmen könnt ihr umsetzen. Gleichzeitig sind die Erwartungen höher, was sich in einem entsprechend angepassten Startwert der Kundenzufriedenheit (KZ) widerspiegelt. Legt daher zuerst euer Budget-Tier fest, bevor ihr eure Maßnahmen auswählt."
-anticipated_sum_intro = "In diesem Sheet plant und trackt ihr euer Budget über alle Wellen. Init-Kosten fallen nur einmalig an, wenn ihr eine Maßnahme einführt oder auf ein höheres Level upgraded. OPEX-Kosten fallen dagegen in jeder Welle an, in der die Maßnahme aktiv ist."
+tier_intro = "Vor der Auswahl eurer Maßnahmen wählt ihr ein Budget-Tier. Mit mehr Budget könnt ihr mehr oder stärkere Maßnahmen umsetzen. Dafür erwartet der Kunde mehr: Je höher das Budget, desto niedriger der Startwert der Kundenzufriedenheit (KZ)."
+anticipated_sum_intro = "Auf dieser Seite plant ihr euer Budget für alle Wellen. Init-Kosten fallen einmalig an, wenn ihr eine Maßnahme einführt oder ihr Level erhöht. OPEX fallen in jeder Welle an, in der die Maßnahme aktiv ist."
 
 [sheets.ros]
 title = "Return on Security"
-instruction = "Trag die folgenden Werte ein:"
-purpose = "Die RoS ist der vermiedene Schaden abzüglich eurer eigenen Kosten, je Euro eigener Kosten: Liegt sie über null, hat eure Sicherheit mehr Schaden verhindert, als sie gekostet hat."
+instruction = "Tragt die folgenden Werte ein und rechnet den RoS auf zwei Nachkommastellen:"
+purpose = "Der RoS ist der vermiedene Schaden abzüglich eurer eigenen Kosten, je Euro eigener Kosten: Liegt er über null, hat eure Sicherheit mehr Schaden verhindert, als sie gekostet hat."
+avoided_note = "ist der volle Schaden aller Angriffe ohne Maßnahmen"
 
 [sheets.teamheft]
 planning_title = "Budget und Planung"
-planning_instruction = "Tragt je geplanter Maßnahme das Level sowie Init-Kosten und OPEX je Welle von der Maßnahmenkarte ein. Maßnahmen, die ihr nicht umsetzt, bleiben leer."
+planning_instruction = "Tragt je geplanter Maßnahme das Level sowie Init-Kosten und OPEX je Welle von der Maßnahmenkarte ein. Maßnahmen, die ihr nicht umsetzt, bleiben leer. Vergleicht die geplanten Gesamtkosten mit eurem Tier-Budget; was am Ende übrig bleibt oder fehlt, bewertet das Budget Review."
 step_costs = "Kostenarten"
 step_tiers = "Budget-Tier"
 step_planning = "Planung eurer Maßnahmen"
-kz_start = "KZ Start"
+kz_start = "KZ-Start"
+tier_field = "Unser Tier:"
+sum_of_row = "Summe der Zeile"
+sum_row_suffix = "im Tracking-Bogen"
 opex_per_wave = "OPEX je Welle"
-ros_title = "Return on Security und Budget Review"
-ros_carry_hint = "Die Summen übernehmt ihr von den vorherigen Seiten."
+ros_title = "Return on Security"
+ros_carry_hint = "Die Werte übernehmt ihr aus dem Tracking-Bogen: Init-Kosten aus der Spalte Start, dazu die Summen der Zeilen Init-Differenz netto und OPEX dieser Welle sowie den Schaden jeder Welle. Die Planung von der Seite davor zählt hier nicht."
 window_differences = "Init-Differenzen aus Change-Fenstern (inkl. Kurswechsel)"
 init_differences = "Init-Differenzen"
 own_costs = "Eigene Kosten"
 damage_sum = "Summe der Schäden"
 ros_short = "RoS"
 review_title = "Budget Review"
-review_intro = "Aus dem Restbudget am Ende des Spiels ergibt sich die KZ-Änderung des Budget Reviews. Rechnet zuerst das Restbudget aus."
+review_intro = "Am Ende des Spiels rechnet ihr zuerst euer Restbudget aus; die eigenen Kosten übernehmt ihr von der RoS-Seite. Das Ergebnis muss zum letzten Restbudget im Tracking-Bogen passen. Die KZ-Änderung des Budget Reviews lest ihr danach von der Eventkarte ab, die ihr zum Abschluss bekommt."
 tier_budget = "Tier-Budget"
 budget_event = "Budgetänderung durch Events"
 event_opex = "OPEX-Änderung durch Events"
 review_costs = "Gesamtkosten inkl. OPEX-Änderung"
 remaining_budget = "Restbudget"
-sign_hint = "Event-Werte tragt ihr mit dem Vorzeichen ein, das auf der Eventkarte steht. Ein Minus bei der OPEX-Änderung ist eine Entlastung: Sie senkt die Kosten und steht deshalb bei den Kosten."
-kz_change = "KZ-Änderung"
-penalty_title = "Überzogenes Budget"
-penalty_intro = "Ist das Restbudget negativ, lest die KZ-Änderung für den überzogenen Betrag hier ab."
-overspend_header = "Überzogen um"
-penalty_follow_lead = "Bei einer Überziehung von mehr als"
-penalty_follow_tail = "rechnet ihr nach der Regel oben weiter."
+sign_hint = "Event-Werte tragt ihr mit dem Vorzeichen ein, das auf der Eventkarte steht. Ein Minus bei der OPEX-Änderung ist eine Entlastung. Tragt sie trotzdem in der Kostenzeile ein: Dort senkt sie eure Gesamtkosten."
+review_result = "KZ-Änderung Budget Review"
+review_result_note = "von der Eventkarte Budget Review"
 
 [sheets.register]
 page_title = "Schutzbedarf und Risikoregister"
 need_title = "Schutzbedarf"
-need_instruction = "Welche Werte von MechTech findet ihr in den Story-Unterlagen, etwa Daten, Anlagen oder Know-how? Tragt jeden Wert in eine Zeile ein und kreuzt je Schutzziel an, wie groß der Schaden fürs Geschäft wäre, wenn Vertraulichkeit (C), Integrität (I) oder Verfügbarkeit (A) verletzt würden: gering, mittel oder hoch. In der Spalte gesamt kreuzt ihr die höchste Stufe der Zeile an (Maximumprinzip)."
+need_instruction = "Welche Werte von MechTech findet ihr in den Story-Unterlagen, etwa Daten, Anlagen oder Know-how? Tragt jeden Wert in eine Zeile ein und kreuzt je Schutzziel an, wie groß der Schaden fürs Geschäft wäre, wenn Vertraulichkeit (C), Integrität (I) oder Verfügbarkeit (A) verletzt würde: gering, mittel oder hoch. Könnt ihr eine Folge nicht einschätzen, fragt die Geschäftsführung von MechTech (die Spielleitung)."
 asset_prefix = "W"
 need_head_asset = "Wert"
-head_total = "gesamt"
 legend_title = "Schaden fürs Geschäft"
 title = "Risikoregister"
-instruction = "Leitet daraus eure wichtigsten Risiken ab: Welcher Wert (W#) ist bedroht, wodurch, und in welchem Dokument steht der Hinweis? Welches Schutzziel trifft das Risiko vor allem (Hauptziel), und was hieße der Schaden fürs Geschäft? Das Band des Risikos lest ihr in der Tabelle ab: Zeile des Werts, Spalte des Hauptziels. Entscheidet, ob ihr es behandelt oder akzeptiert."
-rank_hint = "Vergebt jeden Rang genau einmal, das wichtigste Risiko zuerst:"
+instruction = "Leitet daraus eure wichtigsten Risiken ab: Welcher Wert (W#) ist bedroht, wodurch, und in welchem Dokument steht der Hinweis? Welches Schutzziel wäre vor allem verletzt (Hauptziel), und welche Folge hätte das fürs Geschäft? Die Stufe des Risikos lest ihr oben in der Schutzbedarfstabelle ab: Zeile des Werts, Spalte des Hauptziels. Entscheidet, ob ihr es behandelt oder akzeptiert."
+rank_hint = "Vergebt jeden Rang genau einmal; der erste Rang ist das wichtigste Risiko:"
 risk_prefix = "R"
 example_label = "Beispiel aus einer Klinik"
 head_asset = "Wert (W#)"
@@ -356,7 +363,7 @@ head_decision = "Entscheidung, Grund"
 head_review = "Rückblick"
 source_label = "Quelle:"
 reason_label = "Grund:"
-review_hint = "Rückblick im Abschluss: Euer Band ist das Kreuz in der Schutzbedarfstabelle, in der Zeile des Werts (W#) und der Spalte des Hauptziels. Getroffen ist ein Risiko, wenn ihr es auf der Realitätscheck-Zeile eines Arbeitsblatts genannt habt. Sucht dann das Band, in dem der volle Schaden dieses Angriffs ohne Maßnahmen liegt (der Schaden im ersten Fall des Arbeitsblatts); haben mehrere Angriffe das Risiko getroffen, nehmt den mit dem größten vollen Schaden: Liegt es höher als euer Band, habt ihr unterschätzt; liegt es niedriger, überschätzt; ist es gleich, richtig. Hat kein Angriff das Risiko getroffen, gilt es als überschätzt."
+review_hint = "Rückblick im Abschluss: Eure Stufe ist das Kreuz in der Schutzbedarfstabelle (Zeile des Werts, Spalte des Hauptziels). Getroffen ist ein Risiko, wenn ihr es in der Realitätscheck-Zeile eines Angriffsblatts genannt habt. Sucht dann die Stufe, in der der volle Schaden dieses Angriffs ohne Maßnahmen liegt (Schaden im ersten Fall des Angriffsblatts). Haben mehrere Angriffe das Risiko getroffen, zählt der Angriff mit dem größten vollen Schaden. Liegt diese Stufe höher als eure, habt ihr unterschätzt; liegt sie niedriger, überschätzt; ist sie gleich, lagt ihr richtig. Hat kein Angriff das Risiko getroffen, gilt es als überschätzt."
 range_below = "unter"
 range_to = "bis unter"
 range_from = "ab"
@@ -390,12 +397,12 @@ high = "hoch"
 
 [sheets.cheatsheet]
 title = "Geschäftsfolgen: Antworten der Geschäftsführung"
-intro = "Teams fragen je Wert und Schutzziel, was ein Schaden fürs Geschäft bedeuten würde, etwa: Was wäre, wenn diese Daten bekannt, verfälscht oder nicht verfügbar wären? Sucht den Fall mit dem passenden Schutzziel und antwortet in der Rolle der Geschäftsführung von MechTech mit seinem Band, nie mit einem genauen Betrag, und nennt nie einen Angriff."
-bands_title = "Bänder für den Schaden fürs Geschäft"
+intro = "Teams fragen je Wert und Schutzziel, was ein Schaden fürs Geschäft bedeuten würde, etwa: Was wäre, wenn diese Daten bekannt, verfälscht oder nicht verfügbar wären? Sucht den Fall mit dem passenden Schutzziel. Antwortet in der Rolle der Geschäftsführung von MechTech und nennt dabei nur die Stufe des Falls, nie einen genauen Betrag und nie einen Angriff."
+bands_title = "Stufen für den Schaden fürs Geschäft"
 head_case = "Folge fürs Geschäft"
 head_goal = "Ziel"
 head_answer = "Antwort der Geschäftsführung"
-head_band = "Band"
+head_band = "Stufe"
 
 [sheets.cheatsheet.cases.production_day]
 case = "Die Produktion steht einen Arbeitstag still."
@@ -414,7 +421,7 @@ case = "Konstruktionsdaten landen bei einem Wettbewerber."
 answer = "Das kostet uns Aufträge und Vertrauen, aber nicht sofort die Produktion."
 
 [sheets.cheatsheet.cases.data_trust]
-case = "Fertigungs- und Auftragsdaten sind nicht mehr verlässlich und müssen Satz für Satz geprüft werden."
+case = "Fertigungs- und Auftragsdaten sind nicht mehr verlässlich und müssen Datensatz für Datensatz geprüft werden."
 answer = "Bis wir unseren Daten wieder trauen, können wir nicht sicher liefern; das wird teuer."
 
 [sheets.cheatsheet.cases.oem_hold]
@@ -422,7 +429,7 @@ case = "Der OEM legt Bestellungen auf Eis."
 answer = "Ohne Abrufe des Hauptkunden fehlt uns der größte Teil des Umsatzes."
 
 [sheets.cheatsheet.cases.audit_findings]
-case = "Ein Audit findet Mängel, die wir nachbessern müssen."
+case = "Im Audit fällt auf, dass vertrauliche Daten unzureichend geschützt sind; das muss nachgebessert werden."
 answer = "Nacharbeit kostet Zeit, aber wenig Geld."
 
 [sheets.cheatsheet.cases.single_pc]
@@ -439,7 +446,7 @@ a = "hoch"
 threat = "Serverausfall im Rechenzentrum (Mail der Klinikleitung)"
 goal = "A"
 impact = "Kosten: Operationen werden verschoben, die Klinik verliert Einnahmen."
-decision = "behandeln: der Schaden wäre zu hoch"
+decision = "behandeln: Der Schaden wäre zu hoch"
 
 [sheets.tracking]
 title = "Tracking-Bogen"
@@ -456,16 +463,16 @@ block_external = "Externe Effekte (zählen nicht für den RoS)"
 row_external_budget = "Event: Budget"
 row_external_opex = "Event: OPEX"
 row_remaining = "Restbudget (laufend)"
-row_kz_review = "KZ-Änderung Review"
+row_kz_review = "KZ-Änderung Budget Review"
 row_kz_final = "KZ final"
-kz_after_last = "KZ nach der letzten Welle"
+kz_after_last = "KZ nach Welle"
 remaining_previous = "Restbudget der Spalte davor"
 rounding_hint = "Gerundet wird nur auf dem Angriffsblatt."
 clamp_lead = "KZ nach der Welle und KZ final werden begrenzt auf"
 clamp_to = "bis"
-external_hint = "Externe Effekte ändern nur das Budget, nicht den RoS. Event-Werte tragt ihr mit dem Vorzeichen der Eventkarte ein; bei Event: OPEX gilt der Wert je aktive Maßnahme mal der Zahl eurer aktiven Maßnahmen."
+external_hint = "Externe Effekte ändern nur das Budget, nicht den RoS. Event-Werte tragt ihr mit dem Vorzeichen der Eventkarte ein; bei Event: OPEX gilt der Wert je aktiver Maßnahme mal die Zahl eurer aktiven Maßnahmen, ein Minus erhöht das Restbudget."
 window_title = "Change-Fenster nach Welle"
-window_intro = "Je Änderung das Level nach dem Fenster eintragen, bei einer Erhöhung auch Δ Init; beim Senken und Kündigen bleibt Δ Init leer. Unveränderte Maßnahmen bleiben leer, beliebig viele Änderungen sind möglich."
+window_intro = "Tragt je Änderung das Level nach dem Fenster ein (gekündigt: Level 0). Δ Init ist die Init des neuen minus die des bisherigen Levels, bei einer neuen Maßnahme die volle Init; beim Senken und Kündigen bleibt Δ Init leer. Unveränderte Maßnahmen bleiben leer."
 window_level = "Level nach dem Fenster"
 window_delta = "Δ Init"
 window_sum = "Summe Init-Erhöhungen"
@@ -474,7 +481,7 @@ window_credit_short = "Gutschrift"
 window_net = "Init-Differenz netto"
 never_refund = "nie eine Erstattung"
 credit_hint = "Gutschrift Kunde = Init der wegfallenden Maßnahme (Level der Kurswechsel-Welle), höchstens Init der neuen."
-next_wave_hint = "Wirkung und OPEX zählen ab der nächsten Welle. Init-Differenz netto: in die Spalte der Welle davor."
+next_wave_hint = "Wirkung und OPEX zählen ab der nächsten Welle. Init-Differenz netto: oben in die Spalte vor dem Fenster."
 
 [sheets.welle]
 title = "So funktioniert eine Welle"
@@ -483,16 +490,16 @@ text_events = "Die Spielleitung nennt euch die Events der Welle. Ihre KZ-Wirkung
 text_cia = "Tragt die CIA-Werte eurer Maßnahmen ein und addiert sie zum Basisschutz."
 text_e_value_lead = "Der E-Wert gewichtet euren Schutz je Schutzziel:"
 text_e_value_reveal = "Wie stark C, I und A zählen, steht auf dem Angriffsblatt."
-text_bonus = "Passende Maßnahmen auf dem verlangten Level bringen einen Bonus. Welche das sind, steht auf dem Angriffsblatt."
+text_bonus = "Passende Maßnahmen bringen einen Bonus, wenn sie mindestens das verlangte Level haben. Welche das sind, steht auf dem Angriffsblatt."
 text_reduction = "Mit der GR rechnet ihr in allen weiteren Schritten."
 text_cases_lead = "Nur der Teil der GR über der Schwelle wirkt, höchstens bis zur Kappung."
 case_1 = "Die GR liegt bei der Schwelle oder darunter: voller Schaden und die schlechteste KZ-Wirkung."
 case_2 = "Die GR erreicht die Obergrenze (Schwelle plus Kappung) oder liegt darüber: kein Schaden und die beste KZ-Wirkung."
 case_3 = "Die GR liegt dazwischen: Schaden und KZ ändern sich linear mit der GR."
-text_recovery = "Greift eure Backup- und Recovery-Maßnahme, senkt der Faktor r den Schaden (Tabelle unten). Ob die Welle Recovery zulässt, steht auf dem Angriffsblatt."
+text_recovery = "Habt ihr die Maßnahme Backup & Disaster Recovery, senkt der Faktor r den Schaden (Tabelle unten). Ob die Welle Recovery zulässt, steht auf dem Angriffsblatt."
 rounding_lead = "Die KZ-Änderung der Welle (Angriff plus Events) wird genau einmal"
 clamp_next = "Das Ergebnis ist der Ausgangswert der nächsten Welle."
-window_rules = "Ihr dürft Level hoch oder runter setzen, Maßnahmen kündigen und neue hinzufügen, beliebig viele. Die Init-Differenz zahlt ihr netto und sofort, es gibt nie eine Erstattung. Wirkung und OPEX zählen ab der nächsten Welle."
+window_rules = "Beliebig viele Änderungen sind erlaubt: Level erhöhen oder senken, Maßnahmen kündigen, neue hinzufügen. Δ Init ist die Init des neuen minus die des bisherigen Levels, bei einer neuen Maßnahme die volle Init; ihr zahlt sie netto und sofort, es gibt nie eine Erstattung. Wirkung und OPEX zählen ab der nächsten Welle. Nach der letzten Welle gibt es kein Change-Fenster."
 step_window = "Change-Fenster"
 effects_attacks_head = "Angriffe wirken auf"
 effects_events_head = "Events wirken auf"
@@ -500,33 +507,33 @@ effect_damage = "Schaden in Euro"
 effect_kz = "Kundenzufriedenheit (KZ)"
 effect_budget = "Budget"
 effect_opex = "OPEX"
-ros_note = "Für den RoS zählen eure eigenen Kosten (Init, OPEX, Init-Differenzen) und die Schäden. Event-Effekte auf Budget und OPEX zählen nicht."
+ros_note = "Für den RoS zählen nur eure eigenen Kosten und die Schäden, nicht die Event-Effekte auf Budget und OPEX."
 
 [sheets.backup_recovery]
-title = "Backup & Recovery"
-subtitle = "Event: Nach jeder Welle mit Recovery-Option"
-narrative = "Nach einem Angriff mit entstandenem Schaden prüft ihr, ob Systeme wiederhergestellt werden müssen oder ob der Betrieb stabil geblieben ist. Falls überhaupt ein Schaden entstanden ist, entscheidet eure Backup- und Recovery-Fähigkeit darüber, wie stark ihr den finanziellen Impact senken könnt."
+title = "Backup & Disaster Recovery"
+subtitle = "Schritt Recovery: in jeder Welle, die Recovery zulässt"
+narrative = "Ist bei einem Angriff Schaden entstanden, entscheidet eure Backup- und Recovery-Fähigkeit, wie stark ihr ihn senken könnt."
 
 [sheets.backup_recovery.level_labels]
-0 = "kein Recovery"
+0 = "keine Recovery"
 1 = "Basis-Recovery"
-2 = "teilw. Recovery"
+2 = "teilweise Recovery"
 3 = "starke Recovery"
 
 [sheets.karten]
-legend_title = "So liest du eine Maßnahmenkarte"
+legend_title = "So lest ihr eine Maßnahmenkarte"
 legend_intro = "Jede Karte zeigt eine Maßnahme auf einem Level. Die Nummern auf der Beispielkarte gehören zu den Erklärungen darunter."
 legend_cia = "Der CIA-Beitrag wird zu eurem Basisschutz addiert und geht in euren E-Wert ein. C steht für Vertraulichkeit, I für Integrität, A für Verfügbarkeit."
 legend_formula = "E-Wert = C · wC + I · wI + A · wA"
 legend_reveal = "Wie stark C, I und A in einer Welle zählen (wC, wI, wA) und welche Maßnahmen gegen den Angriff einen Bonus bringen, erfahrt ihr erst mit dem Angriffsblatt der Welle."
-legend_costs = "Init zahlt ihr einmal, wenn ihr die Maßnahme einführt oder auf ein höheres Level hebt. OPEX zahlt ihr in jeder Welle, in der die Maßnahme aktiv ist."
+legend_costs = "Init zahlt ihr einmal, wenn ihr die Maßnahme einführt. Erhöht ihr später das Level, zahlt ihr die Differenz zwischen der Init des neuen und des bisherigen Levels. OPEX zahlt ihr in jeder Welle, in der die Maßnahme aktiv ist."
 legend_dependency = "Das Schloss bedeutet: Dieses Level gibt es nur mit der genannten Voraussetzung. Karten ohne Schloss haben keine Voraussetzung."
 legend_levels = "Die Farbe des Abzeichens zeigt das Level: grün für das niedrigste, gelb für das mittlere, grau für das höchste."
 per_wave = "je Welle"
 requires = "Voraussetzung"
 
 [sheets.eventkarten]
-review_header = "Event: Zum Abschluss"
+review_header = "Event zum Abschluss"
 kz = "KZ"
 fulfilled = "erfüllt"
 each_at_least = "jeweils mindestens auf Level"
@@ -536,8 +543,9 @@ level_or_higher = "oder höher"
 condition_if = "Wenn"
 condition_and = "und"
 level_equals = "auf Level"
+not_active = "nicht aktiv"
 otherwise = "Sonst"
-total_budget = "Gesamtbudget"
+total_budget = "Budget"
 opex_costs = "OPEX"
 per_active_measure = "je aktiver Maßnahme"
 kurswechsel_window = "Maßnahmentausch im Change-Fenster nach Welle"
@@ -568,7 +576,7 @@ available_budget = "Verfügbares Budget"
 period = "Zeitraum"
 init_costs = "Init-Kosten"
 opex = "OPEX"
-anticipated_sum = "Antizipierte Summe"
+anticipated_sum = "Geplante Gesamtkosten"
 budget_remaining = "Budget verbleibend"
 damage_wave = "Schaden (Welle)"
 start = "Start"
@@ -576,8 +584,8 @@ after_wave = "Nach Welle"
 events = "Events"
 metric = "Kennzahl"
 value = "Wert"
-total_init = "Gesamt Init-Kosten"
-total_opex = "Gesamt OPEX Kosten"
+total_init = "Gesamt-Init-Kosten"
+total_opex = "Gesamt-OPEX"
 total_costs = "Gesamtkosten"
 avoided_damage = "Vermiedener Schaden"
 event_after_wave = "Event in Welle"
@@ -593,13 +601,13 @@ mail_subject = "Betreff"
 [sheets.spielleitung]
 title = "Spielleitung: Kennwerte, Prüfzeilen und Lösungsschlüssel"
 notice = "Nur für die Spielleitung – nicht an Teams ausgeben"
-intro = "Dieses Heft enthält je Welle die Kennwerte, Prüfzeilen, den Ereignisplan und die Lösungsschlüssel. Es verrät die Angriffe und darf die Teams vor der jeweiligen Welle nicht erreichen."
+intro = "Dieses Heft enthält je Welle die Kennwerte, Prüfzeilen, den Eventplan und die Lösungsschlüssel. Es verrät die Angriffe und darf die Teams nie erreichen."
 gr_legend = "GR steht für Gesamtreduktion: E-Wert plus Gesamtbonus."
 contents_title = "Inhalt"
 how_to_title = "So prüft ihr ein Arbeitsblatt"
 how_to = [
-    "Lest die GR des Teams vom Arbeitsblatt ab und sucht ihren Bereich in den Prüfzeilen der Welle: In den beiden äußeren Fällen sind Schaden und KZ fest, im mittleren Fall lest ihr sie aus der Tabelle der ganzen GR-Schritte ab.",
-    "Liegt die GR zwischen zwei Zeilen, rechnet das Team linear: Der Schaden fällt je GR-Punkt um den festen Betrag, die KZ steigt je GR-Punkt um die Steigung.",
+    "Lest die GR des Teams vom Arbeitsblatt ab und sucht ihren Bereich in den Prüfzeilen der Welle: Im ersten und im zweiten Fall sind Schaden und KZ fest, im dritten Fall lest ihr sie aus der Tabelle der ganzen GR-Schritte ab.",
+    "Liegt die GR zwischen zwei ganzen Schritten, rechnet das Team linear: Der Schaden fällt je GR-Punkt um den festen Betrag, die KZ steigt je GR-Punkt um die Steigung.",
     "Weicht ein Wert ab, folgt dem Lösungsschlüssel in Rechenreihenfolge, bis ihr die erste abweichende Zeile findet.",
 ]
 paths_title = "Referenzpfade der Lösungsschlüssel"
@@ -622,7 +630,7 @@ check_title = "Prüfzeilen"
 check_case_head = "Bereich der GR"
 check_kz_head = "KZ Angriff"
 check_table_intro = "Ganze GR-Schritte im mittleren Fall"
-events_title = "Ereignisplan der Welle"
+events_title = "Eventplan zu"
 events_none = "Keine Events in dieser Welle."
 event_head_name = "Event"
 event_head_kind = "Wirkung auf"
@@ -651,12 +659,12 @@ key_kz_change = "KZ-Änderung der Welle (gerundet)"
 key_kz_before = "KZ vor der Welle"
 key_kz_unclamped = "KZ vor der Begrenzung"
 key_kz_after = "KZ nach der Welle"
-key_own_opex = "Eigene OPEX dieser Welle"
-key_window_cost = "Kosten des Change-Fensters danach"
+key_own_opex = "OPEX dieser Welle"
+key_window_cost = "Init-Differenz netto (Change-Fenster danach)"
 key_external_budget = "Budgetänderung durch Events"
 key_external_opex = "OPEX-Änderung durch Events (Plus: Kosten)"
 key_remaining = "Restbudget nach der Welle"
-review_intro = "Aus dem Restbudget am Ende folgt die KZ-Änderung des Budget Reviews. Ist das Restbudget negativ, kostet jeder angefangene Schritt X Punkte KZ."
+review_intro = "Aus dem Restbudget am Ende folgt die KZ-Änderung des Budget Reviews. Ist das Restbudget negativ, kostet jeder angefangene Schritt (Schrittweite unten) X KZ-Punkte."
 review_x = "X: KZ-Abzug je angefangenem Schritt"
 review_step = "Schrittweite"
 final_title = "Endergebnis je Tier"
@@ -673,17 +681,17 @@ final_index_weight = "Gewicht k des RoS im Final-Index"
 final_index_note = "Der Final-Index ist der Vergleichswert der Spielleitung für das Debriefing: KZ am Ende plus k mal RoS, der RoS vorher auf zwei Nachkommastellen gerundet."
 welle0_title = "Lösungsschlüssel der Übungswelle"
 welle0_intro = "Alle Zwischenwerte des Übungsbeispiels, in Rechenreihenfolge."
-clues_title = "Hinweis-Matrix für die Discovery-Phase"
-clues_intro = "Je Angriff die Hinweise in den Vorab-Dokumenten: Quelle, wörtliches Zitat und Begründung."
+clues_title = "Hinweis-Matrix für die Story-Gruppenarbeit"
+clues_intro = "Je Angriff die Hinweise in den Story-Unterlagen: Quelle, wörtliches Zitat und Begründung. Die Zahl in Klammern zeigt, wie stark der Hinweis auf die Maßnahme deutet (höher ist stärker)."
 clue_head_nr = "Nr."
 clue_head_document = "Dokument"
 clue_head_section = "Abschnitt"
 clue_head_quote = "Zitat"
-clue_head_why = "Warum es hinweist"
+clue_head_why = "Begründung"
 clue_head_measures = "Maßnahmen (Gewicht)"
-clue_section_anfrage_mail_lage = "Lage"
-clue_section_audit_mail_einleitung = "Einleitung"
-clue_section_zeitungsartikel = "Ticker"
+clue_section_anfrage_mail_lage = "dritter Absatz"
+clue_section_audit_mail_einleitung = "zweiter Absatz"
+clue_section_zeitungsartikel = "Schlagzeilenleiste"
 
 [sheets.ablauf]
 title = "Ablaufplan der Veranstaltung"
@@ -697,7 +705,7 @@ wave_label = "Welle"
 practice_label = "Übungswelle"
 total_label = "Gesamtdauer (Min.)"
 print_title = "Druckliste"
-print_intro = "Pro Datei steht, wie oft ihr sie ausdruckt: je Team und für die Spielleitung. Die Arbeitsblätter der Angriffe gebt ihr erst zu Beginn ihrer Welle an die Teams."
+print_intro = "Die Liste zeigt für jede Datei, wie oft ihr sie druckt: je Team und für die Spielleitung. Schneidet die Maßnahmen- und Eventkarten an den Schnittlinien aus und sortiert die Eventkarten nach Welle; die Karte „Budget Review“ gebt ihr erst im Abschluss aus. Die Arbeitsblätter der Angriffe gebt ihr erst zu Beginn ihrer Welle an die Teams."
 print_head_label = "Dokument"
 print_head_file = "Datei"
 print_head_team = "Je Team"
@@ -716,31 +724,31 @@ direction = "Pause. Legt währenddessen die Story-Unterlagen für jedes Team ber
 
 [sheets.ablauf.blocks.story_groups]
 label = "Story-Gruppenarbeit"
-direction = "Gebt jedem Team die Story-Unterlagen und das Teamheft. Die Teams lesen, sammeln Hinweise und füllen auf der ersten Seite des Teamhefts erst den Schutzbedarf je Wert, dann das Risikoregister aus. Fragt ein Team je Wert und Schutzziel, was ein Schaden fürs Geschäft bedeuten würde, antwortet mit der Tabelle Geschäftsfolgen: Antworten der Geschäftsführung."
+direction = "Gebt jedem Team die Story-Unterlagen und das Teamheft. Die Teams lesen, sammeln Hinweise und füllen auf der ersten Seite des Teamhefts erst den Schutzbedarf je Wert, dann das Risikoregister aus. Fragt ein Team je Wert und Schutzziel, was ein Schaden fürs Geschäft bedeuten würde, antwortet mit der Tabelle „Geschäftsfolgen: Antworten der Geschäftsführung“."
 
 [sheets.ablauf.blocks.wave_0]
-direction = "Gebt das Übungsblatt und die Erklärseite So funktioniert eine Welle aus. Rechnet das Beispiel gemeinsam durch, bevor die erste echte Welle beginnt."
+direction = "Gebt das Übungsblatt und die Erklärseite „So funktioniert eine Welle“ aus. Rechnet das Beispiel gemeinsam durch, bevor die erste echte Welle beginnt."
 
 [sheets.ablauf.blocks.measures_budget]
 label = "Maßnahmen und Budget"
-direction = "Gebt die Maßnahmenkarten aus. Die Teams verhandeln ihr Budget-Tier und tragen ihre Maßnahmen im Teamheft ein. Weist auf die freiwillige Spalte gegen R# im Teamheft hin; ihr prüft sie nicht."
+direction = "Gebt die Maßnahmenkarten aus. Jedes Team einigt sich intern auf sein Budget-Tier und trägt seine Maßnahmen im Teamheft ein. Weist auf die freiwillige Spalte gegen R# im Teamheft hin; ihr prüft sie nicht."
 
 [sheets.ablauf.blocks.break_2]
 label = "Pause"
-direction = "Pause. Haltet die Arbeitsblätter der Angriffe zurück: Kein Team sieht sie vor dem Beginn seiner Welle."
+direction = "Pause. Haltet die Arbeitsblätter der Angriffe zurück: Kein Team sieht ein Arbeitsblatt vor Beginn der jeweiligen Welle."
 
 [sheets.ablauf.blocks.wave_1]
-direction = "Lest die Ereignisse dieser Welle vor und gebt ihre Eventkarten aus. Gebt erst jetzt das Arbeitsblatt dieser Welle aus, nie früher. Die Teams rechnen. Danach folgt innerhalb dieses Blocks das Change-Fenster mit dem Pflichttausch des Kurswechsels."
+direction = "Lest die Events dieser Welle vor und gebt die zugehörigen Eventkarten aus. Gebt erst jetzt das Arbeitsblatt dieser Welle aus, nie früher. Die Teams rechnen. Danach folgt innerhalb dieses Blocks das Change-Fenster mit dem Maßnahmentausch des Kurswechsels."
 
 [sheets.ablauf.blocks.wave_2]
-direction = "Lest die Ereignisse dieser Welle vor und gebt ihre Eventkarten aus. Gebt erst jetzt das Arbeitsblatt dieser Welle aus, nie früher. Die Teams rechnen. Danach folgt innerhalb dieses Blocks das Change-Fenster."
+direction = "Lest die Events dieser Welle vor und gebt die zugehörigen Eventkarten aus. Gebt erst jetzt das Arbeitsblatt dieser Welle aus, nie früher. Die Teams rechnen. Danach folgt innerhalb dieses Blocks das Change-Fenster."
 
 [sheets.ablauf.blocks.wave_3]
-direction = "Lest die Ereignisse dieser Welle vor und gebt ihre Eventkarten aus. Gebt erst jetzt das Arbeitsblatt dieser Welle aus, nie früher. Die Teams rechnen. Danach folgt kein Change-Fenster mehr."
+direction = "Lest die Events dieser Welle vor und gebt die zugehörigen Eventkarten aus. Gebt erst jetzt das Arbeitsblatt dieser Welle aus, nie früher. Die Teams rechnen. Danach folgt kein Change-Fenster mehr."
 
 [sheets.ablauf.blocks.closing]
 label = "Abschluss"
-direction = "Die Teams rechnen das Budget Review und die RoS-Seite im Teamheft aus und füllen im Risikoregister die Spalte Rückblick. Sammelt die Ergebnisse ein."
+direction = "Gebt die Eventkarte „Budget Review“ aus. Die Teams rechnen im Teamheft erst die RoS-Seite, dann das Budget Review aus und füllen im Risikoregister die Spalte Rückblick aus. Sammelt die Ergebnisse ein."
 
 [sheets.ablauf.blocks.debrief]
 label = "Debriefing"
@@ -762,9 +770,9 @@ spielleitung-probelauf = "Probelauf-Protokoll"
 
 [sheets.debrief]
 title = "Debriefing-Fragen"
-intro = "Besprecht den Verlauf in dieser festen Reihenfolge: erst die Reaktion, dann die Beschreibung, dann die Analyse, zuletzt die Anwendung. Es gibt kein Blatt für die Teams. Lest die Fragen vor und lasst die Teams antworten. Die Richtzeiten der Stufen füllen zusammen den Debriefing-Block des Ablaufplans. Die Teams legen dafür ihr Teamheft mit Schutzbedarf und ausgefülltem Risikoregister samt Rückblick bereit."
+intro = "Besprecht den Verlauf in dieser festen Reihenfolge: erst die Reaktion, dann die Beschreibung, dann die Analyse, zuletzt die Anwendung. Es gibt kein Blatt für die Teams. Lest die Fragen vor und lasst die Teams antworten. Die Richtzeiten der Phasen füllen zusammen den Debriefing-Block des Ablaufplans. Die Teams legen dafür ihr Teamheft mit Schutzbedarf und ausgefülltem Risikoregister samt Rückblick bereit."
 pitch_title = "Management-Pitch"
-pitch_text = "Wenn Zeit bleibt: Jedes Team erklärt der Geschäftsführung von MechTech in einem kurzen Pitch: Warum war unser Budget gut investiert? Ihr entscheidet vor Ort, ob dafür Zeit ist; der Pitch hat keine Richtzeit."
+pitch_text = "Optional: Jedes Team erklärt der Geschäftsführung von MechTech in einem kurzen Pitch, warum sein Budget gut investiert war. Der Pitch hat keine Richtzeit."
 pitch_limit_label = "Redezeit je Team"
 seconds_unit = "Sekunden"
 guide_label = "Richtzeit"
@@ -772,7 +780,7 @@ questions_label = "Frage"
 prompts_label = "Datenimpuls"
 minutes_unit = "Min."
 compare_title = "Vergleichstabelle"
-compare_intro = "Tragt je Team KZ und RoS aus dem Teamheft ein und berechnet den Final-Index wie im Abschnitt zum Endergebnis. Die Tabelle ist leer und dient als Schreibfläche für den Vergleich."
+compare_intro = "Tragt je Team KZ und RoS aus dem Teamheft ein und berechnet den Final-Index wie im Abschnitt „Endergebnis je Tier“. Die Tabelle ist leer und dient als Schreibfläche für den Vergleich."
 compare_head_team = "Team"
 compare_head_kz = "KZ"
 compare_head_ros = "RoS"
@@ -783,7 +791,7 @@ total_label = "Summe der Richtzeiten"
 
 [sheets.debrief.prompts]
 compare = "Vergleicht die Teams nach KZ, RoS und Final-Index (Tabelle unten)."
-clues = "Welche Hinweise in den Unterlagen hättet ihr vorab lesen können?"
+clues = "Welche Hinweise in den Unterlagen hättet ihr vorab erkennen können?"
 window = "Was hättet ihr in einem Change-Fenster anders gemacht?"
 
 [sheets.debrief.stages.reaction]
@@ -806,14 +814,14 @@ questions = [
     "Welche Risiken aus eurem Register haben die Angriffe getroffen, und welcher Angriff stand gar nicht darin? Lest dazu eure Spalte Rückblick vor.",
     "Welches akzeptierte Risiko hat euch getroffen? Würdet ihr es heute wieder akzeptieren?",
     "Schaut auf eure Schutzbedarfstabelle: Passt euer Schutzbedarf für Vertraulichkeit, Integrität und Verfügbarkeit zur Gewichtung der Wellen, und hattet ihr für eure Risiken das richtige Hauptziel?",
-    "Gegen welche Risiken hat sich euer Geld ausgezahlt? Die RoS zeigt, wie viel Schaden jeder investierte Euro über seine eigenen Kosten hinaus verhindert hat.",
+    "Gegen welche Risiken hat sich euer Geld ausgezahlt? Der RoS zeigt, wie viel Schaden jeder investierte Euro über seine eigenen Kosten hinaus verhindert hat.",
 ]
 
 [sheets.debrief.stages.application]
 title = "Anwendung"
 questions = [
     "Wie würdet ihr für einen echten Kunden ein Risikoregister aufbauen: Woher kommen die Risiken, und wer schätzt den Schaden fürs Geschäft?",
-    "Welche Maßnahme würdet ihr in eurem Unternehmen zuerst umsetzen, und warum?",
+    "Welche Maßnahme würdet ihr in einem echten Unternehmen zuerst umsetzen, und warum?",
     "Wo trefft ihr im Alltag echte Abwägungen zwischen Vertraulichkeit, Integrität und Verfügbarkeit?",
 ]
 
@@ -855,7 +863,7 @@ ros = "RoS"
 budget = "Tier-Budget"
 kz_start = "KZ-Start"
 severity_multiplier = "Schadensfaktor"
-base_cia = "Basis-CIA"
+base_cia = "Basisschutz"
 e_threshold = "Schwelle"
 weights = "Gewichte C / I / A"
 bonus = "Bonus je Maßnahme"
@@ -863,7 +871,7 @@ min_level = "Mindestlevel des Bonus"
 kz_ends = "KZ bei vollem Schaden / voller Abwehr"
 base_severity = "Grundschwere"
 s_unit = "Schaden je Schwerepunkt"
-mitigation_cap = "Obergrenze der Reduktion"
+mitigation_cap = "Kappung"
 allow_recovery = "Recovery erlaubt"
 cia_impact = "CIA-Wirkung des Angriffs"
 cia = "CIA"
@@ -889,27 +897,27 @@ text = "Levelwechsel: dieselbe Maßnahme, anderes Level (auch Kündigen). Maßna
 
 [sheets.was_neu.rules.kurswechsel]
 heading = "Kurswechsel"
-text = "Das Event erlaubt im Change-Fenster danach genau einen Pflicht-Maßnahmentausch (eine aktive Maßnahme raus, eine inaktive rein); der Kunde trägt deren Init bis zur Höhe der weggefallenen."
+text = "Das Event verlangt im Change-Fenster danach genau einen Maßnahmentausch (aktive Maßnahme raus, inaktive rein); der Kunde trägt die Init der neuen Maßnahme bis zur Init der alten."
 
 [sheets.was_neu.rules.downgrade]
-heading = "Herabstufen"
+heading = "Senken, Kündigen"
 text = "Im Change-Fenster dürfen Teams Level senken oder Maßnahmen kündigen. Init wird nie erstattet, die OPEX sinken ab der nächsten Welle."
 
 [sheets.was_neu.rules.init_window]
-heading = "Init bei Hochstufung"
+heading = "Init beim Erhöhen"
 text = "Wer im Change-Fenster ein Level erhöht oder eine Maßnahme hinzufügt, zahlt die Init-Differenz netto und sofort; Wirkung und OPEX gelten ab der nächsten Welle."
 
 [sheets.was_neu.rules.overspend]
 heading = "Überziehung"
-text = "Statt pauschal kostet das Überziehen am Ende"
+text = "Statt Pauschalabzug kostet Überziehen am Ende"
 
 [sheets.was_neu.rules.sparprogramm]
 heading = "Sparprogramm"
-text = "Rutscht ein Team durch das Sparprogramm ins Minus, zählt erst der Stand am Ende; im Change-Fenster danach kann es durch Herabstufen oder Kündigen zurück ins Budget."
+text = "Rutscht ein Team durch das Sparprogramm ins Minus, zählt erst der Stand am Ende; im Change-Fenster danach kann es durch Senken oder Kündigen zurück ins Budget kommen."
 
 [sheets.was_neu.rules.ros]
 heading = "RoS ohne Event-Effekte"
-text = "In die RoS gehen nur die eigenen Kosten ein (Init, OPEX, Init-Differenzen). Budget- und OPEX-Effekte von Events zählen weder als Abzug noch als Rabatt."
+text = "In den RoS gehen nur die eigenen Kosten ein (Init, OPEX, Init-Differenzen). Budget- und OPEX-Effekte von Events zählen weder als Abzug noch als Rabatt."
 
 [sheets.was_neu.rules.review_boundary]
 heading = "Budget-Review-Stufen"
@@ -921,11 +929,11 @@ text = "Kein KZ-Bonus oder -Malus mehr für das Erreichen eines E-Ziels; auf dem
 
 [sheets.was_neu.rules.rounding]
 heading = "Rundung der KZ"
-text = "KZ-Änderung je Welle: genau einmal runden (halbe Werte vom Betrag weg), danach auf die Skala begrenzen."
+text = "KZ-Änderung je Welle: genau einmal runden (halbe Werte weg von der Null), danach auf die Skala begrenzen."
 
 [sheets.was_neu.rules.final_index]
 heading = "Neuer Final-Index"
-text = "Vergleich der Teams; die RoS wird vorher auf Hundertstel gerundet. Er rechnet:"
+text = "Vergleichswert der Teams; der RoS wird vorher auf zwei Nachkommastellen gerundet. Formel:"
 
 [sheets.was_neu.rules.event_order]
 heading = "Events zuerst"
@@ -939,18 +947,18 @@ schedule = "Fester Ablaufplan im Spielleitungsheft:"
 
 [sheets.was_neu.material]
 generated = "Alle Druckunterlagen sind generierte PDFs und ersetzen die Word- und PowerPoint-Dateien der MHP-Runde."
-veil = "Angriffe bleiben bis zu ihrer Welle verdeckt und werden erst beim Treffer benannt; die Rechenregeln sind offen."
+veil = "Angriffe bleiben bis zu ihrer Welle verdeckt und werden erst zu Beginn ihrer Welle benannt; die Rechenregeln sind offen."
 clues = "Neu im Spielleitungsheft: Antworten zu Geschäftsfolgen und die"
 teamheft = "Teamheft schon im Story-Block: Schutzbedarf, Risikoregister, Planung, Tracking, RoS."
 wave_page = "Gebt vor der Übungswelle die Erklärseite aus:"
 practice = "Das Übungsblatt rechnet die Übungswelle mit allen Schritten vor."
 
 [story.steckbrief]
-doc_title = "MECHTECH GmbH: Unternehmenssteckbrief"
+doc_title = "MechTech GmbH: Unternehmenssteckbrief"
 
 [story.steckbrief.kurzprofil]
 heading = "Kurzprofil"
-text = "Die MECHTECH GmbH ist ein mittelständischer Präzisionsfertiger mit Schwerpunkt auf Komponenten für E-Antriebe. Am Standort Göppingen (Baden-Württemberg) werden hochgenaue CNC-Komponenten gefertigt und Entwicklungsleistungen für Prototypen sowie Kleinserien erbracht. Der Betrieb ist auf hohe Wiederholgenauigkeit, stabile Prozessketten und termintreue Auslieferung ausgelegt."
+text = "Die MechTech GmbH ist ein mittelständischer Präzisionsfertiger mit Schwerpunkt auf Komponenten für E-Antriebe. Am Standort Göppingen (Baden-Württemberg) werden hochgenaue CNC-Komponenten gefertigt und Entwicklungsleistungen für Prototypen sowie Kleinserien erbracht. Der Betrieb ist auf hohe Wiederholgenauigkeit, stabile Prozessketten und termintreue Auslieferung ausgelegt."
 
 [story.steckbrief.produkte]
 heading = "Produkte & Leistungen"
@@ -989,7 +997,7 @@ bullets = [
     "Produktionssteuerung: MES Siemens Opcenter; SCADA/HMI zur Visualisierung",
     "CNC-Steuerungen u. a.: Siemens, Heidenhain",
     "Liefermodell: Just-in-Time an OEM, Liefertermintreue > 98 %",
-    "Operative Prämisse: Unterbrechungen > 4 Stunden wirken sich unmittelbar auf Auslieferungen aus und sind in Vertragskontexten relevant",
+    "Operative Prämisse: Unterbrechungen > 4 Stunden wirken sich unmittelbar auf Auslieferungen aus und können Vertragsstrafen auslösen",
 ]
 
 [story.steckbrief.it_ot_landschaft]
@@ -1019,7 +1027,7 @@ bullets = [
     "CRM: Salesforce",
     "Cloud-Backup: Veeam für Office-Daten (monatliche Sicherung)",
     "Lieferanten-Portal: extern erreichbare Web-Applikation",
-    "Cloud-Nutzung ist auf Vertriebsprozesse (Salesforce) und die monatliche Backup-Sicherung beschränkt, keine weiteren Fachanwendungen in der Cloud im Einsatz",
+    "Cloud-Nutzung ist auf Vertriebsprozesse (Salesforce) und die monatliche Datensicherung beschränkt, keine weiteren Fachanwendungen in der Cloud im Einsatz",
     "Mobilgeräte: Außendienst und Vertrieb nutzen firmeneigene Notebooks, kein separates Mobile-Device-Programm im Einsatz",
 ]
 
@@ -1029,9 +1037,9 @@ bullets = [
     "IT-Betrieb durch 2 Administratoren (Generalistenprofil)",
     "Administratorzugänge: gemeinsam genutzte Admin-Konten für Server- und Netzwerkkomponenten, keine gesonderte Verwaltung privilegierter Zugriffe",
     "Externe IT-Dienstleister bei Bedarf, Remote-Zugriff für Support",
-    "Remote-Zugänge durch fünf Lieferanten (u. a. MES, CAD, IT)",
-    "Policies/Standards: derzeit nicht als dokumentierter Satz beschrieben",
-    "Sicherheitsbetrieb: SIEM/EDR nicht als feste Plattformkomponenten genannt",
+    "Remote-Zugänge für fünf Lieferanten (u. a. MES, CAD, IT)",
+    "Policies/Standards: derzeit nicht dokumentiert",
+    "Sicherheitsbetrieb: kein SIEM/EDR als feste Plattformkomponente",
     "Patch-/Update-Praxis in der Produktion: Umsetzung im Rahmen verfügbarer Wartungsfenster",
 ]
 
@@ -1041,7 +1049,7 @@ bullets = [
     "Hohe Kopplung zwischen Liefermodell (JIT/Termintreue) und Verfügbarkeit von MES/SCADA sowie Engineering- und File-Services",
     "Relevanz von Konstruktions- und Prozessdaten für Fertigungsfähigkeit und Kundenkommunikation",
     "Mehrere Remote-Zugänge in Kombination mit schlankem IT-Team und stark integrierter Netzwerkinfrastruktur",
-    "Auslastungs- und Stillstandsfenster als Taktgeber für Änderungen/Updates in der produktionsnahen Umgebung",
+    "Änderungen und Updates an produktionsnahen Systemen sind nur in Stillstandsfenstern möglich",
 ]
 
 [story.zeitungsartikel]
@@ -1064,7 +1072,7 @@ fusszeile = [
 [story.zeitungsartikel.meldung_audit]
 headline = "OEM VERSCHÄRFT SECURITY-ANFORDERUNGEN"
 paragraphs = [
-    "Stuttgart. Ein führender deutscher Automobilhersteller kündigte an, alle Tier-1- und Tier-2-Zulieferer ab Q2/2026 einem IT-Security-Audit zu unterziehen.",
+    "Stuttgart. Ein führender deutscher Automobilhersteller kündigte an, alle Tier-1- und Tier-2-Zulieferer ab dem kommenden Quartal einem IT-Security-Audit zu unterziehen.",
     "Erwartet werden belastbare Nachweise, dass Zulieferer nicht nur reagieren, sondern strukturiert vorsorgen: von der Fähigkeit, nach einem Vorfall schnell wieder anlaufen zu können, bis zur sauberen Trennung von Büro- und Fertigungsnetzen.",
     "„Supply Chain Security ist geschäftskritisch“, so ein Sprecher. Bei gravierenden Lücken behalte man sich vor, Aufträge zurückzustellen.",
 ]
@@ -1072,15 +1080,15 @@ caption = "Symbolbild: Verschärfte Audits für Zulieferer."
 
 [story.zeitungsartikel.bericht_vorfall]
 headline = "Erpresser legen Zulieferer tagelang lahm"
-dateline = "Kassel, 10.01.2026"
-lead = "Ein mittelständischer Automotive Zulieferer aus Nordhessen wurde Opfer eines schweren Cyberangriffs. Die Produktion stand für 72 Stunden still, der Schaden wird auf über 500.000 Euro geschätzt."
+dateline = "Kassel"
+lead = "Ein mittelständischer Automotive-Zulieferer aus Nordhessen wurde Opfer eines schweren Cyberangriffs. Die Produktion stand für 72 Stunden still, der Schaden wird auf über 500.000 Euro geschätzt."
 caption = "Symbolbild: Stillstand in der Fertigung nach Cyberangriff."
 
 [story.zeitungsartikel.bericht_vorfall.ablauf]
 heading = "DER ANGRIFF"
 paragraphs = [
-    "Laut Informationen des Unternehmens erfolgte der Einbruch über eine gefälschte E-Mail, die ein Mitarbeiter in der Buchhaltung öffnete. Der klassische Virenschutz des Unternehmens schlug nicht rechtzeitig Alarm. Die Erpresser-Software sperrte innerhalb von 2 Stunden nicht nur Office-Daten, sondern auch das produktionssteuernde MES-System. Erst nach Stunden bemerkte die IT ungewöhnliche Aktivitäten im Netz. Zentrale Systeme waren zudem seit Monaten nicht mehr aktualisiert worden.",
-    "„Wir hatten kein funktionierendes Backup-Konzept“, so der Geschäftsführer unter der Bedingung der Anonymität. Die Angreifer forderten 250.000 Euro in Bitcoin.",
+    "Laut Informationen des Unternehmens erfolgte der Einbruch über eine gefälschte E-Mail, die ein Mitarbeiter in der Buchhaltung öffnete. Der klassische Virenschutz des Unternehmens schlug nicht rechtzeitig Alarm. Die Erpresser-Software sperrte innerhalb von zwei Stunden nicht nur Office-Daten, sondern auch das produktionssteuernde MES-System. Erst nach Stunden bemerkte die IT ungewöhnliche Aktivitäten im Netz. Zentrale Systeme waren zudem seit Monaten nicht mehr aktualisiert worden.",
+    "„Wir hatten kein funktionierendes Backup-Konzept“, so der Geschäftsführer, der anonym bleiben möchte. Die Angreifer forderten 250.000 Euro in Bitcoin.",
 ]
 
 [story.zeitungsartikel.bericht_vorfall.folgen]
@@ -1095,7 +1103,7 @@ doc_title = "Anfrage: IT-Security-Beratung für MechTech GmbH"
 
 [story.anfrage_mail.kopf]
 von = "\"Dr. Thomas Weber\" <t.weber@mechtech-gmbh.de>"
-an = "\"MHP Cyber Security <cyber-security@mhp.com>\""
+an = "\"MHP Cyber Security\" <cyber-security@mhp.com>"
 
 [story.anfrage_mail.anrede]
 text = "Sehr geehrte Damen und Herren,"
@@ -1106,12 +1114,12 @@ paragraphs = ["ich wende mich an Sie im Namen der MechTech GmbH. Wir sind ein mi
 [story.anfrage_mail.lage]
 paragraphs = [
     "Täglich lesen wir von Cyberangriffen auf Unternehmen unserer Größe und Branche.",
-    "Ehrlich gesagt sind wir mit dem Thema IT-Sicherheit bisher eher reaktiv umgegangen. Wir haben einen Virenscanner und Backups, aber keine strukturierte Security-Strategie. Ehrlich gesagt wissen wir auch nicht genau, wer aktuell überall administrativen Zugriff auf unsere Systeme hat.",
+    "Ehrlich gesagt sind wir mit dem Thema IT-Sicherheit bisher eher reaktiv umgegangen. Wir haben einen Virenscanner und Backups, aber keine strukturierte Security-Strategie. Offen gestanden wissen wir auch nicht genau, wer aktuell überall administrativen Zugriff auf unsere Systeme hat.",
     "Wir möchten das ändern, wissen aber nicht, wo wir anfangen sollen.",
 ]
 
 [story.anfrage_mail.aufgabe]
-heading = "IHRE AUFGABE:"
+heading = "UNSER ANLIEGEN:"
 text = "Können Sie uns dabei unterstützen, ein sinnvolles Security-Konzept zu entwickeln? Wir hätten Budget für ein Beratungsprojekt und möchten verstehen:"
 bullets = [
     "Wo sind unsere größten Risiken?",
@@ -1123,7 +1131,7 @@ paragraphs = ["Könnten Sie sich zunächst ein Bild von unserer Situation machen
 
 [story.anfrage_mail.gruss]
 lines = [
-    "Mit freundlichen Grüßen,",
+    "Mit freundlichen Grüßen",
     "Dr. Thomas Weber",
     "Geschäftsführer",
     "MechTech GmbH",
@@ -1133,18 +1141,18 @@ lines = [
 lines = ["www.mechtech-gmbh.de | Industriestr. 42, 73033 Göppingen"]
 
 [story.audit_mail]
-doc_title = "Information Security Assessment - Supplier Audit Q2/2026"
+doc_title = "Information Security Assessment: Supplier Audit im kommenden Quartal"
 
 [story.audit_mail.kopf]
 von = "\"Klaus Hoffmann\" <k.hoffmann@premium-oem.com>"
-an = "\"Dr. Thomas Weber <t.weber@mechtech-gmbh.de>\""
+an = "\"Dr. Thomas Weber\" <t.weber@mechtech-gmbh.de>"
 
 [story.audit_mail.anrede]
 text = "Sehr geehrter Herr Dr. Weber,"
 
 [story.audit_mail.einleitung]
 paragraphs = [
-    "im Rahmen unserer Supplier Security Initiative werden wir alle strategischen Zulieferer in Q2/2026 einem umfassenden IT-Security-Audit unterziehen.",
+    "im Rahmen unserer Supplier Security Initiative werden wir alle strategischen Zulieferer im kommenden Quartal einem umfassenden IT-Security-Audit unterziehen.",
     "Angesichts steigender Cyberbedrohungen (insb. Datenverlust, Supply-Chain-Angriffe) stellen wir sicher, dass unsere Lieferkette angemessen abgesichert ist.",
 ]
 
@@ -1152,7 +1160,7 @@ paragraphs = [
 heading = "ERWARTETE NACHWEISE:"
 text = "Im Audit werden wir vor allem folgende Punkte prüfen:"
 bullets = [
-    "IAM/ PAM",
+    "IAM/PAM",
     "Backup & Disaster Recovery",
     "Patch Management",
     "Logging & SIEM",
@@ -1163,9 +1171,9 @@ bullets = [
 heading = "KONSEQUENZEN:"
 text = "Bei kritischen Lücken behalten wir uns vor:"
 bullets = [
-    "Aufträge zurückzustellen (bis Maßnahmen umgesetzt)",
-    "Vertragsstrafen bei Sicherheitsvorfällen",
-    "Im Wiederholungsfall: Beendigung der Geschäftsbeziehung",
+    "Aufträge zurückzustellen, bis die Maßnahmen umgesetzt sind",
+    "bei Sicherheitsvorfällen Vertragsstrafen zu verhängen",
+    "im Wiederholungsfall die Geschäftsbeziehung zu beenden",
 ]
 
 [story.audit_mail.unterstuetzung]
@@ -1177,14 +1185,14 @@ paragraphs = [
 
 [story.audit_mail.gruss]
 lines = [
-    "Mit freundlichen Grüßen,",
+    "Mit freundlichen Grüßen",
     "Klaus Hoffmann",
     "Supplier Quality Management",
     "Premium Automotive AG",
 ]
 
 [story.audit_mail.fusszeile]
-lines = ["Tel: +49-711-12345| k.hoffmann@premium-oem.com"]
+lines = ["Tel.: +49-711-12345 | k.hoffmann@premium-oem.com"]
 
 [sheets.probelauf]
 title = "Probelauf-Protokoll"
@@ -1205,7 +1213,7 @@ pass_wave_tail = "endet in seiner geplanten Zeit."
 pass_rules = [
     "Die ganze Sitzung endet innerhalb der geplanten Gesamtdauer.",
     "Die Spielleitung bekommt keine Hilfe von der Autorin oder dem Autor des Spiels.",
-    "Jede Überschreitung, jede unklare Stelle und jeder Rechenfehler, der hier steht, wird zu einer Aufgabe für die Überarbeitung, es sei denn, sie wird bei der Abnahme ausdrücklich akzeptiert.",
+    "Alles, was hier notiert ist (Überschreitungen, unklare Stellen, Rechenfehler), wird zu einer Aufgabe für die Überarbeitung, sofern es bei der Abnahme nicht ausdrücklich akzeptiert wird.",
 ]
 help_title = "Hilfe-Protokoll: Wann und wobei wurde geholfen?"
 observer_label = "Beobachtende Person"

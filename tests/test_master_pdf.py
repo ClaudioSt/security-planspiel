@@ -130,7 +130,22 @@ def test_every_wave_section_starts_on_its_own_page_with_its_parts(printed_set, s
                 assert squash(cell) in text, (section.wave_id, cell)
 
 
-def test_the_budget_review_the_final_table_and_welle_zero_follow_the_waves(printed_set, sheet):
+def test_the_welle_zero_key_comes_before_the_first_wave_with_its_page_number_in_the_contents(printed_set, sheet):
+    pages = _pages(printed_set)
+    ranges, _ = _section_pages(pages, sheet)
+    key_page = _first_page_with(pages, sheet.welle0.title, start=1)
+    assert key_page < ranges[0][0]
+    for text in (sheet.welle0.title, sheet.welle0.intro, *sheet.welle0.header):
+        assert squash(text) in pages[key_page], text
+    for row in sheet.welle0.rows:
+        for cell in (row.label, *row.values):
+            assert squash(cell) in pages[key_page], cell
+    first = pages[0]
+    for entry in sheet.contents:
+        assert squash(entry.title) in first, entry.title
+
+
+def test_the_budget_review_and_the_final_table_follow_the_waves(printed_set, sheet):
     pages = _pages(printed_set)
     ranges, review = _section_pages(pages, sheet)
     assert review > ranges[-1][0]
@@ -143,20 +158,14 @@ def test_the_budget_review_the_final_table_and_welle_zero_follow_the_waves(print
     for row in sheet.final_rows:
         for cell in (row.label, *row.values):
             assert squash(cell) in tail, cell
-    for text in (sheet.welle0.title, sheet.welle0.intro, *sheet.welle0.header):
-        assert squash(text) in tail, text
-    for row in sheet.welle0.rows:
-        for cell in (row.label, *row.values):
-            assert squash(cell) in tail, cell
 
 
-def test_the_debrief_page_follows_the_final_table_and_precedes_welle_zero(printed_set, sheet):
+def test_the_debrief_page_follows_the_final_table_and_precedes_the_clue_matrix(printed_set, sheet):
     pages = _pages(printed_set)
     _, review = _section_pages(pages, sheet)
     debrief_page = _first_page_with(pages, sheet.debrief.title, start=review)
     assert debrief_page > review
     assert sum(squash(sheet.debrief.intro) in page for page in pages) == 1
-    assert _first_page_with(pages, sheet.welle0.title, start=review) > debrief_page
     assert debrief_page < _first_page_with(pages, sheet.clues_intro, start=debrief_page)
     text = pages[debrief_page]
     parts = [sheet.debrief.title, sheet.debrief.intro, sheet.debrief.guide_label, sheet.debrief.questions_label,
@@ -173,7 +182,7 @@ def test_the_debrief_offers_the_pitch_without_guide_minutes(printed_set, sheet):
     pages = _pages(printed_set)
     _, review = _section_pages(pages, sheet)
     first = _first_page_with(pages, sheet.debrief.title, start=review)
-    last = _first_page_with(pages, sheet.welle0.title, start=first)
+    last = _first_page_with(pages, sheet.clues_intro, start=first)
     span = "".join(pages[first:last])
     debrief = sheet.debrief
     assert debrief.pitch_text

@@ -231,7 +231,7 @@ def test_the_matrix_follows_a_reordered_wave_list():
 def test_the_matrix_rows_carry_document_section_quote_and_reason():
     rows = FacilitatorView(CFG, TEXTS, CLUES).clue_matrix()
     first, second = rows[0], rows[1]
-    assert first.document == "MECHTECH GmbH: Unternehmenssteckbrief"
+    assert first.document == "MechTech GmbH: Unternehmenssteckbrief"
     assert first.section == "Betrieb & IT"
     assert first.quote == "Sicherung der Daten nur einmal im Monat"
     assert first.why == CLUES[0].why
@@ -272,7 +272,7 @@ def test_the_table_has_the_header_and_one_line_per_clue():
     assert table[0] == HEADER
     assert table[1].startswith("|") and set(table[1]) <= set("|- :")
     assert len(table) == 2 + len(CLUES)
-    assert table[2].startswith("| Angriff 1: Ransomware | 1 | MECHTECH GmbH: Unternehmenssteckbrief | Betrieb & IT |")
+    assert table[2].startswith("| Angriff 1: Ransomware | 1 | MechTech GmbH: Unternehmenssteckbrief | Betrieb & IT |")
 
 
 def test_a_pipe_inside_a_cell_is_escaped():
@@ -388,5 +388,5 @@ def test_a_mail_section_without_a_heading_prints_the_german_label():
             FacilitatorView(cfg, texts, clues).clue_matrix(),
         )
     }
-    assert sections["story.anfrage_mail.lage.paragraphs"] == "Lage"
-    assert sections["story.audit_mail.einleitung.paragraphs"] == "Einleitung"
+    assert sections["story.anfrage_mail.lage.paragraphs"] == "dritter Absatz"
+    assert sections["story.audit_mail.einleitung.paragraphs"] == "zweiter Absatz"

@@ -1,6 +1,6 @@
 {
   "title": "Welle 0 – Übung",
-  "intro": "Bevor die erste Welle beginnt, rechnet ihr gemeinsam ein Beispiel durch. Der Vorfall ist erfunden und zählt nicht für eure Wertung. Alle Felder sind schon ausgefüllt: Verfolgt Schritt für Schritt, wie aus den Maßnahmen eines Beispielteams Schutzwerte, Schaden und Kundenzufriedenheit werden.",
+  "intro": "Bevor die erste Welle beginnt, rechnet ihr gemeinsam ein Beispiel durch. Der Vorfall ist erfunden und zählt nicht für eure Wertung. Alle Felder sind schon ausgefüllt: Verfolgt Schritt für Schritt, wie aus den Maßnahmen eines Beispielteams Schutzwerte, Schaden und Kundenzufriedenheit werden. Die Anleitungstexte sind dieselben wie später auf euren Angriffsblättern.",
   "sheet_lines": {
     "e_value": [
       "16",
@@ -130,7 +130,7 @@
       "Level 3: Fachleute greifen sofort ein und dokumentieren den Fall → KZ +3"
     ],
     "selected": 0,
-    "result": "Wirkung des Ereignisses auf das Beispielteam: Level 0: Warnungen bleiben unbemerkt → KZ −4"
+    "result": "Wirkung des Events auf das Beispielteam: Level 0: Warnungen bleiben unbemerkt → KZ −4"
   },
   "tracking": {
     "columns": [
@@ -222,11 +222,10 @@
     "30 %",
     "50 %",
     "20.000",
-    " × (1 − r ",
+    " € × (1 − r ",
     "−4",
     "+2,5",
-    ", gerundet (ab ,5 vom Betrag aufrunden): ",
-    "Bevor die erste Welle beginnt, rechnet ihr gemeinsam ein Beispiel durch. Der Vorfall ist erfunden und zählt nicht für eure Wertung. Alle Felder sind schon ausgefüllt: Verfolgt Schritt für Schritt, wie aus den Maßnahmen eines Beispielteams Schutzwerte, Schaden und Kundenzufriedenheit werden.",
+    "Bevor die erste Welle beginnt, rechnet ihr gemeinsam ein Beispiel durch. Der Vorfall ist erfunden und zählt nicht für eure Wertung. Alle Felder sind schon ausgefüllt: Verfolgt Schritt für Schritt, wie aus den Maßnahmen eines Beispielteams Schutzwerte, Schaden und Kundenzufriedenheit werden. Die Anleitungstexte sind dieselben wie später auf euren Angriffsblättern.",
     "Auswahl des Beispielteams",
     "Maßnahme",
     "Level",
@@ -253,8 +252,9 @@
     "Level 1: Warnungen liegen in den Protokollen, werden aber spät gelesen → KZ −2",
     "Level 2: Alarm kommt rechtzeitig an → KZ +1",
     "Level 3: Fachleute greifen sofort ein und dokumentieren den Fall → KZ +3",
-    "Wirkung des Ereignisses auf das Beispielteam: Level 0: Warnungen bleiben unbemerkt → KZ −4",
+    "Wirkung des Events auf das Beispielteam: Level 0: Warnungen bleiben unbemerkt → KZ −4",
     "So sieht der Eintrag im Tracking-Bogen aus",
+    "Das Beispielteam startet mit einem Übungsbudget von 200.000 € und einer KZ von 98. Restbudget am Start = Übungsbudget − Init-Kosten.",
     "Start",
     "Welle 0",
     "KZ vor der Welle",

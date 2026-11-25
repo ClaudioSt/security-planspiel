@@ -13,27 +13,9 @@
 
 \step{\VAR{sheet.contents_title}}
 \begingroup\small\setlength{\parskip}{0.6mm}
-\BLOCK{if sheet.schedule}
-\VAR{sheet.schedule.title}\par
-\VAR{sheet.schedule.print_title}\par
-\BLOCK{endif}
-\BLOCK{if sheet.cheat}
-\VAR{sheet.cheat.title}\par
-\BLOCK{endif}
-\BLOCK{for section in sheet.waves}
-\VAR{section.title}\par
+\BLOCK{for entry in sheet.contents}
+\noindent{}\VAR{entry.title}\dotfill\pageref{\VAR{entry.label}}\par
 \BLOCK{endfor}
-\VAR{sheet.review.title}\par
-\VAR{sheet.final_title}\par
-\BLOCK{if sheet.debrief}
-\VAR{sheet.debrief.title}\par
-\BLOCK{endif}
-\BLOCK{if sheet.welle0}
-\VAR{sheet.welle0.title}\par
-\BLOCK{endif}
-\BLOCK{if sheet.clue_groups}
-\VAR{sheet.clues_title}\par
-\BLOCK{endif}
 \endgroup
 
 \step{\VAR{sheet.how_to_title}}
@@ -58,7 +40,7 @@
 \BLOCK{if sheet.schedule}
 
 \clearpage
-\attacktitle{\VAR{sheet.schedule.title}}
+\attacktitle{\VAR{sheet.schedule.title}}\label{mschedule}
 {\small{} \VAR{sheet.schedule.intro}\par}
 \vspace{1mm}
 \noindent\begingroup\footnotesize\setlength{\tabcolsep}{3pt}\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{32mm}|C{11mm}|C{16mm}|C{14mm}|L|}
@@ -75,7 +57,7 @@
 \pagereport
 
 \clearpage
-\step{\VAR{sheet.schedule.print_title}}
+\step{\VAR{sheet.schedule.print_title}}\label{mprint}
 {\small{} \VAR{sheet.schedule.print_intro}\par}
 {\small{} \VAR{sheet.schedule.teams_label}: \textbf{\VAR{sheet.schedule.teams_value}}\par}
 \vspace{1mm}
@@ -93,7 +75,7 @@
 \BLOCK{if sheet.cheat}
 
 \clearpage
-\attacktitle{\VAR{sheet.cheat.title}}
+\attacktitle{\VAR{sheet.cheat.title}}\label{mcheat}
 {\small{} \VAR{sheet.cheat.intro}\par}
 \step{\VAR{sheet.cheat.bands_title}}
 \noindent\begingroup\small\setlength{\tabcolsep}{3pt}\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{30mm}|L|}
@@ -115,10 +97,28 @@
 \end{tabularx}\endgroup\par
 \pagereport
 \BLOCK{endif}
-\BLOCK{for section in sheet.waves}
+\BLOCK{if sheet.welle0}
 
 \clearpage
-\attacktitle{\VAR{section.title}}
+\attacktitle{\VAR{sheet.welle0.title}}\label{mwelle0}
+{\small{} \VAR{sheet.welle0.intro}\par}
+\vspace{1mm}
+\noindent\begingroup\footnotesize\setlength{\tabcolsep}{3pt}\begin{tabularx}{\linewidth}{|L|C{58mm}|}
+\hline
+\rowcolor{mhpblue}\BLOCK{for cell in sheet.welle0.header}\hdrs{\VAR{cell}}\BLOCK{if not loop.last} & \BLOCK{endif}\BLOCK{endfor} \\
+\hline
+\BLOCK{for row in sheet.welle0.rows}
+\textrowtop{}\VAR{row.label}\textrowend{}\BLOCK{for value in row.values} & \textrowtop{}\textbf{\VAR{value}}\textrowend{}\BLOCK{endfor} \\
+\hline
+\BLOCK{endfor}
+\end{tabularx}\endgroup\par
+\pagereport
+\BLOCK{endif}
+\BLOCK{for section in sheet.waves}
+\BLOCK{set wave_number = loop.index|string}
+
+\clearpage
+\attacktitle{\VAR{section.title}}\label{mwave\VAR{wave_number}}
 \hint{\VAR{sheet.gr_legend}}
 \step{\VAR{sheet.params_title}}
 \vspace{1mm}
@@ -169,7 +169,7 @@
 \pagereport
 
 \clearpage
-\step{\VAR{sheet.events_title}: \VAR{section.title}}
+\step{\VAR{sheet.events_title} \VAR{section.title}}
 \vspace{1mm}
 \BLOCK{if section.events}
 \noindent\begingroup\small\setlength{\tabcolsep}{4pt}\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{36mm}|>{\raggedright\arraybackslash}p{24mm}|L|}
@@ -204,7 +204,7 @@
 \BLOCK{endfor}
 
 \clearpage
-\attacktitle{\VAR{sheet.review.title}}
+\attacktitle{\VAR{sheet.review.title}}\label{mreview}
 \VAR{sheet.review.intro}\par
 \vspace{1mm}
 \refline{\VAR{sheet.review.tier_heading}}
@@ -224,7 +224,7 @@
 \hline
 \end{tabularx}\endgroup\par
 
-\step{\VAR{sheet.final_title}}
+\step{\VAR{sheet.final_title}}\label{mfinal}
 {\small{} \VAR{sheet.final_intro}\par}
 \vspace{1mm}
 \noindent\begingroup\small\setlength{\tabcolsep}{3pt}\begin{tabularx}{\linewidth}{|L\BLOCK{for tier in sheet.final_header[1:]}|C{34mm}\BLOCK{endfor}|}
@@ -248,7 +248,7 @@
 \BLOCK{if sheet.debrief}
 
 \clearpage
-\attacktitle{\VAR{sheet.debrief.title}}
+\attacktitle{\VAR{sheet.debrief.title}}\label{mdebrief}
 {\small{} \VAR{sheet.debrief.intro}\par}
 \vspace{1mm}
 \begingroup\small\setlength{\parskip}{1mm}
@@ -283,28 +283,11 @@
 \end{tabularx}\endgroup\par
 \pagereport
 \BLOCK{endif}
-\BLOCK{if sheet.welle0}
-
-\clearpage
-\attacktitle{\VAR{sheet.welle0.title}}
-{\small{} \VAR{sheet.welle0.intro}\par}
-\vspace{1mm}
-\noindent\begingroup\footnotesize\setlength{\tabcolsep}{3pt}\begin{tabularx}{\linewidth}{|L|C{58mm}|}
-\hline
-\rowcolor{mhpblue}\BLOCK{for cell in sheet.welle0.header}\hdrs{\VAR{cell}}\BLOCK{if not loop.last} & \BLOCK{endif}\BLOCK{endfor} \\
-\hline
-\BLOCK{for row in sheet.welle0.rows}
-\textrowtop{}\VAR{row.label}\textrowend{}\BLOCK{for value in row.values} & \textrowtop{}\textbf{\VAR{value}}\textrowend{}\BLOCK{endfor} \\
-\hline
-\BLOCK{endfor}
-\end{tabularx}\endgroup\par
-\pagereport
-\BLOCK{endif}
 \BLOCK{for group in sheet.clue_groups}
 
 \clearpage
 \BLOCK{if loop.first}
-\attacktitle{\VAR{sheet.clues_title}}
+\attacktitle{\VAR{sheet.clues_title}}\label{mclues}
 {\small{} \VAR{sheet.clues_intro}\par}
 \BLOCK{endif}
 \step{\VAR{group.title}}

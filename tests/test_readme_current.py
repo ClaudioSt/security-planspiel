@@ -50,7 +50,6 @@ REQUIRED_TERMS = (
     "Was ist neu",
     "Final-Index",
     "Schutzbedarf",
-    "Maximumprinzip",
 )
 
 # PROT-04: the 07.1 matrix vocabulary as it stood in sheets.register before 07.2-01. The low and medium likelihood
@@ -58,6 +57,9 @@ REQUIRED_TERMS = (
 RETIRED_MATRIX_PATTERNS = (
     r"risiko[-‑]?matrix",
     r"eintrittswahrscheinlichkeit",
+    # quick task 261125-0f4: the protection-need table has no "gesamt" column, so no maximum principle either
+    r"maximumprinzip",
+    r"spalte gesamt",
     r"wahrscheinlich",
     r"tragbar",
     r"abwägen",

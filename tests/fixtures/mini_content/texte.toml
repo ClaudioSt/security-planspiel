@@ -102,7 +102,7 @@ rule = "Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser
 
 [events.oem_audit]
 narrative = "Der große Automobilkunde prüft die Sicherheitsstandards."
-checklist_heading = "Audit Checkliste"
+checklist_heading = "Audit-Checkliste"
 
 [events.kritische_schwachstelle]
 narrative = "Ihr werdet von einem Softwarehersteller informiert: In einem von euch genutzten System wurde eine kritische Schwachstelle entdeckt."
@@ -153,6 +153,10 @@ kz_decimals_hint = "Rechnet genau; zwei Nachkommastellen genügen."
 kz_fraction_hint = "Multipliziert zuerst mit der oberen Zahl und teilt dann durch die untere. Rundet nur das Ergebnis auf zwei Nachkommastellen, nie die Steigung."
 events_hint = "KZ Events ist die KZ-Wirkung aller Events dieser Welle zusammen; die Spielleitung nennt sie euch."
 wave_kz_rounding = "gerundet (ab der Hälfte vom Betrag aufrunden)"
+label_rounded = "gerundet"
+rounding_note = "Ab der Hälfte rundet ihr zum größeren Betrag."
+no_recovery_lead = "Bei diesem Angriff gibt es keine Recovery. Der Schaden aus"
+no_recovery_tail = "bleibt unverändert."
 
 [sheets.budget]
 title = "Budget"
@@ -168,6 +172,7 @@ anticipated_sum_intro = "In diesem Sheet plant und trackt ihr euer Budget über 
 title = "Return on Security"
 instruction = "Trag die folgenden Werte ein:"
 purpose = "Der RoS zeigt, ob sich eure Security-Investition finanziell gelohnt hat."
+avoided_note = "ist der volle Schaden aller Angriffe ohne Maßnahmen"
 
 [sheets.teamheft]
 planning_title = "Budget und Planung"
@@ -176,6 +181,9 @@ step_costs = "Kostenarten"
 step_tiers = "Budget-Tier"
 step_planning = "Planung eurer Maßnahmen"
 kz_start = "KZ Start"
+tier_field = "Unser Tier:"
+sum_of_row = "Summe der Zeile"
+sum_row_suffix = "im Tracking-Bogen"
 opex_per_wave = "OPEX je Welle"
 ros_title = "Return on Security und Budget Review"
 ros_carry_hint = "Die Summen übernehmt ihr von den vorherigen Seiten."
@@ -192,12 +200,8 @@ event_opex = "OPEX-Änderung durch Events"
 review_costs = "Gesamtkosten inkl. OPEX-Änderung"
 remaining_budget = "Restbudget"
 sign_hint = "Event-Werte tragt ihr mit dem Vorzeichen ein, das auf der Eventkarte steht. Ein Minus bei der OPEX-Änderung ist eine Entlastung: Sie senkt die Kosten und steht deshalb bei den Kosten."
-kz_change = "KZ-Änderung"
-penalty_title = "Überzogenes Budget"
-penalty_intro = "Ist das Restbudget negativ, lest die KZ-Änderung für den überzogenen Betrag hier ab."
-overspend_header = "Überzogen um"
-penalty_follow_lead = "Bei einer Überziehung von mehr als"
-penalty_follow_tail = "rechnet ihr nach der Regel oben weiter."
+review_result = "KZ-Änderung Budget Review"
+review_result_note = "von der Eventkarte Budget Review"
 
 [sheets.tracking]
 title = "Tracking-Bogen"
@@ -216,7 +220,7 @@ row_external_opex = "Event: OPEX"
 row_remaining = "Restbudget (laufend)"
 row_kz_review = "KZ-Änderung Review"
 row_kz_final = "KZ final"
-kz_after_last = "KZ nach der letzten Welle"
+kz_after_last = "KZ nach Welle"
 remaining_previous = "Restbudget der Spalte davor"
 rounding_hint = "Gerundet wird nur auf dem Angriffsblatt."
 clamp_lead = "KZ nach der Welle und KZ final werden begrenzt auf"
@@ -294,8 +298,9 @@ level_or_higher = "oder höher"
 condition_if = "Wenn"
 condition_and = "und"
 level_equals = "auf Level"
+not_active = "nicht aktiv"
 otherwise = "Sonst"
-total_budget = "Gesamtbudget"
+total_budget = "Budget"
 opex_costs = "OPEX"
 per_active_measure = "je aktiver Maßnahme"
 kurswechsel_window = "Maßnahmentausch im Change-Fenster nach Welle"
@@ -445,10 +450,10 @@ clue_section_audit_mail_einleitung = "Einleitung"
 clue_section_zeitungsartikel = "Ticker"
 
 [story.steckbrief]
-doc_title = "MECHTECH GmbH: Unternehmenssteckbrief"
+doc_title = "MechTech GmbH: Unternehmenssteckbrief"
 [story.steckbrief.kurzprofil]
 heading = "Kurzprofil"
-text = "Die MECHTECH GmbH ist ein mittelständischer Präzisionsfertiger mit ca. 80 Mitarbeitenden."
+text = "Die MechTech GmbH ist ein mittelständischer Präzisionsfertiger mit ca. 80 Mitarbeitenden."
 [story.steckbrief.produkte]
 heading = "Produkte & Leistungen"
 bullets = ["Präzisions-Getriebeteile", "Prototyping und Kleinserien"]

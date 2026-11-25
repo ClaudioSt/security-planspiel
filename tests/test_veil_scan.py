@@ -236,7 +236,7 @@ def test_a_revealed_sheet_may_carry_its_own_name_story_and_weights(cfg, content,
         _reason(content, "ransomware", "M4"),
         " ".join(_triple(cfg, 1)),
     ]
-    assert "ggf. exfiltriert" in parts[1]
+    assert "MechTech" in parts[1]
     assert veil.scan_text("\n".join(parts), "angriff-1_ransomware", ctx, layer="tex") == []
 
 

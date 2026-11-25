@@ -199,8 +199,8 @@ def test_kernel_carries_kz_pre_review_and_remaining_on_golden_cases(tier):
 
 
 def test_real_and_mini_config_declare_the_penalty():
-    assert _penalty(_raw(CONFIG_PATH)) == {"kz_per_step": 3, "step": 10, "table_rows": 3}
-    assert _penalty(_raw(MINI)) == {"kz_per_step": 9, "step": 10, "table_rows": 3}
+    assert _penalty(_raw(CONFIG_PATH)) == {"kz_per_step": 3, "step": 10}
+    assert _penalty(_raw(MINI)) == {"kz_per_step": 9, "step": 10}
 
 
 def test_missing_overspend_penalty_is_an_error():
@@ -246,43 +246,13 @@ def test_overspend_penalty_must_be_an_object(value):
     assert errors[0].path == "final_events[0].overspend_penalty"
 
 
-@pytest.mark.parametrize("key", ["kz_per_step", "step", "table_rows"])
+@pytest.mark.parametrize("key", ["kz_per_step", "step"])
 def test_overspend_penalty_keys_are_required(key):
     raw = _raw()
     del _penalty(raw)[key]
     errors = _errors(validate(raw))
     assert [issue.code for issue in errors] == ["schema.keys"]
     assert errors[0].path == f"final_events[0].overspend_penalty.{key}"
-
-
-@pytest.mark.parametrize("value", ["3", 2.5, True, None])
-def test_non_integer_table_rows_is_a_type_error(value):
-    raw = _raw()
-    _penalty(raw)["table_rows"] = value
-    errors = _errors(validate(raw))
-    assert [issue.code for issue in errors] == ["schema.type"]
-    assert errors[0].path == "final_events[0].overspend_penalty.table_rows"
-
-
-@pytest.mark.parametrize("value", [0, -1])
-def test_non_positive_table_rows_is_a_range_error(value):
-    raw = _raw()
-    _penalty(raw)["table_rows"] = value
-    errors = _errors(validate(raw))
-    assert [issue.code for issue in errors] == ["schema.range"]
-    assert errors[0].path == "final_events[0].overspend_penalty.table_rows"
-
-
-def test_table_rows_beyond_the_full_penalty_table_is_a_range_error():
-    raw = _raw()
-    full = -(-100 // _penalty(raw)["kz_per_step"])
-    _penalty(raw)["table_rows"] = full
-    assert _errors(validate(raw)) == []
-    _penalty(raw)["table_rows"] = full + 1
-    errors = _errors(validate(raw))
-    assert [issue.code for issue in errors] == ["schema.range"]
-    assert errors[0].path == "final_events[0].overspend_penalty.table_rows"
-    assert str(full) in errors[0].message
 
 
 def test_step_other_than_ten_thousand_euro_is_a_hand_calc_finding():

@@ -142,7 +142,7 @@ def test_the_review_card_carries_tiers_and_the_overspend_rule(loaded):
     assert card.tier_lines == tuple(row.text for row in effect.rows[:-1])
     kz_per_step, step_k = rules.penalty_params(cfg.final_events)
     assert card.overspend_line == effect.rows[-1].text
-    assert f"{fmt.MINUS}{kz_per_step} KZ" in card.overspend_line
+    assert f"KZ {fmt.MINUS}{kz_per_step}" in card.overspend_line
     assert fmt.format_money(step_k * 1000) in card.overspend_line
 
 
@@ -223,8 +223,8 @@ def test_a_budget_cut_reaches_the_card_without_a_template_change(tmp_path):
     cfg = load_config(path)
     texts = load_texts(CONTENT_DIR / "texte.toml")
     source = render.render_all(cfg, texts, TEMPLATES)[EVENT_DECK_JOB]
-    assert "Gesamtbudget −30.000 €" in source
-    assert "Gesamtbudget −20.000 €" not in source
+    assert "Budget −30.000 €" in source
+    assert "Budget −20.000 €" not in source
 
 
 def test_the_card_template_keeps_both_branches_and_plain_variables():
