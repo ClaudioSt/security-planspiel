@@ -71,15 +71,15 @@ DATE_FIGURE = re.compile(r"\d{1,2}\.\d{1,2}\.\d{4}")
 
 # Material lines (approved rows) and the print_list jobs behind them
 MATERIAL = {
-    31: "Material: Unternehmenssteckbrief, Anfrage-Mail, Zeitungsartikel, Audit-Mail, Teamheft",
+    # the Teamheft is handed out as loose sheets per block, not at the start (user, 2026-11-25)
+    31: "Material: Unternehmenssteckbrief, Anfrage-Mail, Zeitungsartikel, Audit-Mail",
     33: "Material: Übungsblatt, So funktioniert eine Welle",
     34: "Material: Teamheft, Maßnahmenkarten",
     36: "Material: Arbeitsblatt der Welle, Eventkarten, So funktioniert eine Welle",
     37: "Material: Teamheft",
 }
 MATERIAL_JOBS = {
-    31: ("spieler-unternehmenssteckbrief", "spieler-anfrage-mail", "spieler-zeitungsartikel", "spieler-audit-mail",
-         "spieler-teamheft"),
+    31: ("spieler-unternehmenssteckbrief", "spieler-anfrage-mail", "spieler-zeitungsartikel", "spieler-audit-mail"),
     33: ("uebung-welle-0", "spieler-so-funktioniert-eine-welle"),
     34: ("spieler-teamheft", "spieler-massnahmenkarten"),
     36: ("angriff-1_ransomware", "angriff-2_ot", "angriff-3_exfil", "spieler-eventkarten",
@@ -463,3 +463,7 @@ def test_deck_uses_the_print_vocabulary_for_the_damage_scale(slide_texts):
     for number, text in slide_texts.items():
         assert "Band" not in text, number
         assert "verletzt würden" not in text, number
+
+
+def test_story_slide_does_not_hand_out_the_whole_teamheft(slide_texts):
+    assert "Teamheft" not in slide_texts[31]
