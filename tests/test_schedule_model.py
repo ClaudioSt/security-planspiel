@@ -56,7 +56,7 @@ def test_wave_labels_are_composed_from_the_texte_word_and_the_config_wave(cfg, t
     words = texts.subtree("sheets.ablauf")
     for wave in cfg.waves:
         assert rows[f"wave_{wave.wave_id}"].label == f"{words['wave_label']} {wave.wave_id}"
-    assert rows["wave_0"].label == "Übungswelle (Welle 0)"
+    assert "wave_0" not in rows, "the practice sheet is a handout, not a block (quick 261125-fsu)"
     assert rows["intro"].label == words["blocks"]["intro"]["label"]
     assert rows["debrief"].direction == words["blocks"]["debrief"]["direction"]
 

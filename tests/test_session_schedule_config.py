@@ -1,7 +1,7 @@
 """The session_schedule block: loader, validator, invisibility to the rules and the FLOW-02 product rules (D-01..D-04, D-19, D-22, D-27).
 
 The block is read only by the facilitator print models and by the intro-deck test (`persons_per_team`). The product
-rules (215 minutes since Phase 07.1 D-16: story block 35, debriefing 30 with stages 3/5/14/8; the D-02 order with a 25-minute wave 1 and 20-minute waves 2 and 3; 3 teams of 5) live here and not in the validator, so a future
+rules (200 minutes since quick 261125-fsu, which dropped the joint practice wave; story block 35, debriefing 30 with stages 3/5/14/8; the D-02 order with a 25-minute wave 1 and 20-minute waves 2 and 3; 3 teams of 5) live here and not in the validator, so a future
 schedule change is a deliberate test edit.
 """
 import copy
@@ -16,7 +16,7 @@ from planspiel.validate import validate
 from tests.support import CONFIG_PATH
 
 D02_BLOCKS = (
-    ("intro", 10), ("break_1", 5), ("story_groups", 35), ("wave_0", 15), ("measures_budget", 30), ("break_2", 15),
+    ("intro", 10), ("break_1", 5), ("story_groups", 35), ("measures_budget", 30), ("break_2", 15),
     ("wave_1", 25), ("wave_2", 20), ("wave_3", 20), ("closing", 10), ("debrief", 30),
 )
 PROPOSED_JOBS = (
@@ -56,12 +56,12 @@ def cfg():
 def test_the_real_config_carries_the_schedule(cfg):
     schedule = cfg.session_schedule
     assert isinstance(schedule, SessionSchedule)
-    assert (schedule.total_minutes, schedule.teams, schedule.persons_per_team) == (215, 3, 5)
+    assert (schedule.total_minutes, schedule.teams, schedule.persons_per_team) == (200, 3, 5)
     assert all(isinstance(block, ScheduleBlock) for block in schedule.blocks)
     assert tuple((block.id, block.minutes) for block in schedule.blocks) == D02_BLOCKS
-    assert [block.wave for block in schedule.blocks if block.wave is not None] == [0, 1, 2, 3]
+    assert [block.wave for block in schedule.blocks if block.wave is not None] == [1, 2, 3]
     assert {block.id: block.wave for block in schedule.blocks if block.wave is not None} == {
-        "wave_0": 0, "wave_1": 1, "wave_2": 2, "wave_3": 3,
+        "wave_1": 1, "wave_2": 2, "wave_3": 3,
     }
 
 
@@ -203,10 +203,10 @@ def test_the_validator_does_not_mutate_its_input():
 # --- FLOW-02 product rules on the real config ---------------------------------------------------------------
 
 
-def test_the_schedule_is_the_d02_sequence_of_215_minutes(cfg):
+def test_the_schedule_is_the_d02_sequence_of_200_minutes(cfg):
     schedule = cfg.session_schedule
-    assert schedule.total_minutes == 215
-    assert sum(block.minutes for block in schedule.blocks) == 215
+    assert schedule.total_minutes == 200
+    assert sum(block.minutes for block in schedule.blocks) == 200
     assert tuple((block.id, block.minutes) for block in schedule.blocks) == D02_BLOCKS
 
 
@@ -283,7 +283,7 @@ def test_stage_minutes_must_be_positive_and_keys_known():
 def test_the_pitch_speaking_time_is_sixty_seconds_outside_the_timed_blocks(cfg):
     schedule = cfg.session_schedule
     assert schedule.pitch_seconds == 60
-    assert schedule.total_minutes == 215
+    assert schedule.total_minutes == 200
     assert tuple((stage.id, stage.minutes) for stage in schedule.debrief_stages) == DEBRIEF_STAGES
 
 

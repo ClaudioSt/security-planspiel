@@ -152,6 +152,21 @@ def test_one_flow_row_per_flow_id_naming_the_debrief_and_the_schedule(cfg, texts
     assert fmt.format_number(cfg.session_schedule.total_minutes) in schedule_row
 
 
+def test_the_practice_wave_flow_row_says_it_is_no_joint_block_any_more(cfg, texts, sheet):
+    # quick 261125-fsu: no wave_0 block; the sheet still builds and the row reads as the texte sentence
+    assert not [block for block in cfg.session_schedule.blocks if block.wave == 0]
+    assert sheet.flow[1] == texts.get("sheets.was_neu.flow.welle0")
+    assert "kein gemeinsamer Block" in sheet.flow[1]
+
+
+def test_the_material_rows_say_the_aids_go_out_with_the_measures_block(texts):
+    assert "Maßnahmenkarten" in texts.get("sheets.was_neu.material.wave_page")
+    assert "Übungsblatt" in texts.get("sheets.was_neu.material.wave_page")
+    assert "nicht gemeinsam" in texts.get("sheets.was_neu.material.practice")
+    teamheft = texts.get("sheets.was_neu.material.teamheft")
+    assert "nicht geheftet" in teamheft and "blattweise" in teamheft
+
+
 def test_the_schedule_row_generates_the_wave_block_minutes(cfg, texts, baseline):
     minutes = sorted({block.minutes for block in cfg.session_schedule.blocks if block.wave})
     assert minutes == [20, 25]  # D-34: wave 1 is re-budgeted to 25 minutes, waves 2 and 3 keep 20

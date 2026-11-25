@@ -83,7 +83,7 @@ def test_a_real_sheet_stays_unfilled(cfg, texts):
 
 def test_job_and_title(doc, cfg):
     assert doc.job == practice.PRACTICE_JOB == "uebung-welle-0"
-    assert doc.title == "Welle 0 – Übung"
+    assert doc.title == "Welle 0 – Übung (Beispiel, zählt nicht für die Wertung)"
     assert doc.sheet.title == doc.title
     assert doc.sheet.job == doc.job
     assert doc.sheet.wave_id == cfg.practice.wave.wave_id == 0
@@ -262,7 +262,6 @@ def printed_payload(doc) -> dict:
     sheet = doc.sheet
     return {
         "title": doc.title,
-        "intro": doc.intro,
         "sheet_lines": {
             "e_value": _values(sheet.e_value_line),
             "total_bonus": _values(sheet.total_bonus_line),
