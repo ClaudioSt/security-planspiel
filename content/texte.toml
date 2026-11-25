@@ -945,7 +945,7 @@ schedule = "Fester Ablaufplan im Spielleitungsheft:"
 generated = "Alle Druckunterlagen sind generierte PDFs und ersetzen die Word- und PowerPoint-Dateien der MHP-Runde."
 veil = "Angriffe bleiben bis zu ihrer Welle verdeckt und werden erst zu Beginn ihrer Welle benannt; die Rechenregeln sind offen."
 clues = "Neu im Spielleitungsheft: Antworten zu Geschäftsfolgen und die"
-teamheft = "Das Teamheft wird je Team gedruckt, aber nicht geheftet; ihr gebt seine Blätter blattweise je Block aus: Schutzbedarf und Risikoregister im Story-Block, Planung und Tracking in Maßnahmen und Budget, RoS und Budget Review im Abschluss."
+teamheft = "Teamheft nicht heften, sondern blattweise je Block ausgeben: Schutzbedarf zuerst im Story-Block."
 wave_page = "Gebt mit den Maßnahmenkarten und dem Übungsblatt die Erklärseite aus:"
 practice = "Das Übungsblatt rechnet die Übungswelle mit allen Schritten vor; die Teams rechnen es nicht gemeinsam durch."
 

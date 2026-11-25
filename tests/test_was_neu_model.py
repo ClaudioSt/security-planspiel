@@ -164,7 +164,7 @@ def test_the_material_rows_say_the_aids_go_out_with_the_measures_block(texts):
     assert "Übungsblatt" in texts.get("sheets.was_neu.material.wave_page")
     assert "nicht gemeinsam" in texts.get("sheets.was_neu.material.practice")
     teamheft = texts.get("sheets.was_neu.material.teamheft")
-    assert "nicht geheftet" in teamheft and "blattweise" in teamheft
+    assert "nicht heften" in teamheft and "blattweise" in teamheft
 
 
 def test_the_schedule_row_generates_the_wave_block_minutes(cfg, texts, baseline):
