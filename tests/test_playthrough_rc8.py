@@ -84,3 +84,55 @@ def test_d3_the_tracking_hint_says_what_to_enter_when_a_wave_has_no_event_of_tha
     text = texts.get("sheets.tracking.external_hint")
     assert "kein Event dieser Art" in text and "leer" in text and "null" in text
 
+
+# ---- play-through findings with a code change (C1, B2, E1, E2) ------------------------------------------------------
+
+
+def _joined(line):
+    return "".join(part if isinstance(part, str) else "▢" for part in line)
+
+
+def test_c1_step_five_names_the_attack_value_kz_angriff_like_step_seven(cfg, texts):
+    from planspiel.printmodel import build_attack_sheets
+
+    attack_kz = texts.get("sheets.angriff.label_kz_attack")
+    for sheet in build_attack_sheets(cfg, texts):
+        for case in sheet.cases[:2]:
+            assert f" · {attack_kz}: " in case.outcome, sheet.job
+            assert " · KZ: " not in case.outcome, sheet.job
+        assert _joined(sheet.cases[2].lines[1]).startswith(f"{attack_kz} = "), sheet.job
+
+
+def test_b2_the_recovery_line_has_a_wide_first_box_and_keeps_the_last_five_parts_together(cfg, texts, rendered):
+    from planspiel.printmodel import Box, build_attack_sheets
+
+    sheet = build_attack_sheets(cfg, texts)[0]
+    assert [part.size for part in sheet.recovery_line if isinstance(part, Box)] == ["long", "short", "long"]
+    source = rendered[sheet.job]
+    start = source.index(BS + "fillline{" + sheet.recovery_line[0])
+    assert BS + "mbox{" + BS + "ibox{long}" in source[start : start + 400]
+    gap = source[source.rindex(BS + "end{tabularx}", 0, start) : start]
+    assert BS + "vspace{2mm}" in gap, "the line must not sit directly on the lower table rule"
+
+
+def test_e1_the_reality_hint_is_a_hint_line_of_its_own(cfg, texts, rendered):
+    from planspiel.printmodel import build_attack_sheets
+
+    for sheet in build_attack_sheets(cfg, texts):
+        assert BS + "hint{" + render.tex_escape(sheet.reality_hint) + "}" in rendered[sheet.job], sheet.job
+    assert texts.get("sheets.angriff.reality_hint").startswith("Tragt die R-Nummer ein oder")
+
+
+def test_e2_the_planning_sum_row_shades_only_its_label_and_closes_the_level_and_risk_cells(texts, rendered):
+    source = rendered["spieler-teamheft"]
+    row = next(
+        line
+        for line in source.splitlines()
+        if line.startswith(BS + "rowstrut{}") and BS + "cellcolor{mhplight}" in line and BS + "textbf{Summe}" in line
+    )
+    assert BS + "rowcolor" not in row
+    cells = row.split("&")
+    assert len(cells) == 5
+    assert BS + "cellcolor{mhplight}" in cells[0]
+    assert SHADED in cells[1] and SHADED in cells[4], row
+    assert SHADED not in cells[2] and SHADED not in cells[3], row
