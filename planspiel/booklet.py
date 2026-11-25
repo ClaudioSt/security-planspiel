@@ -19,7 +19,6 @@ from typing import Optional
 from planspiel import fmt, risk, rules
 from planspiel.cards import printed_strings
 from planspiel.config import Config
-from planspiel.eventtext import EFFECT_KINDS
 from planspiel.printmodel import PrintModelError
 from planspiel.texts import PreAttackView, Texts
 
@@ -376,10 +375,6 @@ def _ros_page(cfg: Config, texts: Texts) -> RosPage:
     )
 
 
-def _event_kinds(cfg: Config, wave_id: int) -> set[str]:
-    return {EFFECT_KINDS[event.type] for event in cfg.events.get(wave_id, [])}
-
-
 def _tracking_rows(cfg: Config, view: PreAttackView) -> tuple[TrackingRow, ...]:
     words, labels = view.sheet("tracking"), view.sheet("labels")
     wave_ids = [wave.wave_id for wave in cfg.waves]
@@ -395,9 +390,7 @@ def _tracking_rows(cfg: Config, view: PreAttackView) -> tuple[TrackingRow, ...]:
     def before_window(index: int, wave_id: int) -> bool:
         return index < len(wave_ids) - 1
 
-    def with_event(kind: str):
-        return lambda index, wave_id: kind in _event_kinds(cfg, wave_id)
-
+    # Veil (quick 261125-djw, V1): the event rows are open in every wave; a grey cell would show where an event comes.
     final = f"{words['row_kz_final']} = {words['kz_after_last']} {cfg.waves[-1].wave_id} + {words['row_kz_review']}"
     spec = (
         ("kz_before", words["row_kz_before"], "kz", cells(start=True, wave=every_wave)),
@@ -407,8 +400,8 @@ def _tracking_rows(cfg: Config, view: PreAttackView) -> tuple[TrackingRow, ...]:
         ("own_init", labels["init_costs"], "own", cells(start=True)),
         ("own_opex", words["row_own_opex"], "own", cells(wave=every_wave)),
         ("own_window", words["row_own_window"], "own", cells(wave=before_window)),
-        ("external_budget", words["row_external_budget"], "external", cells(wave=with_event("external_budget"))),
-        ("external_opex", words["row_external_opex"], "external", cells(wave=with_event("external_opex"))),
+        ("external_budget", words["row_external_budget"], "external", cells(wave=every_wave)),
+        ("external_opex", words["row_external_opex"], "external", cells(wave=every_wave)),
         ("remaining", words["row_remaining"], "budget", cells(start=True, wave=every_wave, review=True)),
         ("kz_review", words["row_kz_review"], "review", cells(review=True)),
         ("kz_final", final, "review", cells(review=True)),

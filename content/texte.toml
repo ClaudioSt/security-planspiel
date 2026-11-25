@@ -288,7 +288,7 @@ cap_intro = "Nur der Teil eurer Gesamtreduktion über der Schwelle wirkt, höchs
 recovery_intro = "Eure Backup- und Recovery-Fähigkeit senkt den Schaden dieses Angriffs. Lest den Faktor r am Level eurer Maßnahme ab:"
 kz_decimals_hint = "Rechnet genau; zwei Nachkommastellen genügen."
 kz_fraction_hint = "Multipliziert zuerst mit der oberen Zahl und teilt dann durch die untere. Rundet nur das Ergebnis auf zwei Nachkommastellen, nie die Steigung."
-events_hint = "KZ Events ist die KZ-Wirkung aller Events dieser Welle zusammen; ihr lest sie an den Eventkarten ab."
+events_hint = "KZ Events ist die KZ-Wirkung aller Events dieser Welle zusammen; ihr lest sie an den Eventkarten ab. Nennt keine Eventkarte eine KZ-Wirkung, tragt ±0 ein."
 wave_kz_rounding = "gerundet (bei ,5 weg von der Null, also zum größeren Betrag)"
 label_rounded = "gerundet"
 rounding_note = "Bei ,5 rundet ihr weg von der Null, also zum größeren Betrag."
@@ -332,7 +332,7 @@ own_costs = "Eigene Kosten"
 damage_sum = "Summe der Schäden"
 ros_short = "RoS"
 review_title = "Budget Review"
-review_intro = "Am Ende des Spiels rechnet ihr zuerst euer Restbudget aus; die eigenen Kosten übernehmt ihr von der RoS-Seite. Das Ergebnis muss zum letzten Restbudget im Tracking-Bogen passen. Die KZ-Änderung des Budget Reviews lest ihr danach von der Eventkarte ab, die ihr zum Abschluss bekommt."
+review_intro = "Am Ende des Spiels rechnet ihr zuerst euer Restbudget aus; die eigenen Kosten übernehmt ihr von der RoS-Seite. Das Ergebnis muss zum letzten Restbudget im Tracking-Bogen passen. Die KZ-Änderung des Budget Reviews lest ihr danach von der Eventkarte ab, die ihr zum Abschluss bekommt. Tragt sie auch im Tracking-Bogen in der Spalte Budget Review ein und berechnet dort die KZ final."
 tier_budget = "Tier-Budget"
 budget_event = "Budgetänderung durch Events"
 event_opex = "OPEX-Änderung durch Events"
@@ -450,7 +450,7 @@ decision = "behandeln: Der Schaden wäre zu hoch"
 
 [sheets.tracking]
 title = "Tracking-Bogen"
-intro = "Pro Welle eine Spalte, von oben nach unten: Werte vom Angriffsblatt, den Maßnahmenkarten und den Eventkarten."
+intro = "Pro Welle eine Spalte, von oben nach unten: Werte vom Angriffsblatt, den Maßnahmenkarten und den Eventkarten. Die Spalte Start füllt ihr nach der Planung aus: KZ-Start eures Tiers, Init-Kosten und Restbudget."
 wave = "Welle"
 row_kz_before = "KZ vor der Welle"
 row_kz_change = "KZ-Änderung der Welle"
@@ -470,7 +470,7 @@ remaining_previous = "Restbudget der Spalte davor"
 rounding_hint = "Gerundet wird nur auf dem Angriffsblatt."
 clamp_lead = "KZ nach der Welle und KZ final werden begrenzt auf"
 clamp_to = "bis"
-external_hint = "Externe Effekte ändern nur das Budget, nicht den RoS. Event-Werte tragt ihr mit dem Vorzeichen der Eventkarte ein; bei Event: OPEX gilt der Wert je aktiver Maßnahme mal die Zahl eurer aktiven Maßnahmen, ein Minus erhöht das Restbudget."
+external_hint = "Externe Effekte ändern nur das Budget, nicht den RoS. Gab es in einer Welle kein Event dieser Art, lasst das Feld leer oder tragt null ein. Event-Werte tragt ihr mit dem Vorzeichen der Eventkarte ein; bei Event: OPEX gilt der Wert je aktiver Maßnahme mal die Zahl eurer aktiven Maßnahmen, ein Minus erhöht das Restbudget."
 window_title = "Change-Fenster nach Welle"
 window_intro = "Tragt je Änderung das Level nach dem Fenster ein (gekündigt: Level 0). Δ Init ist die Init des neuen minus die des bisherigen Levels, bei einer neuen Maßnahme die volle Init; beim Senken und Kündigen bleibt Δ Init leer. Unveränderte Maßnahmen bleiben leer."
 window_level = "Level nach dem Fenster"
@@ -705,7 +705,7 @@ wave_label = "Welle"
 practice_label = "Übungswelle"
 total_label = "Gesamtdauer (Min.)"
 print_title = "Druckliste"
-print_intro = "Die Liste zeigt für jede Datei, wie oft ihr sie druckt: je Team und für die Spielleitung. Schneidet die Maßnahmen- und Eventkarten an den Schnittlinien aus und sortiert die Eventkarten nach Welle; die Karte „Budget Review“ gebt ihr erst im Abschluss aus. Die Arbeitsblätter der Angriffe gebt ihr erst zu Beginn ihrer Welle an die Teams."
+print_intro = "Druckt alles einseitig. Die Liste zeigt für jede Datei, wie oft ihr sie druckt: je Team und für die Spielleitung. Schneidet die Maßnahmen- und Eventkarten an den Schnittlinien aus und sortiert die Eventkarten nach Welle; die Karte „Budget Review“ gebt ihr erst im Abschluss aus. Die Arbeitsblätter der Angriffe gebt ihr erst zu Beginn ihrer Welle an die Teams."
 print_head_label = "Dokument"
 print_head_file = "Datei"
 print_head_team = "Je Team"
@@ -731,7 +731,7 @@ direction = "Gebt das Übungsblatt und die Erklärseite „So funktioniert eine 
 
 [sheets.ablauf.blocks.measures_budget]
 label = "Maßnahmen und Budget"
-direction = "Gebt die Maßnahmenkarten aus. Jedes Team einigt sich intern auf sein Budget-Tier und trägt seine Maßnahmen im Teamheft ein. Weist auf die freiwillige Spalte gegen R# im Teamheft hin; ihr prüft sie nicht."
+direction = "Gebt die Maßnahmenkarten aus. Jedes Team einigt sich intern auf sein Budget-Tier und trägt seine Maßnahmen im Teamheft ein. Weist auf die freiwillige Spalte gegen R# im Teamheft hin; ihr prüft sie nicht. Danach füllen die Teams im Tracking-Bogen die Spalte Start aus: KZ-Start ihres Tiers, Init-Kosten und Restbudget (Tier-Budget minus Init-Kosten)."
 
 [sheets.ablauf.blocks.break_2]
 label = "Pause"
@@ -748,7 +748,7 @@ direction = "Lest die Events dieser Welle vor und gebt die zugehörigen Eventkar
 
 [sheets.ablauf.blocks.closing]
 label = "Abschluss"
-direction = "Gebt die Eventkarte „Budget Review“ aus. Die Teams rechnen im Teamheft erst die RoS-Seite, dann das Budget Review aus und füllen im Risikoregister die Spalte Rückblick aus. Sammelt die Ergebnisse ein."
+direction = "Gebt die Eventkarte „Budget Review“ aus. Die Teams rechnen im Teamheft erst die RoS-Seite, dann das Budget Review aus, füllen im Risikoregister die Spalte Rückblick aus und berechnen zuletzt im Tracking-Bogen die KZ final. Notiert je Team KZ final und RoS in der Vergleichstabelle im Debriefing-Teil dieses Hefts; die Teamhefte bleiben bei den Teams."
 
 [sheets.ablauf.blocks.debrief]
 label = "Debriefing"

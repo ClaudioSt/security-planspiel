@@ -31,6 +31,7 @@ ALLOWLIST_PINNED = {
     ("sheets.angriff.wave_kz_rounding", ",5"),
     ("sheets.angriff.rounding_note", ",5"),
     ("sheets.tracking.window_intro", "Level 0"),
+    ("sheets.angriff.events_hint", "±0"),
 }
 
 

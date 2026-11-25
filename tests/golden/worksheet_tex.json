@@ -1,7 +1,7 @@
 {
   "sha256": {
-    "angriff-1_ransomware": "b9a13e8a0d78e382dcaf2e224b0b717e5e47181dfd6f595a860ad35d815f958d",
-    "angriff-2_ot": "80c06c967e11d5d371f89cc435b2cacd58db7e1009b828a188532c6b8a10f2cf",
-    "angriff-3_exfil": "33abd698e86b821ede0acabd8f69277055b458352f185f0d48552ebb1922c5dd"
+    "angriff-1_ransomware": "ae45fb0401af83896a5190786641a01675b80fff2882c86149bec4ae2bfc22d2",
+    "angriff-2_ot": "d35d11af33611b0d2a9317a4449d028194c9d2a397ba2d296d357357b81af17d",
+    "angriff-3_exfil": "6ce6a5fdb0499114ae29d94303442541b85545466a7141b70c4d732b335aaa04"
   }
 }
