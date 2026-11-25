@@ -81,8 +81,10 @@ def test_tier_rows_equal_the_config_in_config_order(loaded):
         for name, tier in cfg.budget_tiers.items()
     )
     assert booklet.planning.tier_rows == expected
-    labels = PreAttackView(cfg, texts).sheet("labels")
-    assert booklet.planning.tier_header[:2] == (labels["tier"], labels["available_budget"])
+    view = PreAttackView(cfg, texts)
+    labels, words = view.sheet("labels"), view.sheet("teamheft")
+    assert booklet.planning.tier_header == (labels["tier"], words["tier_budget"], words["kz_start"])
+    assert words["tier_budget"] != labels["available_budget"], "Verfügbares Budget is the page-5 sum only"
 
 
 def test_the_real_tier_table_starts_with_the_low_tier_of_the_config(real):

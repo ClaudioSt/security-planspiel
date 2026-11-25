@@ -787,9 +787,9 @@ def build_was_neu_sheet(cfg: Config, texts: Texts, baseline: Optional[Baseline])
     material_rows = (
         material["generated"],
         material["veil"],
-        f"{material['clues']} {view.sheet('spielleitung')['clues_title']}",
+        f"{material['clues']} {view.sheet('spielleitung')['clues_title']}.",
         material["teamheft"],
-        f"{material['wave_page']} {view.sheet('welle')['title']}",
+        f"{material['wave_page']} {view.sheet('welle')['title']}.",
         material["practice"],
     )
 

@@ -107,7 +107,7 @@ def test_the_pitch_is_optional_and_has_no_guide_minutes(cfg, texts, page):
     assert page.pitch_title == words["pitch_title"]
     assert page.pitch_text == words["pitch_text"]
     assert page.pitch_limit_label == words["pitch_limit_label"]
-    assert "Warum war unser Budget gut investiert?" in page.pitch_text
+    assert page.pitch_text.startswith("Optional:") and "Warum war unser Budget gut investiert?" not in page.pitch_text
     seconds = cfg.session_schedule.pitch_seconds
     assert page.pitch_limit == f"{fmt.format_number(seconds)} {words['seconds_unit']}"
     assert tuple(stage.id for stage in cfg.session_schedule.debrief_stages) == STAGE_ORDER

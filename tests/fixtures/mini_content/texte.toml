@@ -102,7 +102,7 @@ rule = "Geprüft wird das Restbudget erst am Ende; im Change-Fenster nach dieser
 
 [events.oem_audit]
 narrative = "Der große Automobilkunde prüft die Sicherheitsstandards."
-checklist_heading = "Audit Checkliste"
+checklist_heading = "Audit-Checkliste"
 
 [events.kritische_schwachstelle]
 narrative = "Ihr werdet von einem Softwarehersteller informiert: In einem von euch genutzten System wurde eine kritische Schwachstelle entdeckt."
@@ -290,8 +290,9 @@ level_or_higher = "oder höher"
 condition_if = "Wenn"
 condition_and = "und"
 level_equals = "auf Level"
+not_active = "nicht aktiv"
 otherwise = "Sonst"
-total_budget = "Gesamtbudget"
+total_budget = "Budget"
 opex_costs = "OPEX"
 per_active_measure = "je aktiver Maßnahme"
 kurswechsel_window = "Maßnahmentausch im Change-Fenster nach Welle"
@@ -441,10 +442,10 @@ clue_section_audit_mail_einleitung = "Einleitung"
 clue_section_zeitungsartikel = "Ticker"
 
 [story.steckbrief]
-doc_title = "MECHTECH GmbH: Unternehmenssteckbrief"
+doc_title = "MechTech GmbH: Unternehmenssteckbrief"
 [story.steckbrief.kurzprofil]
 heading = "Kurzprofil"
-text = "Die MECHTECH GmbH ist ein mittelständischer Präzisionsfertiger mit ca. 80 Mitarbeitenden."
+text = "Die MechTech GmbH ist ein mittelständischer Präzisionsfertiger mit ca. 80 Mitarbeitenden."
 [story.steckbrief.produkte]
 heading = "Produkte & Leistungen"
 bullets = ["Präzisions-Getriebeteile", "Prototyping und Kleinserien"]

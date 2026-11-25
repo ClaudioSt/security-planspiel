@@ -296,7 +296,7 @@ def _planning_page(cfg: Config, texts: Texts) -> PlanningPage:
         ),
         step_tiers=words["step_tiers"],
         tier_intro=budget["tier_intro"],
-        tier_header=(labels["tier"], labels["available_budget"], words["kz_start"]),
+        tier_header=(labels["tier"], words["tier_budget"], words["kz_start"]),
         tier_rows=tuple(
             (name.capitalize(), fmt.format_money(tier.budget * 1000), str(tier.kz_start))
             for name, tier in cfg.budget_tiers.items()

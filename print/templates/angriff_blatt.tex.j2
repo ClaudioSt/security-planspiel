@@ -5,10 +5,10 @@
 \fillline{\BLOCK{for part in parts}\BLOCK{if part is string}\VAR{part}\BLOCK{elif part.value is none}\ibox{\VAR{part.size}}\BLOCK{else}\ifilled{\VAR{part.size}}{\VAR{part.value}}\BLOCK{endif}\BLOCK{endfor}}
 \BLOCK{endmacro}
 \attacktitle{\VAR{sheet.title}}
-\VAR{sheet.narrative}\par
 \BLOCK{if intro is defined}
 \refline{\VAR{intro}}
 \BLOCK{endif}
+\VAR{sheet.narrative}\par
 
 \step{\VAR{sheet.step_headings.cia}}
 \hint{\VAR{sheet.intro.start_values_intro}}

@@ -229,8 +229,9 @@ def test_the_real_and_condition_names_both_clauses():
     texts = load_texts(CONTENT_DIR / "texte.toml")
     event = next(event for event in _wave_events(cfg) if event.id == "nervige_authentifizierung")
     when_true, otherwise = effect_rows(event, cfg, texts).rows
-    assert "M1" in when_true.text and "mindestens auf Level 2" in when_true.text
-    assert "M6" in when_true.text and "auf Level 0" in when_true.text
+    assert "M1 – IAM/PAM mindestens auf Level 2" in when_true.text
+    assert "M6 – Security Awareness & Training nicht aktiv (Level 0)" in when_true.text
+    assert "M1 (" not in when_true.text and "auf Level 0" not in when_true.text
     assert when_true.text.endswith("KZ −6")
     assert otherwise.text.endswith("KZ ±0")
 
@@ -245,14 +246,14 @@ def test_flat_budget_row_equals_the_simulation(loaded):
         (row,) = effect.rows
         assert effect.kind == "external_budget"
         assert rules.evaluate_event(event, _selection(cfg))[2] == row.value
-        assert row.text == f"Gesamtbudget {fmt.format_signed(row.value * 1000)} €"
+        assert row.text == f"Budget {fmt.format_signed(row.value * 1000)} €"
 
 
 def test_the_real_flat_budget_row_reads_minus_twenty_thousand_euros():
     cfg = load_config(CONFIG_PATH)
     texts = load_texts(CONTENT_DIR / "texte.toml")
     event = next(event for event in _wave_events(cfg) if event.id == "sparprogramm")
-    assert effect_rows(event, cfg, texts).rows[0].text == "Gesamtbudget −20.000 €"
+    assert effect_rows(event, cfg, texts).rows[0].text == "Budget −20.000 €"
 
 
 def test_opex_discount_row_scales_with_the_active_measures(loaded):

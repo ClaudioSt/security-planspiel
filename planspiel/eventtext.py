@@ -114,13 +114,12 @@ def _level_bonus(event: Event, words: dict) -> EventEffect:
 
 
 def _clause_text(clause: dict, cfg: Config, labels: dict, words: dict) -> str:
-    measure_id = clause["measure"]
-    if measure_id not in cfg.measures:
-        raise PrintModelError(f"Maßnahme '{measure_id}' gibt es in der Config nicht")
-    name = f"{measure_id} ({cfg.measures[measure_id].name})"
+    name = _measure_label(cfg, clause["measure"])
     if "min_level" in clause:
         return f"{name} {labels['min_level']} {clause['min_level']}"
     if "level_eq" in clause:
+        if clause["level_eq"] == 0:
+            return f"{name} {words['not_active']} ({labels['level']} {clause['level_eq']})"
         return f"{name} {words['level_equals']} {clause['level_eq']}"
     raise PrintModelError(f"Bedingung ohne min_level oder level_eq: {clause}")
 

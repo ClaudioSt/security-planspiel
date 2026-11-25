@@ -41,4 +41,4 @@ why = "Dauer des E-Learnings, kein Spielparameter"
 [[allow]]
 key = "sheets.angriff.wave_kz_rounding"
 token = ",5"
-why = "Name der festen Rundungsregel (ab ,5 vom Betrag aufrunden, rounding.round_half_away), kein Config-Parameter"
+why = "Name der festen Rundungsregel (bei ,5 weg von der Null, rounding.round_half_away), kein Config-Parameter"
