@@ -4,10 +4,10 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: 07
 status: executing
-stopped_at: Print RC6 built (quick 261125-0f4); next 07-12 dry run
+stopped_at: Print RC7 built (quick 261125-ail); next 07-12 dry run
 last_updated: "2026-11-23T14:01:55.112Z"
 last_activity: 2026-11-25
-last_activity_desc: Print RC6 (Budget Review values off the Teamheft, no gesamt column, proofreading)
+last_activity_desc: Print RC7 (54 findings of proofreading pass 2 applied)
 progress:
   total_phases: 9
   completed_phases: 8
@@ -262,6 +262,7 @@ None. The veiling todo (2026-06-23) is closed (moved to `todos/completed/` in Ph
 | 261123-oav | Close the open items after phase 07.2: Übungswelle slide 33 and slide-number fields in the intro deck, slide 21/22/31 wording, WR-01/WR-02 review fixes, CONCERNS 215 minutes | 2026-11-23 | 3a9e2b0 | [261123-oav-close-open-items-after-07-2-deck-review-](./quick/261123-oav-close-open-items-after-07-2-deck-review-/) |
 | 261124-u23 | Overspend table on Teamheft page 5 shrinks to three rows (config `table_rows`) plus follow-up line; request mail goes to MHP; print RC5 (stamp Stand 2026-11-24 · cd836f6) | 2026-11-24 | c1ffdee | [261124-u23-overspend-table-three-rows-rc5](./quick/261124-u23-overspend-table-three-rows-rc5/) |
 | 261125-0f4 | Budget Review values off the Teamheft (overspend table and `table_rows` removed), no gesamt column in the protection-need table (Teamheft, deck slides 22 and 32), 87 proofreading findings applied; print RC6 (stamp Stand 2026-11-25 · 95ed03c) | 2026-11-25 | e1a94ec | [261125-0f4-budget-review-off-teamheft-and-drop-gesa](./quick/261125-0f4-budget-review-off-teamheft-and-drop-gesa/) |
+| 261125-ail | Proofreading pass 2: all 54 findings applied (Budget Review card at the Abschluss, Δ Init defined, Übung start line, no-Recovery note, contents with page numbers); print RC7 (stamp Stand 2026-11-25 · 4fe9685), full reprint | 2026-11-25 | d372291 | [261125-ail-proofreading-pass-two-rc7](./quick/261125-ail-proofreading-pass-two-rc7/) |
 
 ## Deferred Items
 
