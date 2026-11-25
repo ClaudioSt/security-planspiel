@@ -205,7 +205,6 @@ class TrackingExcerpt:
 class PracticeDocument:
     job: str
     title: str
-    intro: str
     sheet: AttackSheet
     selection_title: str
     selection_header: tuple[str, ...]
@@ -374,7 +373,6 @@ def build_practice_document(cfg: Config, texts: Texts) -> Optional[PracticeDocum
     return PracticeDocument(
         job=PRACTICE_JOB,
         title=sheet.title,
-        intro=texts.get("practice.intro"),
         sheet=sheet,
         selection_title=texts.get("practice.selection_title"),
         selection_header=header,

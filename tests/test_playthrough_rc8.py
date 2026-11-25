@@ -76,7 +76,7 @@ def test_d2_the_closing_direction_keeps_the_teamheft_with_the_teams_and_notes_th
     assert "Sammelt" not in text and "einsammeln" not in text
     assert "berechnen zuletzt im Tracking-Bogen die KZ final" in text
     assert "Notiert je Team KZ final und RoS in der Vergleichstabelle" in text
-    assert "die Teamhefte bleiben bei den Teams" in text
+    assert "die Blätter bleiben bei den Teams" in text
     assert texts.get("sheets.debrief.compare_title") in text
 
 

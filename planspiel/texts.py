@@ -159,7 +159,7 @@ SHEET_KEYS = (
 
 _ABLAUF_KEYS = (
     "title", "intro", "head_block", "head_minutes", "head_span", "head_clock", "head_direction", "wave_label",
-    "practice_label", "total_label", "print_title", "print_intro", "print_head_label", "print_head_file",
+    "total_label", "print_title", "print_intro", "print_head_label", "print_head_file",
     "print_head_team", "print_head_facilitator", "print_head_total", "print_attack_sheet", "teams_label",
 )
 # Required only when the config carries a session_schedule, so the mini fixture needs no schedule texts.
@@ -239,7 +239,7 @@ REALITY_KEYS = ("sheets.angriff.reality_question", "sheets.angriff.reality_hint"
 
 _PROBELAUF_KEYS = (
     "title", "notice", "intro", "head_block", "head_planned", "head_span", "head_start", "head_actual", "head_questions",
-    "head_errors", "total_label", "pass_title", "pass_wave_lead", "pass_wave_practice", "pass_wave_tail", "pass_rules",
+    "head_errors", "total_label", "pass_title", "pass_wave_lead", "pass_wave_tail", "pass_rules",
     "help_title", "observer_label", "date_label",
 )
 # Required only when the config carries a session_schedule, like the schedule texts (FLOW-05).
@@ -248,7 +248,7 @@ PROBELAUF_KEYS = tuple(f"sheets.probelauf.{name}" for name in _PROBELAUF_KEYS)
 PRACTICE_KEYS = tuple(
     f"practice.{name}"
     for name in (
-        "title", "intro", "narrative", "cia_rationale", *CASE_KEYS, "selection_title", "event_result", "tracking_title",
+        "title", "narrative", "cia_rationale", *CASE_KEYS, "selection_title", "event_result", "tracking_title",
         "start_budget", "start_kz", "start_remaining", "events_hint",
     )
 )

@@ -147,7 +147,7 @@ def test_own_cost_rows_are_init_window_differences_opex_and_the_sum(loaded):
     assert own[0] == labels["total_init"]
     assert own[2] == labels["total_opex"]
     assert len(own) == 4
-    assert "Kurswechsel" in own[1] and "Change-Fenster" in own[1]
+    assert "Kurswechsel" not in own[1] and "Change-Fenster" in own[1]  # the event is named on its card only
     for row in booklet.ros.own_cost_rows:
         assert "event" not in f"{row.label} {row.note}".lower(), "no event-penalty row in the own costs (F8, RULE-06)"
     assert "+" in booklet.ros.own_cost_rows[3].note

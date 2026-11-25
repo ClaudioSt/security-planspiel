@@ -16,6 +16,10 @@ Quick task 261123-oav added the Übungswelle slide 33 and fixed slides 31, 21 an
 `.planning/quick/261123-oav-close-open-items-after-07-2-deck-review-/261123-oav-DECK-CHECKLIST.md` (follow-up to
 PROT-05 and LEG-02); minute, title and material words come from config and texte.toml, only the approved slide texts
 are typed here.
+
+Quick task 261125-fsu (print RC9) removed the joint practice wave: the Übungswelle slide and the `wave_0` block are
+gone, so every slide after the old slide 33 moved up by one (37 slides), and the Teamheft is named on the material
+lines as "Teamheft (<chapter>)" because its sheets are handed out per block.
 """
 import os
 import re
@@ -32,31 +36,29 @@ from tests.test_readme_current import RETIRED_MATRIX_PATTERNS
 
 DECK = REPO_ROOT / "final_documents" / "Planspiel_Einführung + Grundlagen.pptx"
 
-# slide number -> block ids behind its minute figure (slide 37: closing plus debrief; slide 36 is composed per wave
-# below; slide 33 is the Übungswelle slide of quick task 261123-oav)
+# slide number -> block ids behind its minute figure (slide 36: closing plus debrief; slide 35 is composed per wave
+# below); the Übungswelle slide is gone since quick task 261125-fsu
 MINUTE_SLIDES = {
     26: ("break_1",),
     31: ("story_groups",),
-    33: ("wave_0",),
-    34: ("measures_budget",),
-    35: ("break_2",),
-    37: ("closing", "debrief"),
+    33: ("measures_budget",),
+    34: ("break_2",),
+    36: ("closing", "debrief"),
 }
 MINUTE_TEXT = {
     26: "{n} Minuten Pause",
     31: "{n} min",
     33: "{n} min",
-    34: "{n} min",
-    35: "{n} Minuten Pause",
-    37: "{n} min",
+    34: "{n} Minuten Pause",
+    36: "{n} min",
 }
-SUMMED_SLIDES = {37}
+SUMMED_SLIDES = {36}
 MINUTE_FIGURE = re.compile(r"(\d+)\s*(?:Minuten|min)\b")
 CLOCK_TIME = re.compile(r"(?<!\d)\d{1,2}:\d{2}(?!\d)")
 
 # The wave slide names wave 1 and the other waves separately since the D-34 re-budget of wave 1 (user-approved
-# 2026-11-04); it is slide 36 since the Übungswelle slide was inserted at 33 (quick task 261123-oav)
-WAVE_SLIDE = 36
+# 2026-11-04); it is slide 35 since the Übungswelle slide was removed again (quick task 261125-fsu)
+WAVE_SLIDE = 35
 WAVE_TEXT = "{first} min Welle 1, je {rest} min Welle 2 und 3"
 
 TEAM_SIZE_SLIDE = 30
@@ -71,21 +73,27 @@ DATE_FIGURE = re.compile(r"\d{1,2}\.\d{1,2}\.\d{4}")
 
 # Material lines (approved rows) and the print_list jobs behind them
 MATERIAL = {
-    31: "Material: Unternehmenssteckbrief, Anfrage-Mail, Zeitungsartikel, Audit-Mail, Teamheft",
-    33: "Material: Übungsblatt, So funktioniert eine Welle",
-    34: "Material: Teamheft, Maßnahmenkarten",
-    36: "Material: Arbeitsblatt der Welle, Eventkarten, So funktioniert eine Welle",
-    37: "Material: Teamheft",
+    # the Teamheft is handed out as loose sheets per block and named "Teamheft (<chapter>)" with the printed page
+    # titles (user, 2026-11-25); the waves slide drops "So funktioniert eine Welle" because the teams already hold it
+    31: "Material: Unternehmenssteckbrief, Anfrage-Mail, Zeitungsartikel, Audit-Mail, Teamheft (Schutzbedarf und Risikoregister)",
+    33: "Material: Maßnahmenkarten, Übungsblatt Welle 0, So funktioniert eine Welle, Teamheft (Budget und Planung, Tracking-Bogen)",
+    35: "Material: Arbeitsblatt der Welle, Eventkarten",
+    36: "Material: Eventkarte Budget Review, Teamheft (Return on Security, Budget Review)",
 }
 MATERIAL_JOBS = {
     31: ("spieler-unternehmenssteckbrief", "spieler-anfrage-mail", "spieler-zeitungsartikel", "spieler-audit-mail",
          "spieler-teamheft"),
-    33: ("uebung-welle-0", "spieler-so-funktioniert-eine-welle"),
-    34: ("spieler-teamheft", "spieler-massnahmenkarten"),
-    36: ("angriff-1_ransomware", "angriff-2_ot", "angriff-3_exfil", "spieler-eventkarten",
-         "spieler-so-funktioniert-eine-welle"),
-    37: ("spieler-teamheft",),
+    33: ("spieler-massnahmenkarten", "uebung-welle-0", "spieler-so-funktioniert-eine-welle", "spieler-teamheft"),
+    35: ("angriff-1_ransomware", "angriff-2_ot", "angriff-3_exfil", "spieler-eventkarten"),
+    36: ("spieler-eventkarten", "spieler-teamheft"),
 }
+# the Teamheft chapters named on each slide, as printed (texte.toml keys of the page titles)
+TEAMHEFT_CHAPTER_KEYS = {
+    31: ("sheets.register.page_title",),
+    33: ("sheets.teamheft.planning_title", "sheets.tracking.title"),
+    36: ("sheets.teamheft.ros_title", "sheets.teamheft.review_title"),
+}
+BARE_TEAMHEFT = re.compile(r"Teamheft(?! \()")
 
 # PROT-05 (D-16): the Schutzbedarf slide sits directly after the story slide 31; checklist 07.2-DECK-CHECKLIST.md
 # (it replaced the 07.1 Risiko-Matrix slide); title and second example row are the user-approved wording
@@ -95,11 +103,8 @@ NEED_SECOND_ROW = ("Speiseplan der Kantine", "gering", "gering", "mittel")
 CLOSING_REVIEW_TEXT = "Und wie gut stimmte euer Risikoregister im Rückblick (richtig, unterschätzt, überschätzt)?"
 MONEY_FIGURE = re.compile(r"\d[\d.]*\s*(€|Euro)")
 
-# Quick task 261123-oav: the Übungswelle slide, the damage-per-protection-goal wording on the story slide 31, the bridge
-# line on theory slide 21 and the shown theory slide 22; the texts are the approved ones of the deck checklist
-PRACTICE_SLIDE = 33
-PRACTICE_BODY_WORDS = ("E-Wert", "Gesamtreduktion", "Schaden", "Kundenzufriedenheit")
-PRACTICE_NOT_SCORED = "zählt nicht für eure Wertung"
+# Quick task 261123-oav: the damage-per-protection-goal wording on the story slide 31, the bridge line on theory
+# slide 21 and the shown theory slide 22; the texts are the approved ones of the deck checklist
 STORY_SLIDE = 31
 RISK_ASSESSMENT_TEXT = (
     "Wie groß wäre der Schaden fürs Geschäft, wenn Vertraulichkeit, Integrität oder Verfügbarkeit verletzt würde? "
@@ -197,7 +202,7 @@ def test_wave_slide_composes_the_minutes_per_wave_from_the_session_schedule(cfg,
     assert figures == {by_id["wave_1"], by_id["wave_2"]}
 
 
-@pytest.mark.parametrize("number", [26, 35])
+@pytest.mark.parametrize("number", [26, 34])
 def test_break_slides_carry_no_clock_time(slide_texts, number):
     assert not CLOCK_TIME.search(slide_texts[number])
     assert not re.search(r"bis\s*\d", slide_texts[number])
@@ -237,14 +242,14 @@ def test_measures_slide_describes_measures_not_threats(slide_texts):
 
 
 def test_budget_slide_names_no_amount(slide_texts):
-    assert "Budget zur Umsetzung eurer Maßnahmen" in slide_texts[34]
-    assert "€" not in slide_texts[34]
+    assert "Budget zur Umsetzung eurer Maßnahmen" in slide_texts[33]
+    assert "€" not in slide_texts[33]
 
 
 def test_last_block_slide_is_closing_and_debriefing(slide_texts):
-    assert "Abschluss und Debriefing" in slide_texts[37]
-    assert "Endergebnis und Reflexion" not in slide_texts[37]
-    assert CLOSING_REVIEW_TEXT in slide_texts[37]
+    assert "Abschluss und Debriefing" in slide_texts[36]
+    assert "Endergebnis und Reflexion" not in slide_texts[36]
+    assert CLOSING_REVIEW_TEXT in slide_texts[36]
 
 
 def test_no_old_phrase_and_no_board_term_remains(slide_texts):
@@ -255,33 +260,55 @@ def test_no_old_phrase_and_no_board_term_remains(slide_texts):
 
 
 def test_the_deck_has_the_expected_slides(slides):
-    assert len(slides) == 38
+    assert len(slides) == 37
 
 
 # --- Übungswelle slide and the bridged theory slides (quick task 261123-oav) -------------------------------------
 
 
-def test_practice_slide_is_visible_and_titled(slides, content):
-    slide = slides[PRACTICE_SLIDE - 1]
-    assert slide._element.get("show") != "0"
-    assert slide.shapes.title.text_frame.text == content.texts.subtree("sheets.ablauf")["practice_label"]
+def test_there_is_no_practice_wave_slide_any_more(slides, cfg):
+    # quick 261125-fsu: the practice sheet is a handout of the Maßnahmen und Budget block, not a block of its own
+    practice_label = "Übungswelle"
+    for number, slide in enumerate(slides, start=1):
+        title = slide.shapes.title.text_frame.text if slide.shapes.title is not None else ""
+        assert title != practice_label, number
+    assert not [block for block in cfg.session_schedule.blocks if block.wave == 0]
 
 
-def test_practice_slide_material_uses_the_print_labels(content, slide_texts):
+def _material_line(content, number):
     labels = content.texts.subtree("sheets.ablauf.print")
-    line = "Material: " + ", ".join(labels[job] for job in MATERIAL_JOBS[PRACTICE_SLIDE])
-    assert line == MATERIAL[PRACTICE_SLIDE]
-    assert line in slide_texts[PRACTICE_SLIDE]
+    chapters = ", ".join(content.texts.get(key) for key in TEAMHEFT_CHAPTER_KEYS[number])
+    teamheft = f"{labels['spieler-teamheft']} ({chapters})"
+    items = {
+        31: [labels[job] for job in MATERIAL_JOBS[31] if job != "spieler-teamheft"],
+        33: [
+            labels["spieler-massnahmenkarten"],
+            f"{labels['uebung-welle-0']} Welle 0",
+            labels["spieler-so-funktioniert-eine-welle"],
+        ],
+        36: [f"Eventkarte {content.texts.get('sheets.teamheft.review_title')}"],
+    }[number]
+    return "Material: " + ", ".join([*items, teamheft])
 
 
-def test_practice_slide_explains_one_wave_without_scoring(content, slide_texts):
-    text = slide_texts[PRACTICE_SLIDE]
-    for word in PRACTICE_BODY_WORDS:
-        assert word in text, word
-    assert PRACTICE_NOT_SCORED in text
-    assert PRACTICE_NOT_SCORED in content.texts.subtree("practice")["intro"]
-    assert "€" not in text and "Euro" not in text
-    assert not MONEY_FIGURE.search(text)
+@pytest.mark.parametrize("number", [31, 33, 36])
+def test_material_line_names_the_teamheft_by_its_printed_chapters(content, slide_texts, number):
+    line = _material_line(content, number)
+    assert line == MATERIAL[number]
+    assert line in slide_texts[number]
+
+
+def test_the_waves_slide_lists_only_the_attack_sheet_and_the_event_cards(content, slide_texts):
+    labels = content.texts.subtree("sheets.ablauf.print")
+    assert "So funktioniert eine Welle" not in slide_texts[WAVE_SLIDE]
+    assert labels["spieler-eventkarten"] in MATERIAL[WAVE_SLIDE]
+
+
+def test_no_material_line_names_the_teamheft_without_a_chapter(slide_texts):
+    for number, text in slide_texts.items():
+        for line in text.splitlines():
+            if line.startswith("Material:"):
+                assert not BARE_TEAMHEFT.search(line), (number, line)
 
 
 def test_block_slides_follow_the_session_schedule(cfg):
@@ -290,8 +317,8 @@ def test_block_slides_follow_the_session_schedule(cfg):
     numbers = [slide_of[block.id] for block in cfg.session_schedule.blocks if block.id in slide_of]
     assert numbers == sorted(numbers), numbers
     ids = [block.id for block in cfg.session_schedule.blocks]
-    assert ids.index("story_groups") < ids.index("wave_0") < ids.index("measures_budget")
-    assert slide_of["story_groups"] < slide_of["wave_0"] < slide_of["measures_budget"]
+    assert ids.index("story_groups") < ids.index("measures_budget")
+    assert slide_of["story_groups"] < slide_of["measures_budget"]
 
 
 def test_slide_number_fields_show_the_slide_position(slides):
@@ -412,7 +439,6 @@ def _flow_phases(content) -> list:
     return [
         blocks["intro"]["label"],
         blocks["story_groups"]["label"],
-        words["practice_label"],
         blocks["measures_budget"]["label"],
         *FLOW_PHASES_TAIL,
         f"{blocks['closing']['label']} und {blocks['debrief']['label']}",
@@ -463,3 +489,8 @@ def test_deck_uses_the_print_vocabulary_for_the_damage_scale(slide_texts):
     for number, text in slide_texts.items():
         assert "Band" not in text, number
         assert "verletzt würden" not in text, number
+
+
+def test_story_slide_hands_out_only_the_first_teamheft_chapter(slide_texts):
+    assert "Teamheft (Schutzbedarf und Risikoregister)" in slide_texts[31]
+    assert slide_texts[31].count("Teamheft") == 1

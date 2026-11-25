@@ -231,8 +231,7 @@ narrative = "Nach Abschluss eurer Beauftragung macht der CFO den Kassensturz: Ni
 rule = "Prüft euer Restbudget."
 
 [practice]
-title = "Übung"
-intro = "Bevor die erste Welle beginnt, rechnet ihr gemeinsam ein Beispiel durch. Der Vorfall ist erfunden und zählt nicht für eure Wertung. Alle Felder sind schon ausgefüllt: Verfolgt Schritt für Schritt, wie aus den Maßnahmen eines Beispielteams Schutzwerte, Schaden und Kundenzufriedenheit werden. Die Anleitungstexte sind dieselben wie später auf euren Angriffsblättern."
+title = "Übung (Beispiel, zählt nicht für die Wertung)"
 narrative = "Nach einem Firmware-Update fällt das zentrale Speichersystem im Büro aus. Der Dateiserver ist nicht mehr erreichbar, Projektordner und Vorlagen stehen niemandem mehr zur Verfügung. Ob der Betrieb schnell wieder läuft und wie groß der Schaden ausfällt, zeigt die folgende Rechnung anhand der Sicherheitsmaßnahmen des Beispielteams."
 cia_rationale = "Hier zählt Verfügbarkeit (A) am meisten, weil ohne Dateiserver niemand an die Daten kommt. Vertraulichkeit (C) und Integrität (I) zählen gleich viel, aber weniger."
 case_1 = "Die Maßnahmen reichen nicht aus, der Ausfall trifft das Unternehmen voll."
@@ -325,8 +324,8 @@ sum_of_row = "Summe der Zeile"
 sum_row_suffix = "im Tracking-Bogen"
 opex_per_wave = "OPEX je Welle"
 ros_title = "Return on Security"
-ros_carry_hint = "Die Werte übernehmt ihr aus dem Tracking-Bogen: Init-Kosten aus der Spalte Start, dazu die Summen der Zeilen Init-Differenz netto und OPEX dieser Welle sowie den Schaden jeder Welle. Die Planung von der Seite davor zählt hier nicht."
-window_differences = "Init-Differenzen aus Change-Fenstern (inkl. Kurswechsel)"
+ros_carry_hint = "Die Werte übernehmt ihr aus dem Tracking-Bogen: Init-Kosten aus der Spalte Start, dazu die Summen der Zeilen Init-Differenz netto und OPEX dieser Welle sowie die Werte der Zeile Monetärer Schaden der Welle. Die Planung von der Seite davor zählt hier nicht."
+window_differences = "Init-Differenzen aus Change-Fenstern"
 init_differences = "Init-Differenzen"
 own_costs = "Eigene Kosten"
 damage_sum = "Summe der Schäden"
@@ -455,7 +454,7 @@ wave = "Welle"
 row_kz_before = "KZ vor der Welle"
 row_kz_change = "KZ-Änderung der Welle"
 row_kz_after = "KZ nach der Welle"
-row_damage = "Schaden der Welle"
+row_damage = "Monetärer Schaden der Welle"
 block_own = "Eigene Kosten (zählen für den RoS)"
 row_own_opex = "OPEX dieser Welle"
 row_own_window = "Init-Differenz netto"
@@ -477,11 +476,11 @@ window_intro = "Tragt je Änderung das Level nach dem Fenster ein (gekündigt: L
 window_level = "Level nach dem Fenster"
 window_delta = "Δ Init"
 window_sum = "Summe Init-Erhöhungen"
-window_credit = "Kurswechsel: Gutschrift Kunde"
+window_credit = "Gutschrift durch Event (laut Eventkarte)"
 window_credit_short = "Gutschrift"
 window_net = "Init-Differenz netto"
 never_refund = "nie eine Erstattung"
-credit_hint = "Gutschrift Kunde = Init der wegfallenden Maßnahme (Level der Kurswechsel-Welle), höchstens Init der neuen."
+credit_hint = "Eine Gutschrift gibt es nur, wenn eine Eventkarte sie nennt; wie hoch sie ist, steht auf der Karte."
 next_wave_hint = "Wirkung und OPEX zählen ab der nächsten Welle. Init-Differenz netto: oben in der Spalte der Welle, auf die das Fenster folgt."
 
 [sheets.welle]
@@ -652,7 +651,7 @@ key_gr = "GR"
 key_case = "Fall"
 key_damage_before = "Schaden vor Recovery"
 key_recovery = "Recovery-Faktor r"
-key_damage_after = "Schaden nach Recovery"
+key_damage_after = "Monetärer Schaden der Welle (nach Recovery)"
 key_kz_attack = "KZ Angriff"
 key_kz_event = "KZ Events"
 key_kz_exact = "KZ-Änderung vor dem Runden"
@@ -703,10 +702,9 @@ head_span = "Minuten ab Start"
 head_clock = "Uhrzeit"
 head_direction = "Anweisung"
 wave_label = "Welle"
-practice_label = "Übungswelle"
 total_label = "Gesamtdauer (Min.)"
 print_title = "Druckliste"
-print_intro = "Druckt alles einseitig. Die Liste zeigt für jede Datei, wie oft ihr sie druckt: je Team und für die Spielleitung. Schneidet die Maßnahmen- und Eventkarten an den Schnittlinien aus und sortiert die Eventkarten nach Welle; die Karte „Budget Review“ gebt ihr erst im Abschluss aus. Die Arbeitsblätter der Angriffe gebt ihr erst zu Beginn ihrer Welle an die Teams."
+print_intro = "Druckt alles einseitig. Das Teamheft druckt ihr je Team, aber heftet es nicht: Seine Blätter gebt ihr je Block einzeln aus. Die Liste zeigt für jede Datei, wie oft ihr sie druckt: je Team und für die Spielleitung. Schneidet die Maßnahmen- und Eventkarten an den Schnittlinien aus und sortiert die Eventkarten nach Welle; die Karte „Budget Review“ gebt ihr erst im Abschluss aus. Die Arbeitsblätter der Angriffe gebt ihr erst zu Beginn ihrer Welle an die Teams."
 print_head_label = "Dokument"
 print_head_file = "Datei"
 print_head_team = "Je Team"
@@ -725,14 +723,11 @@ direction = "Pause. Legt währenddessen die Story-Unterlagen für jedes Team ber
 
 [sheets.ablauf.blocks.story_groups]
 label = "Story-Gruppenarbeit"
-direction = "Gebt jedem Team die Story-Unterlagen (Unternehmenssteckbrief, Zeitungsartikel, Anfrage-Mail, Audit-Mail) und das Teamheft. Die Teams lesen, sammeln Hinweise und füllen auf der ersten Seite des Teamhefts erst den Schutzbedarf je Wert, dann das Risikoregister aus. Fragt ein Team je Wert und Schutzziel, was ein Schaden fürs Geschäft bedeuten würde, antwortet mit der Tabelle „Geschäftsfolgen: Antworten der Geschäftsführung“."
-
-[sheets.ablauf.blocks.wave_0]
-direction = "Gebt das Übungsblatt und die Erklärseite „So funktioniert eine Welle“ aus. Rechnet das Beispiel gemeinsam durch, bevor die erste echte Welle beginnt."
+direction = "Gebt jedem Team die Story-Unterlagen (Unternehmenssteckbrief, Zeitungsartikel, Anfrage-Mail, Audit-Mail) und Teamheft (Schutzbedarf und Risikoregister). Die Teams lesen, sammeln Hinweise und füllen im Teamheft erst den Schutzbedarf je Wert, dann das Risikoregister aus. Fragt ein Team je Wert und Schutzziel, was ein Schaden fürs Geschäft bedeuten würde, antwortet mit der Tabelle „Geschäftsfolgen: Antworten der Geschäftsführung“."
 
 [sheets.ablauf.blocks.measures_budget]
 label = "Maßnahmen und Budget"
-direction = "Gebt die Maßnahmenkarten aus. Jedes Team einigt sich intern auf sein Budget-Tier und trägt seine Maßnahmen im Teamheft ein. Weist auf die freiwillige Spalte gegen R# im Teamheft hin; ihr prüft sie nicht. Danach füllen die Teams im Tracking-Bogen die Spalte Start aus: KZ-Start ihres Tiers, Init-Kosten und Restbudget (Tier-Budget minus Init-Kosten)."
+direction = "Gebt gemeinsam aus: Maßnahmenkarten, Übungsblatt, So funktioniert eine Welle und Teamheft (Budget und Planung, Tracking-Bogen). Das Übungsblatt ist eine Hilfe zum Nachschlagen; die Teams rechnen es nicht gemeinsam durch. Jedes Team einigt sich intern auf sein Budget-Tier und trägt seine Maßnahmen im Teamheft ein. Weist auf die freiwillige Spalte gegen R# im Teamheft hin; ihr prüft sie nicht. Danach füllen die Teams im Tracking-Bogen die Spalte Start aus: KZ-Start ihres Tiers, Init-Kosten und Restbudget (Tier-Budget minus Init-Kosten)."
 
 [sheets.ablauf.blocks.break_2]
 label = "Pause"
@@ -749,7 +744,7 @@ direction = "Lest die Events dieser Welle vor und gebt die zugehörigen Eventkar
 
 [sheets.ablauf.blocks.closing]
 label = "Abschluss"
-direction = "Gebt die Eventkarte „Budget Review“ aus. Die Teams rechnen im Teamheft erst die RoS-Seite, dann das Budget Review aus, füllen im Risikoregister die Spalte Rückblick aus und berechnen zuletzt im Tracking-Bogen die KZ final. Notiert je Team KZ final und RoS in der Vergleichstabelle im Debriefing-Teil dieses Hefts; die Teamhefte bleiben bei den Teams."
+direction = "Gebt die Eventkarte „Budget Review“ und Teamheft (Return on Security, Budget Review) aus. Die Teams rechnen im Teamheft erst die RoS-Seite, dann das Budget Review aus, füllen im Risikoregister die Spalte Rückblick aus und berechnen zuletzt im Tracking-Bogen die KZ final. Notiert je Team KZ final und RoS in der Vergleichstabelle im Debriefing-Teil dieses Hefts; die Blätter bleiben bei den Teams."
 
 [sheets.ablauf.blocks.debrief]
 label = "Debriefing"
@@ -771,7 +766,7 @@ spielleitung-probelauf = "Probelauf-Protokoll"
 
 [sheets.debrief]
 title = "Debriefing-Fragen"
-intro = "Besprecht den Verlauf in dieser festen Reihenfolge: erst die Reaktion, dann die Beschreibung, dann die Analyse, zuletzt die Anwendung. Es gibt kein Blatt für die Teams. Lest die Fragen vor und lasst die Teams antworten. Die Richtzeiten der Phasen füllen zusammen den Debriefing-Block des Ablaufplans. Die Teams legen dafür ihr Teamheft mit Schutzbedarf und ausgefülltem Risikoregister samt Rückblick bereit."
+intro = "Besprecht den Verlauf in dieser festen Reihenfolge: erst die Reaktion, dann die Beschreibung, dann die Analyse, zuletzt die Anwendung. Es gibt kein Blatt für die Teams. Lest die Fragen vor und lasst die Teams antworten. Die Richtzeiten der Phasen füllen zusammen den Debriefing-Block des Ablaufplans. Die Teams legen dafür ihre Blätter mit Schutzbedarf und ausgefülltem Risikoregister samt Rückblick bereit."
 pitch_title = "Management-Pitch"
 pitch_text = "Optional: Jedes Team erklärt der Geschäftsführung von MechTech in einem kurzen Pitch, warum sein Budget gut investiert war. Der Pitch hat keine Richtzeit."
 pitch_limit_label = "Redezeit je Team"
@@ -942,7 +937,7 @@ text = "Events sind der erste Schritt jeder Welle, vor dem Angriff."
 
 [sheets.was_neu.flow]
 whiteboard = "Das Whiteboard entfällt: Budget, Maßnahmen und Rechnungen stehen im Teamheft und auf den Arbeitsblättern."
-welle0 = "Neu ist eine Übungswelle vor der ersten echten Welle; die Teams rechnen ein Beispiel gemeinsam."
+welle0 = "Die Übungswelle ist kein gemeinsamer Block mehr: Das Übungsblatt ist eine Hilfe, die Teams rechnen es nicht gemeinsam durch."
 debrief = "Neu ist ein festes Debriefing mit Fragen und Datenimpulsen im Spielleitungsheft:"
 schedule = "Fester Ablaufplan im Spielleitungsheft:"
 
@@ -950,9 +945,9 @@ schedule = "Fester Ablaufplan im Spielleitungsheft:"
 generated = "Alle Druckunterlagen sind generierte PDFs und ersetzen die Word- und PowerPoint-Dateien der MHP-Runde."
 veil = "Angriffe bleiben bis zu ihrer Welle verdeckt und werden erst zu Beginn ihrer Welle benannt; die Rechenregeln sind offen."
 clues = "Neu im Spielleitungsheft: Antworten zu Geschäftsfolgen und die"
-teamheft = "Teamheft schon im Story-Block: Schutzbedarf, Risikoregister, Planung, Tracking, RoS."
-wave_page = "Gebt vor der Übungswelle die Erklärseite aus:"
-practice = "Das Übungsblatt rechnet die Übungswelle mit allen Schritten vor."
+teamheft = "Teamheft nicht heften, sondern blattweise je Block ausgeben: Schutzbedarf zuerst im Story-Block."
+wave_page = "Gebt mit den Maßnahmenkarten und dem Übungsblatt die Erklärseite aus:"
+practice = "Das Übungsblatt rechnet die Übungswelle mit allen Schritten vor; die Teams rechnen es nicht gemeinsam durch."
 
 [story.steckbrief]
 doc_title = "MechTech GmbH: Unternehmenssteckbrief"
@@ -1209,7 +1204,6 @@ head_errors = "Rechenfehler"
 total_label = "Geplante Gesamtdauer (Min.)"
 pass_title = "Bestanden, wenn"
 pass_wave_lead = "Jeder Wellenblock"
-pass_wave_practice = "auch die"
 pass_wave_tail = "endet in seiner geplanten Zeit."
 pass_rules = [
     "Die ganze Sitzung endet innerhalb der geplanten Gesamtdauer.",

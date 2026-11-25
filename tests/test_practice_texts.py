@@ -25,7 +25,6 @@ MINI = REPO_ROOT / "tests" / "fixtures" / "mini_config.json"
 ATTACK_IDS = ("ransomware", "ot", "exfil")
 PRACTICE_KEYS = (
     "practice.title",
-    "practice.intro",
     "practice.narrative",
     "practice.cia_rationale",
     "practice.case_1",

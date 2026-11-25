@@ -16,6 +16,10 @@
 \rowcolor{mhpblue}\multicolumn{\VAR{ncols}}{|l|}{\small\hdrs{\VAR{booklet.tracking.block_external}}} \\
 \hline
 \BLOCK{endif}
+\BLOCK{if row.group == "damage" and loop.previtem.group != "damage"}
+\noalign{\vskip1.2mm}
+\hline
+\BLOCK{endif}
 \rowstrutgrid{}\BLOCK{if row.group in ("budget", "review")}\bfseries{}\BLOCK{endif}\VAR{row.label}\rowpad{}\BLOCK{for cell in row.cells} & \BLOCK{if cell == "shaded"}\shadedcell{}\BLOCK{endif}\BLOCK{endfor} \\
 \hline
 \BLOCK{endfor}
