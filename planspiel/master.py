@@ -465,7 +465,7 @@ def _welle_zero(cfg: Config, view: RevealView, words: dict) -> Optional[WelleZer
         title=words["welle0_title"],
         intro=words["welle0_intro"],
         header=(words["key_head"], f"{tracking_wave} {wave.wave_id}"),
-        rows=_key_rows(words, [column], view.sheet("labels")["damage"], constants.with_recovery),
+        rows=_key_rows(words, [column], view.sheet("tracking")["row_damage"], constants.with_recovery),
     )
 
 
@@ -508,7 +508,7 @@ def build_master_sheet(cfg: Config, texts: Texts, clues: tuple[Clue, ...]) -> Op
                 events=events,
                 no_events="" if events else words["events_none"],
                 key_header=(words["key_head"], *tier_names),
-                key_rows=_key_rows(words, columns, view.sheet("labels")["damage"], constants.with_recovery),
+                key_rows=_key_rows(words, columns, view.sheet("tracking")["row_damage"], constants.with_recovery),
             )
         )
     results = _tier_results(cfg, traces, words)
