@@ -152,7 +152,10 @@ def test_parameters_equal_the_worksheet_constants(sheet, cfg, texts):
         assert values[angriff["label_upper"]] == fmt.format_number(constants.upper)
         assert values[texts.get("sheets.spielleitung.param_unit")] == fmt.format_money(constants.unit_eur)
         slope = values[texts.get("sheets.spielleitung.param_slope")]
-        assert slope.startswith(fmt.format_factor(constants.slope))
+        if fmt.terminates(constants.slope):
+            assert slope == fmt.format_signed(constants.slope)
+        else:
+            assert slope.startswith(fmt.format_factor(constants.slope))
         assert ("≈" in slope) == (not fmt.terminates(constants.slope))
         if not fmt.terminates(constants.slope):
             assert fmt.format_approx(constants.slope) in slope
@@ -363,7 +366,7 @@ def test_the_final_table_equals_the_trace_and_the_config_weights(sheet, cfg, tra
         assert result.own_spend == fmt.format_money(review.own_spend_k * 1000)
         assert result.total_damage == fmt.format_money(review.total_damage_eur)
         assert result.remaining == fmt.format_money(review.remaining_k * 1000)
-        assert result.ros == fmt.format_number(rules.ros_two_decimals(review.ros))
+        assert result.ros == fmt.format_signed(rules.ros_two_decimals(review.ros))
         assert result.final_index == fmt.format_number(index)
     assert tuple(row.key for row in sheet.final_rows) == master.FINAL_ROW_IDS
     assert len(sheet.final_rows) == 7

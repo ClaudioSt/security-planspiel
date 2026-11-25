@@ -49,10 +49,12 @@ MAX_WINDOWS = 2
 
 @dataclass(frozen=True)
 class Metric:
-    """One `Kennzahl | Wert` row: the label, and a grey formula line under it that names the operands ('' for none)."""
+    """One `Kennzahl | Wert` row: the label, and a grey line under it that names the operands or the source ('' for
+    none). A computed row is a result the team derives from the rows above; it is shaded like a result."""
 
     label: str
     note: str
+    computed: bool = False
 
 
 @dataclass(frozen=True)
@@ -75,6 +77,7 @@ class PlanningPage:
     sum_label: str
     wave_count_text: str
     anticipated_line: str
+    tier_line: str
 
     def printed_fragments(self) -> tuple[str, ...]:
         return _fragments(self)
@@ -239,7 +242,7 @@ def _register_page(cfg: Config, texts: Texts) -> Optional[RegisterPage]:
         need_instruction=words["need_instruction"],
         need_header=(words["need_head_asset"], goals["c"], goals["i"], goals["a"]),
         asset_rows=asset_rows,
-        need_example=(f"{asset_rows[0]} {need['asset']}", *rated),
+        need_example=(need["asset"], *rated),
         legend_title=words["legend_title"],
         band_legend=tuple(
             f"{label}: {span}" for label, span in zip(band_labels, risk.band_ranges(matrix.bands, words))
@@ -255,7 +258,7 @@ def _register_page(cfg: Config, texts: Texts) -> Optional[RegisterPage]:
             )
         ),
         example=(
-            asset_rows[0], example["threat"], example["goal"], example["impact"], fmt.format_number(RANK_FIRST),
+            need["asset"], example["threat"], example["goal"], example["impact"], fmt.format_number(RANK_FIRST),
             example["decision"], words["review"]["correct"],
         ),
         rows=rows,
@@ -310,6 +313,7 @@ def _planning_page(cfg: Config, texts: Texts) -> PlanningPage:
         sum_label=labels["sum"],
         wave_count_text=wave_count_text,
         anticipated_line=anticipated_line,
+        tier_line=words["tier_field"],
     )
 
 
@@ -324,22 +328,33 @@ def _ros_page(cfg: Config, texts: Texts) -> RosPage:
         Metric(total_init, ""),
         Metric(words["window_differences"], ""),
         Metric(total_opex, ""),
-        Metric(own, f"= {total_init} + {words['init_differences']} + {total_opex}"),
+        Metric(own, f"= {total_init} + {words['init_differences']} + {total_opex}", computed=True),
     )
-    avoided = Metric(labels["avoided_damage"], f"= {base_losses} {fmt.MINUS} {damage_sum}")
-    ros_line = Metric(words["ros_short"], f"= ({avoided.label} {fmt.MINUS} {own}) {fmt.DIVIDED} {own}")
+    avoided = Metric(
+        labels["avoided_damage"],
+        f"= {base_losses} {fmt.MINUS} {damage_sum}; {base_losses} {view.sheet('ros')['avoided_note']}",
+        computed=True,
+    )
+    ros_line = Metric(
+        words["ros_short"], f"= ({avoided.label} {fmt.MINUS} {own}) {fmt.DIVIDED} {own}", computed=True
+    )
 
     tier_budget, budget_event = words["tier_budget"], words["budget_event"]
     available, event_opex, costs = labels["available_budget"], words["event_opex"], words["review_costs"]
+    tracking = view.sheet("tracking")
+
+    def source(row_key: str) -> str:
+        return f"{words['sum_of_row']} {tracking[row_key]} {words['sum_row_suffix']}"
+
     budget_rows = (
         Metric(tier_budget, ""),
-        Metric(budget_event, ""),
-        Metric(available, f"= {tier_budget} + {budget_event}"),
+        Metric(budget_event, source("row_external_budget")),
+        Metric(available, f"= {tier_budget} + {budget_event}", computed=True),
         Metric(own, ""),
-        Metric(event_opex, ""),
-        Metric(costs, f"= {own} + {event_opex}"),
+        Metric(event_opex, source("row_external_opex")),
+        Metric(costs, f"= {own} + {event_opex}", computed=True),
     )
-    remaining = Metric(words["remaining_budget"], f"= {available} {fmt.MINUS} {costs}")
+    remaining = Metric(words["remaining_budget"], f"= {available} {fmt.MINUS} {costs}", computed=True)
 
     return RosPage(
         title=words["ros_title"],
@@ -349,7 +364,7 @@ def _ros_page(cfg: Config, texts: Texts) -> RosPage:
         metric_header=(labels["metric"], labels["value"]),
         own_cost_rows=own_cost_rows,
         damage_rows=tuple(Metric(f"{labels['damage']} {view.attack_title(wave)}", "") for wave in cfg.waves),
-        damage_sum=Metric(damage_sum, ""),
+        damage_sum=Metric(damage_sum, "", computed=True),
         avoided_line=avoided,
         ros_line=ros_line,
         review_title=words["review_title"],
@@ -357,7 +372,7 @@ def _ros_page(cfg: Config, texts: Texts) -> RosPage:
         sign_hint=words["sign_hint"],
         budget_rows=budget_rows,
         remaining_line=remaining,
-        result_line=Metric(words["review_result"], words["review_result_note"]),
+        result_line=Metric(words["review_result"], words["review_result_note"], computed=True),
     )
 
 
@@ -383,7 +398,7 @@ def _tracking_rows(cfg: Config, view: PreAttackView) -> tuple[TrackingRow, ...]:
     def with_event(kind: str):
         return lambda index, wave_id: kind in _event_kinds(cfg, wave_id)
 
-    final = f"{words['row_kz_final']} = {words['kz_after_last']} + {words['row_kz_review']}"
+    final = f"{words['row_kz_final']} = {words['kz_after_last']} {cfg.waves[-1].wave_id} + {words['row_kz_review']}"
     spec = (
         ("kz_before", words["row_kz_before"], "kz", cells(start=True, wave=every_wave)),
         ("kz_change", words["row_kz_change"], "kz", cells(wave=every_wave)),

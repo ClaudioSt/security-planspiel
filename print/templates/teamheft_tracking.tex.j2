@@ -38,11 +38,11 @@
 \rowcolor{mhplight}\strut\BLOCK{for block in booklet.tracking.windows} & \rule{0pt}{3.6mm}\small\bfseries{} \VAR{booklet.tracking.window_columns[0]}\rowpad{} & \small\bfseries{} \VAR{booklet.tracking.window_columns[1]}\BLOCK{endfor} \\
 \hline
 \BLOCK{for label in booklet.tracking.windows[0].measure_rows}
-\rowstrutgrid{}\small{}\VAR{label}\rowpad{}\BLOCK{for block in booklet.tracking.windows} & & \BLOCK{endfor} \\
+\rowstrutwin{}\small{}\VAR{label}\rowpad{}\BLOCK{for block in booklet.tracking.windows} & & \BLOCK{endfor} \\
 \hline
 \BLOCK{endfor}
 \BLOCK{for row in booklet.tracking.summary_rows}
-\rowstrutgrid{}\small{}\VAR{row.label}\rowpad{}\BLOCK{for cell in row.cells} & \multicolumn{2}{c|}{\BLOCK{if cell == "shaded"}\shadedcell{}\BLOCK{endif}}\BLOCK{endfor} \\
+\rowstrutwin{}\small{}\VAR{row.label}\rowpad{}\BLOCK{for cell in row.cells} & \multicolumn{2}{c|}{\BLOCK{if cell == "shaded"}\shadedcell{}\BLOCK{endif}}\BLOCK{endfor} \\
 \hline
 \BLOCK{endfor}
 \end{tabularx}\endgroup\par

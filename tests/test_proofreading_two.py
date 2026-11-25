@@ -43,9 +43,10 @@ def _joined(line):
     return "".join(part if isinstance(part, str) else "▢" for part in line)
 
 
-def test_the_computed_teamheft_rows_have_a_white_value_cell(rendered):
+def test_the_computed_teamheft_rows_shade_the_label_cell_and_keep_the_value_cell_plain(rendered):
     ros_page = rendered["spieler-teamheft"].split("Return on Security", 1)[1]
-    assert ros_page.count("\\cellcolor{white}") >= 9
+    assert ros_page.count("\\cellcolor{mhplight}") >= 8, "every computed row shades its label cell"
+    assert "\\rowcolor{mhplight}" not in ros_page, "a shaded row would paint over the rules of the value cell"
 
 
 def test_the_planning_page_has_a_tier_field_and_relates_costs_to_the_tier_budget(cfg, texts, rendered):

@@ -165,7 +165,7 @@ def _budget_review(event: Event, cfg: Config, words: dict) -> EventEffect:
             span = f"{words['tier_from']} {format_eur(from_eur)} €"
         rows.append(EffectRow(f"{span} {ARROW} {_kz(words, kz)}", kz, ()))
     penalty = -kz_per_step
-    overspend = f"{words['overspend_label']} {fmt.MINUS}{kz_per_step} {words['kz']} {words['per_started']} {fmt.format_money(step_k * 1000)}"
+    overspend = f"{words['overspend_label']} {words['kz']} {fmt.MINUS}{kz_per_step} {words['per_started']} {fmt.format_money(step_k * 1000)}"
     rows.append(EffectRow(overspend, penalty, ()))
     return EventEffect(event.id, EFFECT_KINDS[event.type], words["tier_heading"], tuple(rows))
 

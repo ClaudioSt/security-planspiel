@@ -740,8 +740,12 @@ def _value_rows(
 def _rule_suffix(rule_id: str, cfg: Config, parts: Dict[str, str]) -> str:
     """The numbers of a rule row, generated from the config (D-13)."""
     if rule_id == "overspend":
-        spec = ("per_step", *rules.penalty_params(cfg.final_events))
-        return f" {_overspend_text(spec, parts)} {parts['over_budget']}."
+        kz_per_step, step_k = rules.penalty_params(cfg.final_events)
+        # The rule text says "kostet", so the amount stands without a sign (no double negative).
+        return (
+            f" {_number(kz_per_step)} {parts['kz']} {parts['per_started']} {fmt.format_money(step_k * 1000)} "
+            f"{parts['over_budget']}."
+        )
     if rule_id == "review_boundary":
         return f" {review_text.boundary_text(_review_event(cfg).params['tiers'])}"
     if rule_id == "final_index":

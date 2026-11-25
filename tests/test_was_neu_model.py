@@ -107,13 +107,13 @@ def test_the_rule_rows_follow_the_rule_ids(texts, sheet):
 def test_the_overspend_row_carries_x_and_the_step_from_the_config(cfg, texts, baseline):
     penalty = _penalty(cfg)
     row = _rule(build_was_neu_sheet(cfg, texts, baseline), "overspend")
-    assert fmt.format_signed(-penalty["kz_per_step"]) in row.text
+    assert f" {penalty['kz_per_step']} KZ je angefangene " in row.text and "−" not in row.text
     assert fmt.format_money(penalty["step"] * 1000) in row.text
     changed = copy.deepcopy(cfg)
     _penalty(changed).update(kz_per_step=7, step=20)
     row = _rule(build_was_neu_sheet(changed, texts, baseline), "overspend")
-    assert fmt.format_signed(-7) in row.text and fmt.format_money(20000) in row.text
-    assert fmt.format_signed(-penalty["kz_per_step"]) not in row.text
+    assert " 7 KZ je angefangene " in row.text and fmt.format_money(20000) in row.text
+    assert f" {penalty['kz_per_step']} KZ je angefangene " not in row.text
 
 
 def test_the_boundary_row_carries_the_generated_tier_text(cfg, texts, baseline):

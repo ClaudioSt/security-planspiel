@@ -232,7 +232,9 @@ def test_the_budget_review_explains_the_remaining_budget_with_signed_event_value
     assert rows[3].label == ros.own_cost_rows[3].label, "own costs are carried, not recomputed"
     assert "+" in rows[5].note and MINUS not in rows[5].note, "total costs = own costs + OPEX event"
     assert MINUS in ros.remaining_line.note and "+" not in ros.remaining_line.note
-    assert rows[1].note == "" and rows[4].note == "", "event values are entered, not calculated"
+    assert not rows[1].computed and not rows[4].computed, "event values are entered, not calculated"
+    assert rows[1].note.startswith("Summe der Zeile Event: Budget") and rows[1].note.endswith("im Tracking-Bogen")
+    assert rows[4].note.startswith("Summe der Zeile Event: OPEX") and rows[4].note.endswith("im Tracking-Bogen")
     assert ros.sign_hint
 
 
@@ -374,8 +376,7 @@ def test_the_need_example_row_rates_the_three_goals_only(real):
     band_words = {words["bands"][band.id] for band in cfg.risk_matrix.bands}
     rated = tuple(example[goal] for goal in ("c", "i", "a"))
     assert set(rated) <= band_words
-    first = booklet.register.asset_rows[0]
-    assert booklet.register.need_example == (f"{first} {example['asset']}", *rated)
+    assert booklet.register.need_example == (example["asset"], *rated), "the example rows carry no W label"
 
 
 def test_a_need_example_word_that_is_no_band_word_stops_the_build(tmp_path):
@@ -395,7 +396,7 @@ def test_the_register_example_reads_its_band_from_the_need_example(real):
     _, texts, booklet = real
     words = _register_words(texts)
     register = booklet.register
-    assert register.example[0] == register.asset_rows[0]
+    assert register.example[0] == words["need_example"]["asset"]
     goal_id = next(goal for goal, letter in words["goals"].items() if letter == words["example"]["goal"])
     assert words["need_example"][goal_id] in register.example[5]
 
@@ -436,7 +437,7 @@ def test_the_example_row_comes_from_the_clinic_texts(real):
     register = booklet.register
     example = words["example"]
     assert register.example == (
-        register.asset_rows[0], example["threat"], example["goal"], example["impact"],
+        words["need_example"]["asset"], example["threat"], example["goal"], example["impact"],
         fmt.format_number(RANK_FIRST), example["decision"], words["review"]["correct"],
     )
     for text in register.example:
