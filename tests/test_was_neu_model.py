@@ -161,11 +161,11 @@ def test_the_schedule_row_generates_the_wave_block_minutes(cfg, texts, baseline)
     wave_label = texts.get("sheets.ablauf.wave_label")
     unit = texts.get("sheets.debrief.minutes_unit")
     in_order = ", ".join(
-        f"{wave_label} {block.wave}: {fmt.format_number(block.minutes)} {unit}"
+        f"{wave_label} {block.wave}: {fmt.format_number(block.minutes)}"
         for block in cfg.session_schedule.blocks
         if block.wave
     )
-    assert in_order in row
+    assert f"{in_order} {unit}" in row
     blocks = tuple(
         dataclasses.replace(block, minutes=block.minutes + 5) if block.id == "wave_1" else block
         for block in cfg.session_schedule.blocks

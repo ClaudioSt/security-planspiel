@@ -779,7 +779,7 @@ def build_was_neu_sheet(cfg: Config, texts: Texts, baseline: Optional[Baseline])
         raise PrintModelError("Der Ablaufplan braucht einen Block für die Übungswelle (Welle 0) und einen Block 'debrief'")
     # The minutes stand per wave in wave order, built from the schedule; a sorted set would put the shorter waves first.
     wave_minutes = ", ".join(
-        f"{wave_label(ablauf, block.wave)}: {_number(block.minutes)} {unit}" for block in schedule.blocks if block.wave
+        f"{wave_label(ablauf, block.wave)}: {_number(block.minutes)}" for block in schedule.blocks if block.wave
     )
     flow = words["flow"]
     flow_rows = (
@@ -787,7 +787,7 @@ def build_was_neu_sheet(cfg: Config, texts: Texts, baseline: Optional[Baseline])
         f"{wave_label(ablauf, practice.wave)}: {flow['welle0']}",
         f"{flow['debrief']} {debrief['title']} ({_number(debrief_block.minutes)} {unit}).",
         f"{flow['schedule']} {ablauf['title']} "
-        f"({_number(schedule.total_minutes)} {unit} {parts['total']}; {wave_minutes}).",
+        f"({_number(schedule.total_minutes)} {unit} {parts['total']}; {wave_minutes} {unit}).",
     )
 
     material = words["material"]
