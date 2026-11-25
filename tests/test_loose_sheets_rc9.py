@@ -100,3 +100,46 @@ def test_the_debrief_asks_for_the_sheets_not_for_the_booklet(texts):
     assert "legen dafür ihre Blätter" in intro
     assert "ihr Teamheft" not in intro
 
+
+
+# --- events stay off the player sheets: the Kurswechsel credit and the damage row (user, 2026-11-25) ---------------
+
+
+def test_the_change_window_names_no_event_but_keeps_the_credit_cell(texts):
+    assert texts.get("sheets.tracking.window_credit") == "Gutschrift durch Event (laut Eventkarte)"
+    assert texts.get("sheets.tracking.credit_hint") == (
+        "Eine Gutschrift gibt es nur, wenn eine Eventkarte sie nennt; wie hoch sie ist, steht auf der Karte."
+    )
+    assert texts.get("sheets.teamheft.window_differences") == "Init-Differenzen aus Change-Fenstern"
+    for key in ("sheets.tracking.window_credit", "sheets.tracking.credit_hint", "sheets.teamheft.window_differences"):
+        assert "Kurswechsel" not in texts.get(key), key
+
+
+def test_the_damage_row_of_the_tracking_sheet_says_it_is_money(cfg, texts):
+    from planspiel.booklet import build_tracking_page
+
+    assert texts.get("sheets.tracking.row_damage") == "Monetärer Schaden der Welle"
+    page = build_tracking_page(cfg, texts)
+    assert next(row for row in page.rows if row.key == "damage").label == "Monetärer Schaden der Welle"
+
+
+def test_the_damage_row_is_set_off_from_the_kz_rows_by_a_thin_gap(cfg, texts):
+    from planspiel import render
+    from planspiel.texts import load_clues
+
+    source = render.render_all(cfg, texts, TEMPLATES, load_clues(CONTENT_DIR / "clues.toml"))["spieler-teamheft"]
+    lines = source.splitlines()
+    damage = next(i for i, line in enumerate(lines) if "Monetärer Schaden der Welle" in line)
+    assert any("noalign" in line and "vskip" in line for line in lines[damage - 3:damage]), "gap before the damage row"
+
+
+def test_the_answer_keys_use_the_tracking_label_of_the_damage_row(cfg, texts):
+    from planspiel import master
+    from planspiel.texts import load_clues
+
+    sheet = master.build_master_sheet(cfg, texts, load_clues(CONTENT_DIR / "clues.toml"))
+    label = texts.get("sheets.tracking.row_damage")
+    for section in sheet.waves:
+        damage = next(row for row in section.key_rows if row.key == "damage_after")
+        assert damage.label.startswith(label), (section.title, damage.label)
+    assert next(row for row in sheet.welle0.rows if row.key == "damage_after").label.startswith(label)

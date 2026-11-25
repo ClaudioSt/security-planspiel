@@ -229,7 +229,7 @@ def test_the_net_difference_row_says_there_is_never_a_refund(loaded):
 
 def test_the_real_credit_and_net_labels_use_the_decision_wording(real):
     page = real[2]
-    assert next(row for row in page.summary_rows if row.key == "window_credit").label == "Kurswechsel: Gutschrift Kunde"
+    assert next(row for row in page.summary_rows if row.key == "window_credit").label == "Gutschrift durch Event (laut Eventkarte)"
     net = next(row for row in page.summary_rows if row.key == "window_net").label
     assert net.startswith("Init-Differenz netto = Summe Init-Erhöhungen " + fmt.MINUS) and net.endswith("nie eine Erstattung")
     assert page.window_columns == ("Level nach dem Fenster", "Δ Init")

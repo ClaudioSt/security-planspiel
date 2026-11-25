@@ -51,3 +51,33 @@ def test_no_player_document_but_the_event_deck_prints_the_review_values(setup):
         printed = " ".join(printed.split())
         for needle in needles:
             assert needle not in printed, f"{job} prints {needle!r}"
+
+
+# Quick 261125-fsu (user, 2026-11-25): "Kurswechsel steht im Teamheft, ist aber ein Event". Every event, not only the
+# Budget Review, stays off the player sheets until its card is handed out. The Teamheft names its last two chapters
+# "Return on Security" and "Budget Review" by decision (deck and Ablaufplan use the same words), so the final event's
+# name is allowed there; its values stay guarded by the test above.
+NAME_ALLOWED = {("budget_review", "spieler-teamheft")}
+
+
+def _event_names(cfg):
+    events = [event for wave_events in cfg.events.values() for event in wave_events] + list(cfg.final_events)
+    assert len(events) == 8
+    return [(event.id, event.name) for event in events]
+
+
+def test_no_player_document_but_the_event_deck_names_an_event(setup):
+    cfg, texts, documents = setup
+    for job in _player_jobs(documents):
+        printed = " ".join(veil.detex(documents[job]).split()).casefold()
+        for event_id, name in _event_names(cfg):
+            if (event_id, job) in NAME_ALLOWED:
+                continue
+            assert name.casefold() not in printed, f"{job} names the event {name!r}"
+
+
+def test_the_event_deck_does_name_every_event(setup):
+    cfg, texts, documents = setup
+    card = " ".join(veil.detex(documents[EVENT_DECK_JOB]).split()).casefold()
+    for _, name in _event_names(cfg):
+        assert name.casefold() in card, name
