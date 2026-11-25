@@ -458,7 +458,7 @@ def build_tracking_page(cfg: Config, texts: Texts) -> TrackingPage:
         f"{teamheft['remaining_budget']} = {words['remaining_previous']} + {words['row_external_budget']} "
         f"{fmt.MINUS} {words['row_own_opex']} {fmt.MINUS} {words['row_own_window']} "
         f"{fmt.MINUS} {words['row_external_opex']}. {labels['start']}: {teamheft['tier_budget']} "
-        f"{fmt.MINUS} {labels['init_costs']}."
+        f"{fmt.MINUS} {labels['init_costs']}. {words['review_remaining_hint']}"
     )
     blocks, summary = _windows(cfg, view)
     return TrackingPage(

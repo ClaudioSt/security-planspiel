@@ -82,7 +82,7 @@ def test_d2_the_closing_direction_keeps_the_teamheft_with_the_teams_and_notes_th
 
 def test_d3_the_tracking_hint_says_what_to_enter_when_a_wave_has_no_event_of_that_kind(texts):
     text = texts.get("sheets.tracking.external_hint")
-    assert "kein Event dieser Art" in text and "leer" in text and "null" in text
+    assert "Ohne Event dieser Art" in text and "leer" in text and "null" in text
 
 
 # ---- play-through findings with a code change (C1, B2, E1, E2) ------------------------------------------------------
@@ -112,7 +112,7 @@ def test_b2_the_recovery_line_has_a_wide_first_box_and_keeps_the_last_five_parts
     start = source.index(BS + "fillline{" + sheet.recovery_line[0])
     assert BS + "mbox{" + BS + "ibox{long}" in source[start : start + 400]
     gap = source[source.rindex(BS + "end{tabularx}", 0, start) : start]
-    assert BS + "vspace{2mm}" in gap, "the line must not sit directly on the lower table rule"
+    assert BS + "par" + BS + "vspace{3mm}" in gap, "the line must not sit directly on the lower table rule"
 
 
 def test_e1_the_reality_hint_is_a_hint_line_of_its_own(cfg, texts, rendered):
@@ -136,3 +136,51 @@ def test_e2_the_planning_sum_row_shades_only_its_label_and_closes_the_level_and_
     assert BS + "cellcolor{mhplight}" in cells[0]
     assert SHADED in cells[1] and SHADED in cells[4], row
     assert SHADED not in cells[2] and SHADED not in cells[3], row
+
+
+# ---- wording findings (A6, A7, A8, B1, C2, C3, D1) --------------------------------------------------------------------
+
+
+def test_a6_the_restbudget_hint_names_the_budget_review_cell(cfg, texts):
+    from planspiel.booklet import build_team_booklet
+
+    hints = build_team_booklet(cfg, texts).tracking.hints
+    assert hints[2].endswith(texts.get("sheets.tracking.review_remaining_hint"))
+    assert "Spalte Budget Review" in hints[2] and "Seite Budget Review" in hints[2]
+
+
+def test_a7_the_story_block_names_the_four_story_documents(texts):
+    direction = texts.get("sheets.ablauf.blocks.story_groups.direction")
+    for key in ("spieler-unternehmenssteckbrief", "spieler-zeitungsartikel", "spieler-anfrage-mail", "spieler-audit-mail"):
+        assert texts.get(f"sheets.ablauf.print.{key}") in direction, key
+
+
+def test_a8_the_register_says_the_level_is_not_written_down_again(texts):
+    text = texts.get("sheets.register.instruction")
+    assert "Die Stufe tragt ihr nicht ein" in text
+    assert "lest ihr oben" not in text
+
+
+def test_b1_the_check_table_heading_says_the_third_case(texts):
+    assert texts.get("sheets.spielleitung.check_table_intro") == "Ganze GR-Schritte im dritten Fall"
+    assert "mittleren" not in " ".join(texts.get("sheets.spielleitung.how_to"))
+
+
+def test_c2_the_final_kz_has_one_name_in_the_tracking_sheet_and_the_facilitator_booklet(texts):
+    assert texts.get("sheets.tracking.row_kz_final") == "KZ final"
+    assert texts.get("sheets.spielleitung.final_kz") == "KZ final"
+    assert texts.get("sheets.debrief.compare_head_kz") == "KZ final"
+    assert "KZ am Ende" not in texts.get("sheets.spielleitung.final_index_note")
+
+
+def test_c3_the_wave_key_rows_use_the_labels_of_the_tracking_sheet(texts):
+    tracking, keys = "sheets.tracking.", "sheets.spielleitung."
+    assert texts.get(keys + "key_external_budget") == texts.get(tracking + "row_external_budget")
+    assert texts.get(keys + "key_external_opex") == texts.get(tracking + "row_external_opex")
+    assert texts.get(keys + "key_remaining") == texts.get(tracking + "row_remaining")
+
+
+def test_d1_the_window_footer_names_the_column_the_init_difference_goes_to(texts):
+    text = texts.get("sheets.tracking.next_wave_hint")
+    assert "oben in der Spalte der Welle, auf die das Fenster folgt" in text
+    assert "vor dem Fenster" not in text

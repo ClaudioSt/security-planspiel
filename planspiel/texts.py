@@ -67,7 +67,7 @@ _TRACKING_KEYS = (
     "title", "intro", "wave", "row_kz_before", "row_kz_change", "row_kz_after",
     "row_damage", "block_own", "row_own_opex", "row_own_window", "block_external", "row_external_budget",
     "row_external_opex", "row_remaining", "row_kz_review", "row_kz_final", "kz_after_last", "remaining_previous",
-    "rounding_hint", "clamp_lead", "clamp_to", "external_hint", "window_title", "window_intro",
+    "rounding_hint", "review_remaining_hint", "clamp_lead", "clamp_to", "external_hint", "window_title", "window_intro",
     "window_level", "window_delta", "window_sum", "window_credit", "window_credit_short", "window_net", "never_refund", "credit_hint",
     "next_wave_hint",
 )
