@@ -182,7 +182,7 @@ def test_the_debrief_offers_the_pitch_without_guide_minutes(printed_set, sheet):
     pages = _pages(printed_set)
     _, review = _section_pages(pages, sheet)
     first = _first_page_with(pages, sheet.debrief.title, start=review)
-    last = _first_page_with(pages, sheet.clues_title, start=first)
+    last = _first_page_with(pages, sheet.clues_intro, start=first)
     span = "".join(pages[first:last])
     debrief = sheet.debrief
     assert debrief.pitch_text
