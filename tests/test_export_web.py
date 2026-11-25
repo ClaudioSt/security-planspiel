@@ -99,8 +99,8 @@ def test_golden_cases_cover_the_branches(export):
     waves = [wave for trace in traces for wave in trace["waves"]]
     for index in range(len(cfg.waves)):
         assert {w["case"] for w in waves if w["wave_id"] == cfg.waves[index].wave_id} == {1, 2, 3}
-    halves = [_exact(w["kz_change_exact"]) for w in waves if _exact(w["kz_change_exact"]).denominator == 2]
-    assert any(h > 0 for h in halves) and any(h < 0 for h in halves), "rounding half away from zero, both signs"
+    fractional = [_exact(w["kz_change_exact"]) for w in waves if _exact(w["kz_change_exact"]).denominator != 1]
+    assert any(x > 0 for x in fractional) and any(x < 0 for x in fractional), "wave KZ rounding on both signs"
     event_types = {event.type for events in cfg.events.values() for event in events}
     seen_ids = {event["id"] for w in waves for event in w["events"]}
     assert {event.id for events in cfg.events.values() for event in events} <= seen_ids
@@ -110,6 +110,17 @@ def test_golden_cases_cover_the_branches(export):
     assert any(trace["windows"] and trace["windows"][0]["swap"] for trace in traces)
     review_changes = {trace["review"]["kz_review_change"] for trace in traces}
     assert len(review_changes) >= 4, "several budget review bands and overspend steps"
+
+
+def test_rounding_table_covers_exact_halves(export):
+    """With the current config no wave lands on an exact half, so the rounding rule gets its own table from
+    `round_half_away` (the single definition), including +x,5 and -x,5."""
+    from planspiel.rounding import round_half_away
+
+    table = export["golden.json"]["rounding"]
+    assert {(row["n"], row["d"]) for row in table} >= {(5, 2), (-5, 2), (1, 2), (-1, 2), (7, 4), (-7, 4)}
+    for row in table:
+        assert row["result"] == round_half_away(row["n"], row["d"])
 
 
 def test_export_is_deterministic(tmp_path):

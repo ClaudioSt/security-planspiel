@@ -368,6 +368,15 @@ def _print_command(
     return 0
 
 
+def _export_web_command(config: str, out: str) -> int:
+    from planspiel.export_web import write_export
+
+    export = write_export(Path(config), Path(out))
+    manifest = export["manifest.json"]
+    print(f"Export für die Web-App: {manifest['golden_cases']} Golden-Fälle nach {out}")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     configure_utf8_stdio()
     parser = argparse.ArgumentParser(
@@ -483,6 +492,13 @@ def main(argv: list[str] | None = None) -> int:
         default="content",
         help="Verzeichnis mit texte.toml und clues.toml.",
     )
+    export_web_parser = subparsers.add_parser(
+        "export-web", help="Schreibt Konfiguration und Golden-Fälle für die Web-App (TypeScript-Engine)."
+    )
+    export_web_parser.add_argument(
+        "--config", default="simulation_config.json", help="Pfad zur Konfigurationsdatei."
+    )
+    export_web_parser.add_argument("--out", required=True, help="Zielverzeichnis.")
     print_parser = subparsers.add_parser(
         "print", help="Baut alle Druckmaterialien (LaTeX → PDF) aus Konfiguration und Texten."
     )
@@ -511,6 +527,8 @@ def main(argv: list[str] | None = None) -> int:
     if args.command is None:
         parser.print_help()
         return 0
+    if args.command == "export-web":
+        return _export_web_command(args.config, args.out)
     if args.command == "print":
         return _print_command(
             args.config, args.content_dir, args.print_dir, args.out_dir, args.build_dir, args.check
