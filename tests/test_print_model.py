@@ -106,11 +106,11 @@ def test_case_blocks_of_the_recovery_wave(real):
         "Fall 1: Gesamtreduktion ≤ 22", "Fall 2: Gesamtreduktion ≥ 30", "Fall 3: 22 < Gesamtreduktion < 30"
     ]
     assert [block.text for block in sheet.cases] == reveal["cases"]
-    assert sheet.cases[0].outcome == "Schaden vor Recovery: 160.000 € · KZ: −8"
-    assert sheet.cases[1].outcome == "Schaden vor Recovery: 0 € · KZ: +8"
+    assert sheet.cases[0].outcome == "Schaden vor Recovery: 160.000 € · KZ Angriff: −8"
+    assert sheet.cases[1].outcome == "Schaden vor Recovery: 0 € · KZ Angriff: +8"
     damage_line, kz_line = sheet.cases[2].lines
     assert _norm(damage_line) == f"Schaden vor Recovery = (30 − GR {BOX}) × 20.000 € = {BOX}"
-    assert _norm(kz_line) == f"KZ = −8 + (GR {BOX} − 22) × 2 = {BOX}"
+    assert _norm(kz_line) == f"KZ Angriff = −8 + (GR {BOX} − 22) × 2 = {BOX}"
 
 
 def test_recovery_step(real):
@@ -139,8 +139,8 @@ def test_wave_without_recovery_uses_plain_damage_and_the_one_decimal_slope(real)
     assert sheet.with_recovery is False
     assert sheet.recovery_line is None
     assert sheet.recovery_table == ()
-    assert sheet.cases[0].outcome == "Schaden: 140.000 € · KZ: −6"
-    assert sheet.cases[1].outcome == "Schaden: 0 € · KZ: +8"
+    assert sheet.cases[0].outcome == "Schaden: 140.000 € · KZ Angriff: −6"
+    assert sheet.cases[1].outcome == "Schaden: 0 € · KZ Angriff: +8"
     damage_line, kz_line = sheet.cases[2].lines
     assert _norm(damage_line) == f"Schaden = (31 − GR {BOX}) × 20.000 € = {BOX}"
     assert _norm(kz_line).endswith(f"× 2 = {BOX}")

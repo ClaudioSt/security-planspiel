@@ -295,7 +295,7 @@ rounding_note = "Bei ,5 rundet ihr weg von der Null, also zum größeren Betrag.
 no_recovery_lead = "Bei diesem Angriff gibt es keine Recovery. Der Schaden aus"
 no_recovery_tail = "bleibt unverändert."
 reality_question = "Realitätscheck: Welches Risiko aus eurem Risikoregister hat dieser Angriff getroffen?"
-reality_hint = "R-Nummer oder „nicht im Register“; ihr braucht die Zeile für den Rückblick."
+reality_hint = "Tragt die R-Nummer ein oder „nicht im Register“; ihr braucht die Zeile für den Rückblick."
 
 [sheets.budget]
 title = "Budget"
@@ -786,7 +786,8 @@ compare_head_kz = "KZ"
 compare_head_ros = "RoS"
 compare_head_final_index = "Final-Index"
 team_label = "Team"
-clue_pointer = "Siehe"
+clue_pointer = "Siehe die"
+clue_pointer_end = "am Ende dieses Hefts."
 total_label = "Summe der Richtzeiten"
 
 [sheets.debrief.prompts]
@@ -855,7 +856,6 @@ no = "nein"
 boundary_above = "gilt erst über der Grenze"
 boundary_inclusive = "gilt ab der Grenze einschließlich"
 total = "gesamt"
-per_wave = "je Welle"
 tier_from = "ab"
 ros = "RoS"
 

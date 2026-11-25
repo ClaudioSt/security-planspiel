@@ -168,7 +168,7 @@ ABLAUF_KEYS = tuple(f"sheets.ablauf.{name}" for name in _ABLAUF_KEYS)
 _DEBRIEF_KEYS = (
     "title", "intro", "guide_label", "questions_label", "prompts_label", "minutes_unit", "compare_title",
     "compare_intro", "compare_head_team", "compare_head_kz", "compare_head_ros", "compare_head_final_index",
-    "team_label", "clue_pointer", "total_label",
+    "team_label", "clue_pointer", "clue_pointer_end", "total_label",
 )
 # Required only when the config carries debrief_stages; stage and prompt keys follow the config ids (FLOW-03).
 DEBRIEF_KEYS = tuple(f"sheets.debrief.{name}" for name in _DEBRIEF_KEYS)
@@ -191,7 +191,7 @@ WAS_NEU_FLOW_IDS = ("whiteboard", "welle0", "debrief", "schedule")
 WAS_NEU_MATERIAL_IDS = ("generated", "veil", "clues", "teamheft", "wave_page", "practice")
 WAS_NEU_PART_IDS = (
     "kz", "per_started", "over_budget", "flat", "from_level", "level", "removed", "added", "yes", "no",
-    "boundary_above", "boundary_inclusive", "total", "per_wave", "tier_from", "ros",
+    "boundary_above", "boundary_inclusive", "total", "tier_from", "ros",
 )
 WAS_NEU_FIELD_IDS = (
     "budget", "kz_start", "severity_multiplier", "base_cia", "e_threshold", "weights", "bonus", "min_level", "kz_ends",

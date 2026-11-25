@@ -341,7 +341,9 @@ def test_the_pinned_paths_touch_the_mechanics_the_keys_teach(sheet):
         if any(row.key == "recovery" for row in section.key_rows)
         for value in _row(section.key_rows, "recovery").values
     }
-    assert DASH in recoveries and len(recoveries) > 1
+    assert len(recoveries) > 1
+    # C4: a wave without Recovery has no factor row at all, instead of a dash row.
+    assert any(all(row.key != "recovery" for row in section.key_rows) for section in sheet.waves)
 
 
 # ---- the reference paths on the overview ---------------------------------------------------------------------------

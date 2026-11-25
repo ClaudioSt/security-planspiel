@@ -43,7 +43,7 @@
 \rowstrut{}\VAR{label}\BLOCK{for cell in booklet.planning.planning_header[1:]} &\BLOCK{endfor} \\
 \hline
 \BLOCK{endfor}
-\rowcolor{mhplight}\rowstrut{}\textbf{\VAR{booklet.planning.sum_label}}\BLOCK{for cell in booklet.planning.planning_header[1:]} &\BLOCK{endfor} \\
+\rowstrut{}\cellcolor{mhplight}\textbf{\VAR{booklet.planning.sum_label}}\BLOCK{for cell in booklet.planning.planning_header[1:]} & \BLOCK{if loop.first or (booklet.register and loop.last)}\shadedcell{}\BLOCK{endif}\BLOCK{endfor} \\
 \hline
 \end{tabularx}
 \endgroup

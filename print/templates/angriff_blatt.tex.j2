@@ -90,8 +90,8 @@
 \hline
 \BLOCK{endfor}
 \end{tabularx}
-\vspace{1mm}
-\BLOCK{call fillline(sheet.recovery_line)}\BLOCK{endcall}
+\vspace{2mm}
+\BLOCK{call fillline(sheet.recovery_line, 5)}\BLOCK{endcall}
 
 \BLOCK{else}
 \hint{\VAR{sheet.no_recovery_note}}
@@ -106,5 +106,6 @@
 \BLOCK{if sheet.reality_line}
 \vspace{2mm}
 \BLOCK{call fillline(sheet.reality_line)}\BLOCK{endcall}
+\hint{\VAR{sheet.reality_hint}}
 \BLOCK{endif}
 \fillreport{2}
