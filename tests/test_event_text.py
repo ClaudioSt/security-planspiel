@@ -351,7 +351,7 @@ def test_the_review_rows_read_inclusive_boundaries_and_the_overspend_rule():
         "ab 25.000 € → KZ +9",
         "ab 50.000 € → KZ +18",
         "ab 75.000 € → KZ +27",
-        "Überzogen: −3 KZ je angefangene 10.000 €",
+        "Überzogen: KZ −3 je angefangene 10.000 €",
     ]
 
 
@@ -366,7 +366,7 @@ def test_the_overspend_rule_follows_the_config(loaded):
     )
     cfg.final_events = [changed]
     overspend = effect_rows(changed, cfg, texts).rows[-1]
-    assert overspend.text == "Überzogen: −5 KZ je angefangene 20.000 €"
+    assert overspend.text == "Überzogen: KZ −5 je angefangene 20.000 €"
     assert overspend.value == -5
 
 

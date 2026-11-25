@@ -117,7 +117,7 @@ def test_recovery_step(real):
     _, _, sheets = real
     sheet = sheets[0]
     assert _norm(sheet.recovery_line) == (
-        f"Schaden nach Recovery = Schaden vor Recovery {BOX} × (1 − r {BOX}) = {BOX}"
+        f"Schaden nach Recovery = Schaden vor Recovery {BOX} € × (1 − r {BOX}) = {BOX}"
     )
     assert sheet.recovery_table[0] == ("0", "keine Recovery", "0 %")
     assert sheet.recovery_table[1] == ("1", "Basis-Recovery", "10 %")
@@ -128,8 +128,7 @@ def test_recovery_step(real):
 def test_wave_kz_line(real):
     _, _, sheets = real
     expected = (
-        f"KZ-Änderung dieser Welle = KZ Angriff {BOX} + KZ Events {BOX} = {BOX}, "
-        f"gerundet (bei ,5 weg von der Null, also zum größeren Betrag): {BOX}"
+        f"KZ-Änderung dieser Welle = KZ Angriff {BOX} + KZ Events {BOX} = {BOX}, gerundet: {BOX}"
     )
     assert all(_norm(sheet.wave_kz_line) == expected for sheet in sheets)
 
