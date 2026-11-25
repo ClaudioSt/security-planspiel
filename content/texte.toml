@@ -885,7 +885,7 @@ text = "Levelwechsel: dieselbe Maßnahme, anderes Level (auch Kündigen). Maßna
 
 [sheets.was_neu.rules.kurswechsel]
 heading = "Kurswechsel"
-text = "Das Event verlangt im Change-Fenster danach genau einen Maßnahmentausch (eine aktive Maßnahme raus, eine inaktive rein); der Kunde trägt die Init der neuen Maßnahme bis zur Höhe der Init der weggefallenen."
+text = "Das Event verlangt im Change-Fenster danach genau einen Maßnahmentausch (aktive Maßnahme raus, inaktive rein); der Kunde trägt die Init der neuen Maßnahme bis zur Höhe der alten."
 
 [sheets.was_neu.rules.downgrade]
 heading = "Herabstufen"
@@ -897,7 +897,7 @@ text = "Wer im Change-Fenster ein Level erhöht oder eine Maßnahme hinzufügt, 
 
 [sheets.was_neu.rules.overspend]
 heading = "Überziehung"
-text = "Statt eines pauschalen Abzugs kostet das Überziehen am Ende"
+text = "Statt eines Pauschalabzugs kostet das Überziehen am Ende"
 
 [sheets.was_neu.rules.sparprogramm]
 heading = "Sparprogramm"
