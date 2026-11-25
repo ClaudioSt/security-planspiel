@@ -1,8 +1,7 @@
 """FLOW-05 dry-run protocol: a one-page sheet the observer fills in while the facilitator runs the whole session (D-07, D-25).
 
 Facilitator-side only. The rows are the `schedule_rows` of the booklet (same blocks, planned minutes and spans, D-07);
-the pass rule is digit-free prose from `sheets.probelauf`, the only number being the config wave number inside the
-practice-wave label, which the schedule model composes. The protocol and the dry-run verdict judge the same blocks.
+the pass rule is digit-free prose from `sheets.probelauf`; the practice sheet is a handout and has no row. The protocol and the dry-run verdict judge the same blocks.
 """
 from dataclasses import dataclass, fields
 from typing import Optional
@@ -58,11 +57,7 @@ def build_probelauf_sheet(cfg: Config, texts: Texts) -> Optional[ProtocolSheet]:
         return None
     words = RevealView(cfg, texts).sheet(SHEET)
     source = schedule_rows(cfg, texts)
-    practice = next((row for block, row in zip(schedule.blocks, source) if block.wave == 0), None)
-    if practice is None:
-        wave_rule = f"{words['pass_wave_lead']} {words['pass_wave_tail']}"
-    else:
-        wave_rule = f"{words['pass_wave_lead']}, {words['pass_wave_practice']} {practice.label}, {words['pass_wave_tail']}"
+    wave_rule = f"{words['pass_wave_lead']} {words['pass_wave_tail']}"
     return ProtocolSheet(
         job=PROBELAUF_JOB,
         title=words["title"],

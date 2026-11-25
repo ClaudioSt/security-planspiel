@@ -8,7 +8,7 @@ import dataclasses
 import pytest
 
 from planspiel import audience, veil
-from planspiel.config import ScheduleBlock, load_config
+from planspiel.config import load_config
 from planspiel.probelauf import PROBELAUF_JOB, ProtocolRow, ProtocolSheet, build_probelauf_sheet
 from planspiel.schedule import schedule_rows
 from planspiel.texts import PREWAVE_SHEETS, check_texts, load_content, load_texts, required_keys
@@ -97,22 +97,6 @@ def test_four_pass_rules_without_a_practice_row_since_the_practice_sheet_is_a_ha
     )
     assert sheet.pass_rules[1:] == tuple(texts.get("sheets.probelauf.pass_rules"))
     assert len(texts.get("sheets.probelauf.pass_rules")) == 3
-
-
-def test_the_wave_rule_names_the_practice_wave_when_a_config_still_has_a_practice_block(cfg, texts):
-    blocks = (ScheduleBlock(id="wave_0", minutes=15, wave=0), *cfg.session_schedule.blocks)
-    changed = dataclasses.replace(
-        cfg,
-        session_schedule=dataclasses.replace(
-            cfg.session_schedule, blocks=blocks, total_minutes=sum(block.minutes for block in blocks)
-        ),
-    )
-    sheet = build_probelauf_sheet(changed, texts)
-    assert PRACTICE_LABEL in sheet.pass_rules[0]
-    assert sheet.pass_rules[0] == (
-        f"{texts.get('sheets.probelauf.pass_wave_lead')}, {texts.get('sheets.probelauf.pass_wave_practice')} "
-        f"{PRACTICE_LABEL}, {texts.get('sheets.probelauf.pass_wave_tail')}"
-    )
 
 
 def test_the_prose_texts_are_digit_free(texts):

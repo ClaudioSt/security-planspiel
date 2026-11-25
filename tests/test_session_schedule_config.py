@@ -227,11 +227,11 @@ def test_no_whiteboard_and_no_window_block_and_no_start_time(cfg):
     assert not any("start" in key or "clock" in key or "time" in key for block in raw["blocks"] for key in block)
 
 
-def test_three_teams_of_five_and_a_practice_wave_block(cfg):
+def test_three_teams_of_five_and_a_practice_config_without_a_practice_block(cfg):
     assert cfg.session_schedule.teams == 3
     assert cfg.session_schedule.persons_per_team == 5
     assert cfg.practice is not None
-    assert any(block.wave == 0 for block in cfg.session_schedule.blocks)
+    assert not any(block.wave == 0 for block in cfg.session_schedule.blocks)
 
 
 # --- FLOW-03: debrief stage minutes (D-11) ---------------------------------------------------------------------

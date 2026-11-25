@@ -1,6 +1,5 @@
 {
-  "title": "Welle 0 – Übung",
-  "intro": "Bevor die erste Welle beginnt, rechnet ihr gemeinsam ein Beispiel durch. Der Vorfall ist erfunden und zählt nicht für eure Wertung. Alle Felder sind schon ausgefüllt: Verfolgt Schritt für Schritt, wie aus den Maßnahmen eines Beispielteams Schutzwerte, Schaden und Kundenzufriedenheit werden. Die Anleitungstexte sind dieselben wie später auf euren Angriffsblättern.",
+  "title": "Welle 0 – Übung (Beispiel, zählt nicht für die Wertung)",
   "sheet_lines": {
     "e_value": [
       "16",
@@ -177,7 +176,7 @@
     "clamp_hint": "KZ nach der Welle und KZ final werden begrenzt auf 0 bis 100: 101 → 100"
   },
   "fragments": [
-    "Welle 0 – Übung",
+    "Welle 0 – Übung (Beispiel, zählt nicht für die Wertung)",
     "Schritt 1: CIA-Werte eintragen",
     "Schritt 2: E-Wert berechnen",
     "Schritt 3: Bonus prüfen",
@@ -225,7 +224,6 @@
     " € × (1 − r ",
     "−4",
     "+2,5",
-    "Bevor die erste Welle beginnt, rechnet ihr gemeinsam ein Beispiel durch. Der Vorfall ist erfunden und zählt nicht für eure Wertung. Alle Felder sind schon ausgefüllt: Verfolgt Schritt für Schritt, wie aus den Maßnahmen eines Beispielteams Schutzwerte, Schaden und Kundenzufriedenheit werden. Die Anleitungstexte sind dieselben wie später auf euren Angriffsblättern.",
     "Auswahl des Beispielteams",
     "Maßnahme",
     "Level",

@@ -266,9 +266,9 @@ def test_the_deck_has_the_expected_slides(slides):
 # --- Übungswelle slide and the bridged theory slides (quick task 261123-oav) -------------------------------------
 
 
-def test_there_is_no_practice_wave_slide_any_more(slides, content, cfg):
+def test_there_is_no_practice_wave_slide_any_more(slides, cfg):
     # quick 261125-fsu: the practice sheet is a handout of the Maßnahmen und Budget block, not a block of its own
-    practice_label = content.texts.subtree("sheets.ablauf")["practice_label"]
+    practice_label = "Übungswelle"
     for number, slide in enumerate(slides, start=1):
         title = slide.shapes.title.text_frame.text if slide.shapes.title is not None else ""
         assert title != practice_label, number

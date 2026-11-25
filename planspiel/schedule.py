@@ -65,8 +65,6 @@ def wave_label(words: dict, wave: int) -> str:
 def _block_label(words: dict, block) -> str:
     if block.wave is None:
         return words["blocks"][block.id]["label"]
-    if block.wave == 0:
-        return f"{words['practice_label']} ({wave_label(words, block.wave)})"
     return wave_label(words, block.wave)
 
 

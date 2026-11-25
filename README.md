@@ -49,18 +49,16 @@ Der Ablaufplan mit Blöcken, Dauern und Pausen steht in `session_schedule` und w
 1. **Einführung (Intro)**  
    Das Intro-Deck erklärt Spielidee und Rollen.
 2. **Story und Gruppenarbeit**  
-   Teams lesen die Story-Dokumente und erhalten dazu das Teamheft. Auf seiner ersten Seite stellen sie den Schutzbedarf fest: Sie listen die Werte des Unternehmens und schätzen je Schutzziel C / I / A den Schaden fürs Geschäft als gering, mittel oder hoch. Im Risikoregister darunter zeigt jedes Risiko auf einen Wert und sein Hauptziel, sein Band steht in der Tabelle; die Teams vergeben einen Rang und entscheiden, welche Risiken sie behandeln oder akzeptieren. Die Spielleitung beantwortet Fragen **kontextbezogen** und benennt keine Lücken. Fragen die Teams je Wert und Schutzziel, was ein Schaden fürs Geschäft bedeuten würde, antwortet die Spielleitung als Geschäftsführung mit einem Band, nie mit einem genauen Betrag.
-3. **Welle 0 (Übung)**  
-   Ein durchgerechnetes Übungsbeispiel (`uebung-welle-0.pdf`) mit eigenen Werten aus dem Block `practice`; es zählt nicht für die Wertung.
-4. **Budgetverhandlung und Maßnahmenwahl**  
-   Teams einigen sich auf ein Budget-Tier, wählen Maßnahmen und **Level**. **Abhängigkeiten** werden geprüft, **OPEX** wird notiert. Freiwillig tragen sie je Maßnahme ein, gegen welche Risiken ihres Registers sie wirkt („gegen R#“); die Spalte wird nicht bewertet.
-5. **Die Wellen**  
+   Teams lesen die Story-Dokumente und erhalten dazu das Teamheft-Blatt „Schutzbedarf und Risikoregister“; das Teamheft wird blattweise je Block ausgegeben, nicht als geheftetes Heft. Auf diesem Blatt stellen sie den Schutzbedarf fest: Sie listen die Werte des Unternehmens und schätzen je Schutzziel C / I / A den Schaden fürs Geschäft als gering, mittel oder hoch. Im Risikoregister darunter zeigt jedes Risiko auf einen Wert und sein Hauptziel, sein Band steht in der Tabelle; die Teams vergeben einen Rang und entscheiden, welche Risiken sie behandeln oder akzeptieren. Die Spielleitung beantwortet Fragen **kontextbezogen** und benennt keine Lücken. Fragen die Teams je Wert und Schutzziel, was ein Schaden fürs Geschäft bedeuten würde, antwortet die Spielleitung als Geschäftsführung mit einem Band, nie mit einem genauen Betrag.
+3. **Budgetverhandlung und Maßnahmenwahl**  
+   Die Spielleitung gibt die Maßnahmenkarten, die Teamheft-Blätter „Budget und Planung“ und „Tracking-Bogen“, die Erklärseite „So funktioniert eine Welle“ und das Übungsblatt (`uebung-welle-0.pdf`) gemeinsam aus. Das Übungsblatt rechnet eine Beispielwelle mit eigenen Werten aus dem Block `practice` vor; es ist eine Hilfe zum Nachschlagen, wird nicht gemeinsam durchgerechnet und zählt nicht für die Wertung. Teams einigen sich auf ein Budget-Tier, wählen Maßnahmen und **Level**. **Abhängigkeiten** werden geprüft, **OPEX** wird notiert. Freiwillig tragen sie je Maßnahme ein, gegen welche Risiken ihres Registers sie wirkt („gegen R#“); die Spalte wird nicht bewertet.
+4. **Die Wellen**  
    Jede Welle: a) Events anwenden, b) den Angriff deterministisch auflösen (siehe „Deterministische Auflösung“), c) **OPEX** zahlen und **Erholung** anwenden (falls konfiguriert), d) Realitätscheck: In der letzten Zeile des Arbeitsblatts tragen die Teams ein, welches Risiko ihres Registers der Angriff getroffen hat, oder „nicht im Register“.
-6. **Change-Fenster**  
+5. **Change-Fenster**  
    Nach jeder Welle außer der letzten: Levelwechsel, Kündigen, Hinzufügen (wirksam **ab der nächsten Welle**); nach der Kurswechsel-Welle zusätzlich der Pflicht-Maßnahmentausch.
-7. **Abschluss und Budget Review**  
-   Einmal nach der letzten Welle: Restbudget-Bonus oder Überziehungsstrafe, danach Klammerung der KZ. Dazu füllen die Teams die Spalte Rückblick im Risikoregister: Welches Risiko hat ein Angriff getroffen, und stimmte das Band aus der Schutzbedarfstabelle?
-8. **Debriefing**  
+6. **Abschluss und Budget Review**  
+   Einmal nach der letzten Welle, mit den Teamheft-Blättern „Return on Security“ und „Budget Review“ und der Eventkarte „Budget Review“: Restbudget-Bonus oder Überziehungsstrafe, danach Klammerung der KZ. Dazu füllen die Teams die Spalte Rückblick im Risikoregister: Welches Risiko hat ein Angriff getroffen, und stimmte das Band aus der Schutzbedarfstabelle?
+7. **Debriefing**  
    Feste Reihenfolge der Stufen (Reaktion, Beschreibung, Analyse, Anwendung) mit den Fragen der Seite „Debriefing-Fragen“ im Spielleitungs-Heft. Die Fragen folgen der Kette: Risikoregister gegen die Wirklichkeit, getroffene akzeptierte Risiken, der eigene Schutzbedarf nach Vertraulichkeit, Integrität und Verfügbarkeit gegen die Gewichtung der Wellen samt der Wahl des Hauptziels, wo sich das Geld ausgezahlt hat (RoS), Übertrag auf echtes Risikomanagement. Wenn Zeit bleibt, folgt ein kurzer Management-Pitch je Team ohne eigene Richtzeit.
 
 > **Hinweis:** Anzahl der Wellen, Events und der Blöcke des Ablaufs sind in der Konfiguration festgelegt.
@@ -201,11 +199,11 @@ Alle Dateien liegen als PDF in `final_documents/generated/` und werden aus `simu
 
 **Für die Teams:**
 
-- `spieler-teamheft.pdf`: Teamheft mit der Schutzbedarfstabelle (Werte aus der Story, je Schutzziel C / I / A gering, mittel oder hoch mit den € Bändern) und dem Risikoregister (Risiken mit Wert W#, Hauptziel, Folge fürs Geschäft, Rang, behandeln oder akzeptieren und Rückblick; das Band jedes Risikos steht in der Tabelle), Budget und Planung, einer Tracking-Seite je Welle und der Seite zu RoS und Budget Review. Es ersetzt die früheren Auswertungstabellen.
+- `spieler-teamheft.pdf`: Teamheft (je Team gedruckt, nicht geheftet, Blätter werden je Block ausgegeben) mit der Schutzbedarfstabelle (Werte aus der Story, je Schutzziel C / I / A gering, mittel oder hoch mit den € Bändern) und dem Risikoregister (Risiken mit Wert W#, Hauptziel, Folge fürs Geschäft, Rang, behandeln oder akzeptieren und Rückblick; das Band jedes Risikos steht in der Tabelle), Budget und Planung, einer Tracking-Seite je Welle und der Seite zu RoS und Budget Review. Es ersetzt die früheren Auswertungstabellen.
 - `spieler-massnahmenkarten.pdf` und `spieler-eventkarten.pdf`: die Karten, Werte und Texte aus der Konfiguration.
 - `spieler-so-funktioniert-eine-welle.pdf`: die Erklärseite zum Ablauf einer Welle.
 - `spieler-unternehmenssteckbrief.pdf`, `spieler-anfrage-mail.pdf`, `spieler-audit-mail.pdf`, `spieler-zeitungsartikel.pdf`: die Story-Dokumente mit den Hinweisen.
-- `uebung-welle-0.pdf`: das durchgerechnete Übungsblatt für Welle 0.
+- `uebung-welle-0.pdf`: das durchgerechnete Übungsblatt für Welle 0, ausgegeben als Hilfe im Block Maßnahmen und Budget (kein gemeinsamer Rechenblock).
 - `angriff-1_ransomware.pdf`, `angriff-2_ot.pdf`, `angriff-3_exfil.pdf`: die Angriffsarbeitsblätter mit den Rechenschritten der Auflösung. Sie werden erst zu Beginn ihrer Welle ausgegeben.
 
 **Nur für die Spielleitung (nicht an Teams ausgeben):**

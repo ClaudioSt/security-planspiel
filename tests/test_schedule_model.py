@@ -195,7 +195,7 @@ def test_required_keys_follow_the_config_ids(cfg):
     for block in cfg.session_schedule.blocks:
         assert f"sheets.ablauf.blocks.{block.id}.direction" in keys
         assert (f"sheets.ablauf.blocks.{block.id}.label" in keys) == (block.wave is None)
-    assert "sheets.ablauf.practice_label" in keys and "sheets.ablauf.print_attack_sheet" in keys
+    assert "sheets.ablauf.practice_label" not in keys and "sheets.ablauf.print_attack_sheet" in keys
     for row in cfg.session_schedule.print_list:
         assert (f"sheets.ablauf.print.{row.job}" in keys) == (not row.job.startswith("angriff-"))
 
