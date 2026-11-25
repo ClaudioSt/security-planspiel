@@ -143,3 +143,9 @@ def test_the_answer_keys_use_the_tracking_label_of_the_damage_row(cfg, texts):
         damage = next(row for row in section.key_rows if row.key == "damage_after")
         assert damage.label.startswith(label), (section.title, damage.label)
     assert next(row for row in sheet.welle0.rows if row.key == "damage_after").label.startswith(label)
+
+
+def test_the_ros_carry_hint_names_the_damage_row_by_its_tracking_label(texts):
+    hint = texts.get("sheets.teamheft.ros_carry_hint")
+    assert texts.get("sheets.tracking.row_damage") in hint
+    assert texts.get("sheets.tracking.row_own_window") in hint and texts.get("sheets.tracking.row_own_opex") in hint
