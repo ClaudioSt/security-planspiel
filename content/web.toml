@@ -697,3 +697,93 @@ frage = "Haben Sie von dem Vorfall bei dem anderen Zulieferer gelesen?"
 antwort = "Ja, das hängt bei uns in der Kantine. Seitdem schaue ich zweimal hin, bevor ich etwas öffne."
 quelle = "story.zeitungsartikel.bericht_vorfall.ablauf.paragraphs"
 index = 0
+
+# Vierte Szene: die Konstruktion. Hier liegen die wertvollsten Daten der Firma.
+[web.szenen.konstruktion]
+name = "Konstruktion"
+intro = "Ein ruhiger Raum voller Bildschirme und Papierrollen. Hier entstehen die Zeichnungen, von denen die Aufträge leben."
+figur = "konstruktion"
+
+[web.szenen.konstruktion.objekte.cad]
+name = "CAD-Arbeitsplätze"
+ansehen = "Große Monitore mit Drahtgittermodellen von Getriebeteilen. Auf einem läuft gerade eine Simulation."
+quelle = "story.steckbrief.it_ot_landschaft.office_engineering.bullets"
+index = 2
+
+[web.szenen.konstruktion.objekte.fileserver]
+name = "File-Server"
+ansehen = "Ein hoher Schrank mit einem kleinen grünen Lämpchen. Alles, was hier entsteht, landet darauf."
+quelle = "story.steckbrief.it_ot_landschaft.office_engineering.bullets"
+index = 3
+
+[web.szenen.konstruktion.objekte.zeichnungen]
+name = "Technische Zeichnungen"
+ansehen = "Aufgerollte Pläne und eine offene Zeichnung mit feinen Toleranzangaben."
+quelle = "story.steckbrief.produkte.bullets"
+index = 1
+
+[web.szenen.konstruktion.objekte.skizzen]
+name = "Skizzenwand"
+ansehen = "Entwürfe für neue Zahnräder, manche mit dem Kürzel des Hauptkunden versehen."
+quelle = "story.steckbrief.produkte.bullets"
+index = 2
+
+[web.szenen.konstruktion.objekte.usb]
+name = "USB-Stick"
+ansehen = "Ein Stick ohne Beschriftung liegt an der Tischkante. Niemand weiß so recht, wem er gehört."
+quelle = "story.steckbrief.betrieb_service.bullets"
+index = 4
+
+[web.szenen.konstruktion.objekte.stuhl]
+name = "Bürostuhl"
+ansehen = "Ein ergonomischer Stuhl, der mehr gekostet hat als mancher Rechner im Büro."
+
+[web.dialoge.konstruktion]
+begruessung = "Mehmet Aydın, Konstruktion. Fassen Sie bitte nichts an, da liegt gerade ein Prototyp drauf."
+abschied = "Ich muss weiterzeichnen. Der Kunde wartet auf die Freigabe."
+
+[[web.dialoge.konstruktion.fragen]]
+id = "daten"
+ausdruck = "erfreut"
+frage = "Woran arbeiten Sie gerade?"
+antwort = "An einem Prototyp für den Hauptkunden. Das ist unser Aushängeschild."
+quelle = "story.steckbrief.abhaengigkeiten.bullets"
+index = 1
+
+[[web.dialoge.konstruktion.fragen]]
+id = "partner"
+frage = "Wie bekommen Partner Ihre Zeichnungen?"
+antwort = "Über unser Portal. Das ist von außen erreichbar, sonst ginge es ja nicht."
+quelle = "story.steckbrief.it_ot_landschaft.saas_cloud.bullets"
+index = 2
+
+[[web.dialoge.konstruktion.fragen]]
+id = "sicherung"
+ausdruck = "besorgt"
+frage = "Was passiert, wenn der File-Server weg ist?"
+antwort = "Dann fehlt uns im schlimmsten Fall ein ganzer Monat Arbeit."
+quelle = "story.steckbrief.it_ot_landschaft.saas_cloud.bullets"
+index = 1
+
+[[web.dialoge.konstruktion.fragen]]
+id = "maschinen"
+frage = "Wie kommen Ihre Programme an die Maschinen?"
+antwort = "Direkt übers Netz. Ich klicke, und unten in der Halle ist es da."
+quelle = "story.steckbrief.it_ot_landschaft.ot_produktion.bullets"
+index = 3
+
+[[web.dialoge.konstruktion.fragen]]
+id = "rechte"
+ausdruck = "besorgt"
+frage = "Wer darf alles auf den File-Server?"
+antwort = "Wir hier, der Vertrieb und die Admins. Und die haben ein gemeinsames Konto, glaube ich."
+quelle = "story.steckbrief.betrieb_service.bullets"
+index = 1
+
+[[web.dialoge.konstruktion.fragen]]
+id = "abfluss"
+ausdruck = "besorgt"
+frage = "Würden Sie merken, wenn jemand große Mengen Daten kopiert?"
+antwort = "Ich? Nein. Ob die IT das sieht, weiß ich nicht."
+quelle = "story.steckbrief.betrieb_service.bullets"
+index = 5
