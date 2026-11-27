@@ -278,16 +278,21 @@ def test_scene_figures_belong_to_the_cast(cfg, content, web):
     assert "web.scene_figure" in _codes(check_web_texts(cfg, Texts(broken), content.terms, content.texts))
 
 
-def test_weber_office_reaches_clues_of_every_attack(cfg, content, web):
-    """The office of Dr. Weber is the second scene: the business view, with a clue for each attack."""
+SCENE_FIGURES = {"serverraum": "it", "buero_weber": "weber", "werkshalle": "produktion"}
+
+
+@pytest.mark.parametrize("scene_id", sorted(SCENE_FIGURES))
+def test_every_scene_reaches_clues_of_every_attack(cfg, content, web, scene_id):
+    """Each scene (objects plus the conversation with its figure) offers a clue for every attack, so no scene is
+    a dead end and the order of visits does not matter."""
     from planspiel.texts import load_clues
     from planspiel.web_content import scene_quotes
 
-    office = web.subtree("web.szenen.buero_weber")
-    assert office["figur"] == "weber"
+    figure = SCENE_FIGURES[scene_id]
+    assert web.subtree(f"web.szenen.{scene_id}")["figur"] == figure
     quotes = [
         (source, index) for path, source, index in scene_quotes(web)
-        if path.startswith("web.szenen.buero_weber.") or path.startswith("web.dialoge.weber.")
+        if path.startswith(f"web.szenen.{scene_id}.") or path.startswith(f"web.dialoge.{figure}.")
     ]
     assert len(quotes) >= 8
     clues = load_clues(REPO_ROOT / "content" / "clues.toml")
