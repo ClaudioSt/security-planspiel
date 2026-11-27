@@ -130,6 +130,12 @@ def test_always_content_has_no_attack_ids_as_keys(cfg, export):
     assert not found & set(cfg.attacks)
 
 
+def test_always_content_has_no_facilitator_sheets(export):
+    sheets = set(export["content.json"]["always"]["sheets"])
+    assert not sheets & {"cheatsheet", "spielleitung", "ablauf", "debrief", "was_neu", "probelauf"}
+    assert {"welle", "register", "teamheft"} <= sheets
+
+
 def test_waves_carry_the_revealed_texts(cfg, content, export):
     waves = export["content.json"]["waves"]
     for wave in cfg.waves:

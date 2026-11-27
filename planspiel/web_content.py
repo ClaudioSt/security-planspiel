@@ -6,7 +6,7 @@ before a wave, `web.reveal.<attack>` may name only its own attack, the only plac
 value-to-case links point at `risk_matrix.cases` with the matching protection goal.
 
 `build_content` splits texte.toml and web.toml by phase for the server's veil filter:
-- `always`: story, measure cards, sheets (without the facilitator cheat sheet), practice, web texts without
+- `always`: story, measure cards, player sheets (no facilitator sheets), practice, web texts without
   the reveal headlines and without the value-to-case links;
 - `waves[<id>]`: the revealed attack texts, the events and the headlines of that wave;
 - `final`: the final events;
@@ -26,6 +26,8 @@ WEB_FILE = "web.toml"
 PLACEHOLDERS = {"beratung"}
 GOALS = ("c", "i", "a")
 _PLACEHOLDER = re.compile(r"\{([^{}]*)\}")
+# Player-facing sheets only; facilitator sheets (cheat sheet, schedule, debrief guide, was-neu, Probelauf) stay out.
+PLAYER_SHEETS = ("angriff", "budget", "ros", "teamheft", "register", "tracking", "welle", "backup_recovery", "karten", "eventkarten", "labels")
 REQUIRED_MENTOR = ("intro", "analyse", "uebung", "planung", "welle", "fenster", "abschluss", "debrief")
 
 
@@ -108,7 +110,7 @@ def build_content(cfg: Config, content_dir: Path) -> Dict:
     always = {
         "story": texts.subtree("story"),
         "measures": texts.subtree("measures"),
-        "sheets": _without(texts.subtree("sheets"), "cheatsheet"),
+        "sheets": {name: texts.subtree(f"sheets.{name}") for name in PLAYER_SHEETS if texts.has(f"sheets.{name}")},
         "practice": texts.subtree("practice"),
         "web": web_public,
     }
