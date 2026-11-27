@@ -31,6 +31,30 @@ PLAYER_SHEETS = ("angriff", "budget", "ros", "teamheft", "register", "tracking",
 REQUIRED_MENTOR = ("intro", "analyse", "uebung", "planung", "welle", "fenster", "abschluss", "debrief")
 
 
+_DU = re.compile(r"\b(du|dir|dich|dein|deine|deinem|deinen|deiner|deines)\b", re.IGNORECASE)
+
+
+def _du_keys(node: Dict, prefix: str) -> List[str]:
+    found = []
+    for key, value in node.items():
+        path = f"{prefix}.{key}"
+        if isinstance(value, dict):
+            found += _du_keys(value, path)
+        elif key == "paragraphs" or any(_DU.search(text) for text in ([value] if isinstance(value, str) else value)):
+            found.append(path)
+    return found
+
+
+def missing_team_texts(web: Texts) -> List[str]:
+    """Mentor texts that address one person (du, dein, ...) and every paragraph list need a team version."""
+    missing = []
+    for path in _du_keys(web.subtree("web.mentor"), "web.mentor"):
+        team_path = path.replace("web.mentor.", "web.mentor_team.", 1)
+        if not web.has(team_path):
+            missing.append(team_path)
+    return missing
+
+
 def load_web_texts(path: Path) -> Texts:
     return load_texts(path)
 
@@ -62,6 +86,16 @@ def check_web_texts(cfg: Config, web: Texts, terms: GiveawayTerms) -> List[Issue
             hits = giveaway_hits(text, terms, attack_ids, profile="story")
         if hits:
             issues.append(Issue("error", "web.giveaway", key, f"Verbotener Begriff: {', '.join(sorted(set(hits)))}"))
+
+    for path in missing_team_texts(web):
+        issues.append(Issue("error", "web.team_text", path, "Teamfassung fehlt"))
+    if web.has("web.mentor_team"):
+        for key, _ in web.strings("web.mentor_team"):
+            if not web.has(key.replace("web.mentor_team.", "web.mentor.", 1)):
+                issues.append(Issue("error", "web.team_text", key, "Teamfassung ohne Grundtext"))
+    questions = web.get("web.feedback.questions") if web.has("web.feedback.questions") else []
+    if len({q.get("id") for q in questions}) != len(questions):
+        issues.append(Issue("error", "web.feedback", "web.feedback.questions", "Doppelte Fragen-ID"))
 
     cases = {case.id: case for case in (cfg.risk_matrix.cases if cfg.risk_matrix else ())}
     werte = web.subtree("web.werte") if web.has("web.werte") else {}

@@ -112,6 +112,114 @@ tip_2 = "Ein mittleres Level bei den wichtigsten Maßnahmen bringt meist mehr al
 tip_1 = "Brauchst du eine Maßnahme in den restlichen Wellen noch? Laufende Kosten sparst du nur durch Senken oder Kündigen."
 tip_2 = "Beim Kurswechsel übernimmt der Kunde einen Teil der Kosten der neuen Maßnahme. Ein Tausch kann also eine Chance sein."
 
+# Fassung für Teams (zwei oder drei Personen): überschreibt die Texte der Mentorin, die eine Person ansprechen.
+# Prognose und Handrechnung gibt jede Person für sich ab, deshalb bleiben diese Fragen in der Du-Form.
+[web.mentor_team.intro]
+paragraphs = [
+    "Schön, dass ihr da seid. Ich begleite euch durch euer erstes Projekt: Die MechTech GmbH, ein Zulieferer für die Automobilindustrie, hat uns um Hilfe gebeten. Sie haben bisher kaum in IT-Sicherheit investiert und wissen nicht, wo sie anfangen sollen.",
+    "Eure Aufgabe: Findet heraus, welche Werte bei MechTech schützenswert sind und welche Risiken drohen. Wählt dann mit einem begrenzten Budget passende Sicherheitsmaßnahmen. Danach zeigt sich in drei Angriffswellen, ob eure Planung trägt.",
+    "Bewertet werdet ihr an zwei Dingen: an der Kundenzufriedenheit von MechTech (KZ) und daran, ob sich die Investition gelohnt hat (Return on Security, RoS). Das Spiel kennt keinen Zufall: Gleiche Entscheidungen führen immer zum gleichen Ergebnis, und jede Rechnung könnt ihr selbst nachvollziehen.",
+    "Ihr spielt gemeinsam, jede und jeder am eigenen Gerät. Entscheidungen, die das Projekt weiterbringen, schlägt eine Person vor, und alle stimmen zu. Sprecht miteinander, bevor ihr zustimmt.",
+]
+chapters_title = "So läuft euer Projekt ab"
+
+[web.mentor_team.analyse]
+paragraphs = [
+    "Lest die Unterlagen von MechTech genau. Irgendwo darin stecken die Schwachstellen, die Angreifer später ausnutzen werden. Teilt euch die Dokumente ruhig auf.",
+    "Wenn euch ein Satz wichtig vorkommt, heftet ihn als Notiz an die Pinnwand und ordnet ihm ein Schutzziel und eine passende Maßnahme zu. Die Pinnwand hat nur begrenzt Platz: Wählt gemeinsam gut aus.",
+    "Haltet danach fest, wie schlimm ein Schaden an jedem Wert wäre, und tragt die wichtigsten Risiken ins Register ein. Wenn ihr unsicher seid, fragt die Geschäftsführung, was ein Schaden fürs Geschäft bedeuten würde.",
+]
+pinboard_hint = "Ob eure Notizen ins Schwarze treffen, seht ihr erst, wenn der passende Angriff kommt."
+need_hint = "Schätzt je Wert und Schutzziel, wie groß der Schaden fürs Geschäft wäre. Gesamt zählt die höchste Stufe."
+register_hint = "Welcher Wert ist bedroht, wodurch, und welches Schutzziel trifft es vor allem? Entscheidet, ob ihr das Risiko behandelt oder akzeptiert."
+ask_title = "Fragt die Geschäftsführung"
+ask_hint = "Dr. Weber beschreibt euch die Folgen fürs Geschäft und nennt eine Größenordnung, nie einen genauen Betrag."
+
+[web.mentor_team.uebung]
+paragraphs = [
+    "Bevor es ernst wird, rechnen wir ein Beispiel zusammen durch. Der Vorfall ist erfunden und zählt nicht für eure Wertung. Rechnet zuerst jede und jeder für sich und vergleicht dann.",
+    "Achtet besonders auf den Bonus: Eine passende Maßnahme hilft nur, wenn sie das verlangte Level erreicht. Eine Maßnahme auf zu niedrigem Level bringt im Angriff keinen Bonus.",
+]
+done = "Geschafft. Genau so rechnet ihr gleich in jeder Welle."
+
+[web.mentor_team.planung]
+paragraphs = [
+    "Zuerst vereinbart ihr mit Dr. Weber das Budget. Mehr Budget gibt mehr Spielraum, aber dann erwartet MechTech auch mehr, und ihr startet mit niedrigerer Kundenzufriedenheit.",
+    "Dann wählt ihr Maßnahmen und deren Level. Jede Maßnahme kostet einmalig (Init) und in jeder Welle laufend (OPEX). Manche Maßnahmen setzen auf höheren Levels eine andere Maßnahme voraus.",
+    "Ihr werdet nicht alles umsetzen können, was in euren Notizen steht. Priorisiert: Welche Risiken sind am größten, und welche Maßnahmen wirken gegen mehrere davon? Ein Überziehen des Budgets kostet am Ende deutlich Kundenzufriedenheit. Eine Person schlägt die Planung vor, alle stimmen zu.",
+]
+
+[web.mentor_team.welle]
+paragraphs = [
+    "Jetzt wird es ernst. Zuerst treten die Ereignisse dieser Welle ein. Dann zeigt sich, welcher Angriff MechTech trifft.",
+    "Jede und jeder schätzt für sich, wie es ausgeht, und rechnet selbst nach. Eure Antworten seht ihr gemeinsam mit dem Ergebnis. Ich zeige euch danach jeden Schritt.",
+]
+prognosis_title = "Deine Prognose"
+prognosis_question = "Was glaubst du: Wie gut halten eure Maßnahmen?"
+reality_question = "Welches Risiko aus eurem Register hat dieser Angriff getroffen?"
+
+[web.mentor_team.fenster]
+paragraphs = [
+    "Ihr könnt eure Maßnahmen jetzt anpassen: Level erhöhen oder senken, Maßnahmen kündigen oder neu hinzunehmen. Änderungen wirken ab der nächsten Welle.",
+    "Bereits gezahlte Init-Kosten bekommt ihr nie zurück. Überlegt, was ihr in den kommenden Wellen noch braucht.",
+]
+swap_hint = "Wählt eine Maßnahme, die wegfällt, und eine, die neu hinzukommt."
+
+[web.mentor_team.abschluss]
+paragraphs = [
+    "Alle drei Wellen sind vorbei. Jetzt macht der CFO von MechTech Kassensturz: Hattet ihr das Budget im Griff, und hat sich die Investition gelohnt?",
+]
+
+[web.mentor_team.debrief]
+paragraphs = [
+    "Schaut euch an, wo eure Kette aus Wert, Schutzziel, Risiko und Maßnahme gehalten hat und wo sie gerissen ist.",
+    "Gute Sicherheit heißt nicht, alles zu kaufen. Sie heißt, die größten Risiken mit den passenden Maßnahmen auf ausreichendem Level abzudecken und dabei im Budget zu bleiben.",
+]
+
+[web.mentor_team.tips.analyse]
+tip_1 = "Achtet auf Sätze, in denen etwas fehlt, veraltet ist oder nur selten passiert."
+tip_2 = "Der Zeitungsartikel beschreibt einen Vorfall bei einem anderen Zulieferer. Fragt euch, ob MechTech ähnlich verwundbar ist."
+
+[web.mentor_team.tips.planung]
+tip_1 = "Prüft, gegen welche eurer Risiken eine Maßnahme wirkt. Maßnahmen, die gegen keines wirken, sind ein Luxus."
+tip_2 = "Ein mittleres Level bei den wichtigsten Maßnahmen bringt meist mehr als viele Maßnahmen auf dem niedrigsten Level."
+
+[web.mentor_team.tips.fenster]
+tip_1 = "Braucht ihr eine Maßnahme in den restlichen Wellen noch? Laufende Kosten spart ihr nur durch Senken oder Kündigen."
+tip_2 = "Beim Kurswechsel übernimmt der Kunde einen Teil der Kosten der neuen Maßnahme. Ein Tausch kann also eine Chance sein."
+
+# Kurzes Feedback am Ende der Testrunde: Zustimmung auf einer Skala von fünf Stufen, dazu ein Freitext.
+# Die IDs bleiben stabil, damit Auswertungen über mehrere Runden vergleichbar sind.
+[web.feedback]
+title = "Kurzes Feedback"
+intro = "Hilf uns, das Spiel zu verbessern. Deine Antworten sind freiwillig und werden nur zusammen mit deinem Pseudonym gespeichert."
+scale_low = "stimme nicht zu"
+scale_high = "stimme voll zu"
+free_label = "Was sollten wir verbessern?"
+submit = "Feedback senden"
+thanks = "Danke für dein Feedback!"
+
+[[web.feedback.questions]]
+id = "verstanden"
+text = "Ich habe verstanden, warum ein Angriff gewirkt hat oder abgewehrt wurde."
+
+[[web.feedback.questions]]
+id = "zusammenhang"
+text = "Ich kann erklären, wie Werte, Schutzziele, Risiken und Maßnahmen zusammenhängen."
+
+[[web.feedback.questions]]
+id = "bedienung"
+text = "Die Bedienung der App war verständlich."
+
+[[web.feedback.questions]]
+id = "rechnung"
+text = "Die Rechnung in den Wellen konnte ich nachvollziehen."
+
+[[web.feedback.questions]]
+id = "team"
+text = "Die Zusammenarbeit im Team hat gut funktioniert."
+team_only = true
+
 [web.cast.weber]
 name = "Dr. Thomas Weber"
 role = "Geschäftsführer, MechTech GmbH"
