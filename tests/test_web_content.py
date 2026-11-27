@@ -192,3 +192,26 @@ def test_feedback_questions(cfg, content, web):
 def test_feedback_ids_are_stable(web):
     ids = [q["id"] for q in web.get("web.feedback.questions")]
     assert ids[:3] == ["verstanden", "zusammenhang", "bedienung"]
+
+
+BADGES = {
+    "spurensucher", "geschlossene_kette", "lueckenlos", "volle_abwehr", "unverwundbar", "kopfrechner",
+    "augenmass", "im_budget", "kurs_gehalten", "audit_bestanden", "benutzerfreundlich",
+}
+
+
+def test_badges_have_texts(web):
+    badges = web.subtree("web.badges")
+    assert set(badges) == BADGES
+    for badge in badges.values():
+        assert badge["name"] and badge["description"]
+
+
+def test_hidden_badges_are_marked(web):
+    hidden = {key for key, badge in web.subtree("web.badges").items() if badge.get("hidden")}
+    assert hidden == {"kurs_gehalten", "audit_bestanden", "benutzerfreundlich"}
+
+
+def test_episode_titles_for_every_chapter(web):
+    episodes = web.subtree("web.episodes")
+    assert set(episodes) >= {"analyse", "uebung", "planung", "welle", "fenster", "abschluss", "debrief"}
