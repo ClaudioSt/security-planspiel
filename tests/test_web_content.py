@@ -258,3 +258,12 @@ def test_recipient_of_the_request_is_the_brand_placeholder(export):
     always = export["content.json"]["always"]
     assert always["story"]["anfrage_mail"]["kopf"]["an"] == "{beratung_mail}"
     assert "VWI" not in str(always)
+
+
+def test_dialogue_expressions_are_known(cfg, content, web):
+    for figure, dialogue in web.subtree("web.dialoge").items():
+        for question in dialogue["fragen"]:
+            assert question.get("ausdruck", "neutral") in {"neutral", "erfreut", "besorgt"}
+    broken = copy.deepcopy(web.data)
+    broken["web"]["dialoge"]["it"]["fragen"][0]["ausdruck"] = "wütend"
+    assert "web.expression" in _codes(check_web_texts(cfg, Texts(broken), content.terms, content.texts))
