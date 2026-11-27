@@ -217,6 +217,7 @@ text = "Die Rechnung in den Wellen konnte ich nachvollziehen."
 
 [[web.feedback.questions]]
 id = "team"
+ausdruck = "neutral"
 text = "Die Zusammenarbeit im Team hat gut funktioniert."
 team_only = true
 
@@ -439,6 +440,7 @@ index = 0
 name = "Kaffeemaschine"
 ansehen = "Die Kaffeemaschine ist das am besten gewartete Gerät im Raum."
 
+# ausdruck: Gesichtsausdruck der Figur bei dieser Antwort (neutral, erfreut, besorgt); passende Porträts in der Web-App.
 [web.dialoge.it]
 begruessung = "Hallo! Jonas Reiter, IT. Viel Zeit habe ich nicht, aber fragen Sie ruhig."
 abschied = "Wenn noch was ist: Sie finden mich hier."
@@ -452,6 +454,7 @@ index = 0
 
 [[web.dialoge.it.fragen]]
 id = "admins"
+ausdruck = "besorgt"
 frage = "Wer hat Administratorrechte?"
 antwort = "Das ist bei uns pragmatisch gelöst."
 quelle = "story.steckbrief.betrieb_service.bullets"
@@ -459,6 +462,7 @@ index = 1
 
 [[web.dialoge.it.fragen]]
 id = "sicherung"
+ausdruck = "erfreut"
 frage = "Wie sichert ihr eure Daten?"
 antwort = "Da haben wir eine Lösung in der Cloud."
 quelle = "story.steckbrief.it_ot_landschaft.saas_cloud.bullets"
@@ -466,6 +470,7 @@ index = 1
 
 [[web.dialoge.it.fragen]]
 id = "fernzugang"
+ausdruck = "erfreut"
 frage = "Wie kommen Dienstleister an eure Systeme?"
 antwort = "Über Fernzugänge, das spart Anfahrten."
 quelle = "story.steckbrief.betrieb_service.bullets"
@@ -473,6 +478,7 @@ index = 3
 
 [[web.dialoge.it.fragen]]
 id = "erkennung"
+ausdruck = "besorgt"
 frage = "Würdet ihr merken, wenn jemand Fremdes im Netz ist?"
 antwort = "Gute Frage. Ich hoffe es."
 quelle = "story.steckbrief.betrieb_service.bullets"
@@ -480,6 +486,7 @@ index = 5
 
 [[web.dialoge.it.fragen]]
 id = "updates"
+ausdruck = "besorgt"
 frage = "Wie oft spielt ihr Updates ein?"
 antwort = "Im Büro regelmäßig. In der Produktion ist das schwieriger."
 quelle = "story.steckbrief.betrieb_service.bullets"

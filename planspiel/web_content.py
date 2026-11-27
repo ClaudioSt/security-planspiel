@@ -25,6 +25,7 @@ from planspiel.validate import Issue
 WEB_FILE = "web.toml"
 PLACEHOLDERS = {"beratung"}
 GOALS = ("c", "i", "a")
+EXPRESSIONS = ("neutral", "erfreut", "besorgt")
 _PLACEHOLDER = re.compile(r"\{([^{}]*)\}")
 # Player-facing sheets only; facilitator sheets (cheat sheet, schedule, debrief guide, was-neu, Probelauf) stay out.
 PLAYER_SHEETS = ("angriff", "budget", "ros", "teamheft", "register", "tracking", "welle", "backup_recovery", "karten", "eventkarten", "labels")
@@ -118,6 +119,11 @@ def check_web_texts(cfg: Config, web: Texts, terms: GiveawayTerms, texts: Texts 
     if len({q.get("id") for q in questions}) != len(questions):
         issues.append(Issue("error", "web.feedback", "web.feedback.questions", "Doppelte Fragen-ID"))
 
+    dialogues = web.subtree("web.dialoge") if web.has("web.dialoge") else {}
+    for figure, dialogue in dialogues.items():
+        for number, question in enumerate(dialogue.get("fragen", [])):
+            if question.get("ausdruck", "neutral") not in EXPRESSIONS:
+                issues.append(Issue("error", "web.expression", f"web.dialoge.{figure}.fragen.{number}", "Unbekannter Ausdruck"))
     event_ids = {event.id for events in cfg.events.values() for event in events}
     badges = web.subtree("web.badges") if web.has("web.badges") else {}
     for badge_id, badge in badges.items():
