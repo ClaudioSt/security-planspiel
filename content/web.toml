@@ -1,0 +1,205 @@
+# Texte der Web-App (Repo security-planspiel-web), getrennt von texte.toml, damit Druck und Stempel unberührt bleiben.
+# Prüfungen (planspiel/web_content.py, beim Export und in tests/test_web_content.py):
+# - keine Ziffern: Zahlen kommen aus der Config und werden in der App erzeugt;
+# - Giveaway-Lint mit Story-Profil für alles außer web.reveal.*; web.reveal.<angriff> nennt nur den eigenen Angriff;
+# - Platzhalter nur {beratung} (Name der Beratung aus dem Markenprofil der Sitzung);
+# - web.werte.*.faelle verweisen auf risk_matrix.cases mit passendem Schutzziel.
+# Entwurf: zur inhaltlichen Durchsicht.
+
+[web.mentor.intro]
+title = "Willkommen bei {beratung}"
+paragraphs = [
+    "Schön, dass du da bist. Ich begleite dich durch dein erstes Projekt: Die MechTech GmbH, ein Zulieferer für die Automobilindustrie, hat uns um Hilfe gebeten. Sie haben bisher kaum in IT-Sicherheit investiert und wissen nicht, wo sie anfangen sollen.",
+    "Deine Aufgabe: Finde heraus, welche Werte bei MechTech schützenswert sind und welche Risiken drohen. Wähle dann mit einem begrenzten Budget passende Sicherheitsmaßnahmen. Danach zeigt sich in drei Angriffswellen, ob deine Planung trägt.",
+    "Bewertet wirst du an zwei Dingen: an der Kundenzufriedenheit von MechTech (KZ) und daran, ob sich die Investition gelohnt hat (Return on Security, RoS). Das Spiel kennt keinen Zufall: Gleiche Entscheidungen führen immer zum gleichen Ergebnis, und jede Rechnung kannst du selbst nachvollziehen.",
+]
+chapters_title = "So läuft dein Projekt ab"
+chapters = [
+    "Vor-Ort-Analyse: Unterlagen lesen, Hinweise notieren, Schutzbedarf und Risiken festhalten.",
+    "Übungswelle: Wir rechnen gemeinsam ein Beispiel durch. Es zählt nicht.",
+    "Planung: Budget vereinbaren und Maßnahmen wählen.",
+    "Drei Angriffswellen mit Ereignissen, jeweils mit Änderungsfenster danach.",
+    "Abschluss und Auswertung.",
+]
+cia_title = "Die drei Schutzziele"
+cia = [
+    "Vertraulichkeit (C): Nur Berechtigte sehen die Daten.",
+    "Integrität (I): Daten und Systeme sind korrekt und unverfälscht.",
+    "Verfügbarkeit (A): Systeme und Daten stehen bereit, wenn sie gebraucht werden.",
+]
+
+[web.mentor.analyse]
+title = "Vor-Ort-Analyse"
+paragraphs = [
+    "Lies die Unterlagen von MechTech genau. Irgendwo darin stecken die Schwachstellen, die Angreifer später ausnutzen werden.",
+    "Wenn dir ein Satz wichtig vorkommt, hefte ihn als Notiz an die Pinnwand und ordne ihm ein Schutzziel und eine passende Maßnahme zu. Die Pinnwand hat nur begrenzt Platz: Wähle gut aus.",
+    "Halte danach fest, wie schlimm ein Schaden an jedem Wert wäre, und trage die wichtigsten Risiken ins Register ein. Wenn du unsicher bist, frag die Geschäftsführung, was ein Schaden fürs Geschäft bedeuten würde.",
+]
+pinboard_title = "Pinnwand"
+pinboard_hint = "Ob deine Notizen ins Schwarze treffen, siehst du erst, wenn der passende Angriff kommt."
+need_title = "Schutzbedarf"
+need_hint = "Schätze je Wert und Schutzziel, wie groß der Schaden fürs Geschäft wäre. Gesamt zählt die höchste Stufe."
+register_title = "Risikoregister"
+register_hint = "Welcher Wert ist bedroht, wodurch, und welches Schutzziel trifft es vor allem? Entscheide, ob du das Risiko behandelst oder akzeptierst."
+ask_title = "Frag die Geschäftsführung"
+ask_hint = "Dr. Weber beschreibt dir die Folgen fürs Geschäft und nennt eine Größenordnung, nie einen genauen Betrag."
+
+[web.mentor.uebung]
+title = "Übungswelle"
+paragraphs = [
+    "Bevor es ernst wird, rechnen wir ein Beispiel zusammen durch. Der Vorfall ist erfunden und zählt nicht für deine Wertung.",
+    "Achte besonders auf den Bonus: Eine passende Maßnahme hilft nur, wenn sie das verlangte Level erreicht. Eine Maßnahme auf zu niedrigem Level bringt im Angriff keinen Bonus.",
+]
+done = "Geschafft. Genau so rechnest du gleich in jeder Welle."
+
+[web.mentor.planung]
+title = "Planung"
+paragraphs = [
+    "Zuerst vereinbarst du mit Dr. Weber das Budget. Mehr Budget gibt mehr Spielraum, aber dann erwartet MechTech auch mehr, und du startest mit niedrigerer Kundenzufriedenheit.",
+    "Dann wählst du Maßnahmen und ihr Level. Jede Maßnahme kostet einmalig (Init) und in jeder Welle laufend (OPEX). Manche Maßnahmen setzen auf höheren Levels eine andere Maßnahme voraus.",
+    "Du wirst nicht alles umsetzen können, was in deinen Notizen steht. Priorisiere: Welche Risiken sind am größten, und welche Maßnahmen wirken gegen mehrere davon? Ein Überziehen des Budgets kostet am Ende deutlich Kundenzufriedenheit.",
+]
+tier_title = "Budget vereinbaren"
+measures_title = "Maßnahmen wählen"
+confirm = "Planung bestätigen"
+
+[web.mentor.welle]
+title = "Angriffswelle"
+paragraphs = [
+    "Jetzt wird es ernst. Zuerst treten die Ereignisse dieser Welle ein. Dann zeigt sich, welcher Angriff MechTech trifft.",
+    "Schätze vorher, wie es ausgeht, und rechne dann selbst nach. Ich zeige dir danach jeden Schritt.",
+]
+prognosis_title = "Deine Prognose"
+prognosis_question = "Was glaubst du: Wie gut halten deine Maßnahmen?"
+calc_title = "Rechne nach"
+result_title = "Ergebnis"
+reality_title = "Realitätscheck"
+reality_question = "Welches Risiko aus deinem Register hat dieser Angriff getroffen?"
+reality_none = "Nicht im Register"
+
+[web.mentor.fenster]
+title = "Änderungsfenster"
+paragraphs = [
+    "Du kannst deine Maßnahmen jetzt anpassen: Level erhöhen oder senken, Maßnahmen kündigen oder neu hinzunehmen. Änderungen wirken ab der nächsten Welle.",
+    "Bereits gezahlte Init-Kosten bekommst du nie zurück. Überlege, was du in den kommenden Wellen noch brauchst.",
+]
+swap_title = "Kurswechsel: Pflicht-Tausch"
+swap_hint = "Wähle eine Maßnahme, die wegfällt, und eine, die neu hinzukommt."
+confirm = "Änderungen bestätigen"
+
+[web.mentor.abschluss]
+title = "Abschluss"
+paragraphs = [
+    "Alle drei Wellen sind vorbei. Jetzt macht der CFO von MechTech Kassensturz: Hast du das Budget im Griff gehabt, und hat sich die Investition gelohnt?",
+]
+
+[web.mentor.debrief]
+title = "Auswertung"
+paragraphs = [
+    "Schau dir an, wo deine Kette aus Wert, Schutzziel, Risiko und Maßnahme gehalten hat und wo sie gerissen ist.",
+    "Gute Sicherheit heißt nicht, alles zu kaufen. Sie heißt, die größten Risiken mit den passenden Maßnahmen auf ausreichendem Level abzudecken und dabei im Budget zu bleiben.",
+]
+
+[web.mentor.tips.analyse]
+tip_1 = "Achte auf Sätze, in denen etwas fehlt, veraltet ist oder nur selten passiert."
+tip_2 = "Der Zeitungsartikel beschreibt einen Vorfall bei einem anderen Zulieferer. Frag dich, ob MechTech ähnlich verwundbar ist."
+
+[web.mentor.tips.planung]
+tip_1 = "Prüfe, gegen welche deiner Risiken eine Maßnahme wirkt. Maßnahmen, die gegen keines wirken, sind ein Luxus."
+tip_2 = "Ein mittleres Level bei den wichtigsten Maßnahmen bringt meist mehr als viele Maßnahmen auf dem niedrigsten Level."
+
+[web.mentor.tips.fenster]
+tip_1 = "Brauchst du eine Maßnahme in den restlichen Wellen noch? Laufende Kosten sparst du nur durch Senken oder Kündigen."
+tip_2 = "Beim Kurswechsel übernimmt der Kunde einen Teil der Kosten der neuen Maßnahme. Ein Tausch kann also eine Chance sein."
+
+[web.cast.weber]
+name = "Dr. Thomas Weber"
+role = "Geschäftsführer, MechTech GmbH"
+greeting = "Gut, dass Sie da sind. Fragen Sie mich ruhig, was ein Ausfall oder ein Datenleck für uns bedeuten würde."
+
+[web.cast.it]
+name = "Jonas Reiter"
+role = "IT-Leitung, MechTech GmbH"
+greeting = "Wir sind zu zweit für die ganze IT. Vieles läuft, weil es immer so lief."
+
+[web.cast.produktion]
+name = "Petra Albrecht"
+role = "Produktionsleitung, MechTech GmbH"
+greeting = "Unsere Linien laufen rund um die Uhr. Jede Stunde Stillstand merkt der Kunde sofort."
+
+[web.cast.konstruktion]
+name = "Mehmet Aydın"
+role = "Konstruktionsleitung, MechTech GmbH"
+greeting = "Unsere Konstruktionsdaten sind unser Kapital. Ohne sie gibt es keine Aufträge."
+
+[web.cast.controlling]
+name = "Birgit Hartmann"
+role = "Finanzen und Controlling, MechTech GmbH"
+greeting = "Jeder Euro für Sicherheit fehlt woanders. Zeigen Sie mir, dass er sich lohnt."
+
+[web.cast.hoffmann]
+name = "Klaus Hoffmann"
+role = "Supplier Quality Management, Premium-OEM"
+greeting = "Wir erwarten Nachweise, keine Absichtserklärungen."
+
+# Werte von MechTech: mehr Werte als Angriffe, damit die Liste die Angriffsziele nicht verrät.
+# faelle: je Schutzziel der Fall der Geschäftsführung (risk_matrix.cases), dessen Band die Antwort ist.
+[web.werte.konstruktionsdaten]
+name = "Konstruktions- und Entwicklungsdaten"
+description = "CAD-Modelle, Zeichnungen und Prozessdaten aus der Konstruktion."
+faelle = { c = "design_data", i = "data_trust" }
+
+[web.werte.fertigung]
+name = "Fertigungsanlagen und Produktionssteuerung"
+description = "Fertigungslinien mit ihren Steuerungen, MES und Anlagenvisualisierung."
+faelle = { a = "production_week" }
+
+[web.werte.produktionsbetrieb]
+name = "Laufender Produktionsbetrieb"
+description = "Die Fähigkeit, im Schichtbetrieb termintreu an den OEM zu liefern."
+faelle = { a = "production_days" }
+
+[web.werte.auftragsdaten]
+name = "Auftrags- und Fertigungsdaten"
+description = "Aufträge, Stücklisten und Fertigungsparameter in den Systemen."
+faelle = { i = "data_trust" }
+
+[web.werte.kundenbeziehung]
+name = "Beziehung zum Hauptkunden"
+description = "Der Premium-OEM, der den größten Teil des Umsatzes bringt."
+faelle = { a = "oem_hold" }
+
+[web.werte.nachweise]
+name = "Sicherheitsnachweise"
+description = "Dokumentation und Nachweise, die der OEM im Audit sehen will."
+faelle = { c = "audit_findings" }
+
+[web.werte.buero]
+name = "Büro-Arbeitsplätze"
+description = "Die Windows-PCs in Verwaltung und Vertrieb."
+faelle = { a = "single_pc" }
+
+[web.ui]
+case_1 = "Schwelle nicht überschritten, voller Schaden"
+case_2 = "Obergrenze erreicht, kein Schaden"
+case_3 = "dazwischen, teilweiser Schaden"
+band_low = "gering"
+band_medium = "mittel"
+band_high = "hoch"
+decision_treat = "behandeln"
+decision_accept = "akzeptieren"
+
+[web.reveal.ransomware]
+headline_case_1 = "Erpresser legen MechTech lahm"
+headline_case_2 = "MechTech wehrt Erpressungsversuch ab"
+headline_case_3 = "MechTech kommt mit blauem Auge davon"
+
+[web.reveal.ot]
+headline_case_1 = "Stillstand in der Göppinger Fertigung"
+headline_case_2 = "Angriff auf Fertigung bei MechTech ins Leere gelaufen"
+headline_case_3 = "Fertigung bei MechTech gestört, aber nicht gestoppt"
+
+[web.reveal.exfil]
+headline_case_1 = "Konstruktionsdaten von MechTech im Netz aufgetaucht"
+headline_case_2 = "Datendiebe scheitern an MechTech"
+headline_case_3 = "Teile der MechTech-Daten abgeflossen"

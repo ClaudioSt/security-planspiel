@@ -29,7 +29,7 @@ The game is played live on **paper only**: teams work on their printed Teamheft,
 - **Gesamtbonus:** sum of the `bonus_measures` bonuses whose measure reaches its `min_level` (2-3 thematically fitting measures per wave).
 - **Gesamtreduktion:** `E-Wert + Gesamtbonus`.
 - **Deterministic resolution (three cases on the attack worksheets):**
-  - `reduction_over_threshold = min(mitigation_cap, max(0, Gesamtreduktion - e_threshold))`: case 1 at or below the threshold (no reduction), case 2 between threshold and cap, case 3 cap reached.
+  - `reduction_over_threshold = min(mitigation_cap, max(0, Gesamtreduktion - e_threshold))`: case 1 at or below the threshold (no reduction), case 2 cap reached (no damage), case 3 between threshold and cap (linear), as on the worksheet and in `rules.path_trace`.
   - `severity = max(0, base_severity*severity_multiplier - reduction_over_threshold)`
   - `damage = severity * s_unit`, times `(1 - recovery_factor)` when `allow_recovery` is set and a recovery measure is active.
   - `KZ delta = kz_at_full_damage + (reduction_over_threshold / mitigation_cap) * (kz_at_full_mitigation - kz_at_full_damage)`: **linearly interpolated on purpose** (see the comment in `attack_kz_delta()` in `planspiel/rules.py`), not the case-3 sub-formula of older documents.
