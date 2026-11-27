@@ -282,7 +282,8 @@ def build_export(config_path: FsPath, content_dir: Optional[FsPath] = None) -> D
     config_path = FsPath(config_path)
     content_dir = FsPath(content_dir) if content_dir else config_path.parent / "content"
     cfg = load_config(config_path)
-    issues = check_web_texts(cfg, load_web_texts(content_dir / WEB_FILE), load_content(content_dir).terms)
+    content_files = load_content(content_dir)
+    issues = check_web_texts(cfg, load_web_texts(content_dir / WEB_FILE), content_files.terms, content_files.texts)
     if issues:
         raise WebContentError(issues)
     content = build_content(cfg, content_dir)

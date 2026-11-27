@@ -59,8 +59,29 @@ def load_web_texts(path: Path) -> Texts:
     return load_texts(path)
 
 
-def check_web_texts(cfg: Config, web: Texts, terms: GiveawayTerms) -> List[Issue]:
+def scene_quotes(web: Texts) -> List[tuple]:
+    """(path, story source, index) of every scene object and dialogue answer that points at a story string."""
+    found = []
+    scenes = web.subtree("web.szenen") if web.has("web.szenen") else {}
+    for scene_id, scene in scenes.items():
+        for object_id, obj in scene.get("objekte", {}).items():
+            if "quelle" in obj or "index" in obj:
+                found.append((f"web.szenen.{scene_id}.objekte.{object_id}", obj.get("quelle"), obj.get("index")))
+    dialogues = web.subtree("web.dialoge") if web.has("web.dialoge") else {}
+    for figure, dialogue in dialogues.items():
+        for number, question in enumerate(dialogue.get("fragen", [])):
+            if "quelle" in question or "index" in question:
+                found.append((f"web.dialoge.{figure}.fragen.{number}", question.get("quelle"), question.get("index")))
+    return found
+
+
+def check_web_texts(cfg: Config, web: Texts, terms: GiveawayTerms, texts: Texts | None = None) -> List[Issue]:
     issues: List[Issue] = []
+    if texts is not None:
+        for path, source, index in scene_quotes(web):
+            node = texts.get(source) if isinstance(source, str) and source.startswith("story.") and texts.has(source) else None
+            if not isinstance(node, list) or not isinstance(index, int) or isinstance(index, bool) or not 0 <= index < len(node):
+                issues.append(Issue("error", "web.scene_quote", path, f"Kein Story-Satz unter {source} [{index}]"))
     attack_ids = tuple(cfg.attacks)
     for chapter in REQUIRED_MENTOR:
         if not web.has(f"web.mentor.{chapter}.title"):

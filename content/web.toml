@@ -384,3 +384,103 @@ ranking_points = "Nach Expertise"
 mood_good = "zufrieden"
 mood_neutral = "abwartend"
 mood_bad = "verärgert"
+
+# Szenen der Vor-Ort-Analyse (Adventure, Variante A). Objekte und Antworten tragen keinen eigenen Hinweistext:
+# quelle + index zeigen auf einen Satz der Story-Unterlagen (texte.toml), der sich anheften lässt. So bleibt
+# clues.toml die einzige Hinweisliste und der Druck unberührt. Neutrale Objekte haben keine Quelle.
+[web.szenen.serverraum]
+name = "Serverraum"
+intro = "Ein schmaler Raum im Erdgeschoss, warm und laut. Hier laufen die Server von MechTech, daneben stapeln sich Kartons."
+figur = "it"
+
+[web.szenen.serverraum.objekte.monitor]
+name = "Admin-Arbeitsplatz"
+ansehen = "Auf dem Monitor klebt ein Zettel. Darunter liegt eine Übersicht der Zugänge."
+quelle = "story.steckbrief.betrieb_service.bullets"
+index = 1
+
+[web.szenen.serverraum.objekte.backup]
+name = "Backup-Regal"
+ansehen = "Ein Regal mit beschrifteten Ordnern. Auf dem obersten klebt ein Etikett zur Datensicherung."
+quelle = "story.steckbrief.it_ot_landschaft.saas_cloud.bullets"
+index = 1
+
+[web.szenen.serverraum.objekte.netzwerkschrank]
+name = "Netzwerkschrank"
+ansehen = "Ein einziger Switch, alle Kabel laufen hier zusammen. Ein Netzplan hängt an der Tür."
+quelle = "story.steckbrief.it_ot_landschaft.ot_produktion.bullets"
+index = 3
+
+[web.szenen.serverraum.objekte.fernwartung]
+name = "Laptop für die Fernwartung"
+ansehen = "Ein Laptop mit mehreren Verknüpfungen für Fernzugänge. Auf einem Post-it stehen Namen von Firmen."
+quelle = "story.steckbrief.betrieb_service.bullets"
+index = 3
+
+[web.szenen.serverraum.objekte.whiteboard]
+name = "Whiteboard"
+ansehen = "Eine halb gewischte Liste mit offenen Punkten aus einem Gespräch über Sicherheitswerkzeuge."
+quelle = "story.steckbrief.betrieb_service.bullets"
+index = 5
+
+[web.szenen.serverraum.objekte.kalender]
+name = "Wandkalender"
+ansehen = "Ein Kalender mit wenigen Einträgen für Wartungsfenster in der Produktion."
+quelle = "story.steckbrief.betrieb_service.bullets"
+index = 6
+
+[web.szenen.serverraum.objekte.server]
+name = "Server-Rack"
+ansehen = "Lüfter rauschen, Lämpchen blinken. Ein Etikett nennt das System."
+quelle = "story.steckbrief.it_ot_landschaft.office_engineering.bullets"
+index = 0
+
+[web.szenen.serverraum.objekte.kaffee]
+name = "Kaffeemaschine"
+ansehen = "Die Kaffeemaschine ist das am besten gewartete Gerät im Raum."
+
+[web.dialoge.it]
+begruessung = "Hallo! Jonas Reiter, IT. Viel Zeit habe ich nicht, aber fragen Sie ruhig."
+abschied = "Wenn noch was ist: Sie finden mich hier."
+
+[[web.dialoge.it.fragen]]
+id = "team"
+frage = "Wie ist die IT bei MechTech aufgestellt?"
+antwort = "Ehrlich gesagt: überschaubar."
+quelle = "story.steckbrief.betrieb_service.bullets"
+index = 0
+
+[[web.dialoge.it.fragen]]
+id = "admins"
+frage = "Wer hat Administratorrechte?"
+antwort = "Das ist bei uns pragmatisch gelöst."
+quelle = "story.steckbrief.betrieb_service.bullets"
+index = 1
+
+[[web.dialoge.it.fragen]]
+id = "sicherung"
+frage = "Wie sichert ihr eure Daten?"
+antwort = "Da haben wir eine Lösung in der Cloud."
+quelle = "story.steckbrief.it_ot_landschaft.saas_cloud.bullets"
+index = 1
+
+[[web.dialoge.it.fragen]]
+id = "fernzugang"
+frage = "Wie kommen Dienstleister an eure Systeme?"
+antwort = "Über Fernzugänge, das spart Anfahrten."
+quelle = "story.steckbrief.betrieb_service.bullets"
+index = 3
+
+[[web.dialoge.it.fragen]]
+id = "erkennung"
+frage = "Würdet ihr merken, wenn jemand Fremdes im Netz ist?"
+antwort = "Gute Frage. Ich hoffe es."
+quelle = "story.steckbrief.betrieb_service.bullets"
+index = 5
+
+[[web.dialoge.it.fragen]]
+id = "updates"
+frage = "Wie oft spielt ihr Updates ein?"
+antwort = "Im Büro regelmäßig. In der Produktion ist das schwieriger."
+quelle = "story.steckbrief.betrieb_service.bullets"
+index = 6

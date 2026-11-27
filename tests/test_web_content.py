@@ -52,7 +52,7 @@ def _codes(issues):
 
 
 def test_web_texts_pass(cfg, content, web):
-    assert check_web_texts(cfg, web, content.terms) == []
+    assert check_web_texts(cfg, web, content.terms, content.texts) == []
 
 
 def test_digits_are_refused(cfg, content, web):
