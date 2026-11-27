@@ -166,3 +166,29 @@ def test_server_part_has_cases_values_and_clues(cfg, export):
     assert server["value_cases"]["konstruktionsdaten"] == {"c": "design_data", "i": "data_trust"}
     assert {clue["attack"] for clue in server["clues"]} == set(cfg.attacks)
     assert "faelle" not in str(export["content.json"]["always"]["web"]["werte"])
+
+
+def test_team_texts_cover_every_du_text(cfg, content, web):
+    """Teams read the mentor in the plural: every mentor text that addresses one person has a team version."""
+    from planspiel.web_content import missing_team_texts
+
+    assert missing_team_texts(web) == []
+    broken = _with(web, "web.mentor_team.analyse", {})
+    assert "web.mentor_team.analyse.paragraphs" in missing_team_texts(broken)
+
+
+def test_team_texts_only_override_existing_keys(cfg, content, web):
+    issues = check_web_texts(cfg, _with(web, "web.mentor_team.analyse.erfunden", "Hallo"), content.terms)
+    assert "web.team_text" in _codes(issues)
+
+
+def test_feedback_questions(cfg, content, web):
+    questions = web.get("web.feedback.questions")
+    assert len(questions) >= 3
+    assert len({q["id"] for q in questions}) == len(questions)
+    assert all(q["text"] for q in questions)
+
+
+def test_feedback_ids_are_stable(web):
+    ids = [q["id"] for q in web.get("web.feedback.questions")]
+    assert ids[:3] == ["verstanden", "zusammenhang", "bedienung"]
