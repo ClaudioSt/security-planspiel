@@ -168,8 +168,11 @@ def build_content(cfg: Config, content_dir: Path) -> Dict:
     werte = web_public.get("werte", {})
     web_public["werte"] = {value_id: _without(entry, "faelle") for value_id, entry in werte.items()}
 
+    story = copy.deepcopy(texts.subtree("story"))
+    # The printed request is addressed to the consultancy of the paper round; the web app fills in its brand.
+    story["anfrage_mail"]["kopf"]["an"] = "{beratung_mail}"
     always = {
-        "story": texts.subtree("story"),
+        "story": story,
         "measures": texts.subtree("measures"),
         "sheets": {name: texts.subtree(f"sheets.{name}") for name in PLAYER_SHEETS if texts.has(f"sheets.{name}")},
         "practice": texts.subtree("practice"),
