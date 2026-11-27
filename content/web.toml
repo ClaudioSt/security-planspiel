@@ -603,3 +603,97 @@ frage = "Wer kommt von außen an Ihre Systeme?"
 antwort = "Mehr Firmen, als mir lieb ist. Herr Reiter weiß das genauer."
 quelle = "story.steckbrief.abhaengigkeiten.bullets"
 index = 2
+
+# Dritte Szene: die Werkshalle. Hier liegt die Sicht der Produktion.
+[web.szenen.werkshalle]
+name = "Werkshalle"
+intro = "Hell, laut und erstaunlich sauber. Hier entstehen die Präzisionsteile, rund um die Uhr."
+figur = "produktion"
+
+[web.szenen.werkshalle.objekte.bedienpanel]
+name = "Bedienpanel der Fräsmaschine"
+ansehen = "Ein Touch-Bildschirm an der Maschine. Daneben klebt ein Zettel mit einer Telefonnummer für Störungen."
+quelle = "story.steckbrief.it_ot_landschaft.ot_produktion.bullets"
+index = 2
+
+[web.szenen.werkshalle.objekte.maschinen]
+name = "Maschinenreihe"
+ansehen = "Drei Fräsmaschinen hintereinander, alle in Betrieb. Keine steht still."
+quelle = "story.steckbrief.produktion_betrieb.bullets"
+index = 0
+
+[web.szenen.werkshalle.objekte.schaltschrank]
+name = "Schaltschrank"
+ansehen = "Die Tür steht einen Spalt offen. Drinnen steckt ein blaues Netzwerkkabel, das in Richtung Büro führt."
+quelle = "story.steckbrief.it_ot_landschaft.ot_produktion.bullets"
+index = 3
+
+[web.szenen.werkshalle.objekte.leitstand]
+name = "Leitstand"
+ansehen = "Auf dem Monitor laufen farbige Balken: der Stand jedes Auftrags, live aus der Produktionssteuerung."
+quelle = "story.steckbrief.produktion_betrieb.bullets"
+index = 2
+
+[web.szenen.werkshalle.objekte.wartungstafel]
+name = "Wartungstafel"
+ansehen = "Magnete markieren die geplanten Stillstände. Es sind nicht viele."
+quelle = "story.steckbrief.abhaengigkeiten.bullets"
+index = 3
+
+[web.szenen.werkshalle.objekte.stapler]
+name = "Gabelstapler"
+ansehen = "Eine Palette blanker Metallteile wartet auf die Abholung. Der Lkw kommt pünktlich."
+
+[web.szenen.werkshalle.objekte.fenster]
+name = "Oberlichter"
+ansehen = "Viel Tageslicht von oben. Die Halle ist der ganze Stolz der Firma."
+
+[web.dialoge.produktion]
+begruessung = "Petra Albrecht, Produktion. Kommen Sie, aber bleiben Sie hinter der gelben Linie."
+abschied = "Ich muss wieder an die Linie."
+
+[[web.dialoge.produktion.fragen]]
+id = "schichten"
+frage = "Wann laufen die Maschinen?"
+antwort = "Eigentlich immer. Nur am Wochenende ist Ruhe."
+quelle = "story.steckbrief.produktion_betrieb.bullets"
+index = 0
+
+[[web.dialoge.produktion.fragen]]
+id = "steuerung"
+ausdruck = "besorgt"
+frage = "Was passiert, wenn die Produktionssteuerung ausfällt?"
+antwort = "Dann wissen wir nicht mehr, was wir fertigen sollen. Und der Kunde wartet."
+quelle = "story.steckbrief.abhaengigkeiten.bullets"
+index = 0
+
+[[web.dialoge.produktion.fragen]]
+id = "netz"
+ausdruck = "besorgt"
+frage = "Sind die Maschinen vom Büronetz getrennt?"
+antwort = "Getrennt? Das hängt alles zusammen, so weit ich weiß."
+quelle = "story.steckbrief.it_ot_landschaft.ot_produktion.bullets"
+index = 3
+
+[[web.dialoge.produktion.fragen]]
+id = "updates"
+frage = "Wann werden die Maschinen aktualisiert?"
+antwort = "Wenn sie stehen. Und sie stehen selten."
+quelle = "story.steckbrief.betrieb_service.bullets"
+index = 6
+
+[[web.dialoge.produktion.fragen]]
+id = "wartung"
+ausdruck = "erfreut"
+frage = "Wer wartet die Maschinen?"
+antwort = "Die Hersteller, meist aus der Ferne. Das geht schnell und spart Anfahrten."
+quelle = "story.steckbrief.betrieb_service.bullets"
+index = 3
+
+[[web.dialoge.produktion.fragen]]
+id = "vorfall"
+ausdruck = "besorgt"
+frage = "Haben Sie von dem Vorfall bei dem anderen Zulieferer gelesen?"
+antwort = "Ja, das hängt bei uns in der Kantine. Seitdem schaue ich zweimal hin, bevor ich etwas öffne."
+quelle = "story.zeitungsartikel.bericht_vorfall.ablauf.paragraphs"
+index = 0
