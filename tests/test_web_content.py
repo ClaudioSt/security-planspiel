@@ -224,3 +224,30 @@ def test_hidden_badges_name_an_event_of_the_config(cfg, content, web):
 def test_episode_titles_for_every_chapter(web):
     episodes = web.subtree("web.episodes")
     assert set(episodes) >= {"analyse", "uebung", "planung", "welle", "fenster", "abschluss", "debrief"}
+
+
+def test_scene_quotes_point_at_story_strings(cfg, content, web):
+    """Scenes and dialogues never carry their own clue text: they point at a story string (source and index),
+    so a pinned note is the same string as in the printed documents and clues.toml stays the only clue list."""
+    from planspiel.web_content import scene_quotes
+
+    quotes = scene_quotes(web)
+    assert quotes, "the server room scene has quotes"
+    for path, source, index in quotes:
+        node = content.texts.get(source)
+        assert isinstance(node, list) and 0 <= index < len(node), path
+
+
+def test_broken_scene_quote_is_an_error(cfg, content, web):
+    broken = _with(web, "web.szenen.serverraum.objekte.backup.index", 99)
+    assert "web.scene_quote" in _codes(check_web_texts(cfg, broken, content.terms, content.texts))
+
+
+def test_server_room_reaches_clues_of_every_attack(cfg, content, web):
+    from planspiel.texts import load_clues
+    from planspiel.web_content import scene_quotes
+
+    clues = load_clues(REPO_ROOT / "content" / "clues.toml")
+    reachable = {content.texts.get(source)[index] for _, source, index in scene_quotes(web)}
+    attacks = {clue.attack for clue in clues if any(clue.quote in text for text in reachable)}
+    assert attacks == set(cfg.attacks)
