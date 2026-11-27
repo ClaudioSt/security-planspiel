@@ -1,0 +1,147 @@
+"""WEB-02: texts of the web app (content/web.toml) and the phase-split content for the web server.
+
+`content/web.toml` is a separate file so that the print inputs and their stamp stay untouched. Its checks:
+no digits (numbers come from the config), giveaway lint with the story profile for everything the player sees
+before a wave, `web.reveal.<attack>` may name only its own attack, the only placeholder is `{beratung}`, and the
+value-to-case links point at `risk_matrix.cases` with the matching protection goal.
+
+`build_content` splits texte.toml and web.toml by phase for the server's veil filter:
+- `always`: story, measure cards, sheets (without the facilitator cheat sheet), practice, web texts without
+  the reveal headlines and without the value-to-case links;
+- `waves[<id>]`: the revealed attack texts, the events and the headlines of that wave;
+- `final`: the final events;
+- `server`: what only the server evaluates (business cases with band and goal, value-to-case links, clues).
+`risk_matrix.cases[].like_attack` is a validator anchor and is never exported.
+"""
+import copy
+import re
+from pathlib import Path
+from typing import Dict, List
+
+from planspiel.config import Config
+from planspiel.texts import GiveawayTerms, Texts, giveaway_hits, load_clues, load_texts
+from planspiel.validate import Issue
+
+WEB_FILE = "web.toml"
+PLACEHOLDERS = {"beratung"}
+GOALS = ("c", "i", "a")
+_PLACEHOLDER = re.compile(r"\{([^{}]*)\}")
+REQUIRED_MENTOR = ("intro", "analyse", "uebung", "planung", "welle", "fenster", "abschluss", "debrief")
+
+
+def load_web_texts(path: Path) -> Texts:
+    return load_texts(path)
+
+
+def check_web_texts(cfg: Config, web: Texts, terms: GiveawayTerms) -> List[Issue]:
+    issues: List[Issue] = []
+    attack_ids = tuple(cfg.attacks)
+    for chapter in REQUIRED_MENTOR:
+        if not web.has(f"web.mentor.{chapter}.title"):
+            issues.append(Issue("error", "web.missing", f"web.mentor.{chapter}.title", "Kapiteltext fehlt"))
+    for attack_id in attack_ids:
+        for case in (1, 2, 3):
+            key = f"web.reveal.{attack_id}.headline_case_{case}"
+            if not web.has(key):
+                issues.append(Issue("error", "web.missing", key, "Schlagzeile fehlt"))
+
+    for key, text in web.strings("web"):
+        if any(char.isnumeric() for char in text):
+            issues.append(Issue("error", "web.digit", key, "Ziffer in Web-Text; Zahlen kommen aus der Config"))
+        for name in _PLACEHOLDER.findall(text):
+            if name not in PLACEHOLDERS:
+                issues.append(Issue("error", "web.placeholder", key, f"Unbekannter Platzhalter {{{name}}}"))
+        if key.startswith("web.reveal."):
+            own = key.split(".")[2]
+            others = tuple(a for a in attack_ids if a != own)
+            hits = [h for h in giveaway_hits(text, terms, others, profile="story") if h in {o.lower() for o in others}]
+            hits += _other_attack_terms(text, own, terms)
+        else:
+            hits = giveaway_hits(text, terms, attack_ids, profile="story")
+        if hits:
+            issues.append(Issue("error", "web.giveaway", key, f"Verbotener Begriff: {', '.join(sorted(set(hits)))}"))
+
+    cases = {case.id: case for case in (cfg.risk_matrix.cases if cfg.risk_matrix else ())}
+    werte = web.subtree("web.werte") if web.has("web.werte") else {}
+    for value_id, entry in werte.items():
+        links = entry.get("faelle", {}) if isinstance(entry, dict) else {}
+        if not links:
+            issues.append(Issue("error", "web.value_case", f"web.werte.{value_id}", "Wert ohne Fall"))
+        for goal, case_id in links.items():
+            case = cases.get(case_id)
+            if goal not in GOALS or case is None or case.goal != goal:
+                issues.append(
+                    Issue("error", "web.value_case", f"web.werte.{value_id}.faelle.{goal}", f"Fall '{case_id}' passt nicht")
+                )
+    return issues
+
+
+# Giveaway stems per attack for the reveal check: a headline of one attack must not use another attack's stems.
+_ATTACK_STEMS = {
+    "ransomware": ("ransomware", "verschlüssel", "lösegeld", "erpress"),
+    "exfil": ("exfil", "datendiebstahl", "darknet"),
+    "ot": ("ot-stör",),
+}
+
+
+def _other_attack_terms(text: str, own: str, terms: GiveawayTerms) -> List[str]:
+    lowered = text.lower()
+    return [stem for attack, stems in _ATTACK_STEMS.items() if attack != own for stem in stems if stem in lowered]
+
+
+def _without(node: Dict, *keys: str) -> Dict:
+    copied = copy.deepcopy(node)
+    for key in keys:
+        copied.pop(key, None)
+    return copied
+
+
+def build_content(cfg: Config, content_dir: Path) -> Dict:
+    texts = load_texts(content_dir / "texte.toml")
+    web = load_web_texts(content_dir / WEB_FILE)
+    clues = load_clues(content_dir / "clues.toml")
+
+    web_public = _without(web.subtree("web"), "reveal")
+    werte = web_public.get("werte", {})
+    web_public["werte"] = {value_id: _without(entry, "faelle") for value_id, entry in werte.items()}
+
+    always = {
+        "story": texts.subtree("story"),
+        "measures": texts.subtree("measures"),
+        "sheets": _without(texts.subtree("sheets"), "cheatsheet"),
+        "practice": texts.subtree("practice"),
+        "web": web_public,
+    }
+    waves = {}
+    for wave in cfg.waves:
+        attack_id = wave.attack_id
+        waves[str(wave.wave_id)] = {
+            "attack_id": attack_id,
+            "attack": texts.subtree(f"attacks.{attack_id}.revealed"),
+            "headlines": web.subtree(f"web.reveal.{attack_id}"),
+            "events": {event.id: texts.subtree(f"events.{event.id}") for event in cfg.events.get(wave.wave_id, [])},
+        }
+    final = {event.id: texts.subtree(f"final_events.{event.id}") for event in cfg.final_events}
+
+    cheatsheet = texts.subtree("sheets.cheatsheet")
+    cases = {
+        case.id: {**cheatsheet["cases"][case.id], "band": case.band, "goal": case.goal}
+        for case in (cfg.risk_matrix.cases if cfg.risk_matrix else ())
+    }
+    server = {
+        "cases": cases,
+        "bands": [{"id": band.id, "min_k": band.minimum} for band in cfg.risk_matrix.bands] if cfg.risk_matrix else [],
+        "value_cases": {value_id: dict(entry.get("faelle", {})) for value_id, entry in werte.items()},
+        "clues": [
+            {
+                "attack": clue.attack,
+                "source": clue.source,
+                "quote": clue.quote,
+                "why": clue.why,
+                "measures": list(clue.measures),
+                "weight": clue.weight,
+            }
+            for clue in clues
+        ],
+    }
+    return {"schema": 1, "always": always, "waves": waves, "final": final, "server": server}

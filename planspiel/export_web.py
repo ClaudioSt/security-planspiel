@@ -4,7 +4,8 @@ The web app (repo security-planspiel-web) ports `planspiel/rules.py` to TypeScri
 - `config.json`: `simulation_config.json` with every non-integral number as an exact string (`exact_to_json`),
 - `golden.json`: game paths with the full `rules.path_trace` (or the expected `PathError` reason), the Final-Index and
   the worksheet constants per wave; the TS engine must reproduce every value exactly,
-- `manifest.json`: schema, config hash and source commit.
+- `content.json`: texts split by phase for the server's veil filter (`planspiel.web_content`, WEB-02),
+- `manifest.json`: schema, config and content hashes and source commit.
 
 Nothing here computes a game formula: every value comes from `planspiel.rules` (FOUND-03). The case selection is
 deterministic: reference plans and strategies, the clue measures at their minimum level, an index-stride sample of
@@ -263,9 +264,23 @@ def _source_commit(repo: FsPath) -> Optional[str]:
     return sha or None
 
 
-def build_export(config_path: FsPath) -> Dict[str, Dict]:
+class WebContentError(ValueError):
+    def __init__(self, issues):
+        super().__init__("; ".join(f"{issue.code} {issue.path}: {issue.message}" for issue in issues))
+        self.issues = issues
+
+
+def build_export(config_path: FsPath, content_dir: Optional[FsPath] = None) -> Dict[str, Dict]:
+    from planspiel.texts import load_content
+    from planspiel.web_content import WEB_FILE, build_content, check_web_texts, load_web_texts
+
     config_path = FsPath(config_path)
+    content_dir = FsPath(content_dir) if content_dir else config_path.parent / "content"
     cfg = load_config(config_path)
+    issues = check_web_texts(cfg, load_web_texts(content_dir / WEB_FILE), load_content(content_dir).terms)
+    if issues:
+        raise WebContentError(issues)
+    content = build_content(cfg, content_dir)
     golden = build_golden(cfg)
     manifest = {
         "schema": SCHEMA,
@@ -273,8 +288,16 @@ def build_export(config_path: FsPath) -> Dict[str, Dict]:
         "config_sha256": hashlib.sha256(config_path.read_bytes()).hexdigest(),
         "source_commit": _source_commit(config_path.parent),
         "golden_cases": len(golden["cases"]),
+        "content_sha256": hashlib.sha256(
+            json.dumps(content, ensure_ascii=False, sort_keys=True).encode("utf-8")
+        ).hexdigest(),
     }
-    return {"config.json": _jsonable(read_raw_config(config_path)), "golden.json": golden, "manifest.json": manifest}
+    return {
+        "config.json": _jsonable(read_raw_config(config_path)),
+        "content.json": content,
+        "golden.json": golden,
+        "manifest.json": manifest,
+    }
 
 
 def write_export(config_path: FsPath, out_dir: FsPath) -> Dict[str, Dict]:

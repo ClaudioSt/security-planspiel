@@ -369,9 +369,14 @@ def _print_command(
 
 
 def _export_web_command(config: str, out: str) -> int:
-    from planspiel.export_web import write_export
+    from planspiel.export_web import WebContentError, write_export
 
-    export = write_export(Path(config), Path(out))
+    try:
+        export = write_export(Path(config), Path(out))
+    except WebContentError as error:
+        for issue in error.issues:
+            print(f"ERROR {issue.code} {issue.path}: {issue.message}")
+        return 1
     manifest = export["manifest.json"]
     print(f"Export für die Web-App: {manifest['golden_cases']} Golden-Fälle nach {out}")
     return 0

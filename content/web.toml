@@ -180,9 +180,9 @@ description = "Die Windows-PCs in Verwaltung und Vertrieb."
 faelle = { a = "single_pc" }
 
 [web.ui]
-case_1 = "Fall 1: Schwelle nicht überschritten"
-case_2 = "Fall 2: Obergrenze erreicht, kein Schaden"
-case_3 = "Fall 3: dazwischen, teilweiser Schaden"
+case_1 = "Schwelle nicht überschritten, voller Schaden"
+case_2 = "Obergrenze erreicht, kein Schaden"
+case_3 = "dazwischen, teilweiser Schaden"
 band_low = "gering"
 band_medium = "mittel"
 band_high = "hoch"

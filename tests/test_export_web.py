@@ -128,7 +128,7 @@ def test_export_is_deterministic(tmp_path):
     second = tmp_path / "b"
     write_export(CONFIG_PATH, first)
     write_export(CONFIG_PATH, second)
-    for name in ("config.json", "golden.json", "manifest.json"):
+    for name in ("config.json", "content.json", "golden.json", "manifest.json"):
         assert (first / name).read_bytes() == (second / name).read_bytes()
         json.loads((first / name).read_text(encoding="utf-8"))
 
