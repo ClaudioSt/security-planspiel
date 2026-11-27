@@ -491,3 +491,115 @@ frage = "Wie oft spielt ihr Updates ein?"
 antwort = "Im Büro regelmäßig. In der Produktion ist das schwieriger."
 quelle = "story.steckbrief.betrieb_service.bullets"
 index = 6
+
+# Zweite Szene: das Büro der Geschäftsführung. Hier liegt die Sicht des Geschäfts; Zitate wie im Serverraum nur aus der Story.
+[web.szenen.buero_weber]
+name = "Büro der Geschäftsführung"
+intro = "Ein ruhiges Büro im ersten Stock. Durch das große Fenster sieht man direkt in die Werkshalle."
+figur = "weber"
+
+[web.szenen.buero_weber.objekte.ledermappe]
+name = "Ledermappe"
+ansehen = "Korrespondenz mit dem Hauptkunden. Obenauf liegt ein Schreiben, das mehrfach unterstrichen wurde."
+quelle = "story.audit_mail.einleitung.paragraphs"
+index = 1
+
+[web.szenen.buero_weber.objekte.besprechungstisch]
+name = "Besprechungstisch"
+ansehen = "Neben der Wasserkaraffe liegt ein Ausdruck seiner Anfrage an die Beratung, mit Notizen am Rand."
+quelle = "story.anfrage_mail.lage.paragraphs"
+index = 1
+
+[web.szenen.buero_weber.objekte.fenster]
+name = "Fenster zur Halle"
+ansehen = "Unten laufen die Fertigungslinien. Auf einem Bildschirm in der Halle leuchtet die Auftragsplanung."
+quelle = "story.steckbrief.abhaengigkeiten.bullets"
+index = 0
+
+[web.szenen.buero_weber.objekte.regal]
+name = "Aktenregal"
+ansehen = "Ordner für Qualität, Verträge und Zertifikate. Ein Ordner für Sicherheitsrichtlinien fehlt."
+quelle = "story.steckbrief.betrieb_service.bullets"
+index = 4
+
+[web.szenen.buero_weber.objekte.pokale]
+name = "Pokale"
+ansehen = "Zwei kleine Pokale vom Hauptkunden, beide für zuverlässige Lieferungen."
+quelle = "story.steckbrief.produktion_betrieb.bullets"
+index = 4
+
+[web.szenen.buero_weber.objekte.zahnrad]
+name = "Modell eines Getrieberads"
+ansehen = "Ein glänzendes Modell, auf das Dr. Weber sichtlich stolz ist. Die Zeichnungen dazu liegen auf dem File-Server."
+quelle = "story.steckbrief.abhaengigkeiten.bullets"
+index = 1
+
+[web.szenen.buero_weber.objekte.laptop]
+name = "Zugeklappter Laptop"
+ansehen = "Ein Firmen-Notebook. Er nimmt es abends mit nach Hause, wie der ganze Vertrieb."
+quelle = "story.steckbrief.it_ot_landschaft.saas_cloud.bullets"
+index = 4
+
+[web.szenen.buero_weber.objekte.bild]
+name = "Bild einer Fräsmaschine"
+ansehen = "Die erste Maschine der Firma, gerahmt. Heute stehen unten deutlich mehr davon."
+quelle = "story.steckbrief.produktion_betrieb.bullets"
+index = 1
+
+[web.szenen.buero_weber.objekte.foto]
+name = "Bilderrahmen"
+ansehen = "Ein Foto, zum Schreibtisch gedreht. Das ist privat, findet Dr. Weber."
+
+[web.szenen.buero_weber.objekte.uhr]
+name = "Wanduhr"
+ansehen = "Sie geht auf die Minute genau. Pünktlichkeit ist hier keine Tugend, sondern Vertragsbestandteil."
+
+[web.dialoge.weber]
+begruessung = "Dr. Weber, freut mich. Setzen Sie sich. Was wollen Sie über MechTech wissen?"
+abschied = "Melden Sie sich, wenn Sie mehr brauchen."
+
+[[web.dialoge.weber.fragen]]
+id = "kunde"
+frage = "Wer ist Ihr wichtigster Kunde?"
+antwort = "Ein Premium-OEM. Ohne ihn wird es eng."
+quelle = "story.steckbrief.eckdaten.bullets"
+index = 1
+
+[[web.dialoge.weber.fragen]]
+id = "geschaeft"
+ausdruck = "erfreut"
+frage = "Wie läuft das Geschäft?"
+antwort = "Sehr gut. Die Elektromobilität bringt uns Aufträge."
+quelle = "story.steckbrief.eckdaten.bullets"
+index = 3
+
+[[web.dialoge.weber.fragen]]
+id = "stillstand"
+ausdruck = "besorgt"
+frage = "Was bedeutet ein Stillstand für Sie?"
+antwort = "Ein paar Stunden halten wir aus. Danach merkt es der Kunde."
+quelle = "story.steckbrief.produktion_betrieb.bullets"
+index = 5
+
+[[web.dialoge.weber.fragen]]
+id = "audit"
+ausdruck = "besorgt"
+frage = "Was verlangt der OEM von Ihnen?"
+antwort = "Nachweise. Eine ganze Liste davon, und bei einem Punkt bin ich ratlos."
+quelle = "story.audit_mail.nachweise.bullets"
+index = 4
+
+[[web.dialoge.weber.fragen]]
+id = "konsequenzen"
+ausdruck = "besorgt"
+frage = "Und wenn Sie die Nachweise nicht liefern?"
+antwort = "Dann wird es ernst. Das steht so im Schreiben."
+quelle = "story.audit_mail.konsequenzen.bullets"
+index = 0
+
+[[web.dialoge.weber.fragen]]
+id = "zugaenge"
+frage = "Wer kommt von außen an Ihre Systeme?"
+antwort = "Mehr Firmen, als mir lieb ist. Herr Reiter weiß das genauer."
+quelle = "story.steckbrief.abhaengigkeiten.bullets"
+index = 2

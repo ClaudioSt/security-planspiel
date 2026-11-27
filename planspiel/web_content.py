@@ -119,6 +119,12 @@ def check_web_texts(cfg: Config, web: Texts, terms: GiveawayTerms, texts: Texts 
     if len({q.get("id") for q in questions}) != len(questions):
         issues.append(Issue("error", "web.feedback", "web.feedback.questions", "Doppelte Fragen-ID"))
 
+    cast = web.subtree("web.cast") if web.has("web.cast") else {}
+    scenes = web.subtree("web.szenen") if web.has("web.szenen") else {}
+    for scene_id, scene in scenes.items():
+        if scene.get("figur") not in cast:
+            issues.append(Issue("error", "web.scene_figure", f"web.szenen.{scene_id}.figur", "Figur fehlt in web.cast"))
+
     dialogues = web.subtree("web.dialoge") if web.has("web.dialoge") else {}
     for figure, dialogue in dialogues.items():
         for number, question in enumerate(dialogue.get("fragen", [])):
