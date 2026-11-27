@@ -242,7 +242,12 @@ def build_golden(cfg: Config) -> Dict:
             add(case, number % max(1, len(swaps) // BULK_PER_TIER) == 0)
 
     worksheets = {str(wave.wave_id): _jsonable(rules.worksheet_constants(cfg, wave)) for wave in cfg.waves}
-    return {"schema": SCHEMA, "worksheet_constants": worksheets, "rounding": _rounding_table(), "cases": cases}
+    golden = {"schema": SCHEMA, "worksheet_constants": worksheets, "rounding": _rounding_table(), "cases": cases}
+    if cfg.practice is not None:
+        from planspiel import practice
+
+        golden["practice"] = _jsonable(practice.check_example(cfg).waves[0])
+    return golden
 
 
 def _rounding_table() -> List[Dict]:
