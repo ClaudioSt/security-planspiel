@@ -267,3 +267,29 @@ def test_dialogue_expressions_are_known(cfg, content, web):
     broken = copy.deepcopy(web.data)
     broken["web"]["dialoge"]["it"]["fragen"][0]["ausdruck"] = "wütend"
     assert "web.expression" in _codes(check_web_texts(cfg, Texts(broken), content.terms, content.texts))
+
+
+def test_scene_figures_belong_to_the_cast(cfg, content, web):
+    cast = set(web.subtree("web.cast"))
+    for scene_id, scene in web.subtree("web.szenen").items():
+        assert scene.get("figur") in cast, scene_id
+    broken = copy.deepcopy(web.data)
+    broken["web"]["szenen"]["serverraum"]["figur"] = "gibt_es_nicht"
+    assert "web.scene_figure" in _codes(check_web_texts(cfg, Texts(broken), content.terms, content.texts))
+
+
+def test_weber_office_reaches_clues_of_every_attack(cfg, content, web):
+    """The office of Dr. Weber is the second scene: the business view, with a clue for each attack."""
+    from planspiel.texts import load_clues
+    from planspiel.web_content import scene_quotes
+
+    office = web.subtree("web.szenen.buero_weber")
+    assert office["figur"] == "weber"
+    quotes = [
+        (source, index) for path, source, index in scene_quotes(web)
+        if path.startswith("web.szenen.buero_weber.") or path.startswith("web.dialoge.weber.")
+    ]
+    assert len(quotes) >= 8
+    clues = load_clues(REPO_ROOT / "content" / "clues.toml")
+    reachable = {content.texts.get(source)[index] for source, index in quotes}
+    assert {clue.attack for clue in clues if any(clue.quote in text for text in reachable)} == set(cfg.attacks)
