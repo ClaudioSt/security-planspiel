@@ -212,6 +212,15 @@ def test_hidden_badges_are_marked(web):
     assert hidden == {"kurs_gehalten", "audit_bestanden", "benutzerfreundlich"}
 
 
+def test_hidden_badges_name_an_event_of_the_config(cfg, content, web):
+    events = {event.id for events in cfg.events.values() for event in events}
+    for key, badge in web.subtree("web.badges").items():
+        if badge.get("hidden"):
+            assert badge.get("event") in events, key
+    broken = _with(web, "web.badges.kurs_gehalten.event", "gibt_es_nicht")
+    assert "web.badge_event" in _codes(check_web_texts(cfg, broken, content.terms))
+
+
 def test_episode_titles_for_every_chapter(web):
     episodes = web.subtree("web.episodes")
     assert set(episodes) >= {"analyse", "uebung", "planung", "welle", "fenster", "abschluss", "debrief"}

@@ -311,3 +311,76 @@ headline_case_3 = "Fertigung bei MechTech gestört, aber nicht gestoppt"
 headline_case_1 = "Konstruktionsdaten von MechTech im Netz aufgetaucht"
 headline_case_2 = "Datendiebe scheitern an MechTech"
 headline_case_3 = "Teile der MechTech-Daten abgeflossen"
+
+# Abzeichen (Gamification, zählt nie in die Spielwertung). Bedingungen und Punkte stehen in der Web-App
+# (data/gamification.json); hidden = an ein Ereignis (event) gebunden; der Server zeigt den Text erst ab dessen Welle.
+[web.badges.spurensucher]
+name = "Spurensucher"
+description = "Eine Notiz an der Pinnwand hat einen Angriff vorhergesagt."
+
+[web.badges.geschlossene_kette]
+name = "Geschlossene Kette"
+description = "Hinweis gefunden, passende Maßnahme zugeordnet, und genau diese Maßnahme hat im Angriff geholfen."
+
+[web.badges.lueckenlos]
+name = "Lückenlos"
+description = "Bei jedem Angriff hat die Kette aus Hinweis und Maßnahme gehalten."
+
+[web.badges.volle_abwehr]
+name = "Volle Abwehr"
+description = "Ein Angriff wurde vollständig abgewehrt."
+
+[web.badges.unverwundbar]
+name = "Unverwundbar"
+description = "Jeder Angriff wurde vollständig abgewehrt."
+
+[web.badges.kopfrechner]
+name = "Kopfrechner"
+description = "E-Wert und Gesamtreduktion einer Welle selbst richtig gerechnet."
+
+[web.badges.augenmass]
+name = "Richtiges Augenmaß"
+description = "Den Schutzbedarf aller Werte so eingeschätzt wie die Geschäftsführung."
+
+[web.badges.im_budget]
+name = "Im Budget"
+description = "Das Projekt ohne Überziehung des Budgets abgeschlossen."
+
+[web.badges.kurs_gehalten]
+name = "Kurs gehalten"
+description = "Nach dem Kurswechsel ist die Kundenzufriedenheit nicht gesunken."
+hidden = true
+event = "kurswechsel"
+
+[web.badges.audit_bestanden]
+name = "Audit bestanden"
+description = "Beim Audit des Kunden die beste Stufe erreicht."
+hidden = true
+event = "oem_audit"
+
+[web.badges.benutzerfreundlich]
+name = "Benutzerfreundlich"
+description = "Sicherheit eingeführt, ohne die Belegschaft zu verärgern."
+hidden = true
+event = "nervige_authentifizierung"
+
+[web.episodes]
+analyse = "Folge eins: Spurensuche bei MechTech"
+uebung = "Folge zwei: Die Generalprobe"
+planung = "Folge drei: Das Budget"
+welle = "Lagezentrum: Angriffswelle"
+fenster = "Zwischen den Wellen"
+abschluss = "Der Kassensturz"
+debrief = "Rückblick"
+
+[web.gamification]
+points = "Expertise"
+points_hint = "Expertise-Punkte zeigen, wie gut ihr die Zusammenhänge erkannt habt. Sie zählen nicht für Kundenzufriedenheit, RoS oder Final-Index."
+badges = "Abzeichen"
+hidden_badge = "Verdecktes Abzeichen"
+ranking = "Rangliste der Sitzung"
+ranking_result = "Nach Ergebnis für MechTech"
+ranking_points = "Nach Expertise"
+mood_good = "zufrieden"
+mood_neutral = "abwartend"
+mood_bad = "verärgert"

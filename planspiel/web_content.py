@@ -97,6 +97,12 @@ def check_web_texts(cfg: Config, web: Texts, terms: GiveawayTerms) -> List[Issue
     if len({q.get("id") for q in questions}) != len(questions):
         issues.append(Issue("error", "web.feedback", "web.feedback.questions", "Doppelte Fragen-ID"))
 
+    event_ids = {event.id for events in cfg.events.values() for event in events}
+    badges = web.subtree("web.badges") if web.has("web.badges") else {}
+    for badge_id, badge in badges.items():
+        if isinstance(badge, dict) and badge.get("hidden") and badge.get("event") not in event_ids:
+            issues.append(Issue("error", "web.badge_event", f"web.badges.{badge_id}.event", "Verdecktes Abzeichen ohne gültiges Ereignis"))
+
     cases = {case.id: case for case in (cfg.risk_matrix.cases if cfg.risk_matrix else ())}
     werte = web.subtree("web.werte") if web.has("web.werte") else {}
     for value_id, entry in werte.items():
