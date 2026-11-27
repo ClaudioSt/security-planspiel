@@ -278,7 +278,7 @@ def test_scene_figures_belong_to_the_cast(cfg, content, web):
     assert "web.scene_figure" in _codes(check_web_texts(cfg, Texts(broken), content.terms, content.texts))
 
 
-SCENE_FIGURES = {"serverraum": "it", "buero_weber": "weber", "werkshalle": "produktion"}
+SCENE_FIGURES = {"serverraum": "it", "buero_weber": "weber", "werkshalle": "produktion", "konstruktion": "konstruktion"}
 
 
 @pytest.mark.parametrize("scene_id", sorted(SCENE_FIGURES))
