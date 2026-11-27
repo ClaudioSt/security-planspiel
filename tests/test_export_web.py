@@ -138,3 +138,15 @@ def test_cli_writes_the_export(tmp_path):
 
     assert main(["export-web", "--out", str(tmp_path)]) == 0
     assert (tmp_path / "golden.json").exists()
+
+
+def test_practice_wave_is_exported(export):
+    """Welle 0 of the web app is checked against practice.check_example (the printed practice sheet)."""
+    from planspiel import practice
+
+    cfg = load_config(CONFIG_PATH)
+    wave = practice.check_example(cfg).waves[0]
+    exported = export["golden.json"]["practice"]
+    assert exported["case"] == wave.case
+    assert _exact(exported["kz_change_exact"]) == wave.kz_change_exact
+    assert exported["kz_after"] == wave.kz_after
