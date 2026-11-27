@@ -251,3 +251,10 @@ def test_server_room_reaches_clues_of_every_attack(cfg, content, web):
     reachable = {content.texts.get(source)[index] for _, source, index in scene_quotes(web)}
     attacks = {clue.attack for clue in clues if any(clue.quote in text for text in reachable)}
     assert attacks == set(cfg.attacks)
+
+
+def test_recipient_of_the_request_is_the_brand_placeholder(export):
+    """The printed request goes to the consultancy of the paper round; the web app fills in its own brand."""
+    always = export["content.json"]["always"]
+    assert always["story"]["anfrage_mail"]["kopf"]["an"] == "{beratung_mail}"
+    assert "VWI" not in str(always)
