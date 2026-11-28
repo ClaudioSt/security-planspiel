@@ -121,9 +121,13 @@ def check_web_texts(cfg: Config, web: Texts, terms: GiveawayTerms, texts: Texts 
 
     cast = web.subtree("web.cast") if web.has("web.cast") else {}
     scenes = web.subtree("web.szenen") if web.has("web.szenen") else {}
+    werte_ids = set(web.subtree("web.werte")) if web.has("web.werte") else set()
     for scene_id, scene in scenes.items():
         if scene.get("figur") not in cast:
             issues.append(Issue("error", "web.scene_figure", f"web.szenen.{scene_id}.figur", "Figur fehlt in web.cast"))
+        for object_id, obj in scene.get("objekte", {}).items():
+            if "wert" in obj and obj["wert"] not in werte_ids:
+                issues.append(Issue("error", "web.scene_value", f"web.szenen.{scene_id}.objekte.{object_id}.wert", "Unbekannter Wert"))
 
     dialogues = web.subtree("web.dialoge") if web.has("web.dialoge") else {}
     for figure, dialogue in dialogues.items():

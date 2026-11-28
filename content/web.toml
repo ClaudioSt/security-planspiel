@@ -385,6 +385,24 @@ ranking_points = "Nach Expertise"
 mood_good = "zufrieden"
 mood_neutral = "abwartend"
 mood_bad = "verärgert"
+balance = "Punkte-Bilanz"
+balance_hint = "Richtige Entscheidungen bringen Expertise, falsche kosten etwas. Unter null fällt der Stand nicht."
+
+# Bezeichnungen der Punkte-Posten in der Bilanz (Schlüssel = Art des Postens in der Web-App).
+[web.gamification.posten]
+note_hit = "Hinweis an der Pinnwand getroffen"
+note_measure = "Passende Maßnahme zum Hinweis"
+note_measure_wrong = "Maßnahme passt nicht zum Hinweis"
+note_decoy = "Notiz ohne Bezug zu einem Angriff"
+need_right = "Schutzbedarf richtig eingeschätzt"
+need_wrong = "Schutzbedarf falsch eingeschätzt"
+prognosis_right = "Prognose getroffen"
+prognosis_wrong = "Prognose daneben"
+calc_right = "Richtig gerechnet"
+calc_wrong = "Falsch gerechnet"
+reality_right = "Realitätscheck: Risiko mit passendem Schutzziel"
+reality_wrong = "Realitätscheck: Risiko mit anderem Schutzziel"
+badge = "Abzeichen"
 
 # Szenen der Vor-Ort-Analyse (Adventure, Variante A). Objekte und Antworten tragen keinen eigenen Hinweistext:
 # quelle + index zeigen auf einen Satz der Story-Unterlagen (texte.toml), der sich anheften lässt. So bleibt
@@ -402,18 +420,21 @@ index = 1
 
 [web.szenen.serverraum.objekte.backup]
 name = "Backup-Regal"
+wert = "buero"
 ansehen = "Ein Regal mit beschrifteten Ordnern. Auf dem obersten klebt ein Etikett zur Datensicherung."
 quelle = "story.steckbrief.it_ot_landschaft.saas_cloud.bullets"
 index = 1
 
 [web.szenen.serverraum.objekte.netzwerkschrank]
 name = "Netzwerkschrank"
+wert = "fertigung"
 ansehen = "Ein einziger Switch, alle Kabel laufen hier zusammen. Ein Netzplan hängt an der Tür."
 quelle = "story.steckbrief.it_ot_landschaft.ot_produktion.bullets"
 index = 3
 
 [web.szenen.serverraum.objekte.fernwartung]
 name = "Laptop für die Fernwartung"
+wert = "fertigung"
 ansehen = "Ein Laptop mit mehreren Verknüpfungen für Fernzugänge. Auf einem Post-it stehen Namen von Firmen."
 quelle = "story.steckbrief.betrieb_service.bullets"
 index = 3
@@ -426,12 +447,14 @@ index = 5
 
 [web.szenen.serverraum.objekte.kalender]
 name = "Wandkalender"
+wert = "fertigung"
 ansehen = "Ein Kalender mit wenigen Einträgen für Wartungsfenster in der Produktion."
 quelle = "story.steckbrief.betrieb_service.bullets"
 index = 6
 
 [web.szenen.serverraum.objekte.server]
 name = "Server-Rack"
+wert = "buero"
 ansehen = "Lüfter rauschen, Lämpchen blinken. Ein Etikett nennt das System."
 quelle = "story.steckbrief.it_ot_landschaft.office_engineering.bullets"
 index = 0
@@ -500,6 +523,7 @@ figur = "weber"
 
 [web.szenen.buero_weber.objekte.ledermappe]
 name = "Ledermappe"
+wert = "kundenbeziehung"
 ansehen = "Korrespondenz mit dem Hauptkunden. Obenauf liegt ein Schreiben, das mehrfach unterstrichen wurde."
 quelle = "story.audit_mail.einleitung.paragraphs"
 index = 1
@@ -512,36 +536,42 @@ index = 1
 
 [web.szenen.buero_weber.objekte.fenster]
 name = "Fenster zur Halle"
+wert = "produktionsbetrieb"
 ansehen = "Unten laufen die Fertigungslinien. Auf einem Bildschirm in der Halle leuchtet die Auftragsplanung."
 quelle = "story.steckbrief.abhaengigkeiten.bullets"
 index = 0
 
 [web.szenen.buero_weber.objekte.regal]
 name = "Aktenregal"
+wert = "nachweise"
 ansehen = "Ordner für Qualität, Verträge und Zertifikate. Ein Ordner für Sicherheitsrichtlinien fehlt."
 quelle = "story.steckbrief.betrieb_service.bullets"
 index = 4
 
 [web.szenen.buero_weber.objekte.pokale]
 name = "Pokale"
+wert = "kundenbeziehung"
 ansehen = "Zwei kleine Pokale vom Hauptkunden, beide für zuverlässige Lieferungen."
 quelle = "story.steckbrief.produktion_betrieb.bullets"
 index = 4
 
 [web.szenen.buero_weber.objekte.zahnrad]
 name = "Modell eines Getrieberads"
+wert = "konstruktionsdaten"
 ansehen = "Ein glänzendes Modell, auf das Dr. Weber sichtlich stolz ist. Die Zeichnungen dazu liegen auf dem File-Server."
 quelle = "story.steckbrief.abhaengigkeiten.bullets"
 index = 1
 
 [web.szenen.buero_weber.objekte.laptop]
 name = "Zugeklappter Laptop"
+wert = "buero"
 ansehen = "Ein Firmen-Notebook. Er nimmt es abends mit nach Hause, wie der ganze Vertrieb."
 quelle = "story.steckbrief.it_ot_landschaft.saas_cloud.bullets"
 index = 4
 
 [web.szenen.buero_weber.objekte.bild]
 name = "Bild einer Fräsmaschine"
+wert = "fertigung"
 ansehen = "Die erste Maschine der Firma, gerahmt. Heute stehen unten deutlich mehr davon."
 quelle = "story.steckbrief.produktion_betrieb.bullets"
 index = 1
@@ -612,30 +642,35 @@ figur = "produktion"
 
 [web.szenen.werkshalle.objekte.bedienpanel]
 name = "Bedienpanel der Fräsmaschine"
+wert = "fertigung"
 ansehen = "Ein Touch-Bildschirm an der Maschine. Daneben klebt ein Zettel mit einer Telefonnummer für Störungen."
 quelle = "story.steckbrief.it_ot_landschaft.ot_produktion.bullets"
 index = 2
 
 [web.szenen.werkshalle.objekte.maschinen]
 name = "Maschinenreihe"
+wert = "produktionsbetrieb"
 ansehen = "Drei Fräsmaschinen hintereinander, alle in Betrieb. Keine steht still."
 quelle = "story.steckbrief.produktion_betrieb.bullets"
 index = 0
 
 [web.szenen.werkshalle.objekte.schaltschrank]
 name = "Schaltschrank"
+wert = "fertigung"
 ansehen = "Die Tür steht einen Spalt offen. Drinnen steckt ein blaues Netzwerkkabel, das in Richtung Büro führt."
 quelle = "story.steckbrief.it_ot_landschaft.ot_produktion.bullets"
 index = 3
 
 [web.szenen.werkshalle.objekte.leitstand]
 name = "Leitstand"
+wert = "auftragsdaten"
 ansehen = "Auf dem Monitor laufen farbige Balken: der Stand jedes Auftrags, live aus der Produktionssteuerung."
 quelle = "story.steckbrief.produktion_betrieb.bullets"
 index = 2
 
 [web.szenen.werkshalle.objekte.wartungstafel]
 name = "Wartungstafel"
+wert = "produktionsbetrieb"
 ansehen = "Magnete markieren die geplanten Stillstände. Es sind nicht viele."
 quelle = "story.steckbrief.abhaengigkeiten.bullets"
 index = 3
@@ -706,30 +741,35 @@ figur = "konstruktion"
 
 [web.szenen.konstruktion.objekte.cad]
 name = "CAD-Arbeitsplätze"
+wert = "konstruktionsdaten"
 ansehen = "Große Monitore mit Drahtgittermodellen von Getriebeteilen. Auf einem läuft gerade eine Simulation."
 quelle = "story.steckbrief.it_ot_landschaft.office_engineering.bullets"
 index = 2
 
 [web.szenen.konstruktion.objekte.fileserver]
 name = "File-Server"
+wert = "konstruktionsdaten"
 ansehen = "Ein hoher Schrank mit einem kleinen grünen Lämpchen. Alles, was hier entsteht, landet darauf."
 quelle = "story.steckbrief.it_ot_landschaft.office_engineering.bullets"
 index = 3
 
 [web.szenen.konstruktion.objekte.zeichnungen]
 name = "Technische Zeichnungen"
+wert = "konstruktionsdaten"
 ansehen = "Aufgerollte Pläne und eine offene Zeichnung mit feinen Toleranzangaben."
 quelle = "story.steckbrief.produkte.bullets"
 index = 1
 
 [web.szenen.konstruktion.objekte.skizzen]
 name = "Skizzenwand"
+wert = "kundenbeziehung"
 ansehen = "Entwürfe für neue Zahnräder, manche mit dem Kürzel des Hauptkunden versehen."
 quelle = "story.steckbrief.produkte.bullets"
 index = 2
 
 [web.szenen.konstruktion.objekte.usb]
 name = "USB-Stick"
+wert = "konstruktionsdaten"
 ansehen = "Ein Stick ohne Beschriftung liegt an der Tischkante. Niemand weiß so recht, wem er gehört."
 quelle = "story.steckbrief.betrieb_service.bullets"
 index = 4
