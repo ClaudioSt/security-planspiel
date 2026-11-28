@@ -112,6 +112,115 @@ tip_2 = "Ein mittleres Level bei den wichtigsten Maßnahmen bringt meist mehr al
 tip_1 = "Brauchst du eine Maßnahme in den restlichen Wellen noch? Laufende Kosten sparst du nur durch Senken oder Kündigen."
 tip_2 = "Beim Kurswechsel übernimmt der Kunde einen Teil der Kosten der neuen Maßnahme. Ein Tausch kann also eine Chance sein."
 
+# Fassung für Teams (zwei oder drei Personen): überschreibt die Texte der Mentorin, die eine Person ansprechen.
+# Prognose und Handrechnung gibt jede Person für sich ab, deshalb bleiben diese Fragen in der Du-Form.
+[web.mentor_team.intro]
+paragraphs = [
+    "Schön, dass ihr da seid. Ich begleite euch durch euer erstes Projekt: Die MechTech GmbH, ein Zulieferer für die Automobilindustrie, hat uns um Hilfe gebeten. Sie haben bisher kaum in IT-Sicherheit investiert und wissen nicht, wo sie anfangen sollen.",
+    "Eure Aufgabe: Findet heraus, welche Werte bei MechTech schützenswert sind und welche Risiken drohen. Wählt dann mit einem begrenzten Budget passende Sicherheitsmaßnahmen. Danach zeigt sich in drei Angriffswellen, ob eure Planung trägt.",
+    "Bewertet werdet ihr an zwei Dingen: an der Kundenzufriedenheit von MechTech (KZ) und daran, ob sich die Investition gelohnt hat (Return on Security, RoS). Das Spiel kennt keinen Zufall: Gleiche Entscheidungen führen immer zum gleichen Ergebnis, und jede Rechnung könnt ihr selbst nachvollziehen.",
+    "Ihr spielt gemeinsam, jede und jeder am eigenen Gerät. Entscheidungen, die das Projekt weiterbringen, schlägt eine Person vor, und alle stimmen zu. Sprecht miteinander, bevor ihr zustimmt.",
+]
+chapters_title = "So läuft euer Projekt ab"
+
+[web.mentor_team.analyse]
+paragraphs = [
+    "Lest die Unterlagen von MechTech genau. Irgendwo darin stecken die Schwachstellen, die Angreifer später ausnutzen werden. Teilt euch die Dokumente ruhig auf.",
+    "Wenn euch ein Satz wichtig vorkommt, heftet ihn als Notiz an die Pinnwand und ordnet ihm ein Schutzziel und eine passende Maßnahme zu. Die Pinnwand hat nur begrenzt Platz: Wählt gemeinsam gut aus.",
+    "Haltet danach fest, wie schlimm ein Schaden an jedem Wert wäre, und tragt die wichtigsten Risiken ins Register ein. Wenn ihr unsicher seid, fragt die Geschäftsführung, was ein Schaden fürs Geschäft bedeuten würde.",
+]
+pinboard_hint = "Ob eure Notizen ins Schwarze treffen, seht ihr erst, wenn der passende Angriff kommt."
+need_hint = "Schätzt je Wert und Schutzziel, wie groß der Schaden fürs Geschäft wäre. Gesamt zählt die höchste Stufe."
+register_hint = "Welcher Wert ist bedroht, wodurch, und welches Schutzziel trifft es vor allem? Entscheidet, ob ihr das Risiko behandelt oder akzeptiert."
+ask_title = "Fragt die Geschäftsführung"
+ask_hint = "Dr. Weber beschreibt euch die Folgen fürs Geschäft und nennt eine Größenordnung, nie einen genauen Betrag."
+
+[web.mentor_team.uebung]
+paragraphs = [
+    "Bevor es ernst wird, rechnen wir ein Beispiel zusammen durch. Der Vorfall ist erfunden und zählt nicht für eure Wertung. Rechnet zuerst jede und jeder für sich und vergleicht dann.",
+    "Achtet besonders auf den Bonus: Eine passende Maßnahme hilft nur, wenn sie das verlangte Level erreicht. Eine Maßnahme auf zu niedrigem Level bringt im Angriff keinen Bonus.",
+]
+done = "Geschafft. Genau so rechnet ihr gleich in jeder Welle."
+
+[web.mentor_team.planung]
+paragraphs = [
+    "Zuerst vereinbart ihr mit Dr. Weber das Budget. Mehr Budget gibt mehr Spielraum, aber dann erwartet MechTech auch mehr, und ihr startet mit niedrigerer Kundenzufriedenheit.",
+    "Dann wählt ihr Maßnahmen und deren Level. Jede Maßnahme kostet einmalig (Init) und in jeder Welle laufend (OPEX). Manche Maßnahmen setzen auf höheren Levels eine andere Maßnahme voraus.",
+    "Ihr werdet nicht alles umsetzen können, was in euren Notizen steht. Priorisiert: Welche Risiken sind am größten, und welche Maßnahmen wirken gegen mehrere davon? Ein Überziehen des Budgets kostet am Ende deutlich Kundenzufriedenheit. Eine Person schlägt die Planung vor, alle stimmen zu.",
+]
+
+[web.mentor_team.welle]
+paragraphs = [
+    "Jetzt wird es ernst. Zuerst treten die Ereignisse dieser Welle ein. Dann zeigt sich, welcher Angriff MechTech trifft.",
+    "Jede und jeder schätzt für sich, wie es ausgeht, und rechnet selbst nach. Eure Antworten seht ihr gemeinsam mit dem Ergebnis. Ich zeige euch danach jeden Schritt.",
+]
+prognosis_title = "Deine Prognose"
+prognosis_question = "Was glaubst du: Wie gut halten eure Maßnahmen?"
+reality_question = "Welches Risiko aus eurem Register hat dieser Angriff getroffen?"
+
+[web.mentor_team.fenster]
+paragraphs = [
+    "Ihr könnt eure Maßnahmen jetzt anpassen: Level erhöhen oder senken, Maßnahmen kündigen oder neu hinzunehmen. Änderungen wirken ab der nächsten Welle.",
+    "Bereits gezahlte Init-Kosten bekommt ihr nie zurück. Überlegt, was ihr in den kommenden Wellen noch braucht.",
+]
+swap_hint = "Wählt eine Maßnahme, die wegfällt, und eine, die neu hinzukommt."
+
+[web.mentor_team.abschluss]
+paragraphs = [
+    "Alle drei Wellen sind vorbei. Jetzt macht der CFO von MechTech Kassensturz: Hattet ihr das Budget im Griff, und hat sich die Investition gelohnt?",
+]
+
+[web.mentor_team.debrief]
+paragraphs = [
+    "Schaut euch an, wo eure Kette aus Wert, Schutzziel, Risiko und Maßnahme gehalten hat und wo sie gerissen ist.",
+    "Gute Sicherheit heißt nicht, alles zu kaufen. Sie heißt, die größten Risiken mit den passenden Maßnahmen auf ausreichendem Level abzudecken und dabei im Budget zu bleiben.",
+]
+
+[web.mentor_team.tips.analyse]
+tip_1 = "Achtet auf Sätze, in denen etwas fehlt, veraltet ist oder nur selten passiert."
+tip_2 = "Der Zeitungsartikel beschreibt einen Vorfall bei einem anderen Zulieferer. Fragt euch, ob MechTech ähnlich verwundbar ist."
+
+[web.mentor_team.tips.planung]
+tip_1 = "Prüft, gegen welche eurer Risiken eine Maßnahme wirkt. Maßnahmen, die gegen keines wirken, sind ein Luxus."
+tip_2 = "Ein mittleres Level bei den wichtigsten Maßnahmen bringt meist mehr als viele Maßnahmen auf dem niedrigsten Level."
+
+[web.mentor_team.tips.fenster]
+tip_1 = "Braucht ihr eine Maßnahme in den restlichen Wellen noch? Laufende Kosten spart ihr nur durch Senken oder Kündigen."
+tip_2 = "Beim Kurswechsel übernimmt der Kunde einen Teil der Kosten der neuen Maßnahme. Ein Tausch kann also eine Chance sein."
+
+# Kurzes Feedback am Ende der Testrunde: Zustimmung auf einer Skala von fünf Stufen, dazu ein Freitext.
+# Die IDs bleiben stabil, damit Auswertungen über mehrere Runden vergleichbar sind.
+[web.feedback]
+title = "Kurzes Feedback"
+intro = "Hilf uns, das Spiel zu verbessern. Deine Antworten sind freiwillig und werden nur zusammen mit deinem Pseudonym gespeichert."
+scale_low = "stimme nicht zu"
+scale_high = "stimme voll zu"
+free_label = "Was sollten wir verbessern?"
+submit = "Feedback senden"
+thanks = "Danke für dein Feedback!"
+
+[[web.feedback.questions]]
+id = "verstanden"
+text = "Ich habe verstanden, warum ein Angriff gewirkt hat oder abgewehrt wurde."
+
+[[web.feedback.questions]]
+id = "zusammenhang"
+text = "Ich kann erklären, wie Werte, Schutzziele, Risiken und Maßnahmen zusammenhängen."
+
+[[web.feedback.questions]]
+id = "bedienung"
+text = "Die Bedienung der App war verständlich."
+
+[[web.feedback.questions]]
+id = "rechnung"
+text = "Die Rechnung in den Wellen konnte ich nachvollziehen."
+
+[[web.feedback.questions]]
+id = "team"
+ausdruck = "neutral"
+text = "Die Zusammenarbeit im Team hat gut funktioniert."
+team_only = true
+
 [web.cast.weber]
 name = "Dr. Thomas Weber"
 role = "Geschäftsführer, MechTech GmbH"
@@ -203,3 +312,518 @@ headline_case_3 = "Fertigung bei MechTech gestört, aber nicht gestoppt"
 headline_case_1 = "Konstruktionsdaten von MechTech im Netz aufgetaucht"
 headline_case_2 = "Datendiebe scheitern an MechTech"
 headline_case_3 = "Teile der MechTech-Daten abgeflossen"
+
+# Abzeichen (Gamification, zählt nie in die Spielwertung). Bedingungen und Punkte stehen in der Web-App
+# (data/gamification.json); hidden = an ein Ereignis (event) gebunden; der Server zeigt den Text erst ab dessen Welle.
+[web.badges.spurensucher]
+name = "Spurensucher"
+description = "Eine Notiz an der Pinnwand hat einen Angriff vorhergesagt."
+
+[web.badges.geschlossene_kette]
+name = "Geschlossene Kette"
+description = "Hinweis gefunden, passende Maßnahme zugeordnet, und genau diese Maßnahme hat im Angriff geholfen."
+
+[web.badges.lueckenlos]
+name = "Lückenlos"
+description = "Bei jedem Angriff hat die Kette aus Hinweis und Maßnahme gehalten."
+
+[web.badges.volle_abwehr]
+name = "Volle Abwehr"
+description = "Ein Angriff wurde vollständig abgewehrt."
+
+[web.badges.unverwundbar]
+name = "Unverwundbar"
+description = "Jeder Angriff wurde vollständig abgewehrt."
+
+[web.badges.kopfrechner]
+name = "Kopfrechner"
+description = "E-Wert und Gesamtreduktion einer Welle selbst richtig gerechnet."
+
+[web.badges.augenmass]
+name = "Richtiges Augenmaß"
+description = "Den Schutzbedarf aller Werte so eingeschätzt wie die Geschäftsführung."
+
+[web.badges.im_budget]
+name = "Im Budget"
+description = "Das Projekt ohne Überziehung des Budgets abgeschlossen."
+
+[web.badges.kurs_gehalten]
+name = "Kurs gehalten"
+description = "Nach dem Kurswechsel ist die Kundenzufriedenheit nicht gesunken."
+hidden = true
+event = "kurswechsel"
+
+[web.badges.audit_bestanden]
+name = "Audit bestanden"
+description = "Beim Audit des Kunden die beste Stufe erreicht."
+hidden = true
+event = "oem_audit"
+
+[web.badges.benutzerfreundlich]
+name = "Benutzerfreundlich"
+description = "Sicherheit eingeführt, ohne die Belegschaft zu verärgern."
+hidden = true
+event = "nervige_authentifizierung"
+
+[web.episodes]
+analyse = "Folge eins: Spurensuche bei MechTech"
+uebung = "Folge zwei: Die Generalprobe"
+planung = "Folge drei: Das Budget"
+welle = "Lagezentrum: Angriffswelle"
+fenster = "Zwischen den Wellen"
+abschluss = "Der Kassensturz"
+debrief = "Rückblick"
+
+[web.gamification]
+points = "Expertise"
+points_hint = "Expertise-Punkte zeigen, wie gut ihr die Zusammenhänge erkannt habt. Richtige Entscheidungen bringen Punkte, falsche kosten etwas: Notizen ohne Bezug, unpassende Maßnahmen, falsche Prognosen und Rechnungen. Sie zählen nicht für Kundenzufriedenheit, RoS oder Final-Index."
+badges = "Abzeichen"
+hidden_badge = "Verdecktes Abzeichen"
+ranking = "Rangliste der Sitzung"
+ranking_result = "Nach Ergebnis für MechTech"
+ranking_points = "Nach Expertise"
+mood_good = "zufrieden"
+mood_neutral = "abwartend"
+mood_bad = "verärgert"
+balance = "Punkte-Bilanz"
+balance_hint = "Richtige Entscheidungen bringen Expertise, falsche kosten etwas. Unter null fällt der Stand nicht."
+
+# Bezeichnungen der Punkte-Posten in der Bilanz (Schlüssel = Art des Postens in der Web-App).
+[web.gamification.posten]
+note_hit = "Hinweis an der Pinnwand getroffen"
+note_measure = "Passende Maßnahme zum Hinweis"
+note_measure_wrong = "Maßnahme passt nicht zum Hinweis"
+note_decoy = "Notiz ohne Bezug zu einem Angriff"
+need_right = "Schutzbedarf richtig eingeschätzt"
+need_wrong = "Schutzbedarf falsch eingeschätzt"
+prognosis_right = "Prognose getroffen"
+prognosis_wrong = "Prognose daneben"
+calc_right = "Richtig gerechnet"
+calc_wrong = "Falsch gerechnet"
+reality_right = "Realitätscheck: Risiko mit passendem Schutzziel"
+reality_wrong = "Realitätscheck: Risiko mit anderem Schutzziel"
+badge = "Abzeichen"
+
+# Szenen der Vor-Ort-Analyse (Adventure, Variante A). Objekte und Antworten tragen keinen eigenen Hinweistext:
+# quelle + index zeigen auf einen Satz der Story-Unterlagen (texte.toml), der sich anheften lässt. So bleibt
+# clues.toml die einzige Hinweisliste und der Druck unberührt. Neutrale Objekte haben keine Quelle.
+[web.szenen.serverraum]
+name = "Serverraum"
+intro = "Ein schmaler Raum im Erdgeschoss, warm und laut. Hier laufen die Server von MechTech, daneben stapeln sich Kartons."
+figur = "it"
+
+[web.szenen.serverraum.objekte.monitor]
+name = "Admin-Arbeitsplatz"
+ansehen = "Auf dem Monitor klebt ein Zettel. Darunter liegt eine Übersicht der Zugänge."
+quelle = "story.steckbrief.betrieb_service.bullets"
+index = 1
+
+[web.szenen.serverraum.objekte.backup]
+name = "Backup-Regal"
+wert = "buero"
+ansehen = "Ein Regal mit beschrifteten Ordnern. Auf dem obersten klebt ein Etikett zur Datensicherung."
+quelle = "story.steckbrief.it_ot_landschaft.saas_cloud.bullets"
+index = 1
+
+[web.szenen.serverraum.objekte.netzwerkschrank]
+name = "Netzwerkschrank"
+wert = "fertigung"
+ansehen = "Ein einziger Switch, alle Kabel laufen hier zusammen. Ein Netzplan hängt an der Tür."
+quelle = "story.steckbrief.it_ot_landschaft.ot_produktion.bullets"
+index = 3
+
+[web.szenen.serverraum.objekte.fernwartung]
+name = "Laptop für die Fernwartung"
+wert = "fertigung"
+ansehen = "Ein Laptop mit mehreren Verknüpfungen für Fernzugänge. Auf einem Post-it stehen Namen von Firmen."
+quelle = "story.steckbrief.betrieb_service.bullets"
+index = 3
+
+[web.szenen.serverraum.objekte.whiteboard]
+name = "Whiteboard"
+ansehen = "Eine halb gewischte Liste mit offenen Punkten aus einem Gespräch über Sicherheitswerkzeuge."
+quelle = "story.steckbrief.betrieb_service.bullets"
+index = 5
+
+[web.szenen.serverraum.objekte.kalender]
+name = "Wandkalender"
+wert = "fertigung"
+ansehen = "Ein Kalender mit wenigen Einträgen für Wartungsfenster in der Produktion."
+quelle = "story.steckbrief.betrieb_service.bullets"
+index = 6
+
+[web.szenen.serverraum.objekte.server]
+name = "Server-Rack"
+wert = "buero"
+ansehen = "Lüfter rauschen, Lämpchen blinken. Ein Etikett nennt das System."
+quelle = "story.steckbrief.it_ot_landschaft.office_engineering.bullets"
+index = 0
+
+[web.szenen.serverraum.objekte.kaffee]
+name = "Kaffeemaschine"
+ansehen = "Die Kaffeemaschine ist das am besten gewartete Gerät im Raum."
+
+# ausdruck: Gesichtsausdruck der Figur bei dieser Antwort (neutral, erfreut, besorgt); passende Porträts in der Web-App.
+[web.dialoge.it]
+begruessung = "Hallo! Jonas Reiter, IT. Viel Zeit habe ich nicht, aber fragen Sie ruhig."
+abschied = "Wenn noch was ist: Sie finden mich hier."
+
+[[web.dialoge.it.fragen]]
+id = "team"
+frage = "Wie ist die IT bei MechTech aufgestellt?"
+antwort = "Ehrlich gesagt: überschaubar."
+quelle = "story.steckbrief.betrieb_service.bullets"
+index = 0
+
+[[web.dialoge.it.fragen]]
+id = "admins"
+ausdruck = "besorgt"
+frage = "Wer hat Administratorrechte?"
+antwort = "Das ist bei uns pragmatisch gelöst."
+quelle = "story.steckbrief.betrieb_service.bullets"
+index = 1
+
+[[web.dialoge.it.fragen]]
+id = "sicherung"
+ausdruck = "erfreut"
+frage = "Wie sichert ihr eure Daten?"
+antwort = "Da haben wir eine Lösung in der Cloud."
+quelle = "story.steckbrief.it_ot_landschaft.saas_cloud.bullets"
+index = 1
+
+[[web.dialoge.it.fragen]]
+id = "fernzugang"
+ausdruck = "erfreut"
+frage = "Wie kommen Dienstleister an eure Systeme?"
+antwort = "Über Fernzugänge, das spart Anfahrten."
+quelle = "story.steckbrief.betrieb_service.bullets"
+index = 3
+
+[[web.dialoge.it.fragen]]
+id = "erkennung"
+ausdruck = "besorgt"
+frage = "Würdet ihr merken, wenn jemand Fremdes im Netz ist?"
+antwort = "Gute Frage. Ich hoffe es."
+quelle = "story.steckbrief.betrieb_service.bullets"
+index = 5
+
+[[web.dialoge.it.fragen]]
+id = "updates"
+ausdruck = "besorgt"
+frage = "Wie oft spielt ihr Updates ein?"
+antwort = "Im Büro regelmäßig. In der Produktion ist das schwieriger."
+quelle = "story.steckbrief.betrieb_service.bullets"
+index = 6
+
+# Zweite Szene: das Büro der Geschäftsführung. Hier liegt die Sicht des Geschäfts; Zitate wie im Serverraum nur aus der Story.
+[web.szenen.buero_weber]
+name = "Büro der Geschäftsführung"
+intro = "Ein ruhiges Büro im ersten Stock. Durch das große Fenster sieht man direkt in die Werkshalle."
+figur = "weber"
+
+[web.szenen.buero_weber.objekte.ledermappe]
+name = "Ledermappe"
+wert = "kundenbeziehung"
+ansehen = "Korrespondenz mit dem Hauptkunden. Obenauf liegt ein Schreiben, das mehrfach unterstrichen wurde."
+quelle = "story.audit_mail.einleitung.paragraphs"
+index = 1
+
+[web.szenen.buero_weber.objekte.besprechungstisch]
+name = "Besprechungstisch"
+ansehen = "Neben der Wasserkaraffe liegt ein Ausdruck seiner Anfrage an die Beratung, mit Notizen am Rand."
+quelle = "story.anfrage_mail.lage.paragraphs"
+index = 1
+
+[web.szenen.buero_weber.objekte.fenster]
+name = "Fenster zur Halle"
+wert = "produktionsbetrieb"
+ansehen = "Unten laufen die Fertigungslinien. Auf einem Bildschirm in der Halle leuchtet die Auftragsplanung."
+quelle = "story.steckbrief.abhaengigkeiten.bullets"
+index = 0
+
+[web.szenen.buero_weber.objekte.regal]
+name = "Aktenregal"
+wert = "nachweise"
+ansehen = "Ordner für Qualität, Verträge und Zertifikate. Ein Ordner für Sicherheitsrichtlinien fehlt."
+quelle = "story.steckbrief.betrieb_service.bullets"
+index = 4
+
+[web.szenen.buero_weber.objekte.pokale]
+name = "Pokale"
+wert = "kundenbeziehung"
+ansehen = "Zwei kleine Pokale vom Hauptkunden, beide für zuverlässige Lieferungen."
+quelle = "story.steckbrief.produktion_betrieb.bullets"
+index = 4
+
+[web.szenen.buero_weber.objekte.zahnrad]
+name = "Modell eines Getrieberads"
+wert = "konstruktionsdaten"
+ansehen = "Ein glänzendes Modell, auf das Dr. Weber sichtlich stolz ist. Die Zeichnungen dazu liegen auf dem File-Server."
+quelle = "story.steckbrief.abhaengigkeiten.bullets"
+index = 1
+
+[web.szenen.buero_weber.objekte.laptop]
+name = "Zugeklappter Laptop"
+wert = "buero"
+ansehen = "Ein Firmen-Notebook. Er nimmt es abends mit nach Hause, wie der ganze Vertrieb."
+quelle = "story.steckbrief.it_ot_landschaft.saas_cloud.bullets"
+index = 4
+
+[web.szenen.buero_weber.objekte.bild]
+name = "Bild einer Fräsmaschine"
+wert = "fertigung"
+ansehen = "Die erste Maschine der Firma, gerahmt. Heute stehen unten deutlich mehr davon."
+quelle = "story.steckbrief.produktion_betrieb.bullets"
+index = 1
+
+[web.szenen.buero_weber.objekte.foto]
+name = "Bilderrahmen"
+ansehen = "Ein Foto, zum Schreibtisch gedreht. Das ist privat, findet Dr. Weber."
+
+[web.szenen.buero_weber.objekte.uhr]
+name = "Wanduhr"
+ansehen = "Sie geht auf die Minute genau. Pünktlichkeit ist hier keine Tugend, sondern Vertragsbestandteil."
+
+[web.dialoge.weber]
+begruessung = "Dr. Weber, freut mich. Setzen Sie sich. Was wollen Sie über MechTech wissen?"
+abschied = "Melden Sie sich, wenn Sie mehr brauchen."
+
+[[web.dialoge.weber.fragen]]
+id = "kunde"
+frage = "Wer ist Ihr wichtigster Kunde?"
+antwort = "Ein Premium-OEM. Ohne ihn wird es eng."
+quelle = "story.steckbrief.eckdaten.bullets"
+index = 1
+
+[[web.dialoge.weber.fragen]]
+id = "geschaeft"
+ausdruck = "erfreut"
+frage = "Wie läuft das Geschäft?"
+antwort = "Sehr gut. Die Elektromobilität bringt uns Aufträge."
+quelle = "story.steckbrief.eckdaten.bullets"
+index = 3
+
+[[web.dialoge.weber.fragen]]
+id = "stillstand"
+ausdruck = "besorgt"
+frage = "Was bedeutet ein Stillstand für Sie?"
+antwort = "Ein paar Stunden halten wir aus. Danach merkt es der Kunde."
+quelle = "story.steckbrief.produktion_betrieb.bullets"
+index = 5
+
+[[web.dialoge.weber.fragen]]
+id = "audit"
+ausdruck = "besorgt"
+frage = "Was verlangt der OEM von Ihnen?"
+antwort = "Nachweise. Eine ganze Liste davon, und bei einem Punkt bin ich ratlos."
+quelle = "story.audit_mail.nachweise.bullets"
+index = 4
+
+[[web.dialoge.weber.fragen]]
+id = "konsequenzen"
+ausdruck = "besorgt"
+frage = "Und wenn Sie die Nachweise nicht liefern?"
+antwort = "Dann wird es ernst. Das steht so im Schreiben."
+quelle = "story.audit_mail.konsequenzen.bullets"
+index = 0
+
+[[web.dialoge.weber.fragen]]
+id = "zugaenge"
+frage = "Wer kommt von außen an Ihre Systeme?"
+antwort = "Mehr Firmen, als mir lieb ist. Herr Reiter weiß das genauer."
+quelle = "story.steckbrief.abhaengigkeiten.bullets"
+index = 2
+
+# Dritte Szene: die Werkshalle. Hier liegt die Sicht der Produktion.
+[web.szenen.werkshalle]
+name = "Werkshalle"
+intro = "Hell, laut und erstaunlich sauber. Hier entstehen die Präzisionsteile, rund um die Uhr."
+figur = "produktion"
+
+[web.szenen.werkshalle.objekte.bedienpanel]
+name = "Bedienpanel der Fräsmaschine"
+wert = "fertigung"
+ansehen = "Ein Touch-Bildschirm an der Maschine. Daneben klebt ein Zettel mit einer Telefonnummer für Störungen."
+quelle = "story.steckbrief.it_ot_landschaft.ot_produktion.bullets"
+index = 2
+
+[web.szenen.werkshalle.objekte.maschinen]
+name = "Maschinenreihe"
+wert = "produktionsbetrieb"
+ansehen = "Drei Fräsmaschinen hintereinander, alle in Betrieb. Keine steht still."
+quelle = "story.steckbrief.produktion_betrieb.bullets"
+index = 0
+
+[web.szenen.werkshalle.objekte.schaltschrank]
+name = "Schaltschrank"
+wert = "fertigung"
+ansehen = "Die Tür steht einen Spalt offen. Drinnen steckt ein blaues Netzwerkkabel, das in Richtung Büro führt."
+quelle = "story.steckbrief.it_ot_landschaft.ot_produktion.bullets"
+index = 3
+
+[web.szenen.werkshalle.objekte.leitstand]
+name = "Leitstand"
+wert = "auftragsdaten"
+ansehen = "Auf dem Monitor laufen farbige Balken: der Stand jedes Auftrags, live aus der Produktionssteuerung."
+quelle = "story.steckbrief.produktion_betrieb.bullets"
+index = 2
+
+[web.szenen.werkshalle.objekte.wartungstafel]
+name = "Wartungstafel"
+wert = "produktionsbetrieb"
+ansehen = "Magnete markieren die geplanten Stillstände. Es sind nicht viele."
+quelle = "story.steckbrief.abhaengigkeiten.bullets"
+index = 3
+
+[web.szenen.werkshalle.objekte.stapler]
+name = "Gabelstapler"
+ansehen = "Eine Palette blanker Metallteile wartet auf die Abholung. Der Lkw kommt pünktlich."
+
+[web.szenen.werkshalle.objekte.fenster]
+name = "Oberlichter"
+ansehen = "Viel Tageslicht von oben. Die Halle ist der ganze Stolz der Firma."
+
+[web.dialoge.produktion]
+begruessung = "Petra Albrecht, Produktion. Kommen Sie, aber bleiben Sie hinter der gelben Linie."
+abschied = "Ich muss wieder an die Linie."
+
+[[web.dialoge.produktion.fragen]]
+id = "schichten"
+frage = "Wann laufen die Maschinen?"
+antwort = "Eigentlich immer. Nur am Wochenende ist Ruhe."
+quelle = "story.steckbrief.produktion_betrieb.bullets"
+index = 0
+
+[[web.dialoge.produktion.fragen]]
+id = "steuerung"
+ausdruck = "besorgt"
+frage = "Was passiert, wenn die Produktionssteuerung ausfällt?"
+antwort = "Dann wissen wir nicht mehr, was wir fertigen sollen. Und der Kunde wartet."
+quelle = "story.steckbrief.abhaengigkeiten.bullets"
+index = 0
+
+[[web.dialoge.produktion.fragen]]
+id = "netz"
+ausdruck = "besorgt"
+frage = "Sind die Maschinen vom Büronetz getrennt?"
+antwort = "Getrennt? Das hängt alles zusammen, so weit ich weiß."
+quelle = "story.steckbrief.it_ot_landschaft.ot_produktion.bullets"
+index = 3
+
+[[web.dialoge.produktion.fragen]]
+id = "updates"
+frage = "Wann werden die Maschinen aktualisiert?"
+antwort = "Wenn sie stehen. Und sie stehen selten."
+quelle = "story.steckbrief.betrieb_service.bullets"
+index = 6
+
+[[web.dialoge.produktion.fragen]]
+id = "wartung"
+ausdruck = "erfreut"
+frage = "Wer wartet die Maschinen?"
+antwort = "Die Hersteller, meist aus der Ferne. Das geht schnell und spart Anfahrten."
+quelle = "story.steckbrief.betrieb_service.bullets"
+index = 3
+
+[[web.dialoge.produktion.fragen]]
+id = "vorfall"
+ausdruck = "besorgt"
+frage = "Haben Sie von dem Vorfall bei dem anderen Zulieferer gelesen?"
+antwort = "Ja, das hängt bei uns in der Kantine. Seitdem schaue ich zweimal hin, bevor ich etwas öffne."
+quelle = "story.zeitungsartikel.bericht_vorfall.ablauf.paragraphs"
+index = 0
+
+# Vierte Szene: die Konstruktion. Hier liegen die wertvollsten Daten der Firma.
+[web.szenen.konstruktion]
+name = "Konstruktion"
+intro = "Ein ruhiger Raum voller Bildschirme und Papierrollen. Hier entstehen die Zeichnungen, von denen die Aufträge leben."
+figur = "konstruktion"
+
+[web.szenen.konstruktion.objekte.cad]
+name = "CAD-Arbeitsplätze"
+wert = "konstruktionsdaten"
+ansehen = "Große Monitore mit Drahtgittermodellen von Getriebeteilen. Auf einem läuft gerade eine Simulation."
+quelle = "story.steckbrief.it_ot_landschaft.office_engineering.bullets"
+index = 2
+
+[web.szenen.konstruktion.objekte.fileserver]
+name = "File-Server"
+wert = "konstruktionsdaten"
+ansehen = "Ein hoher Schrank mit einem kleinen grünen Lämpchen. Alles, was hier entsteht, landet darauf."
+quelle = "story.steckbrief.it_ot_landschaft.office_engineering.bullets"
+index = 3
+
+[web.szenen.konstruktion.objekte.zeichnungen]
+name = "Technische Zeichnungen"
+wert = "konstruktionsdaten"
+ansehen = "Aufgerollte Pläne und eine offene Zeichnung mit feinen Toleranzangaben."
+quelle = "story.steckbrief.produkte.bullets"
+index = 1
+
+[web.szenen.konstruktion.objekte.skizzen]
+name = "Skizzenwand"
+wert = "kundenbeziehung"
+ansehen = "Entwürfe für neue Zahnräder, manche mit dem Kürzel des Hauptkunden versehen."
+quelle = "story.steckbrief.produkte.bullets"
+index = 2
+
+[web.szenen.konstruktion.objekte.usb]
+name = "USB-Stick"
+wert = "konstruktionsdaten"
+ansehen = "Ein Stick ohne Beschriftung liegt an der Tischkante. Niemand weiß so recht, wem er gehört."
+quelle = "story.steckbrief.betrieb_service.bullets"
+index = 4
+
+[web.szenen.konstruktion.objekte.stuhl]
+name = "Bürostuhl"
+ansehen = "Ein ergonomischer Stuhl, der mehr gekostet hat als mancher Rechner im Büro."
+
+[web.dialoge.konstruktion]
+begruessung = "Mehmet Aydın, Konstruktion. Fassen Sie bitte nichts an, da liegt gerade ein Prototyp drauf."
+abschied = "Ich muss weiterzeichnen. Der Kunde wartet auf die Freigabe."
+
+[[web.dialoge.konstruktion.fragen]]
+id = "daten"
+ausdruck = "erfreut"
+frage = "Woran arbeiten Sie gerade?"
+antwort = "An einem Prototyp für den Hauptkunden. Das ist unser Aushängeschild."
+quelle = "story.steckbrief.abhaengigkeiten.bullets"
+index = 1
+
+[[web.dialoge.konstruktion.fragen]]
+id = "partner"
+frage = "Wie bekommen Partner Ihre Zeichnungen?"
+antwort = "Über unser Portal. Das ist von außen erreichbar, sonst ginge es ja nicht."
+quelle = "story.steckbrief.it_ot_landschaft.saas_cloud.bullets"
+index = 2
+
+[[web.dialoge.konstruktion.fragen]]
+id = "sicherung"
+ausdruck = "besorgt"
+frage = "Was passiert, wenn der File-Server weg ist?"
+antwort = "Dann fehlt uns im schlimmsten Fall ein ganzer Monat Arbeit."
+quelle = "story.steckbrief.it_ot_landschaft.saas_cloud.bullets"
+index = 1
+
+[[web.dialoge.konstruktion.fragen]]
+id = "maschinen"
+frage = "Wie kommen Ihre Programme an die Maschinen?"
+antwort = "Direkt übers Netz. Ich klicke, und unten in der Halle ist es da."
+quelle = "story.steckbrief.it_ot_landschaft.ot_produktion.bullets"
+index = 3
+
+[[web.dialoge.konstruktion.fragen]]
+id = "rechte"
+ausdruck = "besorgt"
+frage = "Wer darf alles auf den File-Server?"
+antwort = "Wir hier, der Vertrieb und die Admins. Und die haben ein gemeinsames Konto, glaube ich."
+quelle = "story.steckbrief.betrieb_service.bullets"
+index = 1
+
+[[web.dialoge.konstruktion.fragen]]
+id = "abfluss"
+ausdruck = "besorgt"
+frage = "Würden Sie merken, wenn jemand große Mengen Daten kopiert?"
+antwort = "Ich? Nein. Ob die IT das sieht, weiß ich nicht."
+quelle = "story.steckbrief.betrieb_service.bullets"
+index = 5

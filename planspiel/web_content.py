@@ -25,18 +25,64 @@ from planspiel.validate import Issue
 WEB_FILE = "web.toml"
 PLACEHOLDERS = {"beratung"}
 GOALS = ("c", "i", "a")
+EXPRESSIONS = ("neutral", "erfreut", "besorgt")
 _PLACEHOLDER = re.compile(r"\{([^{}]*)\}")
 # Player-facing sheets only; facilitator sheets (cheat sheet, schedule, debrief guide, was-neu, Probelauf) stay out.
 PLAYER_SHEETS = ("angriff", "budget", "ros", "teamheft", "register", "tracking", "welle", "backup_recovery", "karten", "eventkarten", "labels")
 REQUIRED_MENTOR = ("intro", "analyse", "uebung", "planung", "welle", "fenster", "abschluss", "debrief")
 
 
+_DU = re.compile(r"\b(du|dir|dich|dein|deine|deinem|deinen|deiner|deines)\b", re.IGNORECASE)
+
+
+def _du_keys(node: Dict, prefix: str) -> List[str]:
+    found = []
+    for key, value in node.items():
+        path = f"{prefix}.{key}"
+        if isinstance(value, dict):
+            found += _du_keys(value, path)
+        elif key == "paragraphs" or any(_DU.search(text) for text in ([value] if isinstance(value, str) else value)):
+            found.append(path)
+    return found
+
+
+def missing_team_texts(web: Texts) -> List[str]:
+    """Mentor texts that address one person (du, dein, ...) and every paragraph list need a team version."""
+    missing = []
+    for path in _du_keys(web.subtree("web.mentor"), "web.mentor"):
+        team_path = path.replace("web.mentor.", "web.mentor_team.", 1)
+        if not web.has(team_path):
+            missing.append(team_path)
+    return missing
+
+
 def load_web_texts(path: Path) -> Texts:
     return load_texts(path)
 
 
-def check_web_texts(cfg: Config, web: Texts, terms: GiveawayTerms) -> List[Issue]:
+def scene_quotes(web: Texts) -> List[tuple]:
+    """(path, story source, index) of every scene object and dialogue answer that points at a story string."""
+    found = []
+    scenes = web.subtree("web.szenen") if web.has("web.szenen") else {}
+    for scene_id, scene in scenes.items():
+        for object_id, obj in scene.get("objekte", {}).items():
+            if "quelle" in obj or "index" in obj:
+                found.append((f"web.szenen.{scene_id}.objekte.{object_id}", obj.get("quelle"), obj.get("index")))
+    dialogues = web.subtree("web.dialoge") if web.has("web.dialoge") else {}
+    for figure, dialogue in dialogues.items():
+        for number, question in enumerate(dialogue.get("fragen", [])):
+            if "quelle" in question or "index" in question:
+                found.append((f"web.dialoge.{figure}.fragen.{number}", question.get("quelle"), question.get("index")))
+    return found
+
+
+def check_web_texts(cfg: Config, web: Texts, terms: GiveawayTerms, texts: Texts | None = None) -> List[Issue]:
     issues: List[Issue] = []
+    if texts is not None:
+        for path, source, index in scene_quotes(web):
+            node = texts.get(source) if isinstance(source, str) and source.startswith("story.") and texts.has(source) else None
+            if not isinstance(node, list) or not isinstance(index, int) or isinstance(index, bool) or not 0 <= index < len(node):
+                issues.append(Issue("error", "web.scene_quote", path, f"Kein Story-Satz unter {source} [{index}]"))
     attack_ids = tuple(cfg.attacks)
     for chapter in REQUIRED_MENTOR:
         if not web.has(f"web.mentor.{chapter}.title"):
@@ -62,6 +108,37 @@ def check_web_texts(cfg: Config, web: Texts, terms: GiveawayTerms) -> List[Issue
             hits = giveaway_hits(text, terms, attack_ids, profile="story")
         if hits:
             issues.append(Issue("error", "web.giveaway", key, f"Verbotener Begriff: {', '.join(sorted(set(hits)))}"))
+
+    for path in missing_team_texts(web):
+        issues.append(Issue("error", "web.team_text", path, "Teamfassung fehlt"))
+    if web.has("web.mentor_team"):
+        for key, _ in web.strings("web.mentor_team"):
+            if not web.has(key.replace("web.mentor_team.", "web.mentor.", 1)):
+                issues.append(Issue("error", "web.team_text", key, "Teamfassung ohne Grundtext"))
+    questions = web.get("web.feedback.questions") if web.has("web.feedback.questions") else []
+    if len({q.get("id") for q in questions}) != len(questions):
+        issues.append(Issue("error", "web.feedback", "web.feedback.questions", "Doppelte Fragen-ID"))
+
+    cast = web.subtree("web.cast") if web.has("web.cast") else {}
+    scenes = web.subtree("web.szenen") if web.has("web.szenen") else {}
+    werte_ids = set(web.subtree("web.werte")) if web.has("web.werte") else set()
+    for scene_id, scene in scenes.items():
+        if scene.get("figur") not in cast:
+            issues.append(Issue("error", "web.scene_figure", f"web.szenen.{scene_id}.figur", "Figur fehlt in web.cast"))
+        for object_id, obj in scene.get("objekte", {}).items():
+            if "wert" in obj and obj["wert"] not in werte_ids:
+                issues.append(Issue("error", "web.scene_value", f"web.szenen.{scene_id}.objekte.{object_id}.wert", "Unbekannter Wert"))
+
+    dialogues = web.subtree("web.dialoge") if web.has("web.dialoge") else {}
+    for figure, dialogue in dialogues.items():
+        for number, question in enumerate(dialogue.get("fragen", [])):
+            if question.get("ausdruck", "neutral") not in EXPRESSIONS:
+                issues.append(Issue("error", "web.expression", f"web.dialoge.{figure}.fragen.{number}", "Unbekannter Ausdruck"))
+    event_ids = {event.id for events in cfg.events.values() for event in events}
+    badges = web.subtree("web.badges") if web.has("web.badges") else {}
+    for badge_id, badge in badges.items():
+        if isinstance(badge, dict) and badge.get("hidden") and badge.get("event") not in event_ids:
+            issues.append(Issue("error", "web.badge_event", f"web.badges.{badge_id}.event", "Verdecktes Abzeichen ohne gültiges Ereignis"))
 
     cases = {case.id: case for case in (cfg.risk_matrix.cases if cfg.risk_matrix else ())}
     werte = web.subtree("web.werte") if web.has("web.werte") else {}
@@ -107,8 +184,11 @@ def build_content(cfg: Config, content_dir: Path) -> Dict:
     werte = web_public.get("werte", {})
     web_public["werte"] = {value_id: _without(entry, "faelle") for value_id, entry in werte.items()}
 
+    story = copy.deepcopy(texts.subtree("story"))
+    # The printed request is addressed to the consultancy of the paper round; the web app fills in its brand.
+    story["anfrage_mail"]["kopf"]["an"] = "{beratung_mail}"
     always = {
-        "story": texts.subtree("story"),
+        "story": story,
         "measures": texts.subtree("measures"),
         "sheets": {name: texts.subtree(f"sheets.{name}") for name in PLAYER_SHEETS if texts.has(f"sheets.{name}")},
         "practice": texts.subtree("practice"),

@@ -52,7 +52,7 @@ def _codes(issues):
 
 
 def test_web_texts_pass(cfg, content, web):
-    assert check_web_texts(cfg, web, content.terms) == []
+    assert check_web_texts(cfg, web, content.terms, content.texts) == []
 
 
 def test_digits_are_refused(cfg, content, web):
@@ -166,3 +166,162 @@ def test_server_part_has_cases_values_and_clues(cfg, export):
     assert server["value_cases"]["konstruktionsdaten"] == {"c": "design_data", "i": "data_trust"}
     assert {clue["attack"] for clue in server["clues"]} == set(cfg.attacks)
     assert "faelle" not in str(export["content.json"]["always"]["web"]["werte"])
+
+
+def test_team_texts_cover_every_du_text(cfg, content, web):
+    """Teams read the mentor in the plural: every mentor text that addresses one person has a team version."""
+    from planspiel.web_content import missing_team_texts
+
+    assert missing_team_texts(web) == []
+    broken = _with(web, "web.mentor_team.analyse", {})
+    assert "web.mentor_team.analyse.paragraphs" in missing_team_texts(broken)
+
+
+def test_team_texts_only_override_existing_keys(cfg, content, web):
+    issues = check_web_texts(cfg, _with(web, "web.mentor_team.analyse.erfunden", "Hallo"), content.terms)
+    assert "web.team_text" in _codes(issues)
+
+
+def test_feedback_questions(cfg, content, web):
+    questions = web.get("web.feedback.questions")
+    assert len(questions) >= 3
+    assert len({q["id"] for q in questions}) == len(questions)
+    assert all(q["text"] for q in questions)
+
+
+def test_feedback_ids_are_stable(web):
+    ids = [q["id"] for q in web.get("web.feedback.questions")]
+    assert ids[:3] == ["verstanden", "zusammenhang", "bedienung"]
+
+
+BADGES = {
+    "spurensucher", "geschlossene_kette", "lueckenlos", "volle_abwehr", "unverwundbar", "kopfrechner",
+    "augenmass", "im_budget", "kurs_gehalten", "audit_bestanden", "benutzerfreundlich",
+}
+
+
+def test_badges_have_texts(web):
+    badges = web.subtree("web.badges")
+    assert set(badges) == BADGES
+    for badge in badges.values():
+        assert badge["name"] and badge["description"]
+
+
+def test_hidden_badges_are_marked(web):
+    hidden = {key for key, badge in web.subtree("web.badges").items() if badge.get("hidden")}
+    assert hidden == {"kurs_gehalten", "audit_bestanden", "benutzerfreundlich"}
+
+
+def test_hidden_badges_name_an_event_of_the_config(cfg, content, web):
+    events = {event.id for events in cfg.events.values() for event in events}
+    for key, badge in web.subtree("web.badges").items():
+        if badge.get("hidden"):
+            assert badge.get("event") in events, key
+    broken = _with(web, "web.badges.kurs_gehalten.event", "gibt_es_nicht")
+    assert "web.badge_event" in _codes(check_web_texts(cfg, broken, content.terms))
+
+
+def test_episode_titles_for_every_chapter(web):
+    episodes = web.subtree("web.episodes")
+    assert set(episodes) >= {"analyse", "uebung", "planung", "welle", "fenster", "abschluss", "debrief"}
+
+
+def test_scene_quotes_point_at_story_strings(cfg, content, web):
+    """Scenes and dialogues never carry their own clue text: they point at a story string (source and index),
+    so a pinned note is the same string as in the printed documents and clues.toml stays the only clue list."""
+    from planspiel.web_content import scene_quotes
+
+    quotes = scene_quotes(web)
+    assert quotes, "the server room scene has quotes"
+    for path, source, index in quotes:
+        node = content.texts.get(source)
+        assert isinstance(node, list) and 0 <= index < len(node), path
+
+
+def test_broken_scene_quote_is_an_error(cfg, content, web):
+    broken = _with(web, "web.szenen.serverraum.objekte.backup.index", 99)
+    assert "web.scene_quote" in _codes(check_web_texts(cfg, broken, content.terms, content.texts))
+
+
+def test_server_room_reaches_clues_of_every_attack(cfg, content, web):
+    from planspiel.texts import load_clues
+    from planspiel.web_content import scene_quotes
+
+    clues = load_clues(REPO_ROOT / "content" / "clues.toml")
+    reachable = {content.texts.get(source)[index] for _, source, index in scene_quotes(web)}
+    attacks = {clue.attack for clue in clues if any(clue.quote in text for text in reachable)}
+    assert attacks == set(cfg.attacks)
+
+
+def test_recipient_of_the_request_is_the_brand_placeholder(export):
+    """The printed request goes to the consultancy of the paper round; the web app fills in its own brand."""
+    always = export["content.json"]["always"]
+    assert always["story"]["anfrage_mail"]["kopf"]["an"] == "{beratung_mail}"
+    assert "VWI" not in str(always)
+
+
+def test_dialogue_expressions_are_known(cfg, content, web):
+    for figure, dialogue in web.subtree("web.dialoge").items():
+        for question in dialogue["fragen"]:
+            assert question.get("ausdruck", "neutral") in {"neutral", "erfreut", "besorgt"}
+    broken = copy.deepcopy(web.data)
+    broken["web"]["dialoge"]["it"]["fragen"][0]["ausdruck"] = "wütend"
+    assert "web.expression" in _codes(check_web_texts(cfg, Texts(broken), content.terms, content.texts))
+
+
+def test_scene_figures_belong_to_the_cast(cfg, content, web):
+    cast = set(web.subtree("web.cast"))
+    for scene_id, scene in web.subtree("web.szenen").items():
+        assert scene.get("figur") in cast, scene_id
+    broken = copy.deepcopy(web.data)
+    broken["web"]["szenen"]["serverraum"]["figur"] = "gibt_es_nicht"
+    assert "web.scene_figure" in _codes(check_web_texts(cfg, Texts(broken), content.terms, content.texts))
+
+
+SCENE_FIGURES = {"serverraum": "it", "buero_weber": "weber", "werkshalle": "produktion", "konstruktion": "konstruktion"}
+
+
+@pytest.mark.parametrize("scene_id", sorted(SCENE_FIGURES))
+def test_every_scene_reaches_clues_of_every_attack(cfg, content, web, scene_id):
+    """Each scene (objects plus the conversation with its figure) offers a clue for every attack, so no scene is
+    a dead end and the order of visits does not matter."""
+    from planspiel.texts import load_clues
+    from planspiel.web_content import scene_quotes
+
+    figure = SCENE_FIGURES[scene_id]
+    assert web.subtree(f"web.szenen.{scene_id}")["figur"] == figure
+    quotes = [
+        (source, index) for path, source, index in scene_quotes(web)
+        if path.startswith(f"web.szenen.{scene_id}.") or path.startswith(f"web.dialoge.{figure}.")
+    ]
+    assert len(quotes) >= 8
+    clues = load_clues(REPO_ROOT / "content" / "clues.toml")
+    reachable = {content.texts.get(source)[index] for source, index in quotes}
+    assert {clue.attack for clue in clues if any(clue.quote in text for text in reachable)} == set(cfg.attacks)
+
+
+def test_scene_objects_name_known_values(cfg, content, web):
+    """Objects may name the asset (web.werte) they concern, so the player sees which value is at stake."""
+    werte = set(web.subtree("web.werte"))
+    tagged = [
+        (scene_id, object_id, obj["wert"])
+        for scene_id, scene in web.subtree("web.szenen").items()
+        for object_id, obj in scene.get("objekte", {}).items()
+        if "wert" in obj
+    ]
+    assert len(tagged) >= 15
+    assert {wert for _, _, wert in tagged} <= werte
+    assert {wert for _, _, wert in tagged} == werte, "every value appears in at least one scene"
+    broken = copy.deepcopy(web.data)
+    broken["web"]["szenen"]["serverraum"]["objekte"]["server"]["wert"] = "gibt_es_nicht"
+    assert "web.scene_value" in _codes(check_web_texts(cfg, Texts(broken), content.terms, content.texts))
+
+
+def test_point_labels_for_every_entry_kind(web):
+    """The debrief lists where the expertise points came from; every kind of entry has a label."""
+    labels = web.subtree("web.gamification.posten")
+    kinds = {
+        "note_hit", "note_measure", "note_measure_wrong", "note_decoy", "need_right", "need_wrong", "prognosis_right",
+        "prognosis_wrong", "calc_right", "calc_wrong", "reality_right", "reality_wrong", "badge",
+    }
+    assert kinds <= set(labels)
