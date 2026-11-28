@@ -376,7 +376,7 @@ debrief = "Rückblick"
 
 [web.gamification]
 points = "Expertise"
-points_hint = "Expertise-Punkte zeigen, wie gut ihr die Zusammenhänge erkannt habt. Sie zählen nicht für Kundenzufriedenheit, RoS oder Final-Index."
+points_hint = "Expertise-Punkte zeigen, wie gut ihr die Zusammenhänge erkannt habt. Richtige Entscheidungen bringen Punkte, falsche kosten etwas: Notizen ohne Bezug, unpassende Maßnahmen, falsche Prognosen und Rechnungen. Sie zählen nicht für Kundenzufriedenheit, RoS oder Final-Index."
 badges = "Abzeichen"
 hidden_badge = "Verdecktes Abzeichen"
 ranking = "Rangliste der Sitzung"
