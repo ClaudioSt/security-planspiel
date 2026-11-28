@@ -298,3 +298,30 @@ def test_every_scene_reaches_clues_of_every_attack(cfg, content, web, scene_id):
     clues = load_clues(REPO_ROOT / "content" / "clues.toml")
     reachable = {content.texts.get(source)[index] for source, index in quotes}
     assert {clue.attack for clue in clues if any(clue.quote in text for text in reachable)} == set(cfg.attacks)
+
+
+def test_scene_objects_name_known_values(cfg, content, web):
+    """Objects may name the asset (web.werte) they concern, so the player sees which value is at stake."""
+    werte = set(web.subtree("web.werte"))
+    tagged = [
+        (scene_id, object_id, obj["wert"])
+        for scene_id, scene in web.subtree("web.szenen").items()
+        for object_id, obj in scene.get("objekte", {}).items()
+        if "wert" in obj
+    ]
+    assert len(tagged) >= 15
+    assert {wert for _, _, wert in tagged} <= werte
+    assert {wert for _, _, wert in tagged} == werte, "every value appears in at least one scene"
+    broken = copy.deepcopy(web.data)
+    broken["web"]["szenen"]["serverraum"]["objekte"]["server"]["wert"] = "gibt_es_nicht"
+    assert "web.scene_value" in _codes(check_web_texts(cfg, Texts(broken), content.terms, content.texts))
+
+
+def test_point_labels_for_every_entry_kind(web):
+    """The debrief lists where the expertise points came from; every kind of entry has a label."""
+    labels = web.subtree("web.gamification.posten")
+    kinds = {
+        "note_hit", "note_measure", "note_measure_wrong", "note_decoy", "need_right", "need_wrong", "prognosis_right",
+        "prognosis_wrong", "calc_right", "calc_wrong", "reality_right", "reality_wrong", "badge",
+    }
+    assert kinds <= set(labels)
