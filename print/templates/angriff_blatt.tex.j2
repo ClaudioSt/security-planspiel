@@ -1,14 +1,11 @@
-\#{ Attack worksheet body, shared by the revealed worksheets and the Welle 0 document: loops and inserts only. Every number arrives as a finished string from the print model. A box with a value is printed filled (Welle 0), an empty one stays for the players. The document sets `sheet`, and optionally `intro`. }
-\BLOCK{macro fillline(parts)}
-\#{ Called as a statement (call ... endcall): Jinja then applies no escaping to the macro output. The next line only lets the macro accept the call block. }
+\#{ Attack worksheet body, shared by the revealed worksheets and the Welle 0 document: loops and inserts only. Every number arrives as a finished string from the print model. A box with a value is printed filled (Welle 0), an empty one stays for the players. The document sets `sheet`. }
+\BLOCK{macro fillline(parts, together=0)}
+\#{ Called as a statement (call ... endcall): Jinja then applies no escaping to the macro output. The next line only lets the macro accept the call block. The last `together` parts stay on one line (a line break falls before them, never inside). }
 \BLOCK{if caller}\BLOCK{endif}
-\fillline{\BLOCK{for part in parts}\BLOCK{if part is string}\VAR{part}\BLOCK{elif part.value is none}\ibox{\VAR{part.size}}\BLOCK{else}\ifilled{\VAR{part.size}}{\VAR{part.value}}\BLOCK{endif}\BLOCK{endfor}}
+\fillline{\BLOCK{for part in parts}\BLOCK{if together and loop.revindex == together}\mbox{\BLOCK{endif}\BLOCK{if part is string}\VAR{part}\BLOCK{elif part.value is none}\ibox{\VAR{part.size}}\BLOCK{else}\ifilled{\VAR{part.size}}{\VAR{part.value}}\BLOCK{endif}\BLOCK{endfor}\BLOCK{if together}}\BLOCK{endif}}
 \BLOCK{endmacro}
 \attacktitle{\VAR{sheet.title}}
 \VAR{sheet.narrative}\par
-\BLOCK{if intro is defined}
-\refline{\VAR{intro}}
-\BLOCK{endif}
 
 \step{\VAR{sheet.step_headings.cia}}
 \hint{\VAR{sheet.intro.start_values_intro}}
@@ -90,16 +87,22 @@
 \hline
 \BLOCK{endfor}
 \end{tabularx}
-\BLOCK{call fillline(sheet.recovery_line)}\BLOCK{endcall}
+\par\vspace{3mm}
+\BLOCK{call fillline(sheet.recovery_line, 5)}\BLOCK{endcall}
+
+\BLOCK{else}
+\hint{\VAR{sheet.no_recovery_note}}
 
 \BLOCK{endif}
 \step{\VAR{sheet.step_headings.wave_kz}}
-\BLOCK{call fillline(sheet.wave_kz_line)}\BLOCK{endcall}
+\BLOCK{call fillline(sheet.wave_kz_line, 3)}\BLOCK{endcall}
+\hint{\VAR{sheet.rounding_note}}
 \hint{\VAR{sheet.intro.events_hint}}
 \vspace{2mm}
 \BLOCK{call fillline(sheet.result_line)}\BLOCK{endcall}
 \BLOCK{if sheet.reality_line}
 \vspace{2mm}
 \BLOCK{call fillline(sheet.reality_line)}\BLOCK{endcall}
+\hint{\VAR{sheet.reality_hint}}
 \BLOCK{endif}
 \fillreport{2}

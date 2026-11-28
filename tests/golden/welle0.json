@@ -1,6 +1,5 @@
 {
-  "title": "Welle 0 – Übung",
-  "intro": "Bevor die erste Welle beginnt, rechnet ihr gemeinsam ein Beispiel durch. Der Vorfall ist erfunden und zählt nicht für eure Wertung. Alle Felder sind schon ausgefüllt: Verfolgt Schritt für Schritt, wie aus den Maßnahmen eines Beispielteams Schutzwerte, Schaden und Kundenzufriedenheit werden.",
+  "title": "Welle 0 – Übung (Beispiel, zählt nicht für die Wertung)",
   "sheet_lines": {
     "e_value": [
       "16",
@@ -130,7 +129,7 @@
       "Level 3: Fachleute greifen sofort ein und dokumentieren den Fall → KZ +3"
     ],
     "selected": 0,
-    "result": "Wirkung des Ereignisses auf das Beispielteam: Level 0: Warnungen bleiben unbemerkt → KZ −4"
+    "result": "Wirkung des Events auf das Beispielteam: Level 0: Warnungen bleiben unbemerkt → KZ −4"
   },
   "tracking": {
     "columns": [
@@ -154,7 +153,7 @@
         "100"
       ],
       [
-        "Schaden der Welle",
+        "Monetärer Schaden der Welle",
         "",
         "18.000 €"
       ],
@@ -177,7 +176,7 @@
     "clamp_hint": "KZ nach der Welle und KZ final werden begrenzt auf 0 bis 100: 101 → 100"
   },
   "fragments": [
-    "Welle 0 – Übung",
+    "Welle 0 – Übung (Beispiel, zählt nicht für die Wertung)",
     "Schritt 1: CIA-Werte eintragen",
     "Schritt 2: E-Wert berechnen",
     "Schritt 3: Bonus prüfen",
@@ -206,14 +205,14 @@
     "+4",
     "+3",
     "Fall 1: Gesamtreduktion ≤ 18",
-    "Schaden vor Recovery: 120.000 € · KZ: −6",
+    "Schaden vor Recovery: 120.000 € · KZ Angriff: −6",
     "Fall 2: Gesamtreduktion ≥ 24",
-    "Schaden vor Recovery: 0 € · KZ: +9",
+    "Schaden vor Recovery: 0 € · KZ Angriff: +9",
     "Fall 3: 18 < Gesamtreduktion < 24",
     "Schaden vor Recovery = (24 − GR ",
     ") × 20.000 € = ",
     "20.000 €",
-    "KZ = −6 + (GR ",
+    "KZ Angriff = −6 + (GR ",
     " − 18) × 2,5 = ",
     "+6,5",
     "18.000 €",
@@ -222,11 +221,9 @@
     "30 %",
     "50 %",
     "20.000",
-    " × (1 − r ",
+    " € × (1 − r ",
     "−4",
     "+2,5",
-    ", gerundet (ab ,5 vom Betrag aufrunden): ",
-    "Bevor die erste Welle beginnt, rechnet ihr gemeinsam ein Beispiel durch. Der Vorfall ist erfunden und zählt nicht für eure Wertung. Alle Felder sind schon ausgefüllt: Verfolgt Schritt für Schritt, wie aus den Maßnahmen eines Beispielteams Schutzwerte, Schaden und Kundenzufriedenheit werden.",
     "Auswahl des Beispielteams",
     "Maßnahme",
     "Level",
@@ -253,8 +250,9 @@
     "Level 1: Warnungen liegen in den Protokollen, werden aber spät gelesen → KZ −2",
     "Level 2: Alarm kommt rechtzeitig an → KZ +1",
     "Level 3: Fachleute greifen sofort ein und dokumentieren den Fall → KZ +3",
-    "Wirkung des Ereignisses auf das Beispielteam: Level 0: Warnungen bleiben unbemerkt → KZ −4",
+    "Wirkung des Events auf das Beispielteam: Level 0: Warnungen bleiben unbemerkt → KZ −4",
     "So sieht der Eintrag im Tracking-Bogen aus",
+    "Das Beispielteam startet mit einem Übungsbudget von 200.000 € und einer KZ von 98. Restbudget am Start = Übungsbudget − Init-Kosten.",
     "Start",
     "Welle 0",
     "KZ vor der Welle",
@@ -262,7 +260,7 @@
     "KZ-Änderung der Welle",
     "KZ nach der Welle",
     "100",
-    "Schaden der Welle",
+    "Monetärer Schaden der Welle",
     "OPEX dieser Welle",
     "Restbudget (laufend)",
     "96.000 €",

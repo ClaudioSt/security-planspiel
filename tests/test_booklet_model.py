@@ -16,7 +16,6 @@ from planspiel import booklet as booklet_module
 from planspiel.booklet import (
     BOOKLET_JOB,
     EN_DASH,
-    MAX_PENALTY_ROWS,
     MAX_REGISTER_ROWS,
     RANK_FIRST,
     PlanningPage,
@@ -82,8 +81,10 @@ def test_tier_rows_equal_the_config_in_config_order(loaded):
         for name, tier in cfg.budget_tiers.items()
     )
     assert booklet.planning.tier_rows == expected
-    labels = PreAttackView(cfg, texts).sheet("labels")
-    assert booklet.planning.tier_header[:2] == (labels["tier"], labels["available_budget"])
+    view = PreAttackView(cfg, texts)
+    labels, words = view.sheet("labels"), view.sheet("teamheft")
+    assert booklet.planning.tier_header == (labels["tier"], words["tier_budget"], words["kz_start"])
+    assert words["tier_budget"] != labels["available_budget"], "Verfügbares Budget is the page-5 sum only"
 
 
 def test_the_real_tier_table_starts_with_the_low_tier_of_the_config(real):
@@ -146,7 +147,7 @@ def test_own_cost_rows_are_init_window_differences_opex_and_the_sum(loaded):
     assert own[0] == labels["total_init"]
     assert own[2] == labels["total_opex"]
     assert len(own) == 4
-    assert "Kurswechsel" in own[1] and "Change-Fenster" in own[1]
+    assert "Kurswechsel" not in own[1] and "Change-Fenster" in own[1]  # the event is named on its card only
     for row in booklet.ros.own_cost_rows:
         assert "event" not in f"{row.label} {row.note}".lower(), "no event-penalty row in the own costs (F8, RULE-06)"
     assert "+" in booklet.ros.own_cost_rows[3].note
@@ -181,56 +182,44 @@ def test_the_ros_formula_divides_by_the_own_costs(loaded):
     assert note == f"= ({avoided} {MINUS} {own}) {DIVIDED} {own}"
 
 
-def test_the_budget_review_tiers_equal_review_tier_rows(loaded):
-    cfg, texts, booklet = loaded
+REMOVED_REVIEW_FIELDS = (
+    "tier_header", "tier_rows", "overspend_rule", "penalty_title", "penalty_intro", "penalty_header", "penalty_rows",
+    "penalty_follow",
+)
+
+
+def test_the_budget_review_page_has_no_tier_or_penalty_fields(loaded):
+    ros = loaded[2].ros
+    for name in REMOVED_REVIEW_FIELDS:
+        assert not hasattr(ros, name), f"RosPage.{name} gives the Budget Review event away"
+
+
+def test_the_budget_review_page_prints_no_review_value(real):
+    cfg, texts, booklet = real
+    printed = " ".join(booklet.ros.printed_fragments())
     final = next(event for event in cfg.final_events if event.type == "final_budget_tier")
-    start = str(texts.get("sheets.eventkarten.tier_from"))
-    expected = []
-    for index, (from_eur, to_eur, kz) in enumerate(review_text.tier_rows(final.params["tiers"])):
-        if index == 0 and to_eur is not None:
-            span = f"{review_text.format_eur(from_eur)} – {review_text.format_eur(to_eur)} €"
-        else:
-            span = f"{start} {review_text.format_eur(from_eur)} €"
-        value = "±0" if kz == 0 else (f"+{kz}" if kz > 0 else f"−{-kz}")
-        expected.append((span, value))
-    assert list(booklet.ros.tier_rows) == expected
-
-
-def test_the_overspend_rule_is_the_card_line(loaded):
-    cfg, texts, booklet = loaded
-    final = next(event for event in cfg.final_events if event.type == "final_budget_tier")
-    assert booklet.ros.overspend_rule == effect_rows(final, cfg, texts).rows[-1].text
-
-
-def test_the_penalty_table_equals_review_penalty_rows(loaded):
-    cfg, _, booklet = loaded
-    expected = [
-        (f"{review_text.format_eur(low)} – {review_text.format_eur(high)} €", f"−{-kz}")
-        for low, high, kz in review_text.penalty_rows(*rules.penalty_params(cfg.final_events))
-    ]
-    assert list(booklet.ros.penalty_rows) == expected
-
-
-def test_the_real_overspend_table_has_exactly_the_proven_row_count(real):
-    cfg, _, booklet = real
     kz_per_step, step_k = rules.penalty_params(cfg.final_events)
-    rows = booklet.ros.penalty_rows
-    assert MAX_PENALTY_ROWS == -(-100 // kz_per_step)
-    assert len(rows) == MAX_PENALTY_ROWS
-    assert rows[0] == (f"1 – {fmt.format_money(step_k * 1000)}", f"{MINUS}{kz_per_step}")
-    assert rows[-1][1] == f"{MINUS}{kz_per_step * MAX_PENALTY_ROWS}"
+    assert "angefangene" not in printed
+    assert f"{review_text.format_eur(step_k * 1000)} €" not in printed
+    for from_eur, _, kz in review_text.tier_rows(final.params["tiers"])[1:]:
+        assert f"{review_text.format_eur(from_eur)} €" not in printed
+        assert f"ab {review_text.format_eur(from_eur)}" not in printed
+    assert f"{MINUS}{kz_per_step} KZ" not in printed
 
 
-def test_a_smaller_penalty_step_adds_rows_and_stops_the_build(tmp_path):
-    raw = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
-    raw["final_events"][0]["overspend_penalty"]["kz_per_step"] = 2
-    path = tmp_path / "config.json"
-    path.write_text(json.dumps(raw, ensure_ascii=False, indent=2), encoding="utf-8", newline="\n")
-    cfg = load_config(path)
-    assert len(review_text.penalty_rows(*rules.penalty_params(cfg.final_events))) == 50
-    texts = load_texts(CONTENT_DIR / "texte.toml")
-    with pytest.raises(PrintModelError, match="MAX_PENALTY_ROWS"):
-        build_team_booklet(cfg, texts)
+def test_the_budget_review_page_ends_in_one_write_in_line_that_points_to_the_event_card(loaded):
+    _, texts, booklet = loaded
+    ros = booklet.ros
+    assert ros.result_line.label and ros.result_line.note
+    assert "Eventkarte" in ros.result_line.note
+    assert ros.result_line.label in ros.printed_fragments()
+    assert ros.result_line.note in ros.printed_fragments()
+
+
+def test_the_review_intro_does_not_promise_a_table_on_the_page(real):
+    _, _, booklet = real
+    assert "Tabelle" not in booklet.ros.review_intro
+    assert "Eventkarte" in booklet.ros.review_intro + booklet.ros.result_line.note
 
 
 def test_the_budget_review_explains_the_remaining_budget_with_signed_event_values(loaded):
@@ -243,7 +232,9 @@ def test_the_budget_review_explains_the_remaining_budget_with_signed_event_value
     assert rows[3].label == ros.own_cost_rows[3].label, "own costs are carried, not recomputed"
     assert "+" in rows[5].note and MINUS not in rows[5].note, "total costs = own costs + OPEX event"
     assert MINUS in ros.remaining_line.note and "+" not in ros.remaining_line.note
-    assert rows[1].note == "" and rows[4].note == "", "event values are entered, not calculated"
+    assert not rows[1].computed and not rows[4].computed, "event values are entered, not calculated"
+    assert rows[1].note.startswith("Summe der Zeile Event: Budget") and rows[1].note.endswith("im Tracking-Bogen")
+    assert rows[4].note.startswith("Summe der Zeile Event: OPEX") and rows[4].note.endswith("im Tracking-Bogen")
     assert ros.sign_hint
 
 
@@ -360,50 +351,32 @@ def test_the_need_table_has_one_row_per_asset_row(real):
     assert booklet.register.asset_rows == labels == ("W1", "W2", "W3", "W4")
 
 
-def test_the_need_header_is_asset_c_i_a_and_total(real):
+def test_the_need_header_is_asset_c_i_a_without_a_total_column(real):
     _, texts, booklet = real
     words = _register_words(texts)
     goals = words["goals"]
-    assert booklet.register.need_header == (
-        words["need_head_asset"], goals["c"], goals["i"], goals["a"], words["head_total"]
-    )
+    assert booklet.register.need_header == (words["need_head_asset"], goals["c"], goals["i"], goals["a"])
+    assert "head_total" not in words
     assert booklet.register.page_title == words["page_title"]
     assert booklet.register.need_title == words["need_title"]
     assert booklet.register.need_instruction == words["need_instruction"]
 
 
-def test_the_need_example_follows_the_maximum_principle(real):
+def test_the_need_instruction_does_not_name_a_total_or_the_maximum_principle(real):
+    instruction = real[2].register.need_instruction
+    assert "gesamt" not in instruction.lower()
+    assert "Maximum" not in instruction
+    assert "höchste Stufe" not in instruction
+
+
+def test_the_need_example_row_rates_the_three_goals_only(real):
     cfg, texts, booklet = real
     words = _register_words(texts)
     example = words["need_example"]
-    order = {words["bands"][band.id]: index for index, band in enumerate(cfg.risk_matrix.bands)}
-    rated = [example[goal] for goal in ("c", "i", "a")]
-    highest = max(rated, key=lambda word: order[word])
-    first = booklet.register.asset_rows[0]
-    assert booklet.register.need_example == (f"{first} {example['asset']}", *rated, highest)
-    assert len(booklet.register.need_example) == 5
-
-
-@pytest.mark.parametrize(
-    ("c", "i", "a", "expected"),
-    [
-        pytest.param("gering", "hoch", "mittel", "hoch", id="highest-in-the-middle"),
-        pytest.param("mittel", "gering", "hoch", "hoch", id="highest-last"),
-        pytest.param("gering", "mittel", "gering", "mittel", id="no-top-band-present"),
-    ],
-)
-def test_the_need_example_total_is_the_highest_band_wherever_it_sits(tmp_path, c, i, a, expected):
-    source = (CONTENT_DIR / "texte.toml").read_text(encoding="utf-8")
-    head, marker, tail = source.partition("[sheets.register.need_example]")
-    assert marker, "the need example table must exist"
-    section, bracket, rest = tail.partition("\n[")
-    assert bracket, "a section must follow the need example table"
-    asset = next(line for line in section.splitlines() if line.startswith("asset = "))
-    body = f"\n{asset}\nc = \"{c}\"\ni = \"{i}\"\na = \"{a}\"\n"
-    path = tmp_path / "texte.toml"
-    path.write_text(head + marker + body + bracket + rest, encoding="utf-8", newline="\n")
-    booklet = build_team_booklet(load_config(CONFIG_PATH), load_texts(path))
-    assert booklet.register.need_example[1:] == (c, i, a, expected)
+    band_words = {words["bands"][band.id] for band in cfg.risk_matrix.bands}
+    rated = tuple(example[goal] for goal in ("c", "i", "a"))
+    assert set(rated) <= band_words
+    assert booklet.register.need_example == (example["asset"], *rated), "the example rows carry no W label"
 
 
 def test_a_need_example_word_that_is_no_band_word_stops_the_build(tmp_path):
@@ -423,7 +396,7 @@ def test_the_register_example_reads_its_band_from_the_need_example(real):
     _, texts, booklet = real
     words = _register_words(texts)
     register = booklet.register
-    assert register.example[0] == register.asset_rows[0]
+    assert register.example[0] == "–", "the risk example names its asset in the table above, not by a W label"
     goal_id = next(goal for goal, letter in words["goals"].items() if letter == words["example"]["goal"])
     assert words["need_example"][goal_id] in register.example[5]
 
@@ -464,7 +437,7 @@ def test_the_example_row_comes_from_the_clinic_texts(real):
     register = booklet.register
     example = words["example"]
     assert register.example == (
-        register.asset_rows[0], example["threat"], example["goal"], example["impact"],
+        "–", example["threat"], example["goal"], example["impact"],
         fmt.format_number(RANK_FIRST), example["decision"], words["review"]["correct"],
     )
     for text in register.example:

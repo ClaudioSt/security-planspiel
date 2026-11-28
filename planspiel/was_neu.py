@@ -740,8 +740,12 @@ def _value_rows(
 def _rule_suffix(rule_id: str, cfg: Config, parts: Dict[str, str]) -> str:
     """The numbers of a rule row, generated from the config (D-13)."""
     if rule_id == "overspend":
-        spec = ("per_step", *rules.penalty_params(cfg.final_events))
-        return f" {_overspend_text(spec, parts)} {parts['over_budget']}."
+        kz_per_step, step_k = rules.penalty_params(cfg.final_events)
+        # The rule text says "kostet", so the amount stands without a sign (no double negative).
+        return (
+            f" {_number(kz_per_step)} {parts['kz']} {parts['per_started']} {fmt.format_money(step_k * 1000)} "
+            f"{parts['over_budget']}."
+        )
     if rule_id == "review_boundary":
         return f" {review_text.boundary_text(_review_event(cfg).params['tiers'])}"
     if rule_id == "final_index":
@@ -769,27 +773,29 @@ def build_was_neu_sheet(cfg: Config, texts: Texts, baseline: Optional[Baseline])
         for rule_id in RULE_IDS
     )
 
-    practice = next((block for block in schedule.blocks if block.wave == 0), None)
     debrief_block = next((block for block in schedule.blocks if block.id == "debrief"), None)
-    if practice is None or debrief_block is None:
-        raise PrintModelError("Der Ablaufplan braucht einen Block für die Übungswelle (Welle 0) und einen Block 'debrief'")
-    wave_minutes = SEPARATOR.join(_number(m) for m in sorted({block.minutes for block in schedule.blocks if block.wave}))
+    if debrief_block is None:
+        raise PrintModelError("Der Ablaufplan braucht einen Block 'debrief'")
+    # The minutes stand per wave in wave order, built from the schedule; a sorted set would put the shorter waves first.
+    wave_minutes = ", ".join(
+        f"{wave_label(ablauf, block.wave)}: {_number(block.minutes)}" for block in schedule.blocks if block.wave
+    )
     flow = words["flow"]
     flow_rows = (
         flow["whiteboard"],
-        f"{wave_label(ablauf, practice.wave)}: {flow['welle0']}",
+        flow["welle0"],
         f"{flow['debrief']} {debrief['title']} ({_number(debrief_block.minutes)} {unit}).",
         f"{flow['schedule']} {ablauf['title']} "
-        f"({_number(schedule.total_minutes)} {unit} {parts['total']}, {parts['per_wave']} {wave_minutes} {unit}).",
+        f"({_number(schedule.total_minutes)} {unit} {parts['total']}; {wave_minutes} {unit}).",
     )
 
     material = words["material"]
     material_rows = (
         material["generated"],
         material["veil"],
-        f"{material['clues']} {view.sheet('spielleitung')['clues_title']}",
+        f"{material['clues']} {view.sheet('spielleitung')['clues_title']}.",
         material["teamheft"],
-        f"{material['wave_page']} {view.sheet('welle')['title']}",
+        f"{material['wave_page']} {view.sheet('welle')['title']}.",
         material["practice"],
     )
 

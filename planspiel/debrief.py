@@ -66,7 +66,9 @@ def build_debrief_page(cfg: Config, texts: Texts) -> Optional[DebriefPage]:
 
     def prompt(name: str) -> str:
         text = words["prompts"][name]
-        return f"{text} {words['clue_pointer']} {clues_title}" if name == "clues" else text
+        if name != "clues":
+            return text
+        return f"{text} {words['clue_pointer']} {clues_title} {words['clue_pointer_end']}"
 
     stages = tuple(
         DebriefSection(

@@ -107,13 +107,13 @@ def test_the_rule_rows_follow_the_rule_ids(texts, sheet):
 def test_the_overspend_row_carries_x_and_the_step_from_the_config(cfg, texts, baseline):
     penalty = _penalty(cfg)
     row = _rule(build_was_neu_sheet(cfg, texts, baseline), "overspend")
-    assert fmt.format_signed(-penalty["kz_per_step"]) in row.text
+    assert f" {penalty['kz_per_step']} KZ je angefangene " in row.text and "−" not in row.text
     assert fmt.format_money(penalty["step"] * 1000) in row.text
     changed = copy.deepcopy(cfg)
     _penalty(changed).update(kz_per_step=7, step=20)
     row = _rule(build_was_neu_sheet(changed, texts, baseline), "overspend")
-    assert fmt.format_signed(-7) in row.text and fmt.format_money(20000) in row.text
-    assert fmt.format_signed(-penalty["kz_per_step"]) not in row.text
+    assert " 7 KZ je angefangene " in row.text and fmt.format_money(20000) in row.text
+    assert f" {penalty['kz_per_step']} KZ je angefangene " not in row.text
 
 
 def test_the_boundary_row_carries_the_generated_tier_text(cfg, texts, baseline):
@@ -152,11 +152,35 @@ def test_one_flow_row_per_flow_id_naming_the_debrief_and_the_schedule(cfg, texts
     assert fmt.format_number(cfg.session_schedule.total_minutes) in schedule_row
 
 
+def test_the_practice_wave_flow_row_says_it_is_no_joint_block_any_more(cfg, texts, sheet):
+    # quick 261125-fsu: no wave_0 block; the sheet still builds and the row reads as the texte sentence
+    assert not [block for block in cfg.session_schedule.blocks if block.wave == 0]
+    assert sheet.flow[1] == texts.get("sheets.was_neu.flow.welle0")
+    assert "kein gemeinsamer Block" in sheet.flow[1]
+
+
+def test_the_material_rows_say_the_aids_go_out_with_the_measures_block(texts):
+    assert "Maßnahmenkarten" in texts.get("sheets.was_neu.material.wave_page")
+    assert "Übungsblatt" in texts.get("sheets.was_neu.material.wave_page")
+    assert "nicht gemeinsam" in texts.get("sheets.was_neu.material.practice")
+    teamheft = texts.get("sheets.was_neu.material.teamheft")
+    assert "nicht heften" in teamheft and "blattweise" in teamheft
+
+
 def test_the_schedule_row_generates_the_wave_block_minutes(cfg, texts, baseline):
     minutes = sorted({block.minutes for block in cfg.session_schedule.blocks if block.wave})
     assert minutes == [20, 25]  # D-34: wave 1 is re-budgeted to 25 minutes, waves 2 and 3 keep 20
     row = build_was_neu_sheet(cfg, texts, baseline).flow[3]
     assert all(fmt.format_number(figure) in row for figure in minutes)
+    # D3 (quick 261125-djw): the minutes stand per wave in wave order, so the long first wave does not read backwards.
+    wave_label = texts.get("sheets.ablauf.wave_label")
+    unit = texts.get("sheets.debrief.minutes_unit")
+    in_order = ", ".join(
+        f"{wave_label} {block.wave}: {fmt.format_number(block.minutes)}"
+        for block in cfg.session_schedule.blocks
+        if block.wave
+    )
+    assert f"{in_order} {unit}" in row
     blocks = tuple(
         dataclasses.replace(block, minutes=block.minutes + 5) if block.id == "wave_1" else block
         for block in cfg.session_schedule.blocks
@@ -170,6 +194,10 @@ def test_one_material_row_per_material_id_naming_the_clue_matrix(texts, sheet):
     assert MATERIAL_IDS == ("generated", "veil", "clues", "teamheft", "wave_page", "practice")
     assert len(sheet.material) == len(MATERIAL_IDS)
     assert texts.get("sheets.spielleitung.clues_title") in sheet.material[2]
+
+
+def test_every_material_row_ends_with_a_full_stop_also_after_an_inserted_title(sheet):
+    assert all(row.endswith(".") for row in sheet.material), sheet.material
 
 
 def test_the_teamheft_line_names_the_protection_need(texts):

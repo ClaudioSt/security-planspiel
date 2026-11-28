@@ -19,18 +19,10 @@ from typing import Optional
 from planspiel import fmt, risk, rules
 from planspiel.cards import printed_strings
 from planspiel.config import Config
-from planspiel.eventtext import EFFECT_KINDS, effect_rows
 from planspiel.printmodel import PrintModelError
-from planspiel.review_text import _tier_value_text, format_eur, penalty_rows, tier_rows
 from planspiel.texts import PreAttackView, Texts
 
 BOOKLET_JOB = "spieler-teamheft"
-# Rows of the overspend table (calibrated X = 3 KZ per started step): rows until the penalty alone reaches the KZ cap
-# of 100, ceil(100 / 3) = 34. The Budget Review page is proven (pdf test, fill report) for at most this many rows. A
-# smaller X adds rows, so the constant is reviewed together with a new layout proof of that page.
-MAX_PENALTY_ROWS = 34
-# The overspend table is printed as this many side-by-side lookup tables (teamheft_ros.tex.j2), filled left to right.
-PENALTY_TABLES = 2
 EN_DASH = "–"
 # Register rows the one-page register is proven for by the PDF fill report; a larger `register_rows` needs a new
 # layout proof of that page.
@@ -56,10 +48,12 @@ MAX_WINDOWS = 2
 
 @dataclass(frozen=True)
 class Metric:
-    """One `Kennzahl | Wert` row: the label, and a grey formula line under it that names the operands ('' for none)."""
+    """One `Kennzahl | Wert` row: the label, and a grey line under it that names the operands or the source ('' for
+    none). A computed row is a result the team derives from the rows above; it is shaded like a result."""
 
     label: str
     note: str
+    computed: bool = False
 
 
 @dataclass(frozen=True)
@@ -82,6 +76,7 @@ class PlanningPage:
     sum_label: str
     wave_count_text: str
     anticipated_line: str
+    tier_line: str
 
     def printed_fragments(self) -> tuple[str, ...]:
         return _fragments(self)
@@ -104,14 +99,7 @@ class RosPage:
     sign_hint: str
     budget_rows: tuple[Metric, ...]
     remaining_line: Metric
-    tier_header: tuple[str, str]
-    tier_rows: tuple[tuple[str, str], ...]
-    overspend_rule: str
-    penalty_title: str
-    penalty_intro: str
-    penalty_header: tuple[str, str]
-    penalty_rows: tuple[tuple[str, str], ...]
-    penalty_per_table: int  # rows of the first and second table; the last one holds the rest
+    result_line: Metric  # write-in line for the KZ change; the value comes from the event card, never from this page
 
     def printed_fragments(self) -> tuple[str, ...]:
         return _fragments(self)
@@ -163,9 +151,9 @@ class RegisterPage:
     page_title: str
     need_title: str
     need_instruction: str
-    need_header: tuple[str, str, str, str, str]
+    need_header: tuple[str, str, str, str]
     asset_rows: tuple[str, ...]
-    need_example: tuple[str, str, str, str, str]
+    need_example: tuple[str, str, str, str]
     legend_title: str
     band_legend: tuple[str, ...]
     title: str
@@ -215,13 +203,6 @@ def _fragments(page: object) -> tuple[str, ...]:
     return tuple(dict.fromkeys(text for text in printed_strings(page) if text))
 
 
-def _review_event(cfg: Config):
-    for event in cfg.final_events:
-        if event.type == "final_budget_tier":
-            return event
-    raise PrintModelError("Die Config hat kein Budget-Review-Event (final_budget_tier)")
-
-
 def _register_page(cfg: Config, texts: Texts) -> Optional[RegisterPage]:
     matrix = cfg.risk_matrix
     if matrix is None:
@@ -250,7 +231,6 @@ def _register_page(cfg: Config, texts: Texts) -> Optional[RegisterPage]:
             raise PrintModelError(
                 f"sheets.register.need_example.{goal} ist '{word}', kein Bandwort ({', '.join(band_labels)})"
             )
-    highest = max(rated, key=band_labels.index)
     rows = tuple(f"{words['risk_prefix']}{fmt.format_number(number)}" for number in range(1, matrix.register_rows + 1))
     last_rank = fmt.format_number(matrix.register_rows)
     example = words["example"]
@@ -259,9 +239,9 @@ def _register_page(cfg: Config, texts: Texts) -> Optional[RegisterPage]:
         page_title=words["page_title"],
         need_title=words["need_title"],
         need_instruction=words["need_instruction"],
-        need_header=(words["need_head_asset"], goals["c"], goals["i"], goals["a"], words["head_total"]),
+        need_header=(words["need_head_asset"], goals["c"], goals["i"], goals["a"]),
         asset_rows=asset_rows,
-        need_example=(f"{asset_rows[0]} {need['asset']}", *rated, highest),
+        need_example=(need["asset"], *rated),
         legend_title=words["legend_title"],
         band_legend=tuple(
             f"{label}: {span}" for label, span in zip(band_labels, risk.band_ranges(matrix.bands, words))
@@ -277,7 +257,7 @@ def _register_page(cfg: Config, texts: Texts) -> Optional[RegisterPage]:
             )
         ),
         example=(
-            asset_rows[0], example["threat"], example["goal"], example["impact"], fmt.format_number(RANK_FIRST),
+            EN_DASH, example["threat"], example["goal"], example["impact"], fmt.format_number(RANK_FIRST),
             example["decision"], words["review"]["correct"],
         ),
         rows=rows,
@@ -318,7 +298,7 @@ def _planning_page(cfg: Config, texts: Texts) -> PlanningPage:
         ),
         step_tiers=words["step_tiers"],
         tier_intro=budget["tier_intro"],
-        tier_header=(labels["tier"], labels["available_budget"], words["kz_start"]),
+        tier_header=(labels["tier"], words["tier_budget"], words["kz_start"]),
         tier_rows=tuple(
             (name.capitalize(), fmt.format_money(tier.budget * 1000), str(tier.kz_start))
             for name, tier in cfg.budget_tiers.items()
@@ -332,40 +312,13 @@ def _planning_page(cfg: Config, texts: Texts) -> PlanningPage:
         sum_label=labels["sum"],
         wave_count_text=wave_count_text,
         anticipated_line=anticipated_line,
-    )
-
-
-def _tier_texts(cfg: Config, texts: Texts) -> tuple[tuple[str, str], ...]:
-    """Restbudget tiers as (span, KZ change), with the same inclusive boundaries as the Budget Review card."""
-    start = PreAttackView(cfg, texts).sheet("eventkarten")["tier_from"]
-    rows = []
-    for index, (from_eur, to_eur, kz) in enumerate(tier_rows(_review_event(cfg).params["tiers"])):
-        if index == 0 and to_eur is not None:
-            span = f"{format_eur(from_eur)} {EN_DASH} {format_eur(to_eur)} €"
-        else:
-            span = f"{start} {format_eur(from_eur)} €"
-        rows.append((span, _tier_value_text(kz)))
-    return tuple(rows)
-
-
-def _penalty_texts(cfg: Config) -> tuple[tuple[str, str], ...]:
-    rows = penalty_rows(*rules.penalty_params(cfg.final_events))
-    if len(rows) > MAX_PENALTY_ROWS:
-        raise PrintModelError(
-            f"Die Überziehungstabelle hat {len(rows)} Zeilen, die Budget-Review-Seite ist für höchstens "
-            f"{MAX_PENALTY_ROWS} belegt (MAX_PENALTY_ROWS in planspiel/booklet.py); die Konstante nur zusammen "
-            "mit einem neuen Layout-Nachweis dieser Seite anheben, wenn Phase 6 die Strafe je Schritt senkt."
-        )
-    return tuple(
-        (f"{format_eur(low)} {EN_DASH} {format_eur(high)} €", _tier_value_text(kz)) for low, high, kz in rows
+        tier_line=words["tier_field"],
     )
 
 
 def _ros_page(cfg: Config, texts: Texts) -> RosPage:
     view = PreAttackView(cfg, texts)
-    labels, words, eventkarten = view.sheet("labels"), view.sheet("teamheft"), view.sheet("eventkarten")
-    final = _review_event(cfg)
-    penalty = _penalty_texts(cfg)
+    labels, words = view.sheet("labels"), view.sheet("teamheft")
     base_losses = fmt.format_money(rules.base_losses(cfg.waves, cfg.attacks) * 1000)
 
     total_init, total_opex = labels["total_init"], labels["total_opex"]
@@ -374,22 +327,33 @@ def _ros_page(cfg: Config, texts: Texts) -> RosPage:
         Metric(total_init, ""),
         Metric(words["window_differences"], ""),
         Metric(total_opex, ""),
-        Metric(own, f"= {total_init} + {words['init_differences']} + {total_opex}"),
+        Metric(own, f"= {total_init} + {words['init_differences']} + {total_opex}", computed=True),
     )
-    avoided = Metric(labels["avoided_damage"], f"= {base_losses} {fmt.MINUS} {damage_sum}")
-    ros_line = Metric(words["ros_short"], f"= ({avoided.label} {fmt.MINUS} {own}) {fmt.DIVIDED} {own}")
+    avoided = Metric(
+        labels["avoided_damage"],
+        f"= {base_losses} {fmt.MINUS} {damage_sum}; {base_losses} {view.sheet('ros')['avoided_note']}",
+        computed=True,
+    )
+    ros_line = Metric(
+        words["ros_short"], f"= ({avoided.label} {fmt.MINUS} {own}) {fmt.DIVIDED} {own}", computed=True
+    )
 
     tier_budget, budget_event = words["tier_budget"], words["budget_event"]
     available, event_opex, costs = labels["available_budget"], words["event_opex"], words["review_costs"]
+    tracking = view.sheet("tracking")
+
+    def source(row_key: str) -> str:
+        return f"{words['sum_of_row']} {tracking[row_key]} {words['sum_row_suffix']}"
+
     budget_rows = (
         Metric(tier_budget, ""),
-        Metric(budget_event, ""),
-        Metric(available, f"= {tier_budget} + {budget_event}"),
+        Metric(budget_event, source("row_external_budget")),
+        Metric(available, f"= {tier_budget} + {budget_event}", computed=True),
         Metric(own, ""),
-        Metric(event_opex, ""),
-        Metric(costs, f"= {own} + {event_opex}"),
+        Metric(event_opex, source("row_external_opex")),
+        Metric(costs, f"= {own} + {event_opex}", computed=True),
     )
-    remaining = Metric(words["remaining_budget"], f"= {available} {fmt.MINUS} {costs}")
+    remaining = Metric(words["remaining_budget"], f"= {available} {fmt.MINUS} {costs}", computed=True)
 
     return RosPage(
         title=words["ros_title"],
@@ -399,7 +363,7 @@ def _ros_page(cfg: Config, texts: Texts) -> RosPage:
         metric_header=(labels["metric"], labels["value"]),
         own_cost_rows=own_cost_rows,
         damage_rows=tuple(Metric(f"{labels['damage']} {view.attack_title(wave)}", "") for wave in cfg.waves),
-        damage_sum=Metric(damage_sum, ""),
+        damage_sum=Metric(damage_sum, "", computed=True),
         avoided_line=avoided,
         ros_line=ros_line,
         review_title=words["review_title"],
@@ -407,19 +371,8 @@ def _ros_page(cfg: Config, texts: Texts) -> RosPage:
         sign_hint=words["sign_hint"],
         budget_rows=budget_rows,
         remaining_line=remaining,
-        tier_header=(eventkarten["tier_heading"], words["kz_change"]),
-        tier_rows=_tier_texts(cfg, texts),
-        overspend_rule=effect_rows(final, cfg, texts).rows[-1].text,
-        penalty_title=words["penalty_title"],
-        penalty_intro=words["penalty_intro"],
-        penalty_header=(words["overspend_header"], words["kz_change"]),
-        penalty_rows=penalty,
-        penalty_per_table=-(-len(penalty) // PENALTY_TABLES),
+        result_line=Metric(words["review_result"], words["review_result_note"], computed=True),
     )
-
-
-def _event_kinds(cfg: Config, wave_id: int) -> set[str]:
-    return {EFFECT_KINDS[event.type] for event in cfg.events.get(wave_id, [])}
 
 
 def _tracking_rows(cfg: Config, view: PreAttackView) -> tuple[TrackingRow, ...]:
@@ -437,10 +390,8 @@ def _tracking_rows(cfg: Config, view: PreAttackView) -> tuple[TrackingRow, ...]:
     def before_window(index: int, wave_id: int) -> bool:
         return index < len(wave_ids) - 1
 
-    def with_event(kind: str):
-        return lambda index, wave_id: kind in _event_kinds(cfg, wave_id)
-
-    final = f"{words['row_kz_final']} = {words['kz_after_last']} + {words['row_kz_review']}"
+    # Veil (quick 261125-djw, V1): the event rows are open in every wave; a grey cell would show where an event comes.
+    final = f"{words['row_kz_final']} = {words['kz_after_last']} {cfg.waves[-1].wave_id} + {words['row_kz_review']}"
     spec = (
         ("kz_before", words["row_kz_before"], "kz", cells(start=True, wave=every_wave)),
         ("kz_change", words["row_kz_change"], "kz", cells(wave=every_wave)),
@@ -449,8 +400,8 @@ def _tracking_rows(cfg: Config, view: PreAttackView) -> tuple[TrackingRow, ...]:
         ("own_init", labels["init_costs"], "own", cells(start=True)),
         ("own_opex", words["row_own_opex"], "own", cells(wave=every_wave)),
         ("own_window", words["row_own_window"], "own", cells(wave=before_window)),
-        ("external_budget", words["row_external_budget"], "external", cells(wave=with_event("external_budget"))),
-        ("external_opex", words["row_external_opex"], "external", cells(wave=with_event("external_opex"))),
+        ("external_budget", words["row_external_budget"], "external", cells(wave=every_wave)),
+        ("external_opex", words["row_external_opex"], "external", cells(wave=every_wave)),
         ("remaining", words["row_remaining"], "budget", cells(start=True, wave=every_wave, review=True)),
         ("kz_review", words["row_kz_review"], "review", cells(review=True)),
         ("kz_final", final, "review", cells(review=True)),
@@ -507,7 +458,7 @@ def build_tracking_page(cfg: Config, texts: Texts) -> TrackingPage:
         f"{teamheft['remaining_budget']} = {words['remaining_previous']} + {words['row_external_budget']} "
         f"{fmt.MINUS} {words['row_own_opex']} {fmt.MINUS} {words['row_own_window']} "
         f"{fmt.MINUS} {words['row_external_opex']}. {labels['start']}: {teamheft['tier_budget']} "
-        f"{fmt.MINUS} {labels['init_costs']}."
+        f"{fmt.MINUS} {labels['init_costs']}. {words['review_remaining_hint']}"
     )
     blocks, summary = _windows(cfg, view)
     return TrackingPage(

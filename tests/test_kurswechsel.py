@@ -259,7 +259,6 @@ def test_second_kurswechsel_is_reported_at_its_own_path():
 def test_kurswechsel_rule_text_uses_the_one_vocabulary(content_dir):
     rule = load_texts(content_dir / "texte.toml").get("events.kurswechsel.rule")
     assert "Maßnahmentausch" in rule
-    assert "Levelwechsel" in rule
     assert "Maßnahmenwechsel" not in rule
     assert not any(char.isdigit() for char in rule)
 

@@ -299,14 +299,13 @@
     "selection": {"M1": 0, "M2": 0, "M3": 0, "M4": 1, "M5": 0, "M6": 0, "M7": 0, "M8": 2, "M9": 2, "M10": 1}
   },
   "session_schedule": {
-    "total_minutes": 215,
+    "total_minutes": 200,
     "teams": 3,
     "persons_per_team": 5,
     "blocks": [
       {"id": "intro", "minutes": 10},
       {"id": "break_1", "minutes": 5},
       {"id": "story_groups", "minutes": 35},
-      {"id": "wave_0", "minutes": 15, "wave": 0},
       {"id": "measures_budget", "minutes": 30},
       {"id": "break_2", "minutes": 15},
       {"id": "wave_1", "minutes": 25, "wave": 1},

@@ -51,7 +51,7 @@ _KARTEN_KEYS = (
 _EVENTKARTEN_KEYS = (
     "review_header", "kz", "fulfilled", "each_at_least", "level_of_measure", "per_measure_at_level",
     "level_or_higher",
-    "condition_if", "condition_and", "level_equals", "otherwise", "total_budget", "opex_costs",
+    "condition_if", "condition_and", "level_equals", "not_active", "otherwise", "total_budget", "opex_costs",
     "per_active_measure", "kurswechsel_window", "tier_heading", "tier_from", "overspend_label", "per_started",
 )
 
@@ -59,15 +59,15 @@ _TEAMHEFT_KEYS = (
     "planning_title", "planning_instruction", "step_costs", "step_tiers", "step_planning", "kz_start",
     "opex_per_wave", "ros_title", "ros_carry_hint", "window_differences", "init_differences", "own_costs",
     "damage_sum", "ros_short", "review_title", "review_intro", "tier_budget", "budget_event", "event_opex",
-    "review_costs", "remaining_budget", "sign_hint", "kz_change", "penalty_title", "penalty_intro",
-    "overspend_header",
+    "review_costs", "remaining_budget", "sign_hint", "review_result", "review_result_note", "tier_field",
+    "sum_of_row", "sum_row_suffix",
 )
 
 _TRACKING_KEYS = (
     "title", "intro", "wave", "row_kz_before", "row_kz_change", "row_kz_after",
     "row_damage", "block_own", "row_own_opex", "row_own_window", "block_external", "row_external_budget",
     "row_external_opex", "row_remaining", "row_kz_review", "row_kz_final", "kz_after_last", "remaining_previous",
-    "rounding_hint", "clamp_lead", "clamp_to", "external_hint", "window_title", "window_intro",
+    "rounding_hint", "review_remaining_hint", "clamp_lead", "clamp_to", "external_hint", "window_title", "window_intro",
     "window_level", "window_delta", "window_sum", "window_credit", "window_credit_short", "window_net", "never_refund", "credit_hint",
     "next_wave_hint",
 )
@@ -128,6 +128,10 @@ SHEET_KEYS = (
     "sheets.angriff.kz_fraction_hint",
     "sheets.angriff.events_hint",
     "sheets.angriff.wave_kz_rounding",
+    "sheets.angriff.label_rounded",
+    "sheets.angriff.rounding_note",
+    "sheets.angriff.no_recovery_lead",
+    "sheets.angriff.no_recovery_tail",
     "sheets.budget.title",
     "sheets.budget.intro",
     "sheets.budget.init_what",
@@ -139,6 +143,7 @@ SHEET_KEYS = (
     "sheets.ros.title",
     "sheets.ros.instruction",
     "sheets.ros.purpose",
+    "sheets.ros.avoided_note",
     "sheets.backup_recovery.title",
     "sheets.backup_recovery.subtitle",
     "sheets.backup_recovery.narrative",
@@ -154,7 +159,7 @@ SHEET_KEYS = (
 
 _ABLAUF_KEYS = (
     "title", "intro", "head_block", "head_minutes", "head_span", "head_clock", "head_direction", "wave_label",
-    "practice_label", "total_label", "print_title", "print_intro", "print_head_label", "print_head_file",
+    "total_label", "print_title", "print_intro", "print_head_label", "print_head_file",
     "print_head_team", "print_head_facilitator", "print_head_total", "print_attack_sheet", "teams_label",
 )
 # Required only when the config carries a session_schedule, so the mini fixture needs no schedule texts.
@@ -163,7 +168,7 @@ ABLAUF_KEYS = tuple(f"sheets.ablauf.{name}" for name in _ABLAUF_KEYS)
 _DEBRIEF_KEYS = (
     "title", "intro", "guide_label", "questions_label", "prompts_label", "minutes_unit", "compare_title",
     "compare_intro", "compare_head_team", "compare_head_kz", "compare_head_ros", "compare_head_final_index",
-    "team_label", "clue_pointer", "total_label",
+    "team_label", "clue_pointer", "clue_pointer_end", "total_label",
 )
 # Required only when the config carries debrief_stages; stage and prompt keys follow the config ids (FLOW-03).
 DEBRIEF_KEYS = tuple(f"sheets.debrief.{name}" for name in _DEBRIEF_KEYS)
@@ -186,7 +191,7 @@ WAS_NEU_FLOW_IDS = ("whiteboard", "welle0", "debrief", "schedule")
 WAS_NEU_MATERIAL_IDS = ("generated", "veil", "clues", "teamheft", "wave_page", "practice")
 WAS_NEU_PART_IDS = (
     "kz", "per_started", "over_budget", "flat", "from_level", "level", "removed", "added", "yes", "no",
-    "boundary_above", "boundary_inclusive", "total", "per_wave", "tier_from", "ros",
+    "boundary_above", "boundary_inclusive", "total", "tier_from", "ros",
 )
 WAS_NEU_FIELD_IDS = (
     "budget", "kz_start", "severity_multiplier", "base_cia", "e_threshold", "weights", "bonus", "min_level", "kz_ends",
@@ -208,7 +213,7 @@ _REGISTER_KEYS = (
     "title", "instruction", "rank_hint", "risk_prefix", "example_label", "head_asset", "head_threat", "head_goal",
     "head_impact", "head_rank", "head_decision", "head_review", "source_label", "reason_label", "review_hint",
     "range_below", "range_to", "range_from", "planning_column",
-    "planning_hint", "page_title", "need_title", "need_instruction", "asset_prefix", "need_head_asset", "head_total",
+    "planning_hint", "page_title", "need_title", "need_instruction", "asset_prefix", "need_head_asset",
     "legend_title",
 )
 REGISTER_GROUPS = {
@@ -234,7 +239,7 @@ REALITY_KEYS = ("sheets.angriff.reality_question", "sheets.angriff.reality_hint"
 
 _PROBELAUF_KEYS = (
     "title", "notice", "intro", "head_block", "head_planned", "head_span", "head_start", "head_actual", "head_questions",
-    "head_errors", "total_label", "pass_title", "pass_wave_lead", "pass_wave_practice", "pass_wave_tail", "pass_rules",
+    "head_errors", "total_label", "pass_title", "pass_wave_lead", "pass_wave_tail", "pass_rules",
     "help_title", "observer_label", "date_label",
 )
 # Required only when the config carries a session_schedule, like the schedule texts (FLOW-05).
@@ -243,7 +248,8 @@ PROBELAUF_KEYS = tuple(f"sheets.probelauf.{name}" for name in _PROBELAUF_KEYS)
 PRACTICE_KEYS = tuple(
     f"practice.{name}"
     for name in (
-        "title", "intro", "narrative", "cia_rationale", *CASE_KEYS, "selection_title", "event_result", "tracking_title",
+        "title", "narrative", "cia_rationale", *CASE_KEYS, "selection_title", "event_result", "tracking_title",
+        "start_budget", "start_kz", "start_remaining", "events_hint",
     )
 )
 

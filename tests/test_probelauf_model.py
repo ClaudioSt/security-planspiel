@@ -88,30 +88,15 @@ def test_the_total_line_is_the_label_and_the_generated_total(cfg, texts, sheet):
     assert sheet.total_value == str(cfg.session_schedule.total_minutes)
 
 
-def test_four_pass_rules_with_the_practice_wave_named_like_its_row(cfg, texts, sheet):
+def test_four_pass_rules_without_a_practice_row_since_the_practice_sheet_is_a_handout(cfg, texts, sheet):
+    # quick 261125-fsu: the shipped schedule has no practice block, so the wave rule names no practice wave
     assert len(sheet.pass_rules) == 4
-    practice_rows = [row for row in sheet.rows if row.label == PRACTICE_LABEL]
-    assert len(practice_rows) == 1
-    wave_rule = sheet.pass_rules[0]
-    assert PRACTICE_LABEL in wave_rule
-    assert wave_rule == (
-        f"{texts.get('sheets.probelauf.pass_wave_lead')}, {texts.get('sheets.probelauf.pass_wave_practice')} "
-        f"{PRACTICE_LABEL}, {texts.get('sheets.probelauf.pass_wave_tail')}"
+    assert not [row for row in sheet.rows if row.label == PRACTICE_LABEL]
+    assert sheet.pass_rules[0] == (
+        f"{texts.get('sheets.probelauf.pass_wave_lead')} {texts.get('sheets.probelauf.pass_wave_tail')}"
     )
     assert sheet.pass_rules[1:] == tuple(texts.get("sheets.probelauf.pass_rules"))
     assert len(texts.get("sheets.probelauf.pass_rules")) == 3
-
-
-def test_the_wave_rule_loses_the_practice_clause_without_a_practice_block(cfg, texts):
-    blocks = tuple(block for block in cfg.session_schedule.blocks if block.wave != 0)
-    changed = dataclasses.replace(
-        cfg,
-        session_schedule=dataclasses.replace(
-            cfg.session_schedule, blocks=blocks, total_minutes=sum(block.minutes for block in blocks)
-        ),
-    )
-    rule = build_probelauf_sheet(changed, texts).pass_rules[0]
-    assert rule == f"{texts.get('sheets.probelauf.pass_wave_lead')} {texts.get('sheets.probelauf.pass_wave_tail')}"
 
 
 def test_the_prose_texts_are_digit_free(texts):

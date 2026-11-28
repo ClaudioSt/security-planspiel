@@ -138,8 +138,8 @@
 \newcolumntype{Z}{>{\centering\arraybackslash}X}
 % Compact write-in rows (6 mm) and a left-aligned stretch column for the dense tracking sheet of the booklet.
 \newcommand{\rowstrutgrid}{\rule[-2mm]{0pt}{6mm}}
-% Read-only lookup rows (no writing) for long tables such as the overspend table of the Budget Review page.
-\newcommand{\rowstrutlookup}{\rule[-0.8mm]{0pt}{4mm}}
+% The change-window grid of the tracking sheet is a little tighter (6.6 mm rows) so the whole sheet stays on one page.
+\newcommand{\rowstrutwin}{\rule[-1.7mm]{0pt}{4.9mm}}
 \newcommand{\hdrs}[1]{\color{white}\bfseries\rule[-1mm]{0pt}{3.8mm}#1}
 \newcolumntype{L}{>{\raggedright\arraybackslash}X}
 % Text cells of the wave explainer tables: \textrowtop leaves 1.6 mm clear above the first line of 9 pt text, \textrowend 1.5 mm below the
